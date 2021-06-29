@@ -10,6 +10,19 @@ using i5.Toolkit.Core.ProceduralGeometry;
 using i5.Toolkit.Core.ServiceCore;
 using i5.Toolkit.Core.Utilities;
 
+
+static class Questions
+{
+    // The shuffled question array
+    public static string[] questionArray;
+
+    // The index of the current question in the question array
+    public static int currentQuestionIndex;
+
+    // The last index of the array
+    public static int lastQuestionIndex;
+}
+
 public class ActivateQuestions : MonoBehaviour
 {
     // Define the "menus"
@@ -87,8 +100,8 @@ public class ActivateQuestions : MonoBehaviour
     // The begin of the url to the .obj object downloaded in the created examples
     public string urlBegin;
 
-    // The path to the question
-    public string questionPath;
+    // // The path to the question
+    // public string questionPath;
 
     // The JSON Serialization for the input questions
     [Serializable]
@@ -164,6 +177,9 @@ public class ActivateQuestions : MonoBehaviour
     // Method that import the .obj models of the current question and renders them on the image targets accordingly to their number
     public void DisplayModels()
     {
+        // Get the current question path
+        string questionPath = Questions.questionArray[Questions.currentQuestionIndex];
+
         // First Access the json string of the question file
         string json = File.ReadAllText(questionPath);
 
@@ -181,12 +197,14 @@ public class ActivateQuestions : MonoBehaviour
             {
                 // Display one model
                 ImportModel1(question.model1Name, questionPath);
+                Debug.Log("one model added");
 
             } else if(question.numberOfModels == 2)
             {
                 // Display two models
                 ImportModel1(question.model1Name, questionPath);
                 ImportModel2(question.model2Name, questionPath);
+                Debug.Log("two models added");
 
             } else if(question.numberOfModels == 3)
             {
@@ -194,6 +212,7 @@ public class ActivateQuestions : MonoBehaviour
                 ImportModel1(question.model1Name, questionPath);
                 ImportModel2(question.model2Name, questionPath);
                 ImportModel3(question.model3Name, questionPath);
+                Debug.Log("three models added");
 
             } else if(question.numberOfModels == 4)
             {
@@ -202,6 +221,7 @@ public class ActivateQuestions : MonoBehaviour
                 ImportModel2(question.model2Name, questionPath);
                 ImportModel3(question.model3Name, questionPath);
                 ImportModel4(question.model4Name, questionPath);
+                Debug.Log("four models added");
 
             } else if(question.numberOfModels == 5)
             {
@@ -211,6 +231,7 @@ public class ActivateQuestions : MonoBehaviour
                 ImportModel3(question.model3Name, questionPath);
                 ImportModel4(question.model4Name, questionPath);
                 ImportModel5(question.model5Name, questionPath);
+                Debug.Log("five models added");
             }
 
         } else {
@@ -223,12 +244,14 @@ public class ActivateQuestions : MonoBehaviour
             {
                 // Display one model
                 ImportModel1(question.model1Name, questionPath);
+                Debug.Log("one model added");
 
             } else if(question.numberOfModels == 2)
             {
                 // Display two models
                 ImportModel1(question.model1Name, questionPath);
                 ImportModel2(question.model2Name, questionPath);
+                Debug.Log("two models added");
 
             } else if(question.numberOfModels == 3)
             {
@@ -236,6 +259,7 @@ public class ActivateQuestions : MonoBehaviour
                 ImportModel1(question.model1Name, questionPath);
                 ImportModel2(question.model2Name, questionPath);
                 ImportModel3(question.model3Name, questionPath);
+                Debug.Log("three models added");
 
             } else if(question.numberOfModels == 4)
             {
@@ -244,6 +268,7 @@ public class ActivateQuestions : MonoBehaviour
                 ImportModel2(question.model2Name, questionPath);
                 ImportModel3(question.model3Name, questionPath);
                 ImportModel4(question.model4Name, questionPath);
+                Debug.Log("four models added");
 
             } else if(question.numberOfModels == 5)
             {
@@ -253,6 +278,7 @@ public class ActivateQuestions : MonoBehaviour
                 ImportModel3(question.model3Name, questionPath);
                 ImportModel4(question.model4Name, questionPath);
                 ImportModel5(question.model5Name, questionPath);
+                Debug.Log("five models added");
             }
         }
     }
@@ -299,8 +325,6 @@ public class ActivateQuestions : MonoBehaviour
     // Import the first model and bind it to the first image target
     public async void ImportModel1(string name, string pathToQuestion)
     {
-        Debug.Log("one model added");
-
         // Access the model gameobject
         string json1 = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
 
@@ -308,22 +332,20 @@ public class ActivateQuestions : MonoBehaviour
         Model model1 = JsonUtility.FromJson<Model>(json1);
 
         // Initialize the object importer
-        ObjImporter objImporter = new ObjImporter();
-        ServiceManager.RegisterService(objImporter);
+        ObjImporter objImporter1 = new ObjImporter();
+        ServiceManager.RegisterService(objImporter1);
 
         // Import the first model
         string url = urlBegin + model1.modelName;
         GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
 
         // Initialize the model correctly
-        InitializeModel(obj, imageTarget4);
+        InitializeModel(obj, imageTarget1);
     }
 
     // Import the second model and bind it to the second image target
     public async void ImportModel2(string name, string pathToQuestion)
     {
-        Debug.Log("Two models added");
-
         // Access the model gameobject
         string json1 = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
 
@@ -331,22 +353,20 @@ public class ActivateQuestions : MonoBehaviour
         Model model1 = JsonUtility.FromJson<Model>(json1);
 
         // Initialize the object importer
-        ObjImporter objImporter = new ObjImporter();
-        ServiceManager.RegisterService(objImporter);
+        ObjImporter objImporter2 = new ObjImporter();
+        ServiceManager.RegisterService(objImporter2);
 
         // Import the first model
         string url = urlBegin + model1.modelName;
         GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
 
         // Initialize the model correctly
-        InitializeModel(obj, imageTarget4);
+        InitializeModel(obj, imageTarget2);
     }
 
     // Import the third model and bind it to the third image target
     public async void ImportModel3(string name, string pathToQuestion)
     {
-        Debug.Log("Two models added");
-
         // Access the model gameobject
         string json1 = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
 
@@ -354,22 +374,20 @@ public class ActivateQuestions : MonoBehaviour
         Model model1 = JsonUtility.FromJson<Model>(json1);
 
         // Initialize the object importer
-        ObjImporter objImporter = new ObjImporter();
-        ServiceManager.RegisterService(objImporter);
+        ObjImporter objImporter3 = new ObjImporter();
+        ServiceManager.RegisterService(objImporter3);
 
         // Import the first model
         string url = urlBegin + model1.modelName;
         GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
 
         // Initialize the model correctly
-        InitializeModel(obj, imageTarget4);
+        InitializeModel(obj, imageTarget3);
     }
 
     // Import the fourth model and bind it to the fourth image target
     public async void ImportModel4(string name, string pathToQuestion)
     {
-        Debug.Log("One model deleted");
-
         // Access the model gameobject
         string json1 = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
 
@@ -377,8 +395,8 @@ public class ActivateQuestions : MonoBehaviour
         Model model1 = JsonUtility.FromJson<Model>(json1);
 
         // Initialize the object importer
-        ObjImporter objImporter = new ObjImporter();
-        ServiceManager.RegisterService(objImporter);
+        ObjImporter objImporter4 = new ObjImporter();
+        ServiceManager.RegisterService(objImporter4);
 
         // Import the first model
         string url = urlBegin + model1.modelName;
@@ -391,8 +409,6 @@ public class ActivateQuestions : MonoBehaviour
     // Import the fifth model and bind it to the fifth image target
     public async void ImportModel5(string name, string pathToQuestion)
     {
-        Debug.Log("No model deleted");
-
         // Access the model gameobject
         string json1 = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
 
@@ -400,15 +416,15 @@ public class ActivateQuestions : MonoBehaviour
         Model model1 = JsonUtility.FromJson<Model>(json1);
 
         // Initialize the object importer
-        ObjImporter objImporter = new ObjImporter();
-        ServiceManager.RegisterService(objImporter);
+        ObjImporter objImporter5 = new ObjImporter();
+        ServiceManager.RegisterService(objImporter5);
 
         // Import the first model
         string url = urlBegin + model1.modelName;
         GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
 
         // Initialize the model correctly
-        InitializeModel(obj, imageTarget4);
+        InitializeModel(obj, imageTarget5);
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
@@ -478,6 +494,9 @@ public class ActivateQuestions : MonoBehaviour
     // Method that is executed when a user presses the "view question" button in the model view
     public void ActivateQuestion()
     {
+        // Get the current question path
+        string questionPath = Questions.questionArray[Questions.currentQuestionIndex];
+
         // Access the json string of the question file
         string json = File.ReadAllText(questionPath);
 
@@ -673,9 +692,16 @@ public class ActivateQuestions : MonoBehaviour
         }
     }
 
+    //-------------------------------------------------------------------------------------------------------------------------------------------
+    // Method that give a visual feedback on the correct and incorrect answers and correct or incorrect given answers
+    //-------------------------------------------------------------------------------------------------------------------------------------------
+
     // Method that displays the correct or incorrect answer when clicking on the selection confirmation button after solving an input question
     public void DisplayRestultInput()
     {
+        // Get the current question path
+        string questionPath = Questions.questionArray[Questions.currentQuestionIndex];
+
         // Extract the question object
         string json = File.ReadAllText(questionPath);
         InputQuestion question = JsonUtility.FromJson<InputQuestion>(json);
@@ -815,6 +841,9 @@ public class ActivateQuestions : MonoBehaviour
     // Method that displays the correct or incorrect answer when clicking on the selection confirmation button after solving an multiple choice question
     public void DisplayRestultMC()
     {
+        // Get the current question path
+        string questionPath = Questions.questionArray[Questions.currentQuestionIndex];
+
         // Extract the question object
         string json = File.ReadAllText(questionPath);
         MultipleChoiceQuestion question = JsonUtility.FromJson<MultipleChoiceQuestion>(json);
@@ -984,5 +1013,126 @@ public class ActivateQuestions : MonoBehaviour
 
         // This case will never happen
         return answer55Answers;
+    }
+
+    //-------------------------------------------------------------------------------------------------------------------------------------------
+    // Method that create the question array, shuffeling the questions in the level directory, and that changes question after the current question was answered
+    //-------------------------------------------------------------------------------------------------------------------------------------------
+    
+    // The path to the current level directory
+    public string levelDirectoryPath;
+
+    // Method that creates the question array (not shuffled)
+    public void InitializeQuestionArray()
+    {
+        // Get the array of question files
+        string[] questions = Directory.GetFiles(levelDirectoryPath, "Question*", SearchOption.TopDirectoryOnly);
+        
+        // Set the Questions.questionArray right
+        Questions.questionArray = questions;
+
+        // Set the last question index
+        Questions.lastQuestionIndex = Questions.questionArray.Length - 1;
+
+        // Set the current question index to 0
+        Questions.currentQuestionIndex = 0;
+    }
+
+    // Initialize random number generator
+    private readonly System.Random random = new System.Random();
+
+    // Method that shuffles an array
+    public string[] ShuffleQuestionArray(string[] array)
+    {
+        // Get the length of the question array
+        int length = array.Length;
+
+        // Initialize the swap index
+        int swapIndex = 0;
+
+        // Initialize the loop index
+        int index = length - 1;
+
+        // Shuffle the question array
+        while(index >= 0)
+        {
+            // Get a random number
+            swapIndex = random.Next(0, index);
+
+            // Copy entry at swapIndex to the entry index of the array
+            string value = array[swapIndex];
+            array[swapIndex] = array[index];
+            array[index] = value;
+
+            // Reduce the index by one
+            index = index - 1;
+        }
+
+        // Return the shuffled array
+        return array;
+    }
+
+    // Method that initializes everything when a level is started
+    public void InitializeRound()
+    {
+        // Initialize the question array
+        InitializeQuestionArray();
+
+        // Shuffle the question array
+        Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
+
+        // Load all models
+
+        Debug.Log("The current question is: " + Questions.questionArray[Questions.currentQuestionIndex]);
+    }
+
+    // Method that closes the current question, and changes the current question index
+    public void GoToNextQuestion()
+    {
+        // Check if the the current question index reached the end of the index
+        if(Questions.currentQuestionIndex < Questions.lastQuestionIndex)
+        {
+            // Case the current question index is smaller than the last question index, increase the current question index by one
+            Questions.currentQuestionIndex = Questions.currentQuestionIndex + 1;
+
+        } else {
+
+            // Case the current question index reached the end of the array, shuffle the array and set the current question index to 0
+            Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
+            Questions.currentQuestionIndex = 0;
+        }
+
+        // Display the models of the current questions
+        DisplayModels();
+
+        Debug.Log("The current question is: " + Questions.questionArray[Questions.currentQuestionIndex]);
+    }
+
+    // Method that imports all models, and sets them invisible. Is done at the begining of a round so that no wait time is needed while playing.
+    public async void ImportAllModels()
+    {
+        // Initialize the object importer
+        ObjImporter objImporter = new ObjImporter();
+        ServiceManager.RegisterService(objImporter);
+
+        // Get the array of models
+        string[] models = Directory.GetFiles(levelDirectoryPath, "Model*", SearchOption.TopDirectoryOnly);
+
+        // Import all models
+        foreach(string model in models)
+        {
+            // Access the model gameobject
+            string json = File.ReadAllText(Path.GetDirectoryName(model));
+
+            // Extract the gameobject
+            Model modelObject = JsonUtility.FromJson<Model>(json);
+
+            // Import the first model
+            string url = urlBegin + modelObject.modelName;
+            GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
+
+            // Set the game object as inactive
+            obj.SetActive(false);
+        }
     }
 }
