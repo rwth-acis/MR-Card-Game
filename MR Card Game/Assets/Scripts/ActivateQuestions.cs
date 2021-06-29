@@ -196,41 +196,41 @@ public class ActivateQuestions : MonoBehaviour
             if(question.numberOfModels == 1)
             {
                 // Display one model
-                ImportModel1(question.model1Name, questionPath);
+                AddModelOverTargetImage1(question.model1Name, questionPath);
                 Debug.Log("one model added");
 
             } else if(question.numberOfModels == 2)
             {
                 // Display two models
-                ImportModel1(question.model1Name, questionPath);
-                ImportModel2(question.model2Name, questionPath);
+                AddModelOverTargetImage1(question.model1Name, questionPath);
+                AddModelOverTargetImage2(question.model2Name, questionPath);
                 Debug.Log("two models added");
 
             } else if(question.numberOfModels == 3)
             {
                 // Display three models
-                ImportModel1(question.model1Name, questionPath);
-                ImportModel2(question.model2Name, questionPath);
-                ImportModel3(question.model3Name, questionPath);
+                AddModelOverTargetImage1(question.model1Name, questionPath);
+                AddModelOverTargetImage2(question.model2Name, questionPath);
+                AddModelOverTargetImage3(question.model3Name, questionPath);
                 Debug.Log("three models added");
 
             } else if(question.numberOfModels == 4)
             {
                 // Display four models
-                ImportModel1(question.model1Name, questionPath);
-                ImportModel2(question.model2Name, questionPath);
-                ImportModel3(question.model3Name, questionPath);
-                ImportModel4(question.model4Name, questionPath);
+                AddModelOverTargetImage1(question.model1Name, questionPath);
+                AddModelOverTargetImage2(question.model2Name, questionPath);
+                AddModelOverTargetImage3(question.model3Name, questionPath);
+                AddModelOverTargetImage4(question.model4Name, questionPath);
                 Debug.Log("four models added");
 
             } else if(question.numberOfModels == 5)
             {
                 // Display five models
-                ImportModel1(question.model1Name, questionPath);
-                ImportModel2(question.model2Name, questionPath);
-                ImportModel3(question.model3Name, questionPath);
-                ImportModel4(question.model4Name, questionPath);
-                ImportModel5(question.model5Name, questionPath);
+                AddModelOverTargetImage1(question.model1Name, questionPath);
+                AddModelOverTargetImage2(question.model2Name, questionPath);
+                AddModelOverTargetImage3(question.model3Name, questionPath);
+                AddModelOverTargetImage4(question.model4Name, questionPath);
+                AddModelOverTargetImage5(question.model5Name, questionPath);
                 Debug.Log("five models added");
             }
 
@@ -243,41 +243,41 @@ public class ActivateQuestions : MonoBehaviour
             if(question.numberOfModels == 1)
             {
                 // Display one model
-                ImportModel1(question.model1Name, questionPath);
+                AddModelOverTargetImage1(question.model1Name, questionPath);
                 Debug.Log("one model added");
 
             } else if(question.numberOfModels == 2)
             {
                 // Display two models
-                ImportModel1(question.model1Name, questionPath);
-                ImportModel2(question.model2Name, questionPath);
+                AddModelOverTargetImage1(question.model1Name, questionPath);
+                AddModelOverTargetImage2(question.model2Name, questionPath);
                 Debug.Log("two models added");
 
             } else if(question.numberOfModels == 3)
             {
                 // Display three models
-                ImportModel1(question.model1Name, questionPath);
-                ImportModel2(question.model2Name, questionPath);
-                ImportModel3(question.model3Name, questionPath);
+                AddModelOverTargetImage1(question.model1Name, questionPath);
+                AddModelOverTargetImage2(question.model2Name, questionPath);
+                AddModelOverTargetImage3(question.model3Name, questionPath);
                 Debug.Log("three models added");
 
             } else if(question.numberOfModels == 4)
             {
                 // Display four models
-                ImportModel1(question.model1Name, questionPath);
-                ImportModel2(question.model2Name, questionPath);
-                ImportModel3(question.model3Name, questionPath);
-                ImportModel4(question.model4Name, questionPath);
+                AddModelOverTargetImage1(question.model1Name, questionPath);
+                AddModelOverTargetImage2(question.model2Name, questionPath);
+                AddModelOverTargetImage3(question.model3Name, questionPath);
+                AddModelOverTargetImage4(question.model4Name, questionPath);
                 Debug.Log("four models added");
 
             } else if(question.numberOfModels == 5)
             {
                 // Display five models
-                ImportModel1(question.model1Name, questionPath);
-                ImportModel2(question.model2Name, questionPath);
-                ImportModel3(question.model3Name, questionPath);
-                ImportModel4(question.model4Name, questionPath);
-                ImportModel5(question.model5Name, questionPath);
+                AddModelOverTargetImage1(question.model1Name, questionPath);
+                AddModelOverTargetImage2(question.model2Name, questionPath);
+                AddModelOverTargetImage3(question.model3Name, questionPath);
+                AddModelOverTargetImage4(question.model4Name, questionPath);
+                AddModelOverTargetImage5(question.model5Name, questionPath);
                 Debug.Log("five models added");
             }
         }
@@ -294,137 +294,207 @@ public class ActivateQuestions : MonoBehaviour
         // Destroy all children of the first target image
         foreach(Transform child in imageTarget1.transform)
         {
-            GameObject.Destroy(child.gameObject);
+            // Set the model as child of the save model object
+            child.parent = saveModelObject.transform;
         }
 
         // Destroy all children of the second target image
         foreach(Transform child in imageTarget2.transform)
         {
-            GameObject.Destroy(child.gameObject);
+            // Set the model as child of the save model object
+            child.transform.parent = saveModelObject.transform;
         }
 
         // Destroy all children of the third target image
         foreach(Transform child in imageTarget3.transform)
         {
-            GameObject.Destroy(child.gameObject);
+            // Set the model as child of the save model object
+            child.transform.parent = saveModelObject.transform;
         }
 
         // Destroy all children of the fourth target image
         foreach(Transform child in imageTarget4.transform)
         {
-            GameObject.Destroy(child.gameObject);
+            // Set the model as child of the save model object
+            child.transform.parent = saveModelObject.transform;      
         }
 
         // Destroy all children of the fifth target image
         foreach(Transform child in imageTarget5.transform)
         {
-            GameObject.Destroy(child.gameObject);
+            // Set the model as child of the save model object
+            child.transform.parent = saveModelObject.transform;
         }
     }
 
     // Import the first model and bind it to the first image target
-    public async void ImportModel1(string name, string pathToQuestion)
+    public async void AddModelOverTargetImage1(string name, string pathToQuestion)
     {
         // Access the model gameobject
-        string json1 = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
+        string json = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
 
         // Extract the gameobject
-        Model model1 = JsonUtility.FromJson<Model>(json1);
+        Model model = JsonUtility.FromJson<Model>(json);
 
-        // Initialize the object importer
-        ObjImporter objImporter1 = new ObjImporter();
-        ServiceManager.RegisterService(objImporter1);
+        // Get the name of the imported model (delete the ending '.json')
+        string modelName = model.modelName.Substring(model.modelName.Length-5);
 
-        // Import the first model
-        string url = urlBegin + model1.modelName;
-        GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
+        // Find the model in the children of the save model object
+        GameObject obj = saveModelObject.transform.Find(modelName).gameObject;
 
-        // Initialize the model correctly
-        InitializeModel(obj, imageTarget1);
+        // Find the child object of the model
+        GameObject childGameObject = obj.transform.GetChild(0).gameObject;
+
+        // Access the box collider information of the child object
+        BoxCollider m_Collider = childGameObject.GetComponent<BoxCollider>();
+
+        // Get the position of the target image
+        Vector3 position = imageTarget1.transform.position;
+
+        // Find the position over the target image where the model should be
+        position = position + new Vector3(0, m_Collider.size.y/2, 0);
+
+        // Change the position of the model so that it stands over the marker
+        obj.transform.position = position;
+
+        // Set the model as child of the marker
+        obj.transform.parent = imageTarget1.transform;
     }
 
     // Import the second model and bind it to the second image target
-    public async void ImportModel2(string name, string pathToQuestion)
+    public async void AddModelOverTargetImage2(string name, string pathToQuestion)
     {
         // Access the model gameobject
-        string json1 = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
+        string json = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
 
         // Extract the gameobject
-        Model model1 = JsonUtility.FromJson<Model>(json1);
+        Model model = JsonUtility.FromJson<Model>(json);
 
-        // Initialize the object importer
-        ObjImporter objImporter2 = new ObjImporter();
-        ServiceManager.RegisterService(objImporter2);
+        // Get the name of the imported model (delete the ending '.json')
+        string modelName = model.modelName.Substring(model.modelName.Length-5);
 
-        // Import the first model
-        string url = urlBegin + model1.modelName;
-        GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
+        // Find the model in the children of the save model object
+        GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
 
-        // Initialize the model correctly
-        InitializeModel(obj, imageTarget2);
+        // Find the child object of the model
+        GameObject childGameObject = obj.transform.GetChild(0).gameObject;
+
+        // Access the box collider information of the child object
+        BoxCollider m_Collider = childGameObject.GetComponent<BoxCollider>();
+
+        // Get the position of the target image
+        Vector3 position = imageTarget2.transform.position;
+
+        // Find the position over the target image where the model should be
+        position = position + new Vector3(0, m_Collider.size.y/2, 0);
+
+        // Change the position of the model so that it stands over the marker
+        obj.transform.position = position;
+
+        // Set the model as child of the marker
+        obj.transform.parent = imageTarget2.transform;
     }
 
     // Import the third model and bind it to the third image target
-    public async void ImportModel3(string name, string pathToQuestion)
+    public async void AddModelOverTargetImage3(string name, string pathToQuestion)
     {
         // Access the model gameobject
-        string json1 = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
+        string json = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
 
         // Extract the gameobject
-        Model model1 = JsonUtility.FromJson<Model>(json1);
+        Model model = JsonUtility.FromJson<Model>(json);
 
-        // Initialize the object importer
-        ObjImporter objImporter3 = new ObjImporter();
-        ServiceManager.RegisterService(objImporter3);
+        // Get the name of the imported model (delete the ending '.json')
+        string modelName = model.modelName.Substring(model.modelName.Length-5);
 
-        // Import the first model
-        string url = urlBegin + model1.modelName;
-        GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
+        // Find the model in the children of the save model object
+        GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
 
-        // Initialize the model correctly
-        InitializeModel(obj, imageTarget3);
+        // Find the child object of the model
+        GameObject childGameObject = obj.transform.GetChild(0).gameObject;
+
+        // Access the box collider information of the child object
+        BoxCollider m_Collider = childGameObject.GetComponent<BoxCollider>();
+
+        // Get the position of the target image
+        Vector3 position = imageTarget3.transform.position;
+
+        // Find the position over the target image where the model should be
+        position = position + new Vector3(0, m_Collider.size.y/2, 0);
+
+        // Change the position of the model so that it stands over the marker
+        obj.transform.position = position;
+
+        // Set the model as child of the marker
+        obj.transform.parent = imageTarget3.transform;
     }
 
     // Import the fourth model and bind it to the fourth image target
-    public async void ImportModel4(string name, string pathToQuestion)
+    public async void AddModelOverTargetImage4(string name, string pathToQuestion)
     {
         // Access the model gameobject
-        string json1 = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
+        string json = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
 
         // Extract the gameobject
-        Model model1 = JsonUtility.FromJson<Model>(json1);
+        Model model = JsonUtility.FromJson<Model>(json);
 
-        // Initialize the object importer
-        ObjImporter objImporter4 = new ObjImporter();
-        ServiceManager.RegisterService(objImporter4);
+        // Get the name of the imported model (delete the ending '.json')
+        string modelName = model.modelName.Substring(model.modelName.Length-5);
 
-        // Import the first model
-        string url = urlBegin + model1.modelName;
-        GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
+        // Find the model in the children of the save model object
+        GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
 
-        // Initialize the model correctly
-        InitializeModel(obj, imageTarget4);
+        // Find the child object of the model
+        GameObject childGameObject = obj.transform.GetChild(0).gameObject;
+
+        // Access the box collider information of the child object
+        BoxCollider m_Collider = childGameObject.GetComponent<BoxCollider>();
+
+        // Get the position of the target image
+        Vector3 position = imageTarget4.transform.position;
+
+        // Find the position over the target image where the model should be
+        position = position + new Vector3(0, m_Collider.size.y/2, 0);
+
+        // Change the position of the model so that it stands over the marker
+        obj.transform.position = position;
+
+        // Set the model as child of the marker
+        obj.transform.parent = imageTarget4.transform;
     }
 
     // Import the fifth model and bind it to the fifth image target
-    public async void ImportModel5(string name, string pathToQuestion)
+    public async void AddModelOverTargetImage5(string name, string pathToQuestion)
     {
         // Access the model gameobject
-        string json1 = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
+        string json = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
 
         // Extract the gameobject
-        Model model1 = JsonUtility.FromJson<Model>(json1);
+        Model model = JsonUtility.FromJson<Model>(json);
 
-        // Initialize the object importer
-        ObjImporter objImporter5 = new ObjImporter();
-        ServiceManager.RegisterService(objImporter5);
+        // Get the name of the imported model (delete the ending '.json')
+        string modelName = model.modelName.Substring(model.modelName.Length-5);
 
-        // Import the first model
-        string url = urlBegin + model1.modelName;
-        GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
+        // Find the model in the children of the save model object
+        GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
 
-        // Initialize the model correctly
-        InitializeModel(obj, imageTarget5);
+        // Find the child object of the model
+        GameObject childGameObject1 = obj.transform.GetChild(0).gameObject;
+
+        // Access the box collider information of the child object
+        BoxCollider m_Collider = childGameObject1.GetComponent<BoxCollider>();
+
+        // Get the position of the target image
+        Vector3 position = imageTarget5.transform.position;
+
+        // Find the position over the target image where the model should be
+        position = position + new Vector3(0, m_Collider.size.y/2, 0);
+
+        // Change the position of the model so that it stands over the marker
+        obj.transform.position = position;
+
+        // Set the model as child of the marker
+        obj.transform.parent = imageTarget5.transform;
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
@@ -1082,6 +1152,13 @@ public class ActivateQuestions : MonoBehaviour
         Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
 
         // Load all models
+        ImportAllModels();
+
+        // Wait for the import to be finished
+        // TODO        
+
+        // After waiting, enable the view model menu
+        viewModel.SetActive(true);
 
         Debug.Log("The current question is: " + Questions.questionArray[Questions.currentQuestionIndex]);
     }
@@ -1108,6 +1185,9 @@ public class ActivateQuestions : MonoBehaviour
         Debug.Log("The current question is: " + Questions.questionArray[Questions.currentQuestionIndex]);
     }
 
+    // Define the game object under which all models are saved (so that they can be found with their name, even if they have the same name as a game object)
+    public GameObject saveModelObject;
+
     // Method that imports all models, and sets them invisible. Is done at the begining of a round so that no wait time is needed while playing.
     public async void ImportAllModels()
     {
@@ -1122,7 +1202,7 @@ public class ActivateQuestions : MonoBehaviour
         foreach(string model in models)
         {
             // Access the model gameobject
-            string json = File.ReadAllText(Path.GetDirectoryName(model));
+            string json = File.ReadAllText(model);
 
             // Extract the gameobject
             Model modelObject = JsonUtility.FromJson<Model>(json);
@@ -1130,6 +1210,9 @@ public class ActivateQuestions : MonoBehaviour
             // Import the first model
             string url = urlBegin + modelObject.modelName;
             GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
+
+            // Initialize the model (resize it correctly) and set it as the child of the same model object
+            InitializeModel(obj, saveModelObject);
 
             // Set the game object as inactive
             obj.SetActive(false);
