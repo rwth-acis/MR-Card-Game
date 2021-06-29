@@ -21,6 +21,12 @@ static class Questions
 
     // The last index of the array
     public static int lastQuestionIndex;
+
+    // The number of models
+    public static int numberOfModels;
+
+    // The number of models that have finished to load
+    public static int numberOfModelsLoaded;
 }
 
 public class ActivateQuestions : MonoBehaviour
@@ -157,15 +163,9 @@ public class ActivateQuestions : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Set the right menu as active
-        viewModel.SetActive(true);
-
-        // Disable the others
+        // Disable the question menus
         viewMultipleChoiceQuestion.SetActive(false);
         viewInputQuestion.SetActive(false);
-
-        // Display the models of the current questions
-        DisplayModels();
     }
 
     // Update is called once per frame
@@ -183,8 +183,8 @@ public class ActivateQuestions : MonoBehaviour
         // First Access the json string of the question file
         string json = File.ReadAllText(questionPath);
 
-        // Delete all models
-        DeleteAllModels();
+        // Remove all models (make them invisible, unbind them of their parent)
+        RemoveAllModels();
 
         // Check what type of question it is
         if(json.Contains("input question") == true)
@@ -288,7 +288,7 @@ public class ActivateQuestions : MonoBehaviour
     //-------------------------------------------------------------------------------------------------------------------------------------------
 
     // The method that deletes all childs (models) of the image target
-    public void DeleteAllModels()
+    public void RemoveAllModels()
     {
         Debug.Log("All models deleted");
         // Destroy all children of the first target image
@@ -337,7 +337,7 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(model.modelName.Length-5);
+        string modelName = model.modelName.Substring(0, model.modelName.Length-5);
 
         // Find the model in the children of the save model object
         GameObject obj = saveModelObject.transform.Find(modelName).gameObject;
@@ -371,7 +371,7 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(model.modelName.Length-5);
+        string modelName = model.modelName.Substring(0, model.modelName.Length-5);
 
         // Find the model in the children of the save model object
         GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
@@ -405,7 +405,7 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(model.modelName.Length-5);
+        string modelName = model.modelName.Substring(0, model.modelName.Length-5);
 
         // Find the model in the children of the save model object
         GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
@@ -439,7 +439,7 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(model.modelName.Length-5);
+        string modelName = model.modelName.Substring(0, model.modelName.Length - 5);
 
         // Find the model in the children of the save model object
         GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
@@ -473,7 +473,7 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(model.modelName.Length-5);
+        string modelName = model.modelName.Substring(0, model.modelName.Length-5);
 
         // Find the model in the children of the save model object
         GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
@@ -1154,13 +1154,21 @@ public class ActivateQuestions : MonoBehaviour
         // Load all models
         ImportAllModels();
 
-        // Wait for the import to be finished
-        // TODO        
-
-        // After waiting, enable the view model menu
-        viewModel.SetActive(true);
+        // Wait for all models to be loaded and enable the question menu and display the models
+        WaitForAllModelsToBeLoaded();
 
         Debug.Log("The current question is: " + Questions.questionArray[Questions.currentQuestionIndex]);
+    }
+
+    // Method that waits that all models have been imported, before displaying models
+    IEnumerator WaitForAllModelsToBeLoaded()
+    {
+        Debug.Log ("Waiting for all models to be loaded....");
+
+        // Wait for the last model to be loaded
+        yield return new WaitUntil(() => Questions.numberOfModelsLoaded >= Questions.numberOfModels);
+
+        Debug.Log ("The view model menu will be enabled");
     }
 
     // Method that closes the current question, and changes the current question index
@@ -1178,6 +1186,12 @@ public class ActivateQuestions : MonoBehaviour
             Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
             Questions.currentQuestionIndex = 0;
         }
+
+        // Display the models of the current questions
+        StartCoroutine(WaitForAllModelsToBeLoaded());
+
+        // After waiting, enable the view model menu
+        viewModel.SetActive(true);
 
         // Display the models of the current questions
         DisplayModels();
@@ -1198,6 +1212,9 @@ public class ActivateQuestions : MonoBehaviour
         // Get the array of models
         string[] models = Directory.GetFiles(levelDirectoryPath, "Model*", SearchOption.TopDirectoryOnly);
 
+        // Set the number of models
+        Questions.numberOfModels = models.Length;
+
         // Import all models
         foreach(string model in models)
         {
@@ -1214,8 +1231,11 @@ public class ActivateQuestions : MonoBehaviour
             // Initialize the model (resize it correctly) and set it as the child of the same model object
             InitializeModel(obj, saveModelObject);
 
-            // Set the game object as inactive
-            obj.SetActive(false);
+            // When the model finished loading, increase the loaded model counter
+            Questions.numberOfModelsLoaded = Questions.numberOfModelsLoaded + 1;
+
+            Debug.Log("The current number of models that are loaded is: " + Questions.numberOfModelsLoaded);
         }
+        Debug.Log("The number of models is: " + Questions.numberOfModels);
     }
 }
