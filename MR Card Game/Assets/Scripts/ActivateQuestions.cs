@@ -32,6 +32,7 @@ static class Questions
 public class ActivateQuestions : MonoBehaviour
 {
     // Define the "menus"
+    public GameObject startMenu;
     public GameObject viewModel;
     public GameObject viewMultipleChoiceQuestion;
     public GameObject viewInputQuestion;
@@ -50,6 +51,7 @@ public class ActivateQuestions : MonoBehaviour
     public Button confirmAnswerInput;
     public Button closeQuestionInput;
     public TMP_InputField answerFieldInput;
+    public Button feedbackInput;
 
     // Define the text elements of the correct answer preview of the input question interface
     public GameObject previewCorrectAnswerInput;
@@ -60,6 +62,7 @@ public class ActivateQuestions : MonoBehaviour
     public TMP_Text questionNameMC;
     public Button confirmAnswerMC;
     public Button closeQuestionMC;
+    public Button feedbackMC;
 
     // Define the text objects and buttons of the preview with two answers
     public TMP_Text questionText2Answers;
@@ -166,6 +169,14 @@ public class ActivateQuestions : MonoBehaviour
         // Disable the question menus
         viewMultipleChoiceQuestion.SetActive(false);
         viewInputQuestion.SetActive(false);
+
+        // The number of models
+        Questions.numberOfModels = 5;
+
+        // The number of models that have finished to load
+        Questions.numberOfModelsLoaded = 0;
+
+        // StartCoroutine(WaitForAllModelsToBeLoaded());
     }
 
     // Update is called once per frame
@@ -337,7 +348,9 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(0, model.modelName.Length-5);
+        string modelName = model.modelName.Substring(0, model.modelName.Length - 4);
+
+        Debug.Log("Searching for game object: " + modelName);
 
         // Find the model in the children of the save model object
         GameObject obj = saveModelObject.transform.Find(modelName).gameObject;
@@ -351,8 +364,11 @@ public class ActivateQuestions : MonoBehaviour
         // Get the position of the target image
         Vector3 position = imageTarget1.transform.position;
 
+        // Get the scale
+        Vector3 scaleVector = obj.transform.localScale;
+
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y/2, 0);
+        position = position + new Vector3(0, m_Collider.size.y/2 * scaleVector.x, 0);
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -371,7 +387,9 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(0, model.modelName.Length-5);
+        string modelName = model.modelName.Substring(0, model.modelName.Length - 4);
+
+        Debug.Log("Searching for game object: " + modelName);
 
         // Find the model in the children of the save model object
         GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
@@ -385,8 +403,11 @@ public class ActivateQuestions : MonoBehaviour
         // Get the position of the target image
         Vector3 position = imageTarget2.transform.position;
 
+        // Get the scale
+        Vector3 scaleVector = obj.transform.localScale;
+
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y/2, 0);
+        position = position + new Vector3(0, m_Collider.size.y/2 * scaleVector.x, 0);
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -405,7 +426,9 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(0, model.modelName.Length-5);
+        string modelName = model.modelName.Substring(0, model.modelName.Length - 4);
+
+        Debug.Log("Searching for game object: " + modelName);
 
         // Find the model in the children of the save model object
         GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
@@ -419,8 +442,11 @@ public class ActivateQuestions : MonoBehaviour
         // Get the position of the target image
         Vector3 position = imageTarget3.transform.position;
 
+        /// Get the scale
+        Vector3 scaleVector = obj.transform.localScale;
+
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y/2, 0);
+        position = position + new Vector3(0, m_Collider.size.y/2 * scaleVector.x, 0);
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -439,7 +465,9 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(0, model.modelName.Length - 5);
+        string modelName = model.modelName.Substring(0, model.modelName.Length - 4);
+
+        Debug.Log("Searching for game object: " + modelName);
 
         // Find the model in the children of the save model object
         GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
@@ -453,8 +481,11 @@ public class ActivateQuestions : MonoBehaviour
         // Get the position of the target image
         Vector3 position = imageTarget4.transform.position;
 
+        // Get the scale
+        Vector3 scaleVector = obj.transform.localScale;
+
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y/2, 0);
+        position = position + new Vector3(0, m_Collider.size.y/2 * scaleVector.x, 0);
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -473,7 +504,9 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(0, model.modelName.Length-5);
+        string modelName = model.modelName.Substring(0, model.modelName.Length - 4);
+
+        Debug.Log("Searching for game object: " + modelName);
 
         // Find the model in the children of the save model object
         GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
@@ -487,8 +520,11 @@ public class ActivateQuestions : MonoBehaviour
         // Get the position of the target image
         Vector3 position = imageTarget5.transform.position;
 
+        // Get the scale
+        Vector3 scaleVector = obj.transform.localScale;
+
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y/2, 0);
+        position = position + new Vector3(0, m_Collider.size.y/2 * scaleVector.x, 0);
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -776,6 +812,9 @@ public class ActivateQuestions : MonoBehaviour
         string json = File.ReadAllText(questionPath);
         InputQuestion question = JsonUtility.FromJson<InputQuestion>(json);
 
+        // Initialize the boolean that tells if the given answer was correct or not
+        bool answeredCorrectly = true;
+
         // Check if the answer is correct
         if(answerFieldInput.text == question.answer)
         {
@@ -824,8 +863,14 @@ public class ActivateQuestions : MonoBehaviour
                 // Activate the close button and deactivate the confirm button
                 closeQuestionInput.gameObject.SetActive(true);
                 confirmAnswerInput.gameObject.SetActive(false);
+
+                // Set the boolean that tells that the answer was correct or not to false
+                answeredCorrectly = false;
             }
         }
+
+        // Check if the question was answered correctly or not and give visual feedback
+        DisplayFeedbackButton(feedbackInput, answeredCorrectly);
     }
 
     // Method that checks if both strings begin with or without capital letter, if not check if it is the same letter
@@ -972,11 +1017,39 @@ public class ActivateQuestions : MonoBehaviour
 
             // Make the button not interactable
             currentButton.interactable = false;
-
         }
+
+        // Check if the question was answered correctly or not and give visual feedback
+        DisplayFeedbackButton(feedbackMC, answeredCorrectly);
+
         // Activate the close button and deactivate the confirm button
         closeQuestionMC.gameObject.SetActive(true);
         confirmAnswerMC.gameObject.SetActive(false);
+    }
+
+    // Method that displays the correctly or incorrectly answered question
+    public void DisplayFeedbackButton(Button button, bool answer)
+    {
+        // Enable the button
+        button.gameObject.SetActive(true);
+        
+        // Check if the question was answered correctly or not
+        if(answer == true)
+        {
+            // Set the answer correct text
+            button.GetComponentInChildren<TMP_Text>().text = "Your answer was correct!";
+
+            // Set the correct color
+            button.GetComponentInChildren<TMP_Text>().color = correctColor;
+
+        } else {
+
+            // Set the answer incorrect text
+            button.GetComponentInChildren<TMP_Text>().text = "Your answer was incorrect.";
+
+            // Set the incorrect color
+            button.GetComponentInChildren<TMP_Text>().color = incorrectColor;
+        }
     }
 
     // Method that returns if the answer with given index should be true or not
@@ -1155,20 +1228,35 @@ public class ActivateQuestions : MonoBehaviour
         ImportAllModels();
 
         // Wait for all models to be loaded and enable the question menu and display the models
-        WaitForAllModelsToBeLoaded();
+        // StartCoroutine(WaitForAllModelsToBeLoaded());
 
         Debug.Log("The current question is: " + Questions.questionArray[Questions.currentQuestionIndex]);
     }
 
-    // Method that waits that all models have been imported, before displaying models
-    IEnumerator WaitForAllModelsToBeLoaded()
+    // // Method that waits that all models have been imported, before displaying models
+    // IEnumerator WaitForAllModelsToBeLoaded()
+    // {
+    //     Debug.Log ("Waiting for all models to be loaded....");
+
+    //     // Wait for the last model to be loaded
+    //     yield return new WaitUntil(() => Questions.numberOfModelsLoaded >= Questions.numberOfModels);
+
+    //     Debug.Log ("The view model menu will be enabled");
+
+    //     ActivateViewModels();
+    // }
+
+    // Method that activates the view model menu and enables the user to open the first question
+    public void ActivateViewModels()
     {
-        Debug.Log ("Waiting for all models to be loaded....");
+        // After waiting, enable the view model menu
+        viewModel.SetActive(true);
 
-        // Wait for the last model to be loaded
-        yield return new WaitUntil(() => Questions.numberOfModelsLoaded >= Questions.numberOfModels);
+        // Display the models of the current questions
+        DisplayModels();
 
-        Debug.Log ("The view model menu will be enabled");
+        // Disable the start menu
+        startMenu.SetActive(false);
     }
 
     // Method that closes the current question, and changes the current question index
@@ -1187,11 +1275,15 @@ public class ActivateQuestions : MonoBehaviour
             Questions.currentQuestionIndex = 0;
         }
 
-        // Display the models of the current questions
-        StartCoroutine(WaitForAllModelsToBeLoaded());
+        // Disable the feedback buttons
+        feedbackInput.gameObject.SetActive(false);
+        feedbackMC.gameObject.SetActive(false);
 
-        // After waiting, enable the view model menu
-        viewModel.SetActive(true);
+        // // Display the models of the current questions
+        // StartCoroutine(WaitForAllModelsToBeLoaded());
+
+        // // After waiting, enable the view model menu
+        // viewModel.SetActive(true);
 
         // Display the models of the current questions
         DisplayModels();
@@ -1235,7 +1327,10 @@ public class ActivateQuestions : MonoBehaviour
             Questions.numberOfModelsLoaded = Questions.numberOfModelsLoaded + 1;
 
             Debug.Log("The current number of models that are loaded is: " + Questions.numberOfModelsLoaded);
+            Debug.Log("Currently we have: " + Questions.numberOfModelsLoaded + " >= "  + Questions.numberOfModels);
         }
         Debug.Log("The number of models is: " + Questions.numberOfModels);
+
+        ActivateViewModels();
     }
 }
