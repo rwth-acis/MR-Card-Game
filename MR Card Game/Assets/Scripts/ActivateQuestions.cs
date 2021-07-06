@@ -1296,8 +1296,42 @@ public class ActivateQuestions : MonoBehaviour
     // Method that initializes everything when a level is started
     public void InitializeRound()
     {
-        // Initialize the question array
-        InitializeQuestionArray();
+        // // // Get the path
+        // // //string filePath = Path.Combine(Application.persistentDataPath, "description.json");
+
+        // Get all files in the folder and coppy them to the persistent data path
+        string[] files = GetFilesArray(levelDirectoryPath);
+        foreach(string file in files)
+        {
+            // Read the data
+            string loadData = File.ReadAllText(file);
+
+            // Get the fileName
+            string name = Path.GetFileName(file);
+            Debug.Log("Current File name: " + name);
+
+            // Save it
+            // File.WriteAllText(Path.Combine(Application.persistentDataPath, name), loadData);
+        }
+
+        // // // // Create the log object
+        // // // Log description = new Log();
+
+        // // // // Fill it
+        // // // description.description = "This is the description";
+        // // // description.heading = "My name";
+
+        // // // // Convert it to json
+        // // // string jsonData = JsonUtility.ToJson(description);
+
+        // // // // Save it
+        // // // File.WriteAllText(filePath, jsonData);
+
+        // Check if it works and can be loaded
+        // TestFunction();
+
+        // // Initialize the question array
+        // InitializeQuestionArray();
 
         // // Shuffle the question array
         // Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
@@ -1308,7 +1342,31 @@ public class ActivateQuestions : MonoBehaviour
         // // Wait for all models to be loaded and enable the question menu and display the models
         // // StartCoroutine(WaitForAllModelsToBeLoaded());
 
-        Debug.Log("The current question is: " + Questions.questionArray[Questions.currentQuestionIndex]);
+        // Debug.Log("The current question is: " + Questions.questionArray[Questions.currentQuestionIndex]);
+    }
+
+    // Method that returns the array of files in a directory
+    static string[] GetFilesArray(string path) 
+    {
+        string[] files = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly);
+        return files;
+    }
+
+    // Test function to test the saving of files on the android device
+    public void TestFunction()
+    {
+        // Get the path
+        string filePath = Path.Combine(Application.persistentDataPath, "Description.json");
+
+        // Read the data
+        string loadData = File.ReadAllText(filePath);
+
+        // Get the gameobject
+        Log description = JsonUtility.FromJson<Log>(loadData);
+
+        // Print the description on the button
+        startButton.GetComponentInChildren<TMP_Text>().text = description.description;
+
     }
 
     // // Method that waits that all models have been imported, before displaying models
