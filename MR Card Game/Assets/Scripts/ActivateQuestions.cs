@@ -9,6 +9,7 @@ using i5.Toolkit.Core.ModelImporters;
 using i5.Toolkit.Core.ProceduralGeometry;
 using i5.Toolkit.Core.ServiceCore;
 using i5.Toolkit.Core.Utilities;
+using UnityEngine.Networking;
 
 
 static class Questions
@@ -27,6 +28,12 @@ static class Questions
 
     // The number of models that have finished to load
     public static int numberOfModelsLoaded;
+
+    // The path to the local folder on the device
+    public static string pathToLevel;
+
+    // If it is for android or not, to switch easily between editor and device testing
+    public static bool androidBoot = false;
 }
 
 public class ActivateQuestions : MonoBehaviour
@@ -160,7 +167,16 @@ public class ActivateQuestions : MonoBehaviour
     {
         public string modelName;
         public int numberOfQuestionsUsedIn;
+    }
 
+    // The JSON Serialization for the log file
+    [Serializable]
+    public class Log
+    {
+        public int numberOfQuestions; // The number of already existing questions in the folder so that the new ones can be renamed
+        public int numberOfModels; // The number of already existing model files in the folder so that the new ones can be renamed
+        public string heading; // Heading of the description, name that users can give
+        public string description; // The description text of the content / concepts that are needed for solving the exercises
     }
 
     // Start is called before the first frame update
@@ -176,7 +192,17 @@ public class ActivateQuestions : MonoBehaviour
         // The number of models that have finished to load
         Questions.numberOfModelsLoaded = 0;
 
-        // StartCoroutine(WaitForAllModelsToBeLoaded());
+        // Check if it is editor testing or android boot
+        if(Questions.androidBoot == true)
+        {
+            // Android case
+            Questions.pathToLevel = Path.Combine(Application.streamingAssetsPath, "Level2");
+
+        } else {
+
+            // Editor case
+            Questions.pathToLevel = levelDirectoryPath;
+        }
     }
 
     // Update is called once per frame
@@ -554,7 +580,7 @@ public class ActivateQuestions : MonoBehaviour
         float greatest = ReturnGreatestFloat(m_Collider.size.x, m_Collider.size.y, m_Collider.size.z);
         
         // Get the down scale factor you want
-        float scale = (float)0.3 / greatest;
+        float scale = (float)0.2 / greatest;
 
         // Down scale the model
         obj.transform.localScale = new Vector3(scale, scale, scale);
@@ -1032,7 +1058,7 @@ public class ActivateQuestions : MonoBehaviour
     {
         // Enable the button
         button.gameObject.SetActive(true);
-        
+
         // Check if the question was answered correctly or not
         if(answer == true)
         {
@@ -1165,20 +1191,72 @@ public class ActivateQuestions : MonoBehaviour
     // The path to the current level directory
     public string levelDirectoryPath;
 
+    public Button startButton;
+
+    private IEnumerator GetJsonFiles(string additionalPath)
+    {
+        string path = Application.streamingAssetsPath + additionalPath;
+        UnityWebRequest uwr = new UnityWebRequest(path);
+        
+        yield return uwr.SendWebRequest();
+    
+        string newPath = Application.persistentDataPath + additionalPath;
+        File.WriteAllBytes(newPath, uwr.downloadHandler.data);
+    }
+
+    
+    public void ReadJson(string additionalPath)
+    {
+        string path = Application.persistentDataPath + additionalPath;
+        StreamReader json = new StreamReader(path);
+        string input = json.ReadToEnd();
+        Log description = JsonUtility.FromJson<Log>(input);
+
+        // Write the number of questions on the button
+        startButton.GetComponentInChildren<TMP_Text>().text = description.numberOfQuestions.ToString();
+    }
+
+
     // Method that creates the question array (not shuffled)
     public void InitializeQuestionArray()
     {
-        // Get the array of question files
-        string[] questions = Directory.GetFiles(levelDirectoryPath, "Question*", SearchOption.TopDirectoryOnly);
+        GetJsonFiles("/Level2/Description.json");
+
+        ReadJson("/Level2/Description.json");
+        // // Get the path to the description file
+        // string pathToDescription = Path.Combine(Questions.pathToLevel, "Description.json");
+
+        // // Initialize the string 
+        // string myText = "";
+
+        // // Get the data
+        // UnityWebRequest data = new UnityWebRequest.Get(pathToDescription);
+
+        // // If the string is not empty, get the string
+        // if(string.IsNullOrEmpty(data.error))
+        // {
+        //     myText = data.text;
+        // }
+
+        // // Extract the description object
+        // Log description = JsonUtility.FromJson<Log>(myText);
         
-        // Set the Questions.questionArray right
-        Questions.questionArray = questions;
+        // // Write the number of questions on the button
+        // startButton.GetComponentInChildren<TMP_Text>().text = description.numberOfQuestions.ToString();
 
-        // Set the last question index
-        Questions.lastQuestionIndex = Questions.questionArray.Length - 1;
+        //
 
-        // Set the current question index to 0
-        Questions.currentQuestionIndex = 0;
+        // // Get the array of question files
+        // string[] questions = Directory.GetFiles(Questions.pathToLevel, "Question*", SearchOption.TopDirectoryOnly);
+        
+        // // Set the Questions.questionArray right
+        // Questions.questionArray = questions;
+
+        // // Set the last question index
+        // Questions.lastQuestionIndex = Questions.questionArray.Length - 1;
+
+        // // Set the current question index to 0
+        // Questions.currentQuestionIndex = 0;
     }
 
     // Initialize random number generator
@@ -1221,14 +1299,14 @@ public class ActivateQuestions : MonoBehaviour
         // Initialize the question array
         InitializeQuestionArray();
 
-        // Shuffle the question array
-        Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
+        // // Shuffle the question array
+        // Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
 
-        // Load all models
-        ImportAllModels();
+        // // Load all models
+        // ImportAllModels();
 
-        // Wait for all models to be loaded and enable the question menu and display the models
-        // StartCoroutine(WaitForAllModelsToBeLoaded());
+        // // Wait for all models to be loaded and enable the question menu and display the models
+        // // StartCoroutine(WaitForAllModelsToBeLoaded());
 
         Debug.Log("The current question is: " + Questions.questionArray[Questions.currentQuestionIndex]);
     }
@@ -1302,7 +1380,7 @@ public class ActivateQuestions : MonoBehaviour
         ServiceManager.RegisterService(objImporter);
 
         // Get the array of models
-        string[] models = Directory.GetFiles(levelDirectoryPath, "Model*", SearchOption.TopDirectoryOnly);
+        string[] models = Directory.GetFiles(Questions.pathToLevel, "Model*", SearchOption.TopDirectoryOnly);
 
         // Set the number of models
         Questions.numberOfModels = models.Length;
