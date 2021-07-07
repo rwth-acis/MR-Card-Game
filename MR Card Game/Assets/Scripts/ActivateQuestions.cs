@@ -1299,20 +1299,122 @@ public class ActivateQuestions : MonoBehaviour
         // // // Get the path
         // // //string filePath = Path.Combine(Application.persistentDataPath, "description.json");
 
-        // Get all files in the folder and coppy them to the persistent data path
-        string[] files = GetFilesArray(levelDirectoryPath);
-        foreach(string file in files)
+        // string path1 = "sdcard/AppAnna/Description.json";
+        // string path2 = "/mnt/sdcard/AppAnna/Description.json";
+        // string path3 = "/sdcard/AppAnna/Description.json";
+        // string path4 = "/storage/sdcard0/AppAnna/Description.json";
+        // string path5 = "/storage/sdcard1/AppAnna/Description.json";
+        // string path6 = "/sdcard/external_sd/AppAnna/Description.json";
+        // string path7 = "/mnt/extSdCard/AppAnna/Description.json";
+        // string path8 = "/storage/extSdCard/AppAnna/Description.json";
+
+        // int int1 = 1;
+        // int int2 = 2;
+        // int int3 = 3;
+        // int int4 = 4;
+        // int int5 = 5;
+        // int int6 = 6;
+        // int int7 = 7;
+        // int int8 = 8;
+
+        // string workingPaths = "";
+
+        // if(File.Exists(path1))
+        // {
+        //     workingPaths = workingPaths + int1.ToString();
+        // }
+        // if(File.Exists(path2))
+        // {
+        //     workingPaths = workingPaths + int2.ToString();
+        // }
+        // if(File.Exists(path3))
+        // {
+        //     workingPaths = workingPaths + int3.ToString();
+        // }
+        // if(File.Exists(path4))
+        // {
+        //     workingPaths = workingPaths + int4.ToString();
+        // }
+        // if(File.Exists(path5))
+        // {
+        //     workingPaths = workingPaths + int5.ToString()   ;
+        // }
+        // if(File.Exists(path6))
+        // {
+        //     workingPaths = workingPaths + int6.ToString()   ;
+        // }
+        // if(File.Exists(path7))
+        // {
+        //     workingPaths = workingPaths + int7.ToString()   ;
+        // }
+        // if(File.Exists(path8))
+        // {
+        //     workingPaths = workingPaths + int8.ToString()   ;
+        // }
+
+        // // Rename the button
+        // startButton.GetComponentInChildren<TMP_Text>().text = workingPaths;
+
+        // -----------------------------------------
+
+        string filePath = Path.Combine(Application.persistentDataPath, "Level1");
+
+        startButton.GetComponentInChildren<TMP_Text>().text = filePath;
+
+        // Rename the button
+        // startButton.GetComponentInChildren<TMP_Text>().text = workingPaths;
+
+        // Check if the directory exists
+        if(Directory.Exists(filePath) == false)
         {
-            // Read the data
-            string loadData = File.ReadAllText(file);
-
-            // Get the fileName
-            string name = Path.GetFileName(file);
-            Debug.Log("Current File name: " + name);
-
-            // Save it
-            // File.WriteAllText(Path.Combine(Application.persistentDataPath, name), loadData);
+            // Create the directory
+            Directory.CreateDirectory(filePath);
         }
+
+        // If the folder for the question saving is empty, then copy the files from path4 in it
+        string[] fileArray = GetFilesArray(filePath); 
+        if(fileArray == null || fileArray[0] == "")
+        {
+            // Case empty, transfer the data
+            string[] levelFiles = GetFilesArray("/storage/sdcard0/AppAnna/");
+            
+            if(levelFiles == null || levelFiles[0] == "")
+            {
+                startButton.GetComponentInChildren<TMP_Text>().text = "level files are empty";
+            }
+            foreach(string file in levelFiles)
+            {
+                startButton.GetComponentInChildren<TMP_Text>().text = "copying data";
+                // Read the data
+                string loadData = File.ReadAllText(file);
+
+                // Get the fileName
+                string name = Path.GetFileName(file);
+                Debug.Log("Current File name: " + name);
+
+                // Save it
+                File.WriteAllText(Path.Combine(filePath, name), loadData);
+            }
+        } else {
+            startButton.GetComponentInChildren<TMP_Text>().text = "save folder is not empty";
+        }
+
+        // -----------------------------------------
+
+        // // Get all files in the folder and coppy them to the persistent data path
+        // string[] files = GetFilesArray(levelDirectoryPath);
+        // foreach(string file in files)
+        // {
+        //     // Read the data
+        //     string loadData = File.ReadAllText(file);
+
+        //     // Get the fileName
+        //     string name = Path.GetFileName(file);
+        //     Debug.Log("Current File name: " + name);
+
+        //     // Save it
+        //     // File.WriteAllText(Path.Combine(Application.persistentDataPath, name), loadData);
+        // }
 
         // // // // Create the log object
         // // // Log description = new Log();
@@ -1350,6 +1452,30 @@ public class ActivateQuestions : MonoBehaviour
     {
         string[] files = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly);
         return files;
+    }
+
+    // Test function to test the saving of files on the android device
+    public void TestFunctionCopyFiles()
+    {
+        // Case empty, transfer the data
+        string[] levelFiles = GetFilesArray(levelDirectoryPath);
+        if(levelFiles == null || levelFiles[0] == "")
+        {
+            startButton.GetComponentInChildren<TMP_Text>().text = "level files are empty";
+        }
+        foreach(string file in levelFiles)
+        {
+            startButton.GetComponentInChildren<TMP_Text>().text = "copying data";
+            // Read the data
+            string loadData = File.ReadAllText(file);
+
+            // Get the fileName
+            string name = Path.GetFileName(file);
+            Debug.Log("Current File name: " + name);
+
+            // Save it
+            File.WriteAllText(Path.Combine(Path.Combine(levelDirectoryPath,"Test"), name), loadData);
+        }
     }
 
     // Test function to test the saving of files on the android device
