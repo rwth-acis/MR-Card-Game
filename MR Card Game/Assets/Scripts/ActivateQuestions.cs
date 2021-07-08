@@ -33,7 +33,7 @@ static class Questions
     public static string pathToLevel;
 
     // If it is for android or not, to switch easily between editor and device testing
-    public static bool androidBoot = false;
+    public static bool androidBoot;
 }
 
 public class ActivateQuestions : MonoBehaviour
@@ -182,6 +182,8 @@ public class ActivateQuestions : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Questions.androidBoot = false;
+
         // Disable the question menus
         viewMultipleChoiceQuestion.SetActive(false);
         viewInputQuestion.SetActive(false);
@@ -196,7 +198,7 @@ public class ActivateQuestions : MonoBehaviour
         if(Questions.androidBoot == true)
         {
             // Android case
-            Questions.pathToLevel = Path.Combine(Application.streamingAssetsPath, "Level2");
+            Questions.pathToLevel = Path.Combine(Application.persistentDataPath, "Level1");
 
         } else {
 
@@ -1220,9 +1222,11 @@ public class ActivateQuestions : MonoBehaviour
     // Method that creates the question array (not shuffled)
     public void InitializeQuestionArray()
     {
-        GetJsonFiles("/Level2/Description.json");
+        // // GetJsonFiles("/Level2/Description.json");
 
-        ReadJson("/Level2/Description.json");
+        // // ReadJson("/Level2/Description.json");
+
+
         // // Get the path to the description file
         // string pathToDescription = Path.Combine(Questions.pathToLevel, "Description.json");
 
@@ -1244,19 +1248,19 @@ public class ActivateQuestions : MonoBehaviour
         // // Write the number of questions on the button
         // startButton.GetComponentInChildren<TMP_Text>().text = description.numberOfQuestions.ToString();
 
-        //
-
-        // // Get the array of question files
-        // string[] questions = Directory.GetFiles(Questions.pathToLevel, "Question*", SearchOption.TopDirectoryOnly);
         
-        // // Set the Questions.questionArray right
-        // Questions.questionArray = questions;
 
-        // // Set the last question index
-        // Questions.lastQuestionIndex = Questions.questionArray.Length - 1;
+        // Get the array of question files
+        string[] questions = Directory.GetFiles(Questions.pathToLevel, "Question*", SearchOption.TopDirectoryOnly);
+        
+        // Set the Questions.questionArray right
+        Questions.questionArray = questions;
 
-        // // Set the current question index to 0
-        // Questions.currentQuestionIndex = 0;
+        // Set the last question index
+        Questions.lastQuestionIndex = Questions.questionArray.Length - 1;
+
+        // Set the current question index to 0
+        Questions.currentQuestionIndex = 0;
     }
 
     // Initialize random number generator
@@ -1296,153 +1300,76 @@ public class ActivateQuestions : MonoBehaviour
     // Method that initializes everything when a level is started
     public void InitializeRound()
     {
-        // // // Get the path
-        // // //string filePath = Path.Combine(Application.persistentDataPath, "description.json");
+        // ---------------------------------------------------------------------------------
+        // Used to create and save dummy questions:
+        // ---------------------------------------------------------------------------------
 
-        // string path1 = "sdcard/AppAnna/Description.json";
-        // string path2 = "/mnt/sdcard/AppAnna/Description.json";
-        // string path3 = "/sdcard/AppAnna/Description.json";
-        // string path4 = "/storage/sdcard0/AppAnna/Description.json";
-        // string path5 = "/storage/sdcard1/AppAnna/Description.json";
-        // string path6 = "/sdcard/external_sd/AppAnna/Description.json";
-        // string path7 = "/mnt/extSdCard/AppAnna/Description.json";
-        // string path8 = "/storage/extSdCard/AppAnna/Description.json";
+        File.Delete(Path.Combine(Questions.pathToLevel, "Question000.json"));
+        File.Delete(Path.Combine(Questions.pathToLevel, "Question001.json"));
+        File.Delete(Path.Combine(Questions.pathToLevel, "Description.json"));
 
-        // int int1 = 1;
-        // int int2 = 2;
-        // int int3 = 3;
-        // int int4 = 4;
-        // int int5 = 5;
-        // int int6 = 6;
-        // int int7 = 7;
-        // int int8 = 8;
+        // Create a dummy input question
+        InputQuestion inputQuestion = new InputQuestion();
+        inputQuestion.exerciseType = "input question";
+        inputQuestion.name = "Input question name";
+        inputQuestion.question = "What is the result of 1 + 4?";
+        inputQuestion.answer = "5";
+        inputQuestion.numberOfModels = 0;
+        inputQuestion.model1Name = "";
+        inputQuestion.model2Name = "";
+        inputQuestion.model3Name = "";
+        inputQuestion.model4Name = "";
+        inputQuestion.model5Name = "";
 
-        // string workingPaths = "";
+        // Create a dummy multiple choice question
+        MultipleChoiceQuestion mCQuestion = new MultipleChoiceQuestion();
+        mCQuestion.exerciseType = "multiple choice question";
+        mCQuestion.name = "Multiple choice question name";
+        mCQuestion.question = "What is the result of 1 + 4?";
+        mCQuestion.answer1 = "1";
+        mCQuestion.answer2 = "7";
+        mCQuestion.answer3 = "14";
+        mCQuestion.answer4 = "5";
+        mCQuestion.answer5 = "6";
+        mCQuestion.answer1Correct = false;
+        mCQuestion.answer2Correct = false;
+        mCQuestion.answer3Correct = false;
+        mCQuestion.answer4Correct = true;
+        mCQuestion.answer5Correct = false;
+        mCQuestion.numberOfModels = 0;
+        mCQuestion.model1Name = "";
+        mCQuestion.model2Name = "";
+        mCQuestion.model3Name = "";
+        mCQuestion.model4Name = "";
+        mCQuestion.model5Name = "";
 
-        // if(File.Exists(path1))
-        // {
-        //     workingPaths = workingPaths + int1.ToString();
-        // }
-        // if(File.Exists(path2))
-        // {
-        //     workingPaths = workingPaths + int2.ToString();
-        // }
-        // if(File.Exists(path3))
-        // {
-        //     workingPaths = workingPaths + int3.ToString();
-        // }
-        // if(File.Exists(path4))
-        // {
-        //     workingPaths = workingPaths + int4.ToString();
-        // }
-        // if(File.Exists(path5))
-        // {
-        //     workingPaths = workingPaths + int5.ToString()   ;
-        // }
-        // if(File.Exists(path6))
-        // {
-        //     workingPaths = workingPaths + int6.ToString()   ;
-        // }
-        // if(File.Exists(path7))
-        // {
-        //     workingPaths = workingPaths + int7.ToString()   ;
-        // }
-        // if(File.Exists(path8))
-        // {
-        //     workingPaths = workingPaths + int8.ToString()   ;
-        // }
+        // Create a dummy description
+        Log description = new Log();
+        description.numberOfQuestions = 2;
+        description.numberOfModels = 0;
+        description.heading = "This is the descriptions heading";
+        description.description = "This is a fabulous description";
 
-        // // Rename the button
-        // startButton.GetComponentInChildren<TMP_Text>().text = workingPaths;
+        // Convert the objects to json
+        string inputQuestionJson = JsonUtility.ToJson(inputQuestion);
+        string mCQuestionJson = JsonUtility.ToJson(mCQuestion);
+        string descriptionJson = JsonUtility.ToJson(description);
 
-        // -----------------------------------------
+        // Save it
+        File.WriteAllText(Path.Combine(Questions.pathToLevel, "Question000.json"), inputQuestionJson);
+        File.WriteAllText(Path.Combine(Questions.pathToLevel, "Question001.json"), mCQuestionJson);
+        File.WriteAllText(Path.Combine(Questions.pathToLevel, "Description.json"), descriptionJson);
 
-        string filePath = Path.Combine(Application.persistentDataPath, "Level1");
+        // ---------------------------------------------------------------------------------
 
-        startButton.GetComponentInChildren<TMP_Text>().text = filePath;
+        // Initialize the question array
+        InitializeQuestionArray();
 
-        // Rename the button
-        // startButton.GetComponentInChildren<TMP_Text>().text = workingPaths;
+        // Shuffle the question array
+        Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
 
-        // Check if the directory exists
-        if(Directory.Exists(filePath) == false)
-        {
-            // Create the directory
-            Directory.CreateDirectory(filePath);
-        }
-
-        // If the folder for the question saving is empty, then copy the files from path4 in it
-        string[] fileArray = GetFilesArray(filePath); 
-        if(fileArray == null || fileArray[0] == "")
-        {
-            // Case empty, transfer the data
-            string[] levelFiles = GetFilesArray("/storage/sdcard0/AppAnna/");
-            
-            if(levelFiles == null || levelFiles[0] == "")
-            {
-                startButton.GetComponentInChildren<TMP_Text>().text = "level files are empty";
-            }
-            foreach(string file in levelFiles)
-            {
-                startButton.GetComponentInChildren<TMP_Text>().text = "copying data";
-                // Read the data
-                string loadData = File.ReadAllText(file);
-
-                // Get the fileName
-                string name = Path.GetFileName(file);
-                Debug.Log("Current File name: " + name);
-
-                // Save it
-                File.WriteAllText(Path.Combine(filePath, name), loadData);
-            }
-        } else {
-            startButton.GetComponentInChildren<TMP_Text>().text = "save folder is not empty";
-        }
-
-        // -----------------------------------------
-
-        // // Get all files in the folder and coppy them to the persistent data path
-        // string[] files = GetFilesArray(levelDirectoryPath);
-        // foreach(string file in files)
-        // {
-        //     // Read the data
-        //     string loadData = File.ReadAllText(file);
-
-        //     // Get the fileName
-        //     string name = Path.GetFileName(file);
-        //     Debug.Log("Current File name: " + name);
-
-        //     // Save it
-        //     // File.WriteAllText(Path.Combine(Application.persistentDataPath, name), loadData);
-        // }
-
-        // // // // Create the log object
-        // // // Log description = new Log();
-
-        // // // // Fill it
-        // // // description.description = "This is the description";
-        // // // description.heading = "My name";
-
-        // // // // Convert it to json
-        // // // string jsonData = JsonUtility.ToJson(description);
-
-        // // // // Save it
-        // // // File.WriteAllText(filePath, jsonData);
-
-        // Check if it works and can be loaded
-        // TestFunction();
-
-        // // Initialize the question array
-        // InitializeQuestionArray();
-
-        // // Shuffle the question array
-        // Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
-
-        // // Load all models
-        // ImportAllModels();
-
-        // // Wait for all models to be loaded and enable the question menu and display the models
-        // // StartCoroutine(WaitForAllModelsToBeLoaded());
+        // Load all models
+        ImportAllModels();
 
         // Debug.Log("The current question is: " + Questions.questionArray[Questions.currentQuestionIndex]);
     }
@@ -1495,19 +1422,6 @@ public class ActivateQuestions : MonoBehaviour
 
     }
 
-    // // Method that waits that all models have been imported, before displaying models
-    // IEnumerator WaitForAllModelsToBeLoaded()
-    // {
-    //     Debug.Log ("Waiting for all models to be loaded....");
-
-    //     // Wait for the last model to be loaded
-    //     yield return new WaitUntil(() => Questions.numberOfModelsLoaded >= Questions.numberOfModels);
-
-    //     Debug.Log ("The view model menu will be enabled");
-
-    //     ActivateViewModels();
-    // }
-
     // Method that activates the view model menu and enables the user to open the first question
     public void ActivateViewModels()
     {
@@ -1540,9 +1454,6 @@ public class ActivateQuestions : MonoBehaviour
         // Disable the feedback buttons
         feedbackInput.gameObject.SetActive(false);
         feedbackMC.gameObject.SetActive(false);
-
-        // // Display the models of the current questions
-        // StartCoroutine(WaitForAllModelsToBeLoaded());
 
         // // After waiting, enable the view model menu
         // viewModel.SetActive(true);
