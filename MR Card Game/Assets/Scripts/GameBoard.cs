@@ -199,96 +199,167 @@ public class GameBoard : MonoBehaviour
         // Initialize the position vector
         Vector3 position = positionTopLeftCorner;
 
-        float xDifference = 0;
-        float zDifference = 0;
+        float xDifferenceTargetImages = 0;
+        float zDifferenceTargetImages = 0;
 
         // Find the distance in x direction between the corners
         if(positionTopLeftCorner.x >= positionBottomRightCorner.x)
         {
             // Case the top left corner has a greater x position than the bottom left corner
-            xDifference = positionTopLeftCorner.x - positionBottomRightCorner.x;
+            xDifferenceTargetImages = positionTopLeftCorner.x - positionBottomRightCorner.x;
+
+            // Set the x position to the center of the diagonal of the two markers
+            position.x = position.x - xDifferenceTargetImages / 2;
 
         } else {
 
             // Case the top left corner has a smaller x position than the bottom left corner
-            xDifference = positionBottomRightCorner.x - positionTopLeftCorner.x;
+            xDifferenceTargetImages = positionBottomRightCorner.x - positionTopLeftCorner.x;
+
+            // Set the x position to the center of the diagonal of the two markers
+            position.x = position.x + xDifferenceTargetImages / 2;
         }
 
         // Find the distance in z direction between the corners
         if(positionTopLeftCorner.z >= positionBottomRightCorner.z)
         {
             // Case the top left corner has a greater z position than the bottom left corner
-            zDifference = positionTopLeftCorner.z - positionBottomRightCorner.z;
+            zDifferenceTargetImages = positionTopLeftCorner.z - positionBottomRightCorner.z;
+
+            // Set the z position to the center of the diagonal of the two markers
+            position.z = position.z - xDifferenceTargetImages / 2;
 
         } else {
 
             // Case the top left corner has a smaller z position than the bottom left corner
-            zDifference = positionBottomRightCorner.z - positionTopLeftCorner.z;
+            zDifferenceTargetImages = positionBottomRightCorner.z - positionTopLeftCorner.z;
+
+            // Set the z position to the center of the diagonal of the two markers
+            position.z = position.z + xDifferenceTargetImages / 2;
         }
 
-        // Get the length of the diagonal between the two corners
-        float diagonalLength = (float) Math.Sqrt((double)(xDifference * xDifference + zDifference * zDifference));
+        // // Get the length of the diagonal between the two corners
+        // float diagonalLength = (float) Math.Sqrt((double)(xDifferenceTargetImages * xDifferenceTargetImages + zDifferenceTargetImages * zDifferenceTargetImages));
 
-        // Second point BUT here there is still an Y component, need to destroy it
-        Vector3 secondPointLine1 = new Vector3(1 + positionTopLeftCorner.x, 0, (float) (1 * Math.Tan(boardAngle)) + positionTopLeftCorner.z);
-        Vector3 secondPointLine2 = new Vector3(positionBottomRightCorner.x - 1, 0, positionBottomRightCorner.z - (float) (1 * Math.Tan(90 - boardAngle)));
+        // Create the right position vectors in the 0-y-plane
+        Vector3 firstPointLine1 = new Vector3(positionTopLeftCorner.x, 0, positionTopLeftCorner.z);
+        Vector3 firstPointLine2 = new Vector3(positionBottomRightCorner.x, 0, positionBottomRightCorner.z);
 
+        // The direction vectors going out the position vectors
+        Vector3 secondPointLine1 = new Vector3(1, 0, (float) (1 * Math.Tan(boardAngle)));
+        Vector3 secondPointLine2 = new Vector3(-1, 0, (float) (-1 * Math.Tan(90 - boardAngle)));
+
+        // Initialize the intersection vector
         Vector3 intersection;
 
-        // if(LineLineIntersection(out intersection, positionTopLeftCorner, secondPointLine1, positionBottomRightCorner, secondPointLine2))
-        // {
-        //     // Here we get the intersection
-        // }
+        if(Math3d.LineLineIntersection(out intersection, firstPointLine1, secondPointLine1, firstPointLine2, secondPointLine2))
+        {
+            // Initialize the x and z difference
+            float xDiff = 0;
+            float zDiff = 0;
+
+            // Get the right x difference
+            if(positionTopLeftCorner.x >= intersection.x)
+            {
+                xDiff = positionTopLeftCorner.x - intersection.x;
+
+            } else {
+
+                xDiff = intersection.x - positionTopLeftCorner.x;
+            }
+
+            // Get the right z difference
+            if(positionBottomRightCorner.z >= intersection.z)
+            {
+                zDiff = positionBottomRightCorner.z - intersection.z;
+
+            } else {
+
+                zDiff = intersection.z - positionBottomRightCorner.z;
+            }
+
+            // With the board angle, get the right upper scale of the plane (add the size of the target image to it so that the plane covers the target images)
+            scale.x = xDiff / (float)Math.Cos(boardAngle) + (float)0.15;
+
+            // With the board angle, get the right side scale of the plane (add the size of the target image to it so that the plane covers the target images)
+            scale.z = zDiff / (float)Math.Sin(90 - boardAngle) + (float)0.15;
+
+            // Since the ratio should be 2:1 get the smalles scale and scale the plane accordingly
+            if(scale.x < scale.z * 2)
+            {
+                // Case the z scale is too big, scale it down
+                scale.z = scale.x  / 2;
+
+            } else {
+
+                // Case the x scale is too big, scale it down
+                scale.x = scale.z  * 2;
+            }
+
+            // Scale the board correctly, a plane is 10 units big so divide the scale by 10
+            gameBoard.transform.localScale = (scale / 10);
+
+            // Make sure the mesh renderer is enabled, or the game board could disapear
+            gameBoard.GetComponent<Renderer>().enabled = true;
+
+            // Set the position of the game board between the two corner markers and set it a bit higher so that it is not covered by the target images
+            gameBoard.transform.position = position + new Vector3(0, (float)0.002, 0);
+
+        } else {
+
+            // If there was no intersection, print it in the log
+            Debug.Log("There was no intersection");
+        }
 
         // -------------------------------------------------------------------
 
 
-        // If the x scaling is negative, revert this
-        if(scale.x < 0)
-        {
-            scale.x = - scale.x;
-        }
+        // // If the x scaling is negative, revert this
+        // if(scale.x < 0)
+        // {
+        //     scale.x = - scale.x;
+        // }
 
-        // Add the size of the target image to it so that the target image is covered
-        scale.x = scale.x + (float)0.152;
+        // // Add the size of the target image to it so that the target image is covered
+        // scale.x = scale.x + (float)0.152;
 
-         // Find the distance in z direction between the corners
-        if(positionTopLeftCorner.z >= positionBottomRightCorner.z)
-        {
-            // Case the top left corner has a greater z position than the bottom left corner
-            scale.z = positionTopLeftCorner.z - positionBottomRightCorner.z;
+        //  // Find the distance in z direction between the corners
+        // if(positionTopLeftCorner.z >= positionBottomRightCorner.z)
+        // {
+        //     // Case the top left corner has a greater z position than the bottom left corner
+        //     scale.z = positionTopLeftCorner.z - positionBottomRightCorner.z;
 
-            // Change the position vector accordingly
-            position = position - new Vector3(0, 0, scale.z/2);
+        //     // Change the position vector accordingly
+        //     position = position - new Vector3(0, 0, scale.z/2);
             
-        } else {
+        // } else {
 
-            // Case the top left corner has a smaller z position than the bottom left corner
-            scale.z = positionBottomRightCorner.z - positionTopLeftCorner.z;
+        //     // Case the top left corner has a smaller z position than the bottom left corner
+        //     scale.z = positionBottomRightCorner.z - positionTopLeftCorner.z;
 
-            // Change the position vector accordingly
-            position = position + new Vector3(0, 0, scale.z/2);
+        //     // Change the position vector accordingly
+        //     position = position + new Vector3(0, 0, scale.z/2);
 
-        }
+        // }
 
-        // If the z scaling is negative, revert this
-        if(scale.z < 0)
-        {
-            scale.z = - scale.z;
-        }
+        // // If the z scaling is negative, revert this
+        // if(scale.z < 0)
+        // {
+        //     scale.z = - scale.z;
+        // }
 
-        // Add the size of the target image to it so that the target image is covered
-        scale.z = scale.z + (float)0.152;
+        // // Add the size of the target image to it so that the target image is covered
+        // scale.z = scale.z + (float)0.152;
 
-        // Scale the game board correctly, a plane is 10 units large and wide, so divide by 10
-        gameBoard.transform.localScale = (scale / 10);
+        // // Scale the game board correctly, a plane is 10 units large and wide, so divide by 10
+        // gameBoard.transform.localScale = (scale / 10);
 
-        // Set the position of the game board between the two corner markers
-        gameBoard.transform.position = position + new Vector3(0, (float)0.002, 0);
+        // // Set the position of the game board between the two corner markers
+        // gameBoard.transform.position = position + new Vector3(0, (float)0.002, 0);
 
 
-        // Make sure the mesh renderer is enabled, or the game board could disapear
-        gameBoard.GetComponent<Renderer>().enabled = true;
+        // // Make sure the mesh renderer is enabled, or the game board could disapear
+        // gameBoard.GetComponent<Renderer>().enabled = true;
 
     }
 
