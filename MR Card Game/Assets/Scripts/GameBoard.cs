@@ -95,25 +95,23 @@ public class GameBoard : MonoBehaviour
         Debug.Log("Bottom right corner image target left the camera field!");
     }
 
+    // ---------------------------------------------------------------------------------------------------
+    // Method used to display the game board
+    // ---------------------------------------------------------------------------------------------------
+
     // Method that is used to display the game board
     public void DisplayGameBoard()
     {
-        // Get the position of the top left corner target image
+        // Get the positions and rotations of the two corners
         Vector3 positionTopLeftCorner = topLeftCorner.transform.position;
-
-        // Get the position of the bottom right corner target image
         Vector3 positionBottomRightCorner = bottomRightCorner.transform.position;
-
-        // Get the rotation of the top left corner target image
         Vector3 rotationVectorTopLeftCorner = topLeftCorner.transform.rotation.eulerAngles;
-        
-        // Get the rotation of the bottom right corner target image
         Vector3 rotationVectorBottomRightCorner = bottomRightCorner.transform.rotation.eulerAngles;
 
+        // Initialize the angle difference variable
         float angleDifference = 0;
 
-        // Check if one target image is in the wrong direction, by checking it the anlge gets smaller if one number is reversed
-        // Check which angle is greater
+        // Check if one target image is in the wrong direction, by checking if the anlge gets smaller if one number is reversed
         if(rotationVectorTopLeftCorner.y >= rotationVectorBottomRightCorner.y)
         {
             angleDifference = rotationVectorTopLeftCorner.y - rotationVectorBottomRightCorner.y;
@@ -121,64 +119,78 @@ public class GameBoard : MonoBehaviour
             angleDifference = rotationVectorBottomRightCorner.y - rotationVectorTopLeftCorner.y;
         }
 
-        // Check if the angle difference is greater than 90 degrees, if yes one of the rotations has to be turned around
-        if(angleDifference > 90)
-        {
-            // Reverse one of the rotations
-            if(positionTopLeftCorner.x >= positionBottomRightCorner.x)
-            {
-                if(positionTopLeftCorner.z >= positionBottomRightCorner.z)
-                {
-                    // Case the top left corner has a greater x and z possition than the bottom left corner
-                    if(0 <= rotationVectorTopLeftCorner.y && rotationVectorTopLeftCorner.y<= 90)
-                    {
-                        // The rotation of the top left corner is correct, reverse the other
-                        rotationVectorBottomRightCorner.y = ReverseAngle(rotationVectorBottomRightCorner.y);
-                    } else {
-                        // The rotation of the top left corner is incorrect, reverse it
-                        rotationVectorTopLeftCorner.y = ReverseAngle(rotationVectorTopLeftCorner.y);
-                    }
+        // Get the end rotation. This is important in case that one or two corners are in the wrong direction
+        float endRotation = GetTheEndRotation(rotationVectorTopLeftCorner.y, rotationVectorBottomRightCorner.y, positionTopLeftCorner.x, positionBottomRightCorner.x, positionTopLeftCorner.z, positionBottomRightCorner.z);
 
-                } else {
-                    // Case the top left corner has a greater x position but smaller z possition than the bottom left corner
-                    if(90 <= rotationVectorTopLeftCorner.y && rotationVectorTopLeftCorner.y <= 180)
-                    {
-                        // The rotation of the top left corner is correct, reverse the other
-                        rotationVectorBottomRightCorner.y = ReverseAngle(rotationVectorBottomRightCorner.y);
-                    } else {
-                        // The rotation of the top left corner is incorrect, reverse it
-                        rotationVectorTopLeftCorner.y = ReverseAngle(rotationVectorTopLeftCorner.y);
-                    }
+        // // Check if the angle difference is greater than 90 degrees, if yes one of the rotations has to be turned around
+        // if(angleDifference >= 180)
+        // {
+        //     // Reverse one of the rotations
+        //     if(positionTopLeftCorner.x >= positionBottomRightCorner.x)
+        //     {
+        //         if(positionTopLeftCorner.z >= positionBottomRightCorner.z)
+        //         {
+        //             // Case the top left corner has a smaller x but greather z possition than the bottom left corner
+        //             if(180 <= rotationVectorTopLeftCorner.y && rotationVectorTopLeftCorner.y <= 270)
+        //             {
+        //                 // The rotation of the top left corner is correct, reverse the other
+        //                 rotationVectorBottomRightCorner.y = ReverseAngle(rotationVectorBottomRightCorner.y);
+        //                 Debug.Log("Bottom right corner was reversed");
+        //             } else {
+        //                 // The rotation of the top left corner is incorrect, reverse it
+        //                 rotationVectorTopLeftCorner.y = ReverseAngle(rotationVectorTopLeftCorner.y);
+        //                 Debug.Log("Top left corner was reversed");
+        //             }
 
-                }
-            } else {
-                if(positionTopLeftCorner.z >= positionBottomRightCorner.z)
-                {
-                    // Case the top left corner has a smaller x but greather z possition than the bottom left corner
-                    if(180 <= rotationVectorTopLeftCorner.y && rotationVectorTopLeftCorner.y <= 270)
-                    {
-                        // The rotation of the top left corner is correct, reverse the other
-                        rotationVectorBottomRightCorner.y = ReverseAngle(rotationVectorBottomRightCorner.y);
-                    } else {
-                        // The rotation of the top left corner is incorrect, reverse it
-                        rotationVectorTopLeftCorner.y = ReverseAngle(rotationVectorTopLeftCorner.y);
-                    }
+        //         } else {
+        //             // Case the top left corner has a smaller x and z possition than the bottom left corner
+        //             if(270 <= rotationVectorTopLeftCorner.y && rotationVectorTopLeftCorner.y <= 360)
+        //             {
+        //                 // The rotation of the top left corner is correct, reverse the other
+        //                 rotationVectorBottomRightCorner.y = ReverseAngle(rotationVectorBottomRightCorner.y);
+        //                 Debug.Log("Bottom right corner was reversed");
+        //             } else {
+        //                 // The rotation of the top left corner is incorrect, reverse it
+        //                 rotationVectorTopLeftCorner.y = ReverseAngle(rotationVectorTopLeftCorner.y);
+        //                 Debug.Log("Top left corner was reversed");
+        //             }
+        //         }
+        //     } else {
+        //         if(positionTopLeftCorner.z >= positionBottomRightCorner.z)
+        //         {
+        //            // Case the top left corner has a greater x and z possition than the bottom left corner
+        //             if(0 <= rotationVectorTopLeftCorner.y && rotationVectorTopLeftCorner.y<= 90)
+        //             {
+        //                 // The rotation of the top left corner is correct, reverse the other
+        //                 rotationVectorBottomRightCorner.y = ReverseAngle(rotationVectorBottomRightCorner.y);
+        //                 Debug.Log("Bottom right corner was reversed");
+        //             } else {
+        //                 // The rotation of the top left corner is incorrect, reverse it
+        //                 rotationVectorTopLeftCorner.y = ReverseAngle(rotationVectorTopLeftCorner.y);
+        //                 Debug.Log("Top left corner was reversed");
+        //             }
 
-                } else {
-                    // Case the top left corner has a smaller x and z possition than the bottom left corner
-                    if(270 <= rotationVectorTopLeftCorner.y && rotationVectorTopLeftCorner.y <= 360)
-                    {
-                        // The rotation of the top left corner is correct, reverse the other
-                        rotationVectorBottomRightCorner.y = ReverseAngle(rotationVectorBottomRightCorner.y);
-                    } else {
-                        // The rotation of the top left corner is incorrect, reverse it
-                        rotationVectorTopLeftCorner.y = ReverseAngle(rotationVectorTopLeftCorner.y);
-                    }
-                }
-            }
-        }
+        //         } else {
+        //             // Case the top left corner has a greater x position but smaller z possition than the bottom left corner
+        //             if(90 <= rotationVectorTopLeftCorner.y && rotationVectorTopLeftCorner.y <= 180)
+        //             {
+        //                 // The rotation of the top left corner is correct, reverse the other
+        //                 rotationVectorBottomRightCorner.y = ReverseAngle(rotationVectorBottomRightCorner.y);
+        //                 Debug.Log("Bottom right corner was reversed");
+        //             } else {
+        //                 // The rotation of the top left corner is incorrect, reverse it
+        //                 rotationVectorTopLeftCorner.y = ReverseAngle(rotationVectorTopLeftCorner.y);
+        //                 Debug.Log("Top left corner was reversed");
+        //             }
+        //         }
+        //     }
+        // }
+
         // Angles are now correct, get the angle in the middle of the two as approximation
-        float boardAngle = (rotationVectorTopLeftCorner.y + rotationVectorBottomRightCorner.y) / 2;
+        float boardAngle = endRotation;
+
+        // Convert the board angle in radian
+        float angleRadian = boardAngle * (float)Math.PI / 180;
 
         // Get the rotation vector
         Vector3 rotationVectorBoard = new Vector3(0, boardAngle, 0);
@@ -202,7 +214,7 @@ public class GameBoard : MonoBehaviour
         float xDifferenceTargetImages = 0;
         float zDifferenceTargetImages = 0;
 
-        // Find the distance in x direction between the corners
+        // Find the distance in x direction between the corners and set the position of the board in the middle of the two corners
         if(positionTopLeftCorner.x >= positionBottomRightCorner.x)
         {
             // Case the top left corner has a greater x position than the bottom left corner
@@ -227,7 +239,7 @@ public class GameBoard : MonoBehaviour
             zDifferenceTargetImages = positionTopLeftCorner.z - positionBottomRightCorner.z;
 
             // Set the z position to the center of the diagonal of the two markers
-            position.z = position.z - xDifferenceTargetImages / 2;
+            position.z = position.z - zDifferenceTargetImages / 2;
 
         } else {
 
@@ -235,19 +247,16 @@ public class GameBoard : MonoBehaviour
             zDifferenceTargetImages = positionBottomRightCorner.z - positionTopLeftCorner.z;
 
             // Set the z position to the center of the diagonal of the two markers
-            position.z = position.z + xDifferenceTargetImages / 2;
+            position.z = position.z + zDifferenceTargetImages / 2;
         }
-
-        // // Get the length of the diagonal between the two corners
-        // float diagonalLength = (float) Math.Sqrt((double)(xDifferenceTargetImages * xDifferenceTargetImages + zDifferenceTargetImages * zDifferenceTargetImages));
 
         // Create the right position vectors in the 0-y-plane
         Vector3 firstPointLine1 = new Vector3(positionTopLeftCorner.x, 0, positionTopLeftCorner.z);
         Vector3 firstPointLine2 = new Vector3(positionBottomRightCorner.x, 0, positionBottomRightCorner.z);
 
         // The direction vectors going out the position vectors
-        Vector3 secondPointLine1 = new Vector3(1, 0, (float) (1 * Math.Tan(boardAngle)));
-        Vector3 secondPointLine2 = new Vector3(-1, 0, (float) (-1 * Math.Tan(90 - boardAngle)));
+        Vector3 secondPointLine1 = new Vector3(1, 0, (float) (1 * Math.Tan(angleRadian)));
+        Vector3 secondPointLine2 = new Vector3(-1, 0, (float) (-1 * Math.Tan(Math.PI / 2 - angleRadian)));
 
         // Initialize the intersection vector
         Vector3 intersection;
@@ -278,11 +287,14 @@ public class GameBoard : MonoBehaviour
                 zDiff = intersection.z - positionBottomRightCorner.z;
             }
 
+            // Depending on the anle, resize the board correctly
+            Vector3 correctScale = GetTheCorrectScaleFormAngle(scale, boardAngle);
+
             // With the board angle, get the right upper scale of the plane (add the size of the target image to it so that the plane covers the target images)
-            scale.x = xDiff / (float)Math.Cos(boardAngle) + (float)0.15;
+            scale.x = (float)((double)xDiff / Math.Cos(angleRadian) + 0.1);
 
             // With the board angle, get the right side scale of the plane (add the size of the target image to it so that the plane covers the target images)
-            scale.z = zDiff / (float)Math.Sin(90 - boardAngle) + (float)0.15;
+            scale.z = (float)((double)zDiff / Math.Sin(Math.PI/2 - angleRadian) + 0.1);
 
             // Since the ratio should be 2:1 get the smalles scale and scale the plane accordingly
             if(scale.x < scale.z * 2)
@@ -295,6 +307,9 @@ public class GameBoard : MonoBehaviour
                 // Case the x scale is too big, scale it down
                 scale.x = scale.z  * 2;
             }
+
+            // scale.x = scale.x + (float)0.15;
+            // scale.z = scale.z + (float)0.15;
 
             // Scale the board correctly, a plane is 10 units big so divide the scale by 10
             gameBoard.transform.localScale = (scale / 10);
@@ -392,6 +407,87 @@ public class GameBoard : MonoBehaviour
     //     plane.normal = new Vector3();
 
     // }
+
+    // Method that returns the rotation that the board should have given the position and rotation of the two board corners
+    public float GetTheEndRotation(float rotationTLC, float rotationBRC, float xPositionTLC, float xPositionBRC, float zPositionTLC, float zPositionBRC)
+    {
+        // Check in what case we are
+        if(xPositionTLC >= xPositionBRC)
+        {
+            if(zPositionTLC >= zPositionBRC)
+            {
+                // Case TLC has a greater x and z position than BRC, both target images should have an angle between 90 and 180 degrees
+                return ChangeAnglesAndReturnAverage(rotationTLC, rotationBRC, 90, 180);
+
+            } else {
+
+                // Case TLC has a greater x but smaller z position than BRC, both target images should have an angle between 180 and 270 degrees
+                return ChangeAnglesAndReturnAverage(rotationTLC, rotationBRC, 180, 270);
+            }
+        } else {
+            //
+            if(zPositionTLC <= zPositionBRC)
+            {
+                // Case TLC has a smaller x but greater z position than BRC, both target images should have an angle between 270 and 0 degrees
+                return ChangeAnglesAndReturnAverage(rotationTLC, rotationBRC, 270, 0);
+
+            } else {
+
+                // Case TLC has a smaller x and z position than BRC, both target images should have an angle between 0 and 90 degrees
+                return ChangeAnglesAndReturnAverage(rotationTLC, rotationBRC, 0, 90);
+            }
+        }
+    }
+
+    // Method that changes angles such that they are between the two given limits
+    public float ChangeAnglesAndReturnAverage(float angle1, float angle2, int limit1, int limit2)
+    {
+        // Rectify the first angle correctly
+        while(angle1 > limit2 || angle1 < limit1)
+        {
+            if(angle1 > limit2)
+            {
+                angle1 = angle1 - 90;
+            } else {
+                angle1 = angle1 + 90;
+            }
+        }
+
+        // Rectify the second angle correctly
+        while(angle2 > limit2 || angle2 < limit1)
+        {
+            if(angle2 > limit2)
+            {
+                angle2 = angle2 - 90;
+            } else {
+                angle2 = angle2 + 90;
+            }
+        }
+
+        // Get the average of both and return it
+        return ((angle1 + angle2) / 2);
+    }
+
+    // Method that returns the correct scale vector given the angle in degrees
+    public Vector3 GetTheCorrectScaleFormAngle(Vector3 scale, float angleRadian)
+    {
+        // Check in what case we are
+        if(angleRadian <= 0 && angleRadian > 90)
+        {
+            // Case the angle is between 0 and 90 degrees
+        } else if(angleRadian <= 90 && angleRadian > 180){
+            // Case the angle is between 90 and 180 degrees
+        } else if(angleRadian <= 180 && angleRadian > 270){
+            // Case the angle is between 180 and 270 degrees
+        } else {
+            // Case the angle is between 270 and 360 degrees
+        }
+        return new Vector3(0,0,0);
+    }
+
+    // ---------------------------------------------------------------------------------------------------
+    // Method used to remove the game board
+    // ---------------------------------------------------------------------------------------------------
 
     // Method that is used to remove the game board
     public void RemoveGameBoard()
