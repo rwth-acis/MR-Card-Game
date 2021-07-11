@@ -12,7 +12,8 @@ static class Anchors
     // The truth value of if the bottm right corner is visible at the moment or not
     public static bool bottomRightCornerVisible = false;
 
-    public static Vector3 intersection = new Vector3(0, 0, 0);
+    // Define the additional length that the board can be over the target images
+    public static float overlayLength = (float)0.1;
 }
 
 public class GameBoard : MonoBehaviour
@@ -108,89 +109,8 @@ public class GameBoard : MonoBehaviour
         Vector3 rotationVectorTopLeftCorner = topLeftCorner.transform.rotation.eulerAngles;
         Vector3 rotationVectorBottomRightCorner = bottomRightCorner.transform.rotation.eulerAngles;
 
-        // Initialize the angle difference variable
-        float angleDifference = 0;
-
-        // Check if one target image is in the wrong direction, by checking if the anlge gets smaller if one number is reversed
-        if(rotationVectorTopLeftCorner.y >= rotationVectorBottomRightCorner.y)
-        {
-            angleDifference = rotationVectorTopLeftCorner.y - rotationVectorBottomRightCorner.y;
-        } else {
-            angleDifference = rotationVectorBottomRightCorner.y - rotationVectorTopLeftCorner.y;
-        }
-
         // Get the end rotation. This is important in case that one or two corners are in the wrong direction
-        float endRotation = GetTheEndRotation(rotationVectorTopLeftCorner.y, rotationVectorBottomRightCorner.y, positionTopLeftCorner.x, positionBottomRightCorner.x, positionTopLeftCorner.z, positionBottomRightCorner.z);
-
-        // // Check if the angle difference is greater than 90 degrees, if yes one of the rotations has to be turned around
-        // if(angleDifference >= 180)
-        // {
-        //     // Reverse one of the rotations
-        //     if(positionTopLeftCorner.x >= positionBottomRightCorner.x)
-        //     {
-        //         if(positionTopLeftCorner.z >= positionBottomRightCorner.z)
-        //         {
-        //             // Case the top left corner has a smaller x but greather z possition than the bottom left corner
-        //             if(180 <= rotationVectorTopLeftCorner.y && rotationVectorTopLeftCorner.y <= 270)
-        //             {
-        //                 // The rotation of the top left corner is correct, reverse the other
-        //                 rotationVectorBottomRightCorner.y = ReverseAngle(rotationVectorBottomRightCorner.y);
-        //                 Debug.Log("Bottom right corner was reversed");
-        //             } else {
-        //                 // The rotation of the top left corner is incorrect, reverse it
-        //                 rotationVectorTopLeftCorner.y = ReverseAngle(rotationVectorTopLeftCorner.y);
-        //                 Debug.Log("Top left corner was reversed");
-        //             }
-
-        //         } else {
-        //             // Case the top left corner has a smaller x and z possition than the bottom left corner
-        //             if(270 <= rotationVectorTopLeftCorner.y && rotationVectorTopLeftCorner.y <= 360)
-        //             {
-        //                 // The rotation of the top left corner is correct, reverse the other
-        //                 rotationVectorBottomRightCorner.y = ReverseAngle(rotationVectorBottomRightCorner.y);
-        //                 Debug.Log("Bottom right corner was reversed");
-        //             } else {
-        //                 // The rotation of the top left corner is incorrect, reverse it
-        //                 rotationVectorTopLeftCorner.y = ReverseAngle(rotationVectorTopLeftCorner.y);
-        //                 Debug.Log("Top left corner was reversed");
-        //             }
-        //         }
-        //     } else {
-        //         if(positionTopLeftCorner.z >= positionBottomRightCorner.z)
-        //         {
-        //            // Case the top left corner has a greater x and z possition than the bottom left corner
-        //             if(0 <= rotationVectorTopLeftCorner.y && rotationVectorTopLeftCorner.y<= 90)
-        //             {
-        //                 // The rotation of the top left corner is correct, reverse the other
-        //                 rotationVectorBottomRightCorner.y = ReverseAngle(rotationVectorBottomRightCorner.y);
-        //                 Debug.Log("Bottom right corner was reversed");
-        //             } else {
-        //                 // The rotation of the top left corner is incorrect, reverse it
-        //                 rotationVectorTopLeftCorner.y = ReverseAngle(rotationVectorTopLeftCorner.y);
-        //                 Debug.Log("Top left corner was reversed");
-        //             }
-
-        //         } else {
-        //             // Case the top left corner has a greater x position but smaller z possition than the bottom left corner
-        //             if(90 <= rotationVectorTopLeftCorner.y && rotationVectorTopLeftCorner.y <= 180)
-        //             {
-        //                 // The rotation of the top left corner is correct, reverse the other
-        //                 rotationVectorBottomRightCorner.y = ReverseAngle(rotationVectorBottomRightCorner.y);
-        //                 Debug.Log("Bottom right corner was reversed");
-        //             } else {
-        //                 // The rotation of the top left corner is incorrect, reverse it
-        //                 rotationVectorTopLeftCorner.y = ReverseAngle(rotationVectorTopLeftCorner.y);
-        //                 Debug.Log("Top left corner was reversed");
-        //             }
-        //         }
-        //     }
-        // }
-
-        // Angles are now correct, get the angle in the middle of the two as approximation
-        float boardAngle = endRotation;
-
-        // Convert the board angle in radian
-        float angleRadian = boardAngle * (float)Math.PI / 180;
+        float boardAngle = GetTheEndRotation(rotationVectorTopLeftCorner.y, rotationVectorBottomRightCorner.y, positionTopLeftCorner.x, positionBottomRightCorner.x, positionTopLeftCorner.z, positionBottomRightCorner.z);
 
         // Get the rotation vector
         Vector3 rotationVectorBoard = new Vector3(0, boardAngle, 0);
@@ -198,23 +118,19 @@ public class GameBoard : MonoBehaviour
         // Set the rotation of the board
         gameBoard.transform.rotation = Quaternion.Euler(rotationVectorBoard);
 
-        // Resize the board using the angle
-
-
-
         // Set the game board as child of the top left corner
         gameBoard.transform.parent = topLeftCorner.transform;
 
-        // Initialize the scale vector
-        Vector3 scale = new Vector3(1, 1, 1);
+        // Resize the board using the angle
 
         // Initialize the position vector
         Vector3 position = positionTopLeftCorner;
 
+        // Initialize the x and z variables of the differences in position of the two corners
         float xDifferenceTargetImages = 0;
         float zDifferenceTargetImages = 0;
 
-        // Find the distance in x direction between the corners and set the position of the board in the middle of the two corners
+        // Find the distance in x difference between the corners and set the position of the board in the middle of the two corners
         if(positionTopLeftCorner.x >= positionBottomRightCorner.x)
         {
             // Case the top left corner has a greater x position than the bottom left corner
@@ -232,7 +148,7 @@ public class GameBoard : MonoBehaviour
             position.x = position.x + xDifferenceTargetImages / 2;
         }
 
-        // Find the distance in z direction between the corners
+        // Find the distance in z difference between the corners and set the position of the board in the middle of the two corners
         if(positionTopLeftCorner.z >= positionBottomRightCorner.z)
         {
             // Case the top left corner has a greater z position than the bottom left corner
@@ -254,65 +170,56 @@ public class GameBoard : MonoBehaviour
         Vector3 firstPointLine1 = new Vector3(positionTopLeftCorner.x, 0, positionTopLeftCorner.z);
         Vector3 firstPointLine2 = new Vector3(positionBottomRightCorner.x, 0, positionBottomRightCorner.z);
 
-        // The direction vectors going out the position vectors
-        Vector3 secondPointLine1 = new Vector3(1, 0, (float) (1 * Math.Tan(angleRadian)));
-        Vector3 secondPointLine2 = new Vector3(-1, 0, (float) (-1 * Math.Tan(Math.PI / 2 - angleRadian)));
+        // The direction vectors going out the of the position vectors
+        Vector3 secondPointLine1 = CreateNewLine1Vector(boardAngle);
+        Vector3 secondPointLine2 = CreateNewLine2Vector(boardAngle);
 
         // Initialize the intersection vector
-        Vector3 intersection;
+        Vector3 intersection = new Vector3(0, 0, 0);
 
         if(Math3d.LineLineIntersection(out intersection, firstPointLine1, secondPointLine1, firstPointLine2, secondPointLine2))
         {
             // Initialize the x and z difference
-            float xDiff = 0;
-            float zDiff = 0;
+            float xDiffTopLeft = 0;
+            float zDiffBottomRight = 0;
 
-            // Get the right x difference
+            // Get the right x difference between the top left corner and the intersection
             if(positionTopLeftCorner.x >= intersection.x)
             {
-                xDiff = positionTopLeftCorner.x - intersection.x;
+                xDiffTopLeft = positionTopLeftCorner.x - intersection.x;
 
             } else {
 
-                xDiff = intersection.x - positionTopLeftCorner.x;
+                xDiffTopLeft = intersection.x - positionTopLeftCorner.x;
             }
 
-            // Get the right z difference
+            // Get the right z difference between the bottom right corner and the intersection
             if(positionBottomRightCorner.z >= intersection.z)
             {
-                zDiff = positionBottomRightCorner.z - intersection.z;
+                zDiffBottomRight = positionBottomRightCorner.z - intersection.z;
 
             } else {
 
-                zDiff = intersection.z - positionBottomRightCorner.z;
+                zDiffBottomRight = intersection.z - positionBottomRightCorner.z;
             }
 
             // Depending on the anle, resize the board correctly
-            Vector3 correctScale = GetTheCorrectScaleFormAngle(scale, boardAngle);
-
-            // With the board angle, get the right upper scale of the plane (add the size of the target image to it so that the plane covers the target images)
-            scale.x = (float)((double)xDiff / Math.Cos(angleRadian) + 0.1);
-
-            // With the board angle, get the right side scale of the plane (add the size of the target image to it so that the plane covers the target images)
-            scale.z = (float)((double)zDiff / Math.Sin(Math.PI/2 - angleRadian) + 0.1);
+            Vector3 correctScale = GetTheCorrectScaleFormAngle(boardAngle, xDiffTopLeft, zDiffBottomRight, intersection.x, intersection.z);
 
             // Since the ratio should be 2:1 get the smalles scale and scale the plane accordingly
-            if(scale.x < scale.z * 2)
+            if(correctScale.x < correctScale.z * 2)
             {
                 // Case the z scale is too big, scale it down
-                scale.z = scale.x  / 2;
+                correctScale.z = correctScale.x  / 2;
 
             } else {
 
                 // Case the x scale is too big, scale it down
-                scale.x = scale.z  * 2;
+                correctScale.x = correctScale.z  * 2;
             }
 
-            // scale.x = scale.x + (float)0.15;
-            // scale.z = scale.z + (float)0.15;
-
             // Scale the board correctly, a plane is 10 units big so divide the scale by 10
-            gameBoard.transform.localScale = (scale / 10);
+            gameBoard.transform.localScale = (correctScale / 10);
 
             // Make sure the mesh renderer is enabled, or the game board could disapear
             gameBoard.GetComponent<Renderer>().enabled = true;
@@ -325,57 +232,6 @@ public class GameBoard : MonoBehaviour
             // If there was no intersection, print it in the log
             Debug.Log("There was no intersection");
         }
-
-        // -------------------------------------------------------------------
-
-
-        // // If the x scaling is negative, revert this
-        // if(scale.x < 0)
-        // {
-        //     scale.x = - scale.x;
-        // }
-
-        // // Add the size of the target image to it so that the target image is covered
-        // scale.x = scale.x + (float)0.152;
-
-        //  // Find the distance in z direction between the corners
-        // if(positionTopLeftCorner.z >= positionBottomRightCorner.z)
-        // {
-        //     // Case the top left corner has a greater z position than the bottom left corner
-        //     scale.z = positionTopLeftCorner.z - positionBottomRightCorner.z;
-
-        //     // Change the position vector accordingly
-        //     position = position - new Vector3(0, 0, scale.z/2);
-            
-        // } else {
-
-        //     // Case the top left corner has a smaller z position than the bottom left corner
-        //     scale.z = positionBottomRightCorner.z - positionTopLeftCorner.z;
-
-        //     // Change the position vector accordingly
-        //     position = position + new Vector3(0, 0, scale.z/2);
-
-        // }
-
-        // // If the z scaling is negative, revert this
-        // if(scale.z < 0)
-        // {
-        //     scale.z = - scale.z;
-        // }
-
-        // // Add the size of the target image to it so that the target image is covered
-        // scale.z = scale.z + (float)0.152;
-
-        // // Scale the game board correctly, a plane is 10 units large and wide, so divide by 10
-        // gameBoard.transform.localScale = (scale / 10);
-
-        // // Set the position of the game board between the two corner markers
-        // gameBoard.transform.position = position + new Vector3(0, (float)0.002, 0);
-
-
-        // // Make sure the mesh renderer is enabled, or the game board could disapear
-        // gameBoard.GetComponent<Renderer>().enabled = true;
-
     }
 
     // Helper method used to reduce or increase a rotation by 180
@@ -394,47 +250,64 @@ public class GameBoard : MonoBehaviour
         return angle;
     }
 
-    // // Method that finds the point in space where two straight lines meet given the coordinate of two points and an angle
-    // public void FindWhereTwoLinesMeet(float pos1X, float pos1Z, float pos2X, float pos2Z, float angle)
-    // {
-    //     // Create the ray for the first position and angle
-    //     Ray ray = new Ray();
-    //     ray.origin = new Vector3(pos1X, 0, Pos1Z);
-    //     ray.direction = new Vector3(0, angle, 0);
-
-    //     // Create the plan for the second position and anlge + 90
-    //     Plane plane = new Plane();
-    //     plane.normal = new Vector3();
-
-    // }
-
     // Method that returns the rotation that the board should have given the position and rotation of the two board corners
     public float GetTheEndRotation(float rotationTLC, float rotationBRC, float xPositionTLC, float xPositionBRC, float zPositionTLC, float zPositionBRC)
     {
+        // Initialize the new angle variable
+        float newAngle = 0;
+
         // Check in what case we are
         if(xPositionTLC >= xPositionBRC)
         {
             if(zPositionTLC >= zPositionBRC)
             {
                 // Case TLC has a greater x and z position than BRC, both target images should have an angle between 90 and 180 degrees
-                return ChangeAnglesAndReturnAverage(rotationTLC, rotationBRC, 90, 180);
+                newAngle = ChangeAnglesAndReturnAverage(rotationTLC, rotationBRC, 90, 180); // correct?
+
+                if(newAngle == 90)
+                {
+                    return 270;
+                } else {
+                    return newAngle;
+                }
 
             } else {
 
                 // Case TLC has a greater x but smaller z position than BRC, both target images should have an angle between 180 and 270 degrees
-                return ChangeAnglesAndReturnAverage(rotationTLC, rotationBRC, 180, 270);
+                newAngle = ChangeAnglesAndReturnAverage(rotationTLC, rotationBRC, 0, 90);
+
+                if(newAngle == 0)
+                {
+                    return 180;
+                } else {
+                    return newAngle;
+                }
             }
         } else {
             //
-            if(zPositionTLC <= zPositionBRC)
+            if(zPositionTLC < zPositionBRC)
             {
-                // Case TLC has a smaller x but greater z position than BRC, both target images should have an angle between 270 and 0 degrees
-                return ChangeAnglesAndReturnAverage(rotationTLC, rotationBRC, 270, 0);
+                // Case TLC has a smaller x and z position than BRC, both target images should have an angle between 270 and 0 degrees
+                newAngle = ChangeAnglesAndReturnAverage(rotationTLC, rotationBRC, 270, 360);
+
+                if(newAngle == 270)
+                {
+                    return 90;
+                } else {
+                    return newAngle;
+                }
 
             } else {
 
-                // Case TLC has a smaller x and z position than BRC, both target images should have an angle between 0 and 90 degrees
-                return ChangeAnglesAndReturnAverage(rotationTLC, rotationBRC, 0, 90);
+                // Case TLC has a smaller x and greater z position than BRC, both target images should have an angle between 0 and 90 degrees
+                newAngle = ChangeAnglesAndReturnAverage(rotationTLC, rotationBRC, 180, 270);
+
+                if(newAngle == 180)
+                {
+                    return 0;
+                } else {
+                    return newAngle;
+                }
             }
         }
     }
@@ -469,21 +342,220 @@ public class GameBoard : MonoBehaviour
     }
 
     // Method that returns the correct scale vector given the angle in degrees
-    public Vector3 GetTheCorrectScaleFormAngle(Vector3 scale, float angleRadian)
+    public Vector3 GetTheCorrectScaleFormAngle(float angleDegree, float xDiff, float zDiff, float intersectionX, float intersectionZ)
     {
+        // Initialize an angle variale
+        float angle = 0;
+
+        // Initialize the scale vector
+        Vector3 scale = new Vector3(0, 0, 0);
+
         // Check in what case we are
-        if(angleRadian <= 0 && angleRadian > 90)
+        if(angleDegree <= 0 && angleDegree < 90)
         {
             // Case the angle is between 0 and 90 degrees
-        } else if(angleRadian <= 90 && angleRadian > 180){
+            // Convert the angle to radian
+            angle = (float)((double)angleDegree * Math.PI / 180);
+
+            if(xDiff != 0){
+                // With the board angle, get the right upper scale of the plane (add the size of the target image to it so that the plane covers the target images)
+                scale.x = (float)((double)xDiff / Math.Cos(angle) + Anchors.overlayLength);
+
+            } else {
+
+                scale.x = intersectionX;
+            }
+
+            if(zDiff != 0)
+            {
+                // With the board angle, get the right side scale of the plane (add the size of the target image to it so that the plane covers the target images)
+                scale.z = (float)((double)zDiff / Math.Sin(Math.PI/2 - angle) + Anchors.overlayLength);
+
+            } else {
+
+                scale.z = intersectionZ;
+            }
+
+        } else if(angleDegree <= 90 && angleDegree < 180)
+        {
             // Case the angle is between 90 and 180 degrees
-        } else if(angleRadian <= 180 && angleRadian > 270){
+            // Convert the angle - 90 to radian
+            angle = (float)(((double)angleDegree - 90) * Math.PI / 180);
+
+            if(xDiff != 0){
+                // With the board angle, get the right upper scale of the plane (add the size of the target image to it so that the plane covers the target images)
+                scale.x = (float)((double)xDiff / Math.Sin(angle) + Anchors.overlayLength);
+
+            } else {
+                
+                scale.x = intersectionX;
+            }
+
+            if(zDiff != 0)
+            {
+                // With the board angle, get the right side scale of the plane (add the size of the target image to it so that the plane covers the target images)
+                scale.z = (float)((double)zDiff / Math.Sin(angle) + Anchors.overlayLength);
+
+            } else {
+
+                scale.z = intersectionZ;
+            }
+
+        } else if(angleDegree <= 180 && angleDegree < 270)
+        {
             // Case the angle is between 180 and 270 degrees
+            // Convert the angle - 180 to radian
+            angle = (float)(((double)angleDegree - 180) * Math.PI / 180);
+
+            if(xDiff != 0){
+                // With the board angle, get the right upper scale of the plane (add the size of the target image to it so that the plane covers the target images)
+                scale.x = (float)((double)xDiff / Math.Cos(angle) + Anchors.overlayLength);
+
+            } else {
+                
+                scale.x = intersectionX;
+            }
+
+            if(zDiff != 0)
+            {
+                // With the board angle, get the right side scale of the plane (add the size of the target image to it so that the plane covers the target images)
+                scale.z = (float)((double)zDiff / Math.Sin(Math.PI/2 - angle) + Anchors.overlayLength);
+
+            } else {
+
+                scale.z = intersectionZ;
+            }
+
+            Debug.Log("The current angle in radian is: " + angle);
+            Debug.Log("The current scale in x direction is: " + scale.x);
+
         } else {
+
             // Case the angle is between 270 and 360 degrees
+            // Convert the angle - 270 to radian
+            angle = (float)(((double)angleDegree - 270) * Math.PI / 180);
+
+            if(xDiff != 0){
+                // With the board angle, get the right upper scale of the plane (add the size of the target image to it so that the plane covers the target images)
+                scale.x = (float)((double)xDiff / Math.Cos(angle) + Anchors.overlayLength);
+
+            } else {
+                
+                scale.x = intersectionX;
+            }
+
+            if(zDiff != 0)
+            {
+                // With the board angle, get the right side scale of the plane (add the size of the target image to it so that the plane covers the target images)
+                scale.z = (float)((double)zDiff / Math.Sin(angle) + Anchors.overlayLength);
+
+            } else {
+
+                scale.z = intersectionZ;
+            }
         }
-        return new Vector3(0,0,0);
+
+        scale.y = (float)0.01;
+
+        Debug.Log("Scale is: " + scale.x + " in x direction and " + scale.z + " in z direction.");
+
+        // Return the scale
+        return scale;
     }
+
+    // Method that gives the direction in which the line vector of the border of the board goes to, so that the intersection point can be found
+    public Vector3 CreateNewLine1Vector(float angleDegree)
+    {
+        // Initialize the radian angle variable
+        float angleRadian = 0;
+
+        // Check in what case we are
+        if(angleDegree <= 0 && angleDegree < 90)
+        {
+            // Case the angle is between 0 and 90 degrees
+            // Convert the angle to radian
+            angleRadian = (float)((double)angleDegree * Math.PI / 180);
+
+            // Return the right direction vector
+            return new Vector3((float)1, (float)0, (float)(-1 * Math.Tan(angleRadian)));
+
+        } else if(angleDegree <= 90 && angleDegree < 180)
+        {
+            // Case the angle is between 90 and 180 degrees
+            // Convert the angle to radian
+            angleRadian = (float)(((double)angleDegree - 90) * Math.PI / 180);
+
+            // Return the right direction vector
+            return new Vector3((float)(-1 * Math.Tan(angleRadian)), (float)0, (float)(-1));
+
+
+        } else if(angleDegree <= 180 && angleDegree < 270)
+        {
+            // Case the angle is between 180 and 270 degrees
+            // Convert the angle to radian
+            angleRadian = (float)(((double)angleDegree - 180) * Math.PI / 180);
+
+            // Return the right direction vector
+            return new Vector3((float)(-1), (float)0, (float)(1 * Math.Tan(angleRadian)));
+
+
+        } else {
+
+            // Case the angle is between 270 and 360 degrees
+            // Convert the angle to radian
+            angleRadian = (float)(((double)angleDegree -270) * Math.PI / 180);
+
+            // Return the right direction vector
+            return new Vector3((float)(1 * Math.Tan(angleRadian)), (float)0, (float)1);
+        }
+    }
+
+    // Method that gives the direction in which the line vector of the border of the board goes to, so that the intersection point can be found
+    public Vector3 CreateNewLine2Vector(float angleDegree)
+    {
+        // Initialize the radian angle variable
+        float angleRadian = 0;
+
+        // Check in what case we are
+        if(angleDegree <= 0 && angleDegree < 90)
+        {
+            // Case the angle is between 0 and 90 degrees
+            // Convert the angle to radian
+            angleRadian = (float)((double)angleDegree * Math.PI / 180);
+
+            // Return the right direction vector
+            return new Vector3((float)(float)(1 * Math.Tan(angleRadian)), (float)0, (float)1);
+
+        } else if(angleDegree <= 90 && angleDegree < 180)
+        {
+            // Case the angle is between 90 and 180 degrees
+            // Convert the angle to radian
+            angleRadian = (float)(((double)angleDegree - 90) * Math.PI / 180);
+
+            // Return the right direction vector
+            return new Vector3((float)1, (float)0, (float)(-1 * Math.Tan(angleRadian)));
+
+
+        } else if(angleDegree <= 180 && angleDegree < 270)
+        {
+            // Case the angle is between 180 and 270 degrees
+            // Convert the angle to radian
+            angleRadian = (float)(((double)angleDegree - 180) * Math.PI / 180);
+
+            // Return the right direction vector
+            return new Vector3((float)(-1 * Math.Tan(angleRadian)), (float)0, (float)(-1));
+
+        } else {
+
+            // Case the angle is between 270 and 360 degrees
+            // Convert the angle to radian
+            angleRadian = (float)(((double)angleDegree -270) * Math.PI / 180);
+
+            // Return the right direction vector
+            return new Vector3((float)(-1), (float)0, (float)(1 * Math.Tan(angleRadian)));
+        }
+    }
+
 
     // ---------------------------------------------------------------------------------------------------
     // Method used to remove the game board
