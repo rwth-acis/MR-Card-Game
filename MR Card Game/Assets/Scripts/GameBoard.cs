@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 
 // The class for flags of the anchor points of the game board
-static class Anchors
+static class Board
 {
     // The truth value of if the top left corner is visible at the moment or not
     public static bool topLeftCornerVisible = false;
@@ -14,6 +14,12 @@ static class Anchors
 
     // Define the additional length that the board can be over the target images
     public static float overlayLength = (float)0.1;
+
+    // Define the dimension of the longer side of the board
+    public static float greatestBoardDimension;
+
+    // Define the height of the board
+    public static float boardHeight;
 }
 
 public class GameBoard : MonoBehaviour
@@ -44,10 +50,10 @@ public class GameBoard : MonoBehaviour
     public void TopLeftBecameVisible()
     {
         // Set the flag that the top left corner is in view
-        Anchors.topLeftCornerVisible = true;
+        Board.topLeftCornerVisible = true;
 
         // Check if the other corner is visible
-        if(Anchors.bottomRightCornerVisible == true)
+        if(Board.bottomRightCornerVisible == true)
         {
             // If the other corner is visible, then display the game board
             DisplayGameBoard();
@@ -60,10 +66,10 @@ public class GameBoard : MonoBehaviour
     public void BottomRightBecameVisible()
     {
         // Set the flag that the bottom right corner is in view
-        Anchors.bottomRightCornerVisible = true;
+        Board.bottomRightCornerVisible = true;
 
         // Check if the other corner is visible
-        if(Anchors.topLeftCornerVisible == true)
+        if(Board.topLeftCornerVisible == true)
         {
             // If the other corner is visible, then display the game board
             DisplayGameBoard();
@@ -76,7 +82,7 @@ public class GameBoard : MonoBehaviour
     public void TopLeftLeftCameraField()
     {
         // Set the flag that the top left corner is not in view anymore
-        Anchors.topLeftCornerVisible = false;
+        Board.topLeftCornerVisible = false;
 
         // Remove the game board
         RemoveGameBoard();
@@ -88,7 +94,7 @@ public class GameBoard : MonoBehaviour
     public void BottomRightLeftCameraField()
     {
         // Set the flag that the bottom right corner is not in view anymore
-        Anchors.bottomRightCornerVisible = false;
+        Board.bottomRightCornerVisible = false;
 
         // Remove the game board
         RemoveGameBoard();
@@ -176,6 +182,9 @@ public class GameBoard : MonoBehaviour
             position.y = positionBottomRightCorner.y;
         }
 
+        // Set the board height variable correctly
+        Board.boardHeight = position.y;
+
         // Create the right position vectors in the 0-y-plane
         Vector3 firstPointLine1 = new Vector3(positionTopLeftCorner.x, 0, positionTopLeftCorner.z);
         Vector3 firstPointLine2 = new Vector3(positionBottomRightCorner.x, 0, positionBottomRightCorner.z);
@@ -227,6 +236,8 @@ public class GameBoard : MonoBehaviour
                 // Case the x scale is too big, scale it down
                 correctScale.x = correctScale.z  * 2;
             }
+
+            Board.greatestBoardDimension = correctScale.x / 10;
 
             // Scale the board correctly, a plane is 10 units big so divide the scale by 10
             gameBoard.transform.localScale = (correctScale / 10);
@@ -369,7 +380,7 @@ public class GameBoard : MonoBehaviour
 
             if(xDiff != 0){
                 // With the board angle, get the right upper scale of the plane (add the size of the target image to it so that the plane covers the target images)
-                scale.x = (float)((double)xDiff / Math.Cos(angle) + Anchors.overlayLength);
+                scale.x = (float)((double)xDiff / Math.Cos(angle) + Board.overlayLength);
 
             } else {
 
@@ -379,7 +390,7 @@ public class GameBoard : MonoBehaviour
             if(zDiff != 0)
             {
                 // With the board angle, get the right side scale of the plane (add the size of the target image to it so that the plane covers the target images)
-                scale.z = (float)((double)zDiff / Math.Sin(Math.PI/2 - angle) + Anchors.overlayLength);
+                scale.z = (float)((double)zDiff / Math.Sin(Math.PI/2 - angle) + Board.overlayLength);
 
             } else {
 
@@ -394,7 +405,7 @@ public class GameBoard : MonoBehaviour
 
             if(xDiff != 0){
                 // With the board angle, get the right upper scale of the plane (add the size of the target image to it so that the plane covers the target images)
-                scale.x = (float)((double)xDiff / Math.Sin(angle) + Anchors.overlayLength);
+                scale.x = (float)((double)xDiff / Math.Sin(angle) + Board.overlayLength);
 
             } else {
                 
@@ -404,7 +415,7 @@ public class GameBoard : MonoBehaviour
             if(zDiff != 0)
             {
                 // With the board angle, get the right side scale of the plane (add the size of the target image to it so that the plane covers the target images)
-                scale.z = (float)((double)zDiff / Math.Sin(angle) + Anchors.overlayLength);
+                scale.z = (float)((double)zDiff / Math.Sin(angle) + Board.overlayLength);
 
             } else {
 
@@ -419,7 +430,7 @@ public class GameBoard : MonoBehaviour
 
             if(xDiff != 0){
                 // With the board angle, get the right upper scale of the plane (add the size of the target image to it so that the plane covers the target images)
-                scale.x = (float)((double)xDiff / Math.Cos(angle) + Anchors.overlayLength);
+                scale.x = (float)((double)xDiff / Math.Cos(angle) + Board.overlayLength);
 
             } else {
                 
@@ -429,7 +440,7 @@ public class GameBoard : MonoBehaviour
             if(zDiff != 0)
             {
                 // With the board angle, get the right side scale of the plane (add the size of the target image to it so that the plane covers the target images)
-                scale.z = (float)((double)zDiff / Math.Sin(Math.PI/2 - angle) + Anchors.overlayLength);
+                scale.z = (float)((double)zDiff / Math.Sin(Math.PI/2 - angle) + Board.overlayLength);
 
             } else {
 
@@ -447,7 +458,7 @@ public class GameBoard : MonoBehaviour
 
             if(xDiff != 0){
                 // With the board angle, get the right upper scale of the plane (add the size of the target image to it so that the plane covers the target images)
-                scale.x = (float)((double)xDiff / Math.Cos(angle) + Anchors.overlayLength);
+                scale.x = (float)((double)xDiff / Math.Cos(angle) + Board.overlayLength);
 
             } else {
                 
@@ -457,7 +468,7 @@ public class GameBoard : MonoBehaviour
             if(zDiff != 0)
             {
                 // With the board angle, get the right side scale of the plane (add the size of the target image to it so that the plane covers the target images)
-                scale.z = (float)((double)zDiff / Math.Sin(angle) + Anchors.overlayLength);
+                scale.z = (float)((double)zDiff / Math.Sin(angle) + Board.overlayLength);
 
             } else {
 
