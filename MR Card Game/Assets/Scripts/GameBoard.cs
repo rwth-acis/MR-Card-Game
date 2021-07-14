@@ -166,6 +166,16 @@ public class GameBoard : MonoBehaviour
             position.z = position.z + zDifferenceTargetImages / 2;
         }
 
+        // Set the y position to the maximum value of the y position of the two corners
+        if(positionTopLeftCorner.y >= positionBottomRightCorner.y)
+        {
+            position.y = positionTopLeftCorner.y;
+
+        } else {
+
+            position.y = positionBottomRightCorner.y;
+        }
+
         // Create the right position vectors in the 0-y-plane
         Vector3 firstPointLine1 = new Vector3(positionTopLeftCorner.x, 0, positionTopLeftCorner.z);
         Vector3 firstPointLine2 = new Vector3(positionBottomRightCorner.x, 0, positionBottomRightCorner.z);
