@@ -3,33 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// // The class containing all spawned enemies
-// static class Enemies
-// {
-//     // The array of existing enemies
-//     public static Enemy[] enemies;
-// }
-
-// // The class of the enemy game object
-// static class Enemy
-// {
-//     // The maximum and current health point of the enemy unit
-//     public static int maximumHP;
-//     public static int currentHP;
-
-//     // The size of the enemy unit
-//     public static int size;
-
-//     // The movement speed of the enemy unit
-//     public static int movementSpeed;
-
-//     // The damage that the enemy unit deals to the castle if it is reached
-//     public static int damage;
-
-//     // The color of the enemy unit
-//     public static Color color;
-// }
-
 // // The class of the castle game object
 // static class Castle
 // {
@@ -114,7 +87,7 @@ public class Enemies : MonoBehaviour
         // Kill the enemy if it its health points reach zero
         if(currentHP <= 0)
         {
-            // Destroy the game object
+            // Destroy the game enemy
             Destroy(gameObject);
 
             // Make the player win the currency points
@@ -143,6 +116,16 @@ public class Enemies : MonoBehaviour
                 waypointIndex = waypointIndex + 1;
             }
         }
+
+        // Check if the enemy reached the castle
+        if(waypointIndex == waypoints.Length - 1 && transform.position == (waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0)))
+        {
+            // Destroy the enemy
+            Destroy(gameObject);
+
+            // Reduce the health of the castle
+            ReduceCastleHealth(damage);
+        }
     }
 
     // Method that calculates the health value
@@ -154,6 +137,12 @@ public class Enemies : MonoBehaviour
     // Method that rewards the player with currency points if an enemy is defeated
     public void WinPoints()
     {
-        //
+        // TODO
+    }
+
+    // Method that reduces the health points of the castle if an enemy reaches it
+    public void ReduceCastleHealth(int damage)
+    {
+        // TODO
     }
 }
