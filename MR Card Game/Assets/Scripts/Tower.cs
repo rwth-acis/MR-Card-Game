@@ -1,35 +1,70 @@
+using i5.Toolkit.Core.Spawners;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static i5.Toolkit.Core.Examples.Spawners.SpawnProjectile;
 
 public class Tower : MonoBehaviour
 {
-    // Type of projectile
-    [SerializeField]
-    private string projectileType;
+    // // Type of projectile
+    // [SerializeField]
+    // private string projectileType;
 
-    public Projectile projectile;
+    // The projectile object
+    [SerializeField]
+    private Projectile projectile;
+
+    // The additional height where the projectile should be shooted from
+    [SerializeField]
+    private float additionalShootingHeight;
 
     // The attack range of the tower
-    public float attackRange;
+    [SerializeField]
+    private float attackRange;
 
     // The damage of the tower
-    public int damage;
+    [SerializeField]
+    private int damage;
 
-    // The attack speed of the tower
-    public float attackSpeed;
+    public int Damage
+    {
+        get { return damage; }
+    }
+
+    // The flag that states if the tower can attack right now or not
+    private bool canAttack;
+
+    // The attack timer that is counted up after an attack
+    private float attackTimer;
+
+    // The attack cooldown between the attacks of the tower
+    public float attackCooldown;
+
+    // The projectile speed of the projectiles of this tower
+    [SerializeField]
+    private float projectileSpeed;
+
+    // The variable used to access the value of the projectile speed from the projectile class
+    public float ProjectileSpeed
+    {
+        get { return projectileSpeed; }
+    }
 
     // The level of the tower
-    public int level;
-
-    // The projectile type of the tower
-    public string projectileName;
+    [SerializeField]
+    private int level;
 
     // 
-    public Vector3 vector;
+    private Vector3 vector;
 
-    // 
+    // The current target of the tower
     private Collider target;
+
+    // The variable used to access the value of the target from the projectile class
+    public Collider Target
+    {
+        get { return target; }
+    }
 
     private List<Collider> colliders = new List<Collider>();
 
@@ -41,6 +76,10 @@ public class Tower : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Set the can attack flag to true
+        canAttack = true;
+
+        // From the attack speed, extract the actual attack cooldown
         // // Get the vector scale of the parent object
         // vector =  transform.parent.gameObject.transform.localScale;
         // float scaleX = vector.x;
@@ -58,33 +97,91 @@ public class Tower : MonoBehaviour
         Attack();
     }
 
+
     // Method used to attack
     public void Attack()
     {
+        // Check if the can attack flag is true or false
+        if(!canAttack)
+        {
+            // If it is false, increase the timer by the time passed
+            attackTimer = attackTimer + Time.deltaTime;
+
+            // Check if the attack timer has reached the attack cooldown
+            if(attackTimer >= attackCooldown)
+            {
+                // If it is the case, set the can attack flag to true
+                canAttack = true;
+
+                // Reset the attack timer
+                attackTimer = 0;
+            }
+        }
+
+        // Check if the sphere colider around the tower contains enemies (so check if there are enemies in range)
         if(GetColliders().Contains(target) == false)
         {
+            // If there are no targets, set the target to null
             target = null;
         }
 
+        // // Check that the enemy did not die already
+        // if(target != null)
+        // {
+        //     if(target.GetComponent<Enemies>().isAlive == false)
+        //     {
+        //         target = null;
+        //     }
+        // }
+
+        // Check if the tower needs a new target and if there are any enemies in range
         if(target == null && colliders.Count > 0)
         {
+            // If a new target is needed, and there are enemies in range, set the oldest enemy as target
             target = GetColliders()[0];
         }
 
-        // if(target != null && target.IsActive() == true)
-        if(target != null)
+        // Check if there is a current target
+        if(target != null && target.GetComponent<Enemies>().isAlive == true)
         {
-            // Attack
-            Debug.Log("The current enemey that is targeted is named: " + target.name);
-            Shoot();
+            // Check if the can attack flag is set to true
+            if(canAttack == true)
+            {
+                // Attack the target
+                Shoot();
+                Debug.Log("The current enemey that is targeted is named: " + target.name);
+
+                // Set the can attack flag to false
+                canAttack = false;
+            }
         }
     }
 
     // Method that shoots projectiles at enemies
     private void Shoot()
     {
-        // Get the projectile of the tower
-        // Projectile projectile = GameManager.Instance.Pool.GetObject(projectileType).getComponent<Projectile>();
+        // Find the spawner object
+        Spawner spawner = GameObject.Find("ProjSpawn").GetComponent<Spawner>();
+
+        // Spawn the projectile
+        Projectile spawnedProjectile = SpawnProjectileForTower(spawner).GetComponent<Projectile>();
+
+        // Set the position of the projectile to the position of the tower
+        spawnedProjectile.transform.position = transform.position;
+        Debug.Log("A projectile was shot.");
+
+        // Initialize the projectile object, so that it knows what his parent is
+        spawnedProjectile.Initialize(this);
+
+        // // Resize the projectile
+        // Vector3 scale = spawnedProjectile.gameObject.transform.localScale;
+        // float scaleX = scale.x;
+        // float scaleY = scale.y;
+        // float scaleZ = scale.z;
+
+        // spawnedProjectile.gameObject.transform.localScale = new Vector3(scaleX * (float)0.1, scaleY * (float)0.5, scaleZ * (float)0.1);
+
+
     }
 
     // The method that adds entering enemies to the collider list

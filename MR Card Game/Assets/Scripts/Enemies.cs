@@ -50,6 +50,8 @@ public class Enemies : MonoBehaviour
 
     private int waypointIndex = 0;
 
+    public bool isAlive = true;
+
     // The gameboard game object
     public GameObject gameBoard;
 
@@ -90,6 +92,9 @@ public class Enemies : MonoBehaviour
         // Kill the enemy if it its health points reach zero
         if(currentHP <= 0)
         {
+            // Set the enemy as dead
+            isAlive = false;
+
             // Destroy the game enemy
             Destroy(gameObject);
 
@@ -147,5 +152,17 @@ public class Enemies : MonoBehaviour
     public void ReduceCastleHealth(int damage)
     {
         // TODO
+    }
+
+    // Method that makes enemies take damage
+    public void TakeDamage(int damage)
+    {
+        // Reduce the current health points of the monster by the damage
+        if(currentHP - damage >= 0)
+        {
+            currentHP = currentHP - damage;
+        } else {
+            currentHP = 0;
+        }
     }
 }
