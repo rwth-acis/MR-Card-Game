@@ -15,6 +15,8 @@ static class Board
     // Define the additional length that the board can be over the target images
     public static float overlayLength = (float)0.1;
 
+    public static float boardAngle;
+
     // Define the dimension of the longer side of the board
     public static float greatestBoardDimension;
 
@@ -109,6 +111,9 @@ public class GameBoard : MonoBehaviour
     // Method that is used to display the game board
     public void DisplayGameBoard()
     {
+        // Set the game board active
+        gameBoard.SetActive(true);
+        
         // Get the positions and rotations of the two corners
         Vector3 positionTopLeftCorner = topLeftCorner.transform.position;
         Vector3 positionBottomRightCorner = bottomRightCorner.transform.position;
@@ -117,6 +122,9 @@ public class GameBoard : MonoBehaviour
 
         // Get the end rotation. This is important in case that one or two corners are in the wrong direction
         float boardAngle = GetTheEndRotation(rotationVectorTopLeftCorner.y, rotationVectorBottomRightCorner.y, positionTopLeftCorner.x, positionBottomRightCorner.x, positionTopLeftCorner.z, positionBottomRightCorner.z);
+        
+        // Set the board angle in the Board class
+        Board.boardAngle = boardAngle;
 
         // Get the rotation vector
         Vector3 rotationVectorBoard = new Vector3(0, boardAngle, 0);
@@ -236,6 +244,9 @@ public class GameBoard : MonoBehaviour
                 // Case the x scale is too big, scale it down
                 correctScale.x = correctScale.z  * 2;
             }
+
+            // Set the y scale to the x scale so that the height of things is correct
+            correctScale.y = correctScale.x;
 
             Board.greatestBoardDimension = correctScale.x / 10;
 
@@ -586,6 +597,7 @@ public class GameBoard : MonoBehaviour
     public void RemoveGameBoard()
     {
         // Set the game board as child of the save model object so that it disapears
-        gameBoard.transform.parent = saveModelObject.transform;
+        // gameBoard.transform.parent = saveModelObject.transform;
+        gameBoard.SetActive(false);
     }
 }

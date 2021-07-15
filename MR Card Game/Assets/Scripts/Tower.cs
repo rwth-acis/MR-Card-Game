@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
+    // Type of projectile
+    [SerializeField]
+    private string projectileType;
+
+    public Projectile projectile;
+
     // The attack range of the tower
     public float attackRange;
 
@@ -23,30 +29,75 @@ public class Tower : MonoBehaviour
     public Vector3 vector;
 
     // 
-    private GameObject target;
+    private Collider target;
+
+    private List<Collider> colliders = new List<Collider>();
+
+    public List<Collider> GetColliders()
+    {
+        return colliders;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        vector =  transform.parent.gameObject.transform.localScale;
-        transform.localScale = transform.localScale + new Vector3(0, 1 / Board.greatestBoardDimension, 0);
+        // // Get the vector scale of the parent object
+        // vector =  transform.parent.gameObject.transform.localScale;
+        // float scaleX = vector.x;
+        // float scaleY = vector.y;
+        // float scaleZ = vector.z;
+
+        // // Set the scale of the parent gameObject correctly
+        // transform.parent.gameObject.transform.localScale =
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.parent.gameObject.transform.localScale = vector + new Vector3(0, 1 / Board.greatestBoardDimension * 20, 0);
+        // Attack if there are enemies in range
+        Attack();
     }
 
-    // Function that is called when somethin enters the sphere collider of the tower
-    public void OnTriggerEnter3D(SphereCollider collider)
+    // Method used to attack
+    public void Attack()
     {
-        // Check the tag of the object that entered the sphere collider
-        if(collider.tag == "Enemy")
+        if(GetColliders().Contains(target) == false)
         {
-            // Get the gameObject that entered the tower range
-            target = collider.gameObject;
-            Debug.Log("The enemey is named: " + target.name);
+            target = null;
         }
+
+        if(target == null && colliders.Count > 0)
+        {
+            target = GetColliders()[0];
+        }
+
+        // if(target != null && target.IsActive() == true)
+        if(target != null)
+        {
+            // Attack
+            Debug.Log("The current enemey that is targeted is named: " + target.name);
+            Shoot();
+        }
+    }
+
+    // Method that shoots projectiles at enemies
+    private void Shoot()
+    {
+        // Get the projectile of the tower
+        // Projectile projectile = GameManager.Instance.Pool.GetObject(projectileType).getComponent<Projectile>();
+    }
+
+    // The method that adds entering enemies to the collider list
+    private void OnTriggerEnter(Collider other) {
+        if(!colliders.Contains(other))
+        {
+            colliders.Add(other);
+        }
+    }
+
+    // The method that removes exiting enemies of the collider list
+    private void OnTriggerExit (Collider other)
+    {
+        colliders.Remove(other);
     }
 }

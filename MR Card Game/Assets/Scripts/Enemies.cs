@@ -56,11 +56,14 @@ public class Enemies : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Set the enemy as child of the gameboard
+        transform.parent = gameBoard.transform;
+
         // When spawning, set the current health points to the maximum health points
         currentHP = maximumHP;
 
-        // Set the flight height
-        flightHeight = flying * Board.greatestBoardDimension * (float)0.6;
+        // Set the flight height and standing size
+        flightHeight = flying * Board.greatestBoardDimension * (float)0.6  + (float)0.1 * size * Board.greatestBoardDimension;
 
         // Deactivate the health bar since it is full
         healthBarUI.SetActive(false);
@@ -68,8 +71,8 @@ public class Enemies : MonoBehaviour
         // Set the health bar correctly
         healthBar.value = CalculateHealth();
 
-        // Scale the enemy down to have the right size on the board
-        transform.localScale = new Vector3(Board.greatestBoardDimension * (float)0.2 * size, Board.greatestBoardDimension * (float)0.2 * size, Board.greatestBoardDimension * (float)0.2 * size);
+        // Scale the enemy down to have the right size
+        transform.localScale = new Vector3((float)0.2 * size, (float)0.2 * size, (float)0.4 * size);
 
         // Set it to the position of the first waypoint on spawn
         transform.position = (waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0));
@@ -118,7 +121,7 @@ public class Enemies : MonoBehaviour
         }
 
         // Check if the enemy reached the castle
-        if(waypointIndex == waypoints.Length - 1 && transform.position == (waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0)))
+        if(waypointIndex == waypoints.Length)
         {
             // Destroy the enemy
             Destroy(gameObject);

@@ -15,7 +15,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
             if(Input.GetKeyDown(KeyCode.F4))
             {
                 spawner.Spawn();
-                spawner.MostRecentlySpawnedObject.transform.position = new Vector3(0, spawnCount, 0);
+                // spawner.MostRecentlySpawnedObject.transform.position = new Vector3(0, spawnCount, 0);
                 spawner.MostRecentlySpawnedObject.SetActive(true);
                 spawnCount++;
             }
