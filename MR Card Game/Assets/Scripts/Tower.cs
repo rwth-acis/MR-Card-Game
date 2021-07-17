@@ -2,6 +2,8 @@ using i5.Toolkit.Core.Spawners;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using i5.Toolkit.Core.Utilities;
 using static i5.Toolkit.Core.Examples.Spawners.SpawnProjectile;
 
 public class Tower : MonoBehaviour
@@ -118,31 +120,34 @@ public class Tower : MonoBehaviour
             }
         }
 
-        // Check if the sphere colider around the tower contains enemies (so check if there are enemies in range)
-        if(GetColliders().Contains(target) == false)
+        // Check that the enemy did not die already
+        // if(target != null && !IsValid(target.GetComponent<Enemies>().gameObject))
+        if(target == null && !IsValid(target.GetComponent<Enemy>().gameObject))
         {
-            // If there are no targets, set the target to null
-            target = null;
+            // If the target is already dead, remove the target from the colliders array
+            colliders.Remove(target);
+            target = GetColliders()[0];
+            Debug.Log("The target was dead and was removed");
         }
 
-        // // Check that the enemy did not die already
-        // if(target != null)
-        // {
-        //     if(target.GetComponent<Enemies>().isAlive == false)
-        //     {
-        //         target = null;
-        //     }
-        // }
+        // Check if the sphere colider around the tower still contains the target enemy
+        if(GetColliders().Contains(target) == false)
+        {
+            // If the target left the range, set it to null
+            target = null;
+            Debug.Log("The target was not contained anymore in the range and was set to null");
+        }
 
         // Check if the tower needs a new target and if there are any enemies in range
         if(target == null && colliders.Count > 0)
         {
             // If a new target is needed, and there are enemies in range, set the oldest enemy as target
             target = GetColliders()[0];
+            Debug.Log("The new target was set to " + target);
         }
 
         // Check if there is a current target
-        if(target != null && target.GetComponent<Enemies>().isAlive == true)
+        if(target != null && target.GetComponent<Enemy>().isAlive == true)
         {
             // Check if the can attack flag is set to true
             if(canAttack == true)
@@ -157,14 +162,36 @@ public class Tower : MonoBehaviour
         }
     }
 
+    // Method that checks if a game object still exists
+    public static bool IsValid(GameObject enemy)
+    {
+        // Try to access it
+        try
+        {
+            // If it is null, return false
+            if (enemy.gameObject == null) return false;
+
+        }
+        // Check if you catch an exception
+        catch(Exception)
+        {
+            // If an exception was thrown, then the object was destroyed
+            return false;
+        }
+        return true;
+    }
+
     // Method that shoots projectiles at enemies
     private void Shoot()
     {
         // Find the spawner object
         Spawner spawner = GameObject.Find("ProjSpawn").GetComponent<Spawner>();
 
+        // Get a projectile form the object pool
+        Projectile spawnedProjectile = ObjectPool<Projectile>.RequestResource(() => {return new Projectile();});
+
         // Spawn the projectile
-        Projectile spawnedProjectile = SpawnProjectileForTower(spawner).GetComponent<Projectile>();
+        // Projectile spawnedProjectile = SpawnProjectileForTower(spawner).GetComponent<Projectile>();
 
         // Set the position of the projectile to the position of the tower
         spawnedProjectile.transform.position = transform.position;

@@ -1,24 +1,31 @@
 using i5.Toolkit.Core.Spawners;
 using UnityEngine;
+using i5.Toolkit.Core.Utilities;
 
 namespace i5.Toolkit.Core.Examples.Spawners
 {
 
     public class SpawnEnemy : MonoBehaviour
     {
-        public Spawner spawner;
+        [SerializeField]
+        private NormalEnemy enemy;
 
-        private int spawnCount = 0;
+        public Spawner spawner;
 
         private void Update()
         {
+            // SpawnAnEnemy(enemy);
             if(Input.GetKeyDown(KeyCode.F4))
             {
+                // Debug.Log("Getting enemy from object pool");
+                // NormalEnemy enemy1 = ObjectPool<NormalEnemy>.RequestResource(() => {return new NormalEnemy();});
+                // enemy.gameObject.SetActive(true);
+                // Debug.Log("Enemy was taken from object pool and set active");
                 spawner.Spawn();
-                // spawner.MostRecentlySpawnedObject.transform.position = new Vector3(0, spawnCount, 0);
                 spawner.MostRecentlySpawnedObject.SetActive(true);
-                spawnCount++;
             }
         }
+
+        // private 
     }
 }

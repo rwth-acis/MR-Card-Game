@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static map.GameMap;
 
 // // The class of the castle game object
 // static class Castle
@@ -14,10 +15,9 @@ using UnityEngine.UI;
 //     public static int currentAP;
 // }
 
-public class Enemies : MonoBehaviour
+public class Enemy : MonoBehaviour
 {
-    // Array of waypoints to walk from one to the next
-    [SerializeField]
+    // Waypoints placed on the path that enemies have to travel
     private Transform[] waypoints;
 
     // The maximum and current health point of the enemy unit
@@ -58,6 +58,9 @@ public class Enemies : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Set the waypoints that apply to this map
+        waypoints = Waypoints.mapWaypoints;
+
         // Set the enemy as child of the gameboard
         transform.parent = gameBoard.transform;
 
@@ -132,7 +135,7 @@ public class Enemies : MonoBehaviour
             Destroy(gameObject);
 
             // Reduce the health of the castle
-            ReduceCastleHealth(damage);
+            ReduceCastleHealth();
         }
     }
 
@@ -145,13 +148,15 @@ public class Enemies : MonoBehaviour
     // Method that rewards the player with currency points if an enemy is defeated
     public void WinPoints()
     {
-        // TODO
+        // Add the enemy value to the currency points of the player
+        GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + enemyValue;
     }
 
     // Method that reduces the health points of the castle if an enemy reaches it
-    public void ReduceCastleHealth(int damage)
+    public void ReduceCastleHealth()
     {
-        // TODO
+        // Reduce the castle health by the amount of damage the unit does
+        GameAdvancement.castlecurrentHP = GameAdvancement.castlecurrentHP - damage;
     }
 
     // Method that makes enemies take damage
