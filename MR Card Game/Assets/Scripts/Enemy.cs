@@ -99,7 +99,7 @@ public class Enemy : MonoBehaviour
             isAlive = false;
 
             // Destroy the game enemy
-            // Destroy(gameObject);
+            // Destroy(gameObject); // Disabled so the tower can know that the enemy is dead
 
             // Make the player win the currency points
             WinPoints();
@@ -142,7 +142,7 @@ public class Enemy : MonoBehaviour
     // Method that calculates the health value
     public float CalculateHealth()
     {
-        return currentHP / maximumHP;
+        return (float)currentHP / (float)maximumHP;
     }
 
     // Method that rewards the player with currency points if an enemy is defeated
@@ -152,7 +152,7 @@ public class Enemy : MonoBehaviour
         GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + enemyValue;
 
         // Actualize the currency display so that the player can see that he won currency points
-        GameSetup.ActualizeCurrencyDisplay(GameAdvancement.currencyButton);
+        GameSetup.ActualizeCurrencyDisplay(GameAdvancement.currencyDisplay);
     }
 
     // Method that reduces the health points of the castle if an enemy reaches it
@@ -160,6 +160,9 @@ public class Enemy : MonoBehaviour
     {
         // Reduce the castle health by the amount of damage the unit does
         GameAdvancement.castlecurrentHP = GameAdvancement.castlecurrentHP - damage;
+
+        // Display the lost health points on the castle
+        GameSetup.ActualizeCastleHealthPoints(GameAdvancement.castleHealthBar, GameAdvancement.castleHealthCounter, GameAdvancement.castlecurrentHP, GameAdvancement.castleMaxHP);
     }
 
     // Method that makes enemies take damage
