@@ -10,10 +10,19 @@ public class Projectile : MonoBehaviour
     // The parent tower of the projectile
     private Tower parent;
 
+    // The list of the enemy colliders inside the projectile collider
+    private List<Enemy> enemies = new List<Enemy>();
+
+    // The method used to get the list
+    public List<Enemy> GetEnemies()
+    {
+        return enemies;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -46,6 +55,7 @@ public class Projectile : MonoBehaviour
             // Check if the projectile reached the destination
             if(transform.position == target.transform.position)
             {
+                // Here, depending on the tower type, the enemy or enemies need to take damage depending on the type of projectile of the tower
                 // Delete the projectile
                 Destroy(gameObject);
 
@@ -57,5 +67,88 @@ public class Projectile : MonoBehaviour
             // Delete the projectile if the enemy is null or not alive anymore
             Destroy(gameObject);
         }
+    }
+
+    // The method that produces the effect of an arrow arriving at destination
+    private void ArrowEffect()
+    {
+        // Calculate the damage the enemy should take form the damage type and basic amount
+        int damage = CalculateDamage(parent.Damage, parent.TowerType, target);
+
+        // Make the enemy take damage
+        target.TakeDamage(damage);
+    }
+
+    // The method that produces the effect of a fire ball arriving at destination
+    private void FireBallEffect()
+    {
+        // Initialize the damage integer
+        int damage = 0;
+
+        // For each enemy in the collider, calculate the damage they should take
+        foreach(var targetEnemy in GetEnemies())
+        {
+            // Calculate the damage
+            damage = CalculateDamage(parent.Damage, parent.TowerType, targetEnemy);
+
+            // Make the enemy take damage
+            target.TakeDamage(damage);
+        }
+
+    }
+
+    // The method that produces the effect of a lightning strike arriving at destination
+    private void LightningStrikeEffect()
+    {
+        
+    }
+
+    // The method that produces the effect of a rock arriving at destination
+    private void RockEffect()
+    {
+        
+    }
+
+    // The method that produces the effect of a gust of wind arriving at destination
+    private void WindGustEffect()
+    {
+        // Calculate the damage the enemy should take form the damage type and basic amount
+        int damage = CalculateDamage(parent.Damage, parent.TowerType, target);
+
+        // Make the enemy take damage
+        target.TakeDamage(damage);
+
+        // Calculate the direction in which the enemy should be pushed
+        Vector3 direction = transform.position - target.lastWaypoint; // TODO
+
+        // Push the enemy back by the distance scaled down to the board size * the level in the direction of the last waypoint
+        // target.transform.position = Vector3.MoveTowards(transform.position, target.waypoints[target.waypointIndex - 1].transform.position + new Vector3(0, target.flightHeight, 0), parent.projectileSpeed * parent.effectTime * parent.level * target.gameBoard.transform.localScale.x);    
+    }
+
+    // The method that calculates the damage a unit should take depending on the enemy, tower and tower attack type
+    private int CalculateDamage(int damage, string towerType, Enemy target)
+    {
+        // For now return the damage of the tower
+        return parent.Damage; // TODO
+    }
+
+    // The method that adds entering enemies to the collider list
+    private void OnTriggerEnter(Collider other)
+    {
+        // Access the enemy object from the collider
+        Enemy enemy = other.GetComponent<Enemy>();
+
+        // If the enemy is not already contained, add him to the list
+        if(!enemies.Contains(enemy))
+        {
+            enemies.Add(enemy);
+        }
+    }
+
+    // The method that removes exiting enemies of the collider list
+    private void OnTriggerExit (Collider other)
+    {
+        // If an enemy leaves the collider, remove it from the list
+        enemies.Remove(other.GetComponent<Enemy>());
     }
 }

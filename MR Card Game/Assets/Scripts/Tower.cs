@@ -16,6 +16,19 @@ public class Tower : MonoBehaviour
     // [SerializeField]
     // private Projectile projectile;
 
+    // The type of the tower
+    [SerializeField]
+    private string towerType;
+
+    // Method used in the projectile class to read the tower type
+    public string TowerType
+    {
+        get { return towerType; }
+    }
+
+    // The level of the tower
+    private int level;
+
     // The additional height where the projectile should be shooted from
     [SerializeField]
     private float additionalShootingHeight;
@@ -52,12 +65,8 @@ public class Tower : MonoBehaviour
         get { return projectileSpeed; }
     }
 
-    // The level of the tower
-    [SerializeField]
-    private int level;
-
-    // 
-    private Vector3 vector;
+    // // 
+    // private Vector3 vector;
 
     // The current target of the tower
     private Collider target;

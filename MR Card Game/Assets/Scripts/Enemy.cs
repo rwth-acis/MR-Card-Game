@@ -20,6 +20,9 @@ public class Enemy : MonoBehaviour
     // Waypoints placed on the path that enemies have to travel
     private Transform[] waypoints;
 
+    // The last waypoint the enemy passed
+    public Vector3 lastWaypoint;
+
     // The maximum and current health point of the enemy unit
     public int maximumHP;
     public int currentHP;
@@ -124,6 +127,10 @@ public class Enemy : MonoBehaviour
             // If the enemy reached the position of a waypoint, increase the waypoint index by one
             if(transform.position == (waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0)))
             {
+                // Set the passed waypoint as last waypoint
+                lastWaypoint = waypoints[waypointIndex].transform.position;
+
+                // Increase the waypoint index by one
                 waypointIndex = waypointIndex + 1;
             }
         }
