@@ -43,6 +43,7 @@ public class ActivateQuestions : MonoBehaviour
     public GameObject viewModel;
     public GameObject viewMultipleChoiceQuestion;
     public GameObject viewInputQuestion;
+    public GameObject gameOverlay;
 
     // Define the children of the slider that permits to see all multiple choice answers
     public GameObject multipleChoice2Answers;
@@ -1300,65 +1301,65 @@ public class ActivateQuestions : MonoBehaviour
     // Method that initializes everything when a level is started
     public void InitializeRound()
     {
-        // ---------------------------------------------------------------------------------
-        // Used to create and save dummy questions:
-        // ---------------------------------------------------------------------------------
+        // // ---------------------------------------------------------------------------------
+        // // Used to create and save dummy questions:
+        // // ---------------------------------------------------------------------------------
 
-        File.Delete(Path.Combine(Questions.pathToLevel, "Question000.json"));
-        File.Delete(Path.Combine(Questions.pathToLevel, "Question001.json"));
-        File.Delete(Path.Combine(Questions.pathToLevel, "Description.json"));
+        // File.Delete(Path.Combine(Questions.pathToLevel, "Question000.json"));
+        // File.Delete(Path.Combine(Questions.pathToLevel, "Question001.json"));
+        // File.Delete(Path.Combine(Questions.pathToLevel, "Description.json"));
 
-        // Create a dummy input question
-        InputQuestion inputQuestion = new InputQuestion();
-        inputQuestion.exerciseType = "input question";
-        inputQuestion.name = "Input question name";
-        inputQuestion.question = "What is the result of 1 + 4?";
-        inputQuestion.answer = "5";
-        inputQuestion.numberOfModels = 0;
-        inputQuestion.model1Name = "";
-        inputQuestion.model2Name = "";
-        inputQuestion.model3Name = "";
-        inputQuestion.model4Name = "";
-        inputQuestion.model5Name = "";
+        // // Create a dummy input question
+        // InputQuestion inputQuestion = new InputQuestion();
+        // inputQuestion.exerciseType = "input question";
+        // inputQuestion.name = "Input question name";
+        // inputQuestion.question = "What is the result of 1 + 4?";
+        // inputQuestion.answer = "5";
+        // inputQuestion.numberOfModels = 0;
+        // inputQuestion.model1Name = "";
+        // inputQuestion.model2Name = "";
+        // inputQuestion.model3Name = "";
+        // inputQuestion.model4Name = "";
+        // inputQuestion.model5Name = "";
 
-        // Create a dummy multiple choice question
-        MultipleChoiceQuestion mCQuestion = new MultipleChoiceQuestion();
-        mCQuestion.exerciseType = "multiple choice question";
-        mCQuestion.name = "Multiple choice question name";
-        mCQuestion.question = "What is the result of 1 + 4?";
-        mCQuestion.answer1 = "1";
-        mCQuestion.answer2 = "7";
-        mCQuestion.answer3 = "14";
-        mCQuestion.answer4 = "5";
-        mCQuestion.answer5 = "6";
-        mCQuestion.answer1Correct = false;
-        mCQuestion.answer2Correct = false;
-        mCQuestion.answer3Correct = false;
-        mCQuestion.answer4Correct = true;
-        mCQuestion.answer5Correct = false;
-        mCQuestion.numberOfModels = 0;
-        mCQuestion.model1Name = "";
-        mCQuestion.model2Name = "";
-        mCQuestion.model3Name = "";
-        mCQuestion.model4Name = "";
-        mCQuestion.model5Name = "";
+        // // Create a dummy multiple choice question
+        // MultipleChoiceQuestion mCQuestion = new MultipleChoiceQuestion();
+        // mCQuestion.exerciseType = "multiple choice question";
+        // mCQuestion.name = "Multiple choice question name";
+        // mCQuestion.question = "What is the result of 1 + 4?";
+        // mCQuestion.answer1 = "1";
+        // mCQuestion.answer2 = "7";
+        // mCQuestion.answer3 = "14";
+        // mCQuestion.answer4 = "5";
+        // mCQuestion.answer5 = "6";
+        // mCQuestion.answer1Correct = false;
+        // mCQuestion.answer2Correct = false;
+        // mCQuestion.answer3Correct = false;
+        // mCQuestion.answer4Correct = true;
+        // mCQuestion.answer5Correct = false;
+        // mCQuestion.numberOfModels = 0;
+        // mCQuestion.model1Name = "";
+        // mCQuestion.model2Name = "";
+        // mCQuestion.model3Name = "";
+        // mCQuestion.model4Name = "";
+        // mCQuestion.model5Name = "";
 
-        // Create a dummy description
-        Log description = new Log();
-        description.numberOfQuestions = 2;
-        description.numberOfModels = 0;
-        description.heading = "This is the descriptions heading";
-        description.description = "This is a fabulous description";
+        // // Create a dummy description
+        // Log description = new Log();
+        // description.numberOfQuestions = 2;
+        // description.numberOfModels = 0;
+        // description.heading = "This is the descriptions heading";
+        // description.description = "This is a fabulous description";
 
-        // Convert the objects to json
-        string inputQuestionJson = JsonUtility.ToJson(inputQuestion);
-        string mCQuestionJson = JsonUtility.ToJson(mCQuestion);
-        string descriptionJson = JsonUtility.ToJson(description);
+        // // Convert the objects to json
+        // string inputQuestionJson = JsonUtility.ToJson(inputQuestion);
+        // string mCQuestionJson = JsonUtility.ToJson(mCQuestion);
+        // string descriptionJson = JsonUtility.ToJson(description);
 
-        // Save it
-        File.WriteAllText(Path.Combine(Questions.pathToLevel, "Question000.json"), inputQuestionJson);
-        File.WriteAllText(Path.Combine(Questions.pathToLevel, "Question001.json"), mCQuestionJson);
-        File.WriteAllText(Path.Combine(Questions.pathToLevel, "Description.json"), descriptionJson);
+        // // Save it
+        // File.WriteAllText(Path.Combine(Questions.pathToLevel, "Question000.json"), inputQuestionJson);
+        // File.WriteAllText(Path.Combine(Questions.pathToLevel, "Question001.json"), mCQuestionJson);
+        // File.WriteAllText(Path.Combine(Questions.pathToLevel, "Description.json"), descriptionJson);
 
         // ---------------------------------------------------------------------------------
 
@@ -1435,6 +1436,13 @@ public class ActivateQuestions : MonoBehaviour
         startMenu.SetActive(false);
     }
 
+    // Method that activates the view model menu and enables the user to open the first question
+    public void ActivateGame()
+    {
+        // After waiting, enable the view model menu
+        gameOverlay.SetActive(true);
+    }
+
     // Method that closes the current question, and changes the current question index
     public void GoToNextQuestion()
     {
@@ -1504,6 +1512,10 @@ public class ActivateQuestions : MonoBehaviour
         }
         Debug.Log("The number of models is: " + Questions.numberOfModels);
 
+        // Activate the view model menu, where questions can be answered
         ActivateViewModels();
+
+        // Activate the game menu, where wave and currency are displayed
+        ActivateGame();
     }
 }

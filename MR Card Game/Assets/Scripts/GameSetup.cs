@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 // The class of the castle game object
 static class GameAdvancement
@@ -17,10 +19,11 @@ static class GameAdvancement
 
     // The current wave
     public static int currentWave;
+
+    public static Button currencyButton;
 }
-
-
-public class NewBehaviourScript : MonoBehaviour
+   
+public class GameSetup : MonoBehaviour
 {
     // The health points the castle has. Can be changed in the inspector.
     [SerializeField]
@@ -29,6 +32,14 @@ public class NewBehaviourScript : MonoBehaviour
     // The currency the player should have at the beginning. Can be changed in the inspector.
     [SerializeField]
     private int beginingCurrency;
+
+    // The button, not interactable, on which the current wave is displayed
+    [SerializeField]
+    private Button waveDisplay;
+
+    // The button, not interactable, on which the current currency is displayed
+    [SerializeField]
+    private Button currencyDisplay;
 
     // Start is called before the first frame update
     void Start()
@@ -42,11 +53,25 @@ public class NewBehaviourScript : MonoBehaviour
 
         // Set the wave counter to wave 1
         GameAdvancement.currentWave = 1;
+
+        GameAdvancement.currencyButton = currencyDisplay;
+
+        // Set the text of the wave button to wave 1
+        waveDisplay.GetComponentInChildren<TMP_Text>().text = "Wave: 1";
+
+        // Set the text of the wave button to wave 1
+        ActualizeCurrencyDisplay(currencyDisplay);
     }
 
     // Update is called once per frame
     void Update()
     {
         // Display currency points
+    }
+
+    // Method used to actualize the current currency display of the player
+    public static void ActualizeCurrencyDisplay(Button currencyDisplay)
+    {
+        currencyDisplay.GetComponentInChildren<TMP_Text>().text = "Currency: " + GameAdvancement.currencyPoints;
     }
 }

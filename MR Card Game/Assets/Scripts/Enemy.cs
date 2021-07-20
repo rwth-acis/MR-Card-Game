@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using static map.GameMap;
+// using static map.GameMap;
 
 // // The class of the castle game object
 // static class Castle
@@ -99,7 +99,7 @@ public class Enemy : MonoBehaviour
             isAlive = false;
 
             // Destroy the game enemy
-            Destroy(gameObject);
+            // Destroy(gameObject);
 
             // Make the player win the currency points
             WinPoints();
@@ -150,6 +150,9 @@ public class Enemy : MonoBehaviour
     {
         // Add the enemy value to the currency points of the player
         GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + enemyValue;
+
+        // Actualize the currency display so that the player can see that he won currency points
+        GameSetup.ActualizeCurrencyDisplay(GameAdvancement.currencyButton);
     }
 
     // Method that reduces the health points of the castle if an enemy reaches it

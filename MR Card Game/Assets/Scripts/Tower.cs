@@ -12,9 +12,9 @@ public class Tower : MonoBehaviour
     // [SerializeField]
     // private string projectileType;
 
-    // The projectile object
-    [SerializeField]
-    private Projectile projectile;
+    // // The projectile object
+    // [SerializeField]
+    // private Projectile projectile;
 
     // The additional height where the projectile should be shooted from
     [SerializeField]
@@ -120,14 +120,23 @@ public class Tower : MonoBehaviour
             }
         }
 
-        // Check that the enemy did not die already
-        // if(target != null && !IsValid(target.GetComponent<Enemies>().gameObject))
-        if(target == null && !IsValid(target.GetComponent<Enemy>().gameObject))
+        // // Check that the enemy did not die already
+        // // if(target != null && !IsValid(target.GetComponent<Enemies>().gameObject))
+        // if(target == null && !IsValid(target.GetComponent<Enemy>().gameObject))
+        // {
+        //     // If the target is already dead, remove the target from the colliders array
+        //     colliders.Remove(target);
+        //     target = GetColliders()[0];
+        //     Debug.Log("The target was dead and was removed");
+        // }
+
+        if(target != null && target.GetComponent<Enemy>().isAlive == false)
         {
-            // If the target is already dead, remove the target from the colliders array
+            // Remove the target from the list
             colliders.Remove(target);
-            target = GetColliders()[0];
-            Debug.Log("The target was dead and was removed");
+
+            // Destroy the game enemy
+            Destroy(target.gameObject);
         }
 
         // Check if the sphere colider around the tower still contains the target enemy
@@ -188,10 +197,13 @@ public class Tower : MonoBehaviour
         Spawner spawner = GameObject.Find("ProjSpawn").GetComponent<Spawner>();
 
         // Get a projectile form the object pool
-        Projectile spawnedProjectile = ObjectPool<Projectile>.RequestResource(() => {return new Projectile();});
+        // Projectile spawnedProjectile = ObjectPool<Projectile>.RequestResource(() => {return new Projectile();});
 
         // Spawn the projectile
-        // Projectile spawnedProjectile = SpawnProjectileForTower(spawner).GetComponent<Projectile>();
+        Projectile spawnedProjectile = SpawnProjectileForTower(spawner).GetComponent<Projectile>();
+
+        // Make sure the projectile is active
+        // spawnedProjectile.gameObject.SetActive(true);
 
         // Set the position of the projectile to the position of the tower
         spawnedProjectile.transform.position = transform.position;
