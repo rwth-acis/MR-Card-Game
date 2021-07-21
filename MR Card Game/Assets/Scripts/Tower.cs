@@ -16,12 +16,15 @@ public class Tower : MonoBehaviour
     // [SerializeField]
     // private Projectile projectile;
 
+    [SerializeField]
+    private Spawner projectileSpawner;
+
     // The type of the tower
     [SerializeField]
     private string towerType;
 
     // Method used in the projectile class to read the tower type
-    public string TowerType
+    public string GetTowerType
     {
         get { return towerType; }
     }
@@ -29,9 +32,15 @@ public class Tower : MonoBehaviour
     // The level of the tower
     private int level;
 
-    // The additional height where the projectile should be shooted from
-    [SerializeField]
-    private float additionalShootingHeight;
+    // Method used to access the current level of the tower
+    public float GetLevel
+    {
+        get { return level; }
+    }
+
+    // // The additional height where the projectile should be shooted from
+    // [SerializeField]
+    // private float additionalShootingHeight;
 
     // The attack range of the tower
     [SerializeField]
@@ -41,7 +50,7 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private int damage;
 
-    public int Damage
+    public int GetDamage
     {
         get { return damage; }
     }
@@ -53,16 +62,47 @@ public class Tower : MonoBehaviour
     private float attackTimer;
 
     // The attack cooldown between the attacks of the tower
-    public float attackCooldown;
+    [SerializeField]
+    private float attackCooldown;
 
     // The projectile speed of the projectiles of this tower
     [SerializeField]
     private float projectileSpeed;
 
     // The variable used to access the value of the projectile speed from the projectile class
-    public float ProjectileSpeed
+    public float GetProjectileSpeed
     {
         get { return projectileSpeed; }
+    }
+
+    // The effect time of the projectiles of this tower
+    [SerializeField]
+    private float effectTime;
+
+    // The variable used to access the value of the effect time of projectiles from the projectile class
+    public float GetEffectTime
+    {
+        get { return effectTime; }
+    }
+
+    // The effect range of the projectiles of this tower
+    [SerializeField]
+    private float effectRange;
+
+    // The variable used to access the value of the effect range of projectiles from the projectile class
+    public float GetEffectRange
+    {
+        get { return effectRange; }
+    }
+
+    // The effect number of the projectiles of this tower
+    [SerializeField]
+    private int numberOfEffect;
+
+    // The variable used to access the value of the effect number of projectiles from the projectile class
+    public int GetNumberOfEffect
+    {
+        get { return numberOfEffect; }
     }
 
     // // 
@@ -202,14 +242,14 @@ public class Tower : MonoBehaviour
     // Method that shoots projectiles at enemies
     private void Shoot()
     {
-        // Find the spawner object
-        Spawner spawner = GameObject.Find("ProjSpawn").GetComponent<Spawner>();
+        // // Find the spawner object
+        // Spawner spawner = GameObject.Find("ProjSpawn").GetComponent<Spawner>();
 
         // Get a projectile form the object pool
         // Projectile spawnedProjectile = ObjectPool<Projectile>.RequestResource(() => {return new Projectile();});
 
         // Spawn the projectile
-        Projectile spawnedProjectile = SpawnProjectileForTower(spawner).GetComponent<Projectile>();
+        Projectile spawnedProjectile = SpawnProjectileForTower(projectileSpawner).GetComponent<Projectile>();
 
         // Make sure the projectile is active
         // spawnedProjectile.gameObject.SetActive(true);

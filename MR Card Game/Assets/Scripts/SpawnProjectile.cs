@@ -6,7 +6,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
 
     public class SpawnProjectile : MonoBehaviour
     {
-        // Define the spawner object that contains the object to spawn
+        // // Define the spawner object that contains the object to spawn
         // public Spawner spawner;
 
         // Method used to spawn the projectile for the tower
