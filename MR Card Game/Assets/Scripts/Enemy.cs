@@ -20,8 +20,8 @@ public class Enemy : MonoBehaviour
     // Waypoints placed on the path that enemies have to travel
     private Transform[] waypoints;
 
-    // The last waypoint the enemy passed
-    public Vector3 lastWaypoint;
+    // // The last waypoint the enemy passed
+    // public Vector3 lastWaypoint;
 
     // The maximum and current health point of the enemy unit
     public int maximumHP;
@@ -100,7 +100,7 @@ public class Enemy : MonoBehaviour
         healthBar.value = CalculateHealth();
 
         // Scale the enemy down to have the right size
-        transform.localScale = new Vector3((float)0.2 * size, (float)0.2 * size, (float)0.4 * size);
+        transform.localScale = new Vector3((float)0.2 * size, (float)0.1 * size, (float)0.1 * size);
 
         // Set it to the position of the first waypoint on spawn
         transform.position = (waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0));
@@ -144,14 +144,20 @@ public class Enemy : MonoBehaviour
             // Move the enemy toward the next waypoint
             transform.position = Vector3.MoveTowards(transform.position, waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0), moveSpeed * Time.deltaTime * gameBoard.transform.localScale.x);
 
+            // // Make the enemy face the direction it is moving
+            // transform.LookAt(waypoints[waypointIndex].transform.position);
+
             // If the enemy reached the position of a waypoint, increase the waypoint index by one
             if(transform.position == (waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0)))
             {
-                // Set the passed waypoint as last waypoint
-                lastWaypoint = waypoints[waypointIndex].transform.position;
+                // // Set the passed waypoint as last waypoint
+                // lastWaypoint = waypoints[waypointIndex].transform.position;
 
                 // Increase the waypoint index by one
                 waypointIndex = waypointIndex + 1;
+
+                // Make the enemy face the direction it is moving
+                transform.LookAt(waypoints[waypointIndex].transform.position);
             }
         }
 

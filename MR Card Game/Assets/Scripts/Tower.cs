@@ -64,15 +64,15 @@ public class Tower : MonoBehaviour
         get { return projectileSpeed; }
     }
 
-    // The effect time of the projectiles of this tower
-    [SerializeField]
-    private float effectTime;
+    // // The effect time of the projectiles of this tower
+    // [SerializeField]
+    // private float effectTime;
 
-    // The variable used to access the value of the effect time of projectiles from the projectile class
-    public float GetEffectTime
-    {
-        get { return effectTime; }
-    }
+    // // The variable used to access the value of the effect time of projectiles from the projectile class
+    // public float GetEffectTime
+    // {
+    //     get { return effectTime; }
+    // }
 
     // The effect range of the projectiles of this tower
     [SerializeField]
@@ -122,6 +122,16 @@ public class Tower : MonoBehaviour
     {
         return colliders;
     }
+
+    // The list of enemies that can still be targeted by the lightning tower
+    private List<Collider> enemies = new List<Collider>();
+
+    // The method used to access the list of enemies that can be targeted by the lightning tower
+    public List<Collider> GetEnemies()
+    {
+        return enemies;
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -249,6 +259,12 @@ public class Tower : MonoBehaviour
 
         if(GetTowerType == "Lightning Tower")
         {
+            // Set the list of targets to the list of colliders
+            enemies = GetColliders();
+
+            // Remove the current target form the list
+            enemies.Remove(target);
+
             // Apply the effect to the enemy
             LightningStrikeEffect(GetNumberOfEffect, target.gameObject.GetComponent<Enemy>());
 
@@ -311,8 +327,10 @@ public class Tower : MonoBehaviour
         // Make the enemy take damage
         targetEnemy.TakeDamage(damage);
 
+        Debug.Log("The number of strikes is: " + numberOfStrikes);
+
         // Check if the lightning strike should jump
-        if(numberOfStrikes < 0)
+        if(numberOfStrikes > 0)
         {
             // Initialise the raycast hit
             RaycastHit hit;
@@ -323,36 +341,46 @@ public class Tower : MonoBehaviour
             // Calculate the radius of the effect
             // float radius = GetEffectRange * targetEnemy.gameBoard.transform.localScale.x;
 
+            Debug.Log("The collider count is: " + GetColliders().Count);
+
             // Check if there is another enemy in the range of the tower
-            if(GetColliders().Count > 1)
+            if(GetEnemies().Count > 1)
             {
                 // Initialise the nearest enemy
-                Enemy nearestEnemy = null;
+                Collider nearestEnemy = null;
 
                 // Initialize the shortest distance
                 float shortestDistance = GetEffectRange;
 
                 // Go through all other enemies, so skip the first index of the array
-                for(int counter = 1; counter < GetColliders().Count; counter = counter + 1)
+                for(int counter = 1; counter < GetEnemies().Count; counter = counter + 1)
                 {
                     // Get the distance between the current target and the current candidate
-                    float distance = Vector3.Distance(targetEnemy.transform.position, GetColliders()[counter].GetComponent<Enemy>().transform.position);
+                    float distance = Vector3.Distance(targetEnemy.transform.position, GetEnemies()[counter].GetComponent<Enemy>().transform.position);
+
+                    Debug.Log("The distance to the enemy number " + counter + " is: " + distance);
 
                     // Check if this distance is shorter than the current shortest distance
                     if(distance <= shortestDistance)
                     {
                         // Set this enemy as nearest enemy
-                        nearestEnemy = GetColliders()[counter].GetComponent<Enemy>();
+                        nearestEnemy = GetEnemies()[counter];
 
                         // Set the shortest distance to the distance between thoses two
                         shortestDistance = distance;
+
+                        Debug.Log("The shortest distance was set to " + distance);
                     }
                 }
 
                 if(nearestEnemy != null)
                 {
                     Debug.Log("Lightning is jumping!");
-                    LightningStrikeEffect(numberOfStrikes - 1, nearestEnemy);
+                    // Remove the nearest enemy from the list
+                    enemies.Remove(nearestEnemy);
+                    
+                    // Cast Lightning strike again with one less jump
+                    LightningStrikeEffect((numberOfStrikes - 1), nearestEnemy.GetComponent<Enemy>());
                 }
             }
 
@@ -383,13 +411,13 @@ public class Tower : MonoBehaviour
         // Make the enemy take damage
         targetEnemy.TakeDamage(damage);
 
-        // Calculate the direction in which the enemy should be pushed
-        Vector3 targetPosition = transform.position + (transform.position - targetEnemy.lastWaypoint).normalized * GetProjectileSpeed * GetEffectTime * GetLevel * targetEnemy.gameBoard.transform.localScale.x; // TODO
-        // Vector3 targetPosition = new Vector3(0, 0, 0);
+        // // Calculate the direction in which the enemy should be pushed
+        // Vector3 targetPosition = transform.position + (transform.position - targetEnemy.lastWaypoint).normalized * GetProjectileSpeed * GetEffectTime * GetLevel * targetEnemy.gameBoard.transform.localScale.x; // TODO
 
         // Push the enemy back by the distance scaled down to the board size * the level in the direction of the last waypoint
         // target.transform.position = Vector3.MoveTowards(transform.position, target.waypoints[target.waypointIndex - 1].transform.position + new Vector3(0, target.flightHeight, 0), parent.GetProjectileSpeed * parent.effectTime * parent.level * target.gameBoard.transform.localScale.x);    
         // target.transform.position = transform.Translate(targetPosition);
-        targetEnemy.transform.position = Vector3.MoveTowards(transform.position, targetPosition, GetProjectileSpeed * GetEffectTime * GetLevel * targetEnemy.gameBoard.transform.localScale.x);
+        // targetEnemy.transform.position = Vector3.MoveTowards(transform.position, targetPosition, GetProjectileSpeed * GetEffectTime * GetLevel * targetEnemy.gameBoard.transform.localScale.x);
+        targetEnemy.transform.position = targetEnemy.transform.position - targetEnemy.transform.forward * GetEffectRange;
     }
 }

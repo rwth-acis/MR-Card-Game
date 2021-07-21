@@ -70,15 +70,15 @@ public class Projectile : MonoBehaviour
                     case "Fire Tower":
                         ProjectileThatCanHitMultipleEnemiesEffect();
                     break;
-                    case "Lightning Tower":
-                        LightningStrikeEffect(parent.GetNumberOfEffect, target);
-                    break;
+                    // case "Lightning Tower":
+                    //     LightningStrikeEffect(parent.GetNumberOfEffect, target);
+                    // break;
                     case "Earth Tower":
                         ProjectileThatCanHitMultipleEnemiesEffect();
                     break;
-                    case "Wind Tower":
-                        WindGustEffect();
-                    break;
+                    // case "Wind Tower":
+                    //     WindGustEffect();
+                    // break;
                 }
 
                 // Delete the projectile
@@ -154,61 +154,61 @@ public class Projectile : MonoBehaviour
 
     }
 
-    // The method that produces the effect of a lightning strike arriving at destination
-    private void LightningStrikeEffect(int numberOfStrikes, Enemy targetEnemy)
-    {
-        // Calculate the damage
-        int damage = CalculateDamage(parent.GetDamage, parent.GetWeaknessMultiplier, parent.GetTowerType, targetEnemy);
+    // // The method that produces the effect of a lightning strike arriving at destination
+    // private void LightningStrikeEffect(int numberOfStrikes, Enemy targetEnemy)
+    // {
+    //     // Calculate the damage
+    //     int damage = CalculateDamage(parent.GetDamage, parent.GetWeaknessMultiplier, parent.GetTowerType, targetEnemy);
 
-        // Make the enemy take damage
-        targetEnemy.TakeDamage(damage);
+    //     // Make the enemy take damage
+    //     targetEnemy.TakeDamage(damage);
 
-        // Check if the lightning strike should jump
-        if(numberOfStrikes < 0)
-        {
-            // Initialise the raycast hit
-            RaycastHit hit;
+    //     // Check if the lightning strike should jump
+    //     if(numberOfStrikes < 0)
+    //     {
+    //         // Initialise the raycast hit
+    //         RaycastHit hit;
 
-            // Initialise the nearest enemy game object
-            GameObject nearestEnemy;
+    //         // Initialise the nearest enemy game object
+    //         GameObject nearestEnemy;
 
-            // Calculate the radius of the effect
-            float radius = parent.GetEffectRange * targetEnemy.gameBoard.transform.localScale.x;
+    //         // Calculate the radius of the effect
+    //         float radius = parent.GetEffectRange * targetEnemy.gameBoard.transform.localScale.x;
 
-            // Find the nearest enemy with a Physics.SphereCast
-            if(Physics.SphereCast(transform.position, radius, transform.forward, out hit, 0) == true)
-            {
-                // Get the nearest enemy
-                nearestEnemy = hit.transform.gameObject;
-                Debug.Log("Nearest enemy: " + nearestEnemy.name);
+    //         // Find the nearest enemy with a Physics.SphereCast
+    //         if(Physics.SphereCast(transform.position, radius, transform.forward, out hit, 0) == true)
+    //         {
+    //             // Get the nearest enemy
+    //             nearestEnemy = hit.transform.gameObject;
+    //             Debug.Log("Nearest enemy: " + nearestEnemy.name);
 
-                // Cast Lightning strike effect on it with number of strikes - 1
-                LightningStrikeEffect(numberOfStrikes - 1, nearestEnemy.GetComponent<Enemy>());
+    //             // Cast Lightning strike effect on it with number of strikes - 1
+    //             LightningStrikeEffect(numberOfStrikes - 1, nearestEnemy.GetComponent<Enemy>());
 
-            } else {
-                // No enemy near enough, finished
-            }
-        }
-    }
+    //         } else {
+    //             // No enemy near enough, finished
+    //         }
+    //     }
+    // }
 
-    // The method that produces the effect of a gust of wind arriving at destination
-    private void WindGustEffect()
-    {
-        // Calculate the damage
-        int damage = CalculateDamage(parent.GetDamage, parent.GetWeaknessMultiplier, parent.GetTowerType, target);
+    // // The method that produces the effect of a gust of wind arriving at destination
+    // private void WindGustEffect()
+    // {
+    //     // Calculate the damage
+    //     int damage = CalculateDamage(parent.GetDamage, parent.GetWeaknessMultiplier, parent.GetTowerType, target);
 
-        // Make the enemy take damage
-        target.TakeDamage(damage);
+    //     // Make the enemy take damage
+    //     target.TakeDamage(damage);
 
-        // Calculate the direction in which the enemy should be pushed
-        Vector3 targetPosition = transform.position + (transform.position - target.lastWaypoint).normalized * parent.GetProjectileSpeed * parent.GetEffectTime * parent.GetLevel * target.gameBoard.transform.localScale.x; // TODO
-        // Vector3 targetPosition = new Vector3(0, 0, 0);
+    //     // Calculate the direction in which the enemy should be pushed
+    //     Vector3 targetPosition = transform.position + (transform.position - target.lastWaypoint).normalized * parent.GetProjectileSpeed * parent.GetEffectTime * parent.GetLevel * target.gameBoard.transform.localScale.x; // TODO
+    //     // Vector3 targetPosition = new Vector3(0, 0, 0);
 
-        // Push the enemy back by the distance scaled down to the board size * the level in the direction of the last waypoint
-        // target.transform.position = Vector3.MoveTowards(transform.position, target.waypoints[target.waypointIndex - 1].transform.position + new Vector3(0, target.flightHeight, 0), parent.GetProjectileSpeed * parent.effectTime * parent.level * target.gameBoard.transform.localScale.x);    
-        // target.transform.position = transform.Translate(targetPosition);
-        target.transform.position = Vector3.MoveTowards(transform.position, targetPosition, parent.GetProjectileSpeed * parent.GetEffectTime * parent.GetLevel * target.gameBoard.transform.localScale.x);
-    }
+    //     // Push the enemy back by the distance scaled down to the board size * the level in the direction of the last waypoint
+    //     // target.transform.position = Vector3.MoveTowards(transform.position, target.waypoints[target.waypointIndex - 1].transform.position + new Vector3(0, target.flightHeight, 0), parent.GetProjectileSpeed * parent.effectTime * parent.level * target.gameBoard.transform.localScale.x);    
+    //     // target.transform.position = transform.Translate(targetPosition);
+    //     target.transform.position = Vector3.MoveTowards(transform.position, targetPosition, parent.GetProjectileSpeed * parent.GetEffectTime * parent.GetLevel * target.gameBoard.transform.localScale.x);
+    // }
 
     // The method that calculates the damage a unit should take depending on the enemy, tower and tower attack type
     public static int CalculateDamage(int damage, float weaknessMultiplier, string towerType, Enemy target)
