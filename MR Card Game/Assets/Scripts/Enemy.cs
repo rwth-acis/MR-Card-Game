@@ -51,6 +51,26 @@ public class Enemy : MonoBehaviour
     // The health bar slider
     public Slider healthBar;
 
+    // What the enemy is resistant to
+    [SerializeField]
+    private string resistance;
+
+    // Method used to get the restistance of the enemy
+    public string GetEnemyResistance
+    {
+        get { return resistance; }
+    }
+
+    // What the enemy is weak to
+    [SerializeField]
+    private string weakness;
+
+    // Method used to get the weakness of the enemy
+    public string GetEnemyWeakness
+    {
+        get { return weakness; }
+    }
+
     private int waypointIndex = 0;
 
     public bool isAlive = true;

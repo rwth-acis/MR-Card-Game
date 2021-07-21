@@ -10,16 +10,16 @@ public class Projectile : MonoBehaviour
     // The parent tower of the projectile
     private Tower parent;
 
-    // 
+    // The last position of the target is saved so that the projectile can continue travelling after the enemy is dead
     private Vector3 lastPosition;
 
-    // The list of the enemy colliders inside the projectile collider
-    private List<Enemy> enemies = new List<Enemy>();
+    // The list of coliders that enter the range of the tower
+    private List<Collider> colliders = new List<Collider>();
 
-    // The method used to get the list
-    public List<Enemy> GetEnemies()
+    // The method used to access the list of colliders
+    public List<Collider> GetColliders()
     {
-        return enemies;
+        return colliders;
     }
 
     // Start is called before the first frame update
@@ -83,10 +83,8 @@ public class Projectile : MonoBehaviour
 
                 // Delete the projectile
                 Destroy(gameObject);
-
-                // // Make the enemy take damage
-                // target.TakeDamage(parent.GetDamage);
             }
+
         } else {
 
             // Check if it is not a wind projectile
@@ -103,9 +101,6 @@ public class Projectile : MonoBehaviour
                 // Check if the projectile reached the destination
                 if(transform.position == target.transform.position)
                 {
-                    // Here, depending on the tower type, the enemy or enemies need to take damage depending on the type of projectile of the tower
-                    int damage = CalculateDamage(parent.GetDamage, parent.GetTowerType, target);
-
                     // Check what is the type of the parent tower
                     switch(parent.GetTowerType)
                     {
@@ -148,13 +143,13 @@ public class Projectile : MonoBehaviour
         int damage = 0;
 
         // For each enemy in the collider, calculate the damage they should take
-        foreach(var targetEnemy in GetEnemies())
+        foreach(var targetEnemy in GetColliders())
         {
             // Calculate the damage
-            damage = CalculateDamage(parent.GetDamage, parent.GetTowerType, targetEnemy);
+            damage = CalculateDamage(parent.GetDamage, parent.GetWeaknessMultiplier, parent.GetTowerType, targetEnemy.GetComponent<Enemy>());
 
             // Make the enemy take damage
-            target.TakeDamage(damage);
+            targetEnemy.GetComponent<Enemy>().TakeDamage(damage);
         }
 
     }
@@ -163,7 +158,7 @@ public class Projectile : MonoBehaviour
     private void LightningStrikeEffect(int numberOfStrikes, Enemy targetEnemy)
     {
         // Calculate the damage
-        int damage = CalculateDamage(parent.GetDamage, parent.GetTowerType, targetEnemy);
+        int damage = CalculateDamage(parent.GetDamage, parent.GetWeaknessMultiplier, parent.GetTowerType, targetEnemy);
 
         // Make the enemy take damage
         targetEnemy.TakeDamage(damage);
@@ -200,7 +195,7 @@ public class Projectile : MonoBehaviour
     private void WindGustEffect()
     {
         // Calculate the damage
-        int damage = CalculateDamage(parent.GetDamage, parent.GetTowerType, target);
+        int damage = CalculateDamage(parent.GetDamage, parent.GetWeaknessMultiplier, parent.GetTowerType, target);
 
         // Make the enemy take damage
         target.TakeDamage(damage);
@@ -216,33 +211,81 @@ public class Projectile : MonoBehaviour
     }
 
     // The method that calculates the damage a unit should take depending on the enemy, tower and tower attack type
-    private int CalculateDamage(int damage, string towerType, Enemy target)
+    public static int CalculateDamage(int damage, float weaknessMultiplier, string towerType, Enemy target)
     {
-        // For now return the damage of the tower
-        return parent.GetDamage; // TODO
+        // Initialize the additinal damage multiplier
+        int additianlDamageMultiplier = 0;
+
+        switch(towerType)
+        {
+            case "Archer Tower":
+
+                if(target.GetEnemyWeakness == "Piercing")
+                {
+                    additianlDamageMultiplier = 1;
+                } else if(target.GetEnemyResistance == "Piercing")
+                {
+                    additianlDamageMultiplier = -1;
+                }
+
+            break;
+            case "Fire Tower":
+                if(target.GetEnemyWeakness == "Fire")
+                {
+                    additianlDamageMultiplier = 1;
+                } else if(target.GetEnemyResistance == "Fire")
+                {
+                    additianlDamageMultiplier = -1;
+                }
+            break;
+            case "Lightning Tower":
+                if(target.GetEnemyWeakness == "Lightning")
+                {
+                    additianlDamageMultiplier = 1;
+                } else if(target.GetEnemyResistance == "Lightning")
+                {
+                    additianlDamageMultiplier = -1;
+                }
+            break;
+            case "Earth Tower":
+                if(target.GetEnemyWeakness == "Earth")
+                {
+                    additianlDamageMultiplier = 1;
+                } else if(target.GetEnemyResistance == "Earth")
+                {
+                    additianlDamageMultiplier = -1;
+                }
+            break;
+            case "Wind Tower":
+                if(target.GetEnemyWeakness == "Wind")
+                {
+                    additianlDamageMultiplier = 1;
+                } else if(target.GetEnemyResistance == "Wind")
+                {
+                    additianlDamageMultiplier = -1;
+                }
+            break;
+        }
+
+        // Return the damage with a bonus, a malus or flat depending on if a weakness or resistance was found
+        return (int) (damage + additianlDamageMultiplier * damage * weaknessMultiplier);
     }
 
     // The method that adds entering enemies to the collider list
     private void OnTriggerEnter(Collider other)
     {
-        // Access the enemy object from the collider
-        Enemy enemy = other.GetComponent<Enemy>();
-
-        // If the enemy is not already contained, add him to the list
-        if(!enemies.Contains(enemy))
+        // Check if the collider is already in the list or not
+        if(!colliders.Contains(other))
         {
-            enemies.Add(enemy);
-
-            Debug.Log("Enemy: " + enemy.gameObject.name + " has entered the collider of the projectile");
+            // Add colliders that enter the projectile collider
+            colliders.Add(other);
         }
     }
 
     // The method that removes exiting enemies of the collider list
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit (Collider other)
     {
-        // If an enemy leaves the collider, remove it from the list
-        enemies.Remove(other.GetComponent<Enemy>());
-
-        Debug.Log("Enemy: " + other.GetComponent<Enemy>().gameObject.name + " has left the collider of the projectile");
+        // Remove colliders that leave the collider of the projectile collider
+        colliders.Remove(other);
     }
 }
