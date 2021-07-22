@@ -76,11 +76,13 @@ public class Enemy : MonoBehaviour
     public bool isAlive = true;
 
     // The gameboard game object
-    public GameObject gameBoard;
+    private GameObject gameBoard;
 
     // Start is called before the first frame update
     void Start()
     {
+        gameBoard = Board.gameBoard;
+        
         // Set the waypoints that apply to this map
         waypoints = Waypoints.mapWaypoints;
 
@@ -104,6 +106,9 @@ public class Enemy : MonoBehaviour
 
         // Set it to the position of the first waypoint on spawn
         transform.position = (waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0));
+
+        // Set the game board correctly
+        gameBoard = Board.gameBoard;
     }
 
     // Update is called once per frame

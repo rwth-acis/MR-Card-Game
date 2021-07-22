@@ -11,6 +11,6 @@ public class Billboard : MonoBehaviour
     // LateUpdate is called after the regular update
     void LateUpdate()
     {
-        transform.LookAt(transform.position + cam.forward);
+        transform.LookAt(transform.position + Board.camera.forward);
     }
 }

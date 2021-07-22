@@ -34,7 +34,7 @@ public class NormalEnemy : Enemy
         healthBar = myPrefab.healthBar;
 
         // The gameboard game object
-        gameBoard = myPrefab.gameBoard;
+        // gameBoard = myPrefab.gameBoard;
     }
 
     // Update is called once per frame

@@ -22,6 +22,12 @@ static class Board
 
     // Define the height of the board
     public static float boardHeight;
+
+    // The gameboard object
+    public static GameObject gameBoard;
+
+    //
+    public static Transform camera;
 }
 
 public class GameBoard : MonoBehaviour
@@ -30,16 +36,26 @@ public class GameBoard : MonoBehaviour
     public GameObject topLeftCorner;
     public GameObject bottomRightCorner;
 
+    [SerializeField]
+    private Transform camera;
+
     // Define the game board object
     public GameObject gameBoard;
 
     // Define the model storage object to make models disapear
     public GameObject saveModelObject;
 
+    // public static GameObject GetGameBoard()
+    // {
+    //     return gameBoard;
+    // }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        Board.gameBoard = gameBoard;
+
+        Board.camera = camera;
     }
 
     // Update is called once per frame
