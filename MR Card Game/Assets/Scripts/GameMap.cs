@@ -5,6 +5,8 @@ using UnityEngine;
 static class Waypoints
 {
     public static Transform[] mapWaypoints;
+
+    public static GameObject enemySpawn;
 }
 
 namespace map

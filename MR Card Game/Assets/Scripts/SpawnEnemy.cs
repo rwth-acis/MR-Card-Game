@@ -9,42 +9,42 @@ namespace i5.Toolkit.Core.Examples.Spawners
     {
         // The prefab for the normal enemy
         [SerializeField]
-        private Enemy normalEnemy;
+        private static Enemy normalEnemy;
 
         // The prefab for the fast enemy
         [SerializeField]
-        private Enemy fastEnemy;
+        private static Enemy fastEnemy;
 
         // The prefab for the super fast enemy
         [SerializeField]
-        private Enemy superFastEnemy;
+        private static Enemy superFastEnemy;
 
         // The prefab for the flying enemy
         [SerializeField]
-        private Enemy flyingEnemy;
+        private static Enemy flyingEnemy;
 
         // The prefab for the tank enemy
         [SerializeField]
-        private Enemy tankEnemy;
+        private static Enemy tankEnemy;
         
         // The prefab for the slow enemy
         [SerializeField]
-        private Enemy slowEnemy;
+        private static Enemy slowEnemy;
 
         // The prefab for the berzerker enemy
         [SerializeField]
-        private Enemy berzerkerEnemy;
+        private static Enemy berzerkerEnemy;
 
         // The prefab for the berzerker flying enemy
         [SerializeField]
-        private Enemy berzerkerFlyingEnemy;
+        private static Enemy berzerkerFlyingEnemy;
 
         // The prefab for the berzerker tank enemy
         [SerializeField]
-        private Enemy berzerkerTankEnemy;
+        private static Enemy berzerkerTankEnemy;
 
         [SerializeField]
-        private Spawner spawner;
+        private static Spawner spawner;
 
         [SerializeField]
         private GameObject parentObject;
@@ -90,7 +90,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
         }
 
         // Method that spawns an enemy given the enemy type
-        public void SpawnAnEnemy(string type)
+        public static void SpawnAnEnemy(string type)
         {
             // Get the right object pool index for the enemy type
             int poolIndex = ObjectPools.GetObjectPoolIndex(type);
@@ -104,17 +104,17 @@ namespace i5.Toolkit.Core.Examples.Spawners
             enemy.gameObject.SetActive(true);
 
             // Set them as children of the game board
-            enemy.transform.parent = parentObject.transform;
+            enemy.transform.parent = Waypoints.enemySpawn.transform;
 
             // Set the position of the child to the position of the parent object
-            enemy.transform.position = parentObject.transform.position;
+            enemy.transform.position = Waypoints.enemySpawn.transform.position;
 
             // Set the health points to max
             enemy.ResetHealthPoints();
         }
 
         // Method that returns the right enemy prefab given the enemy tpye
-        public Enemy GetRightEnemyPrefab(string type)
+        public static Enemy GetRightEnemyPrefab(string type)
         {
 
             // Depending on the type, return the right prefab
