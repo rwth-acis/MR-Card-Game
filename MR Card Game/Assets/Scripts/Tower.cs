@@ -188,13 +188,21 @@ public class Tower : MonoBehaviour
         //     Debug.Log("The target was dead and was removed");
         // }
 
+        // Check if the enemy was just respawned, tagged as dead but has full health points
+        if(target != null && target.GetComponent<Enemy>().isAlive == false && target.GetComponent<Enemy>().GetCurrentHP == target.GetComponent<Enemy>().GetMaximumHP)
+        {
+            // Set the target as alive again
+            target.GetComponent<Enemy>().isAlive = true;
+        }
+
+        // If the Target isn't null and dead, remove it from the colliders list
         if(target != null && target.GetComponent<Enemy>().isAlive == false)
         {
             // Remove the target from the list
             colliders.Remove(target);
 
-            // Destroy the game enemy
-            Destroy(target.gameObject);
+            // // Destroy the game enemy
+            // Destroy(target.gameObject);
         }
 
         // Check if the sphere colider around the tower still contains the target enemy
@@ -229,24 +237,24 @@ public class Tower : MonoBehaviour
         }
     }
 
-    // Method that checks if a game object still exists
-    public static bool IsValid(GameObject enemy)
-    {
-        // Try to access it
-        try
-        {
-            // If it is null, return false
-            if (enemy.gameObject == null) return false;
+    // // Method that checks if a game object still exists
+    // public static bool IsValid(GameObject enemy)
+    // {
+    //     // Try to access it
+    //     try
+    //     {
+    //         // If it is null, return false
+    //         if (enemy.gameObject == null) return false;
 
-        }
-        // Check if you catch an exception
-        catch(Exception)
-        {
-            // If an exception was thrown, then the object was destroyed
-            return false;
-        }
-        return true;
-    }
+    //     }
+    //     // Check if you catch an exception
+    //     catch(Exception)
+    //     {
+    //         // If an exception was thrown, then the object was destroyed
+    //         return false;
+    //     }
+    //     return true;
+    // }
 
     // Method that shoots projectiles at enemies
     private void Shoot()

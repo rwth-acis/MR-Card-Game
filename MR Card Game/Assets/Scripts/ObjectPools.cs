@@ -29,8 +29,10 @@ public class ObjectPools : MonoBehaviour
         int poolId11 = ObjectPool<Enemy>.CreateNewPool(); // Pool for fire balls
         int poolId12 = ObjectPool<Enemy>.CreateNewPool(); // Pool for stones
 
+        int poolId13 = ObjectPool<Enemy>.CreateNewPool(); // Pool for dumping enemies with wrong enemy type
+
         // Store the pool ids so that they are not lost
-        EnemyPools.enemyPoolIds = new int[12];
+        EnemyPools.enemyPoolIds = new int[13];
         EnemyPools.enemyPoolIds[0] = poolId1;
         EnemyPools.enemyPoolIds[1] = poolId2;
         EnemyPools.enemyPoolIds[2] = poolId3;
@@ -43,6 +45,7 @@ public class ObjectPools : MonoBehaviour
         EnemyPools.enemyPoolIds[9] = poolId10;
         EnemyPools.enemyPoolIds[10] = poolId11;
         EnemyPools.enemyPoolIds[11] = poolId12;
+        EnemyPools.enemyPoolIds[12] = poolId13;
 
         // Add a normal enemy to the first enemy pool
     }
@@ -79,4 +82,54 @@ public class ObjectPools : MonoBehaviour
     // {
     //     gameObject.SetActive(false);
     // }
+
+    // Method that returns the correct object pool index given the enemy type
+    public static int GetObjectPoolIndex(string type)
+    {
+        switch(type)
+        {
+            case "Normal Enemy":
+                return EnemyPools.enemyPoolIds[0];
+            break;
+            case "Fast Enemy":
+                return EnemyPools.enemyPoolIds[1];
+            break;
+            case "Super Fast Enemy":
+                return EnemyPools.enemyPoolIds[2];
+            break;
+            case "Flying Enemy":
+                return EnemyPools.enemyPoolIds[3];
+            break;
+            case "Tank Enemy":
+                return EnemyPools.enemyPoolIds[4];
+            break;
+            case "Slow Enemy":
+                return EnemyPools.enemyPoolIds[5];
+            break;
+            case "Berzerker Enemy":
+                return EnemyPools.enemyPoolIds[6];
+            break;
+            case "Berzerker Flying Enemy":
+                return EnemyPools.enemyPoolIds[7];
+            break;
+            case "Berzerker Tank Enemy":
+                return EnemyPools.enemyPoolIds[8];
+            break;
+        }
+
+        // Case the enemy does not have a correct type
+        return EnemyPools.enemyPoolIds[12];
+    }
+
+    public static void ReleaseEnemy(Enemy enemy)
+    {
+        // Get the correclt object pool index from the object pools class
+        int objectPoolIndex = GetObjectPoolIndex(enemy.GetEnemyType);
+
+        // Release the enemy into the right object pool
+        ObjectPool<Enemy>.ReleaseResource(objectPoolIndex, enemy);
+
+        // Set the enemy as inactive
+        enemy.gameObject.SetActive(false);
+    }
 }

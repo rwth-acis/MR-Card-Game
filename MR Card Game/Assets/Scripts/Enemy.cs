@@ -2,54 +2,71 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-// using static map.GameMap;
-
-// // The class of the castle game object
-// static class Castle
-// {
-//     // The maximum and current health point of the castle
-//     public static int maximumHP;
-//     public static int currentHP;
-
-//     // The current armor points of the castle
-//     public static int currentAP;
-// }
 
 public class Enemy : MonoBehaviour
 {
     // Waypoints placed on the path that enemies have to travel
     private Transform[] waypoints;
 
-    // // The last waypoint the enemy passed
-    // public Vector3 lastWaypoint;
+    // The type of the enemy
+    [SerializeField]
+    private string enemyType;
+
+    // Method used to get the type of the enemy
+    public string GetEnemyType
+    {
+        get { return enemyType; }
+    }
 
     // The maximum and current health point of the enemy unit
-    public int maximumHP;
-    public int currentHP;
+    [SerializeField]
+    private int maximumHP;
+
+    // Method used to get the type of the enemy
+    public int GetMaximumHP
+    {
+        get { return maximumHP; }
+    }
+
+    [SerializeField]
+    private int currentHP;
+
+    // Method used to get the type of the enemy
+    public int GetCurrentHP
+    {
+        get { return currentHP; }
+    }
 
     // The size of the enemy unit
-    public float size;
+    [SerializeField]
+    private float size;
 
     // The movement speed of the enemy unit
-    public float moveSpeed;
+    [SerializeField]
+    private float moveSpeed;
 
     // The damage that the enemy unit deals to the castle if it is reached
-    public int damage;
+    [SerializeField]
+    private int damage;
 
     // The currency points won when defeating the enemy
-    public int enemyValue;
+    [SerializeField]
+    private int enemyValue;
 
     // The height of fly, if zero then the unit cannot fly
-    public float flying;
+    [SerializeField]
+    private float flying;
 
     // Initialize the flight height variable
     private float flightHeight;
 
     // The UI for the health bar
-    public GameObject healthBarUI;
+    [SerializeField]
+    private GameObject healthBarUI;
 
     // The health bar slider
-    public Slider healthBar;
+    [SerializeField]
+    private Slider healthBar;
 
     // What the enemy is resistant to
     [SerializeField]
@@ -71,12 +88,20 @@ public class Enemy : MonoBehaviour
         get { return weakness; }
     }
 
-    private int waypointIndex = 0;
-
-    public bool isAlive = true;
-
     // The gameboard game object
     private GameObject gameBoard;
+
+    // The current waypoint index so that enemies go from waypoint to waypoint
+    private int waypointIndex = 0;
+
+    // The flag that tells if the enemy is currently alive or not
+    public bool isAlive = true;
+
+    // // Method used to get the weakness of the enemy
+    // public bool isAlive
+    // {
+    //     get { return alive; }
+    // }
 
     // Start is called before the first frame update
     void Start()
@@ -90,7 +115,7 @@ public class Enemy : MonoBehaviour
         transform.parent = gameBoard.transform;
 
         // When spawning, set the current health points to the maximum health points
-        currentHP = maximumHP;
+        ResetHealthPoints();
 
         // Set the flight height and standing size
         flightHeight = flying * Board.greatestBoardDimension * (float)0.6  + (float)0.1 * size * Board.greatestBoardDimension;
@@ -126,8 +151,8 @@ public class Enemy : MonoBehaviour
             // Set the enemy as dead
             isAlive = false;
 
-            // Destroy the game enemy
-            // Destroy(gameObject); // Disabled so the tower can know that the enemy is dead
+            // Return the enemy to the object pool
+            ReturnEnemyToObjectPool();
 
             // Make the player win the currency points
             WinPoints();
@@ -161,16 +186,22 @@ public class Enemy : MonoBehaviour
                 // Increase the waypoint index by one
                 waypointIndex = waypointIndex + 1;
 
-                // Make the enemy face the direction it is moving
-                transform.LookAt(waypoints[waypointIndex].transform.position);
+                if(waypointIndex <= waypoints.Length - 1)
+                {
+                    // Make the enemy face the direction it is moving
+                    transform.LookAt(waypoints[waypointIndex].transform.position);
+                }
             }
         }
 
         // Check if the enemy reached the castle
         if(waypointIndex == waypoints.Length)
         {
-            // Destroy the enemy
-            Destroy(gameObject);
+            // Set the enemy as dead
+            isAlive = false;
+
+            // Return the enemy to the object pool
+            ReturnEnemyToObjectPool();
 
             // Reduce the health of the castle
             ReduceCastleHealth();
@@ -213,5 +244,18 @@ public class Enemy : MonoBehaviour
         } else {
             currentHP = 0;
         }
+    }
+
+    // Method used to return the enemy to the right object pool uppon death
+    public void ReturnEnemyToObjectPool()
+    {
+        // Call the release enemy of the object pool class
+        ObjectPools.ReleaseEnemy(this);
+    }
+
+    // Method used to set the health points of the enemy correclty uppon respawn
+    public void ResetHealthPoints()
+    {
+        currentHP = maximumHP;
     }
 }
