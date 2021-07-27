@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using static i5.Toolkit.Core.Examples.Spawners.SpawnEnemy;
+using UnityEngine.EventSystems;
 
 static class LevelInfo
 {
     // The number of waves of the level
     public static int numberOfWaves;
+
+    // The number of enemies per wave
+    public static int[] numberOfEnemies;
 
     // The number of normal enemies that come each wave
     public static int[] normalEnemies;
@@ -22,7 +26,7 @@ static class LevelInfo
     public static int[] flyingEnemies;
 
     // The number of tank enemies that come each wave
-    public static int[] tankyEnemies;
+    public static int[] tankEnemies;
 
     // The number of slow and extremely tanky enemies that come each wave
     public static int[] slowEnemies;
@@ -46,7 +50,7 @@ public class Level : MonoBehaviour
     private int currentWave;
 
     // The boolean that indicates if the wave is currently spawning
-    private bool waveBegan = true;
+    private bool waveBegan = false;
 
     // The current enemy index that should be spawned together
     private string enemyType = "";
@@ -82,6 +86,18 @@ public class Level : MonoBehaviour
         // Set the current wave to wave 1
         currentWave = 1;
 
+        // Initilaize the arrays
+        LevelInfo.numberOfEnemies = new int[currentWave];
+        LevelInfo.normalEnemies = new int[currentWave];
+        LevelInfo.fastEnemies = new int[currentWave];
+        LevelInfo.superFastEnemies = new int[currentWave];
+        LevelInfo.flyingEnemies = new int[currentWave];
+        LevelInfo.tankEnemies = new int[currentWave];
+        LevelInfo.slowEnemies = new int[currentWave];
+        LevelInfo.berzerkerEnemies = new int[currentWave];
+        LevelInfo.berzerkerFlyingEnemies = new int[currentWave];
+        LevelInfo.berzerkerTankEnemies = new int[currentWave];
+
         // Create level information given the number of question
         CreateLevelInformation();
 
@@ -91,8 +107,9 @@ public class Level : MonoBehaviour
         // Set the number of enemies to spawn of that type to 5
         enemySpawnNumber = 5;
 
-        // Spawn the first level
-        SpawnLevel(LevelInfo.normalEnemies[0], LevelInfo.fastEnemies[0], LevelInfo.superFastEnemies[0], LevelInfo.flyingEnemies[0], LevelInfo.tankyEnemies[0], LevelInfo.slowEnemies[0], LevelInfo.berzerkerEnemies[0], LevelInfo.berzerkerFlyingEnemies[0], LevelInfo.berzerkerTankEnemies[0]);
+        // // Spawn the first level
+        // SpawnLevel(LevelInfo.normalEnemies[0], LevelInfo.fastEnemies[0], LevelInfo.superFastEnemies[0], LevelInfo.flyingEnemies[0], LevelInfo.tankEnemies[0], LevelInfo.slowEnemies[0], LevelInfo.berzerkerEnemies[0], LevelInfo.berzerkerFlyingEnemies[0], LevelInfo.berzerkerTankEnemies[0]);
+        // StartWave();
     }
 
     // Update is called once per frame
@@ -114,14 +131,36 @@ public class Level : MonoBehaviour
         // Spawn the level
         if(waveBegan == true)
         {
-            SpawnLevel(LevelInfo.normalEnemies[currentWave - 1], LevelInfo.fastEnemies[currentWave - 1], LevelInfo.superFastEnemies[currentWave - 1], LevelInfo.flyingEnemies[currentWave - 1], LevelInfo.tankyEnemies[currentWave - 1], LevelInfo.slowEnemies[currentWave - 1], LevelInfo.berzerkerEnemies[currentWave - 1], LevelInfo.berzerkerFlyingEnemies[currentWave - 1], LevelInfo.berzerkerTankEnemies[currentWave - 1]);
+            // Start the new wave
+            StartWave();
+
+            // Set the wave began flag to false
+            waveBegan = false;
         }
+    }
+
+    // Method that starts the first wave
+    public void StartFirstWave()
+    {
+        // Set the wave began flag to true
+        waveBegan = true;
     }
 
     // Method that creates the level information
     public void CreateLevelInformation()
     {
+        LevelInfo.numberOfWaves = 1;
         //
+        LevelInfo.numberOfEnemies[0] = 29;
+        LevelInfo.normalEnemies[0] = 5;
+        LevelInfo.fastEnemies[0] = 3;
+        LevelInfo.superFastEnemies[0] = 3;
+        LevelInfo.flyingEnemies[0] = 3;
+        LevelInfo.tankEnemies[0] = 3;
+        LevelInfo.slowEnemies[0] = 3;
+        LevelInfo.berzerkerEnemies[0] = 3;
+        LevelInfo.berzerkerFlyingEnemies[0] = 3;
+        LevelInfo.berzerkerTankEnemies[0] = 3;
     }
 
     // Method that spawns the level, the given counters are the number of enemies of each type that should be spawned
@@ -165,6 +204,44 @@ public class Level : MonoBehaviour
                 canSpawn = false;
             }
         }
+    }
+
+    // The method that starts a wave
+    public void StartWave()
+    {
+        StartCoroutine(SpawnWave());
+    }
+
+    // The coroutine that spawns an oponent and waits for a time before the next spawn
+    IEnumerator SpawnWave()
+    {
+        for(int counter = LevelInfo.numberOfEnemies[currentWave - 1]; counter > 0; counter = counter - 1)
+        {
+            // Check if currently there is no group of enemy that should be spawned
+            if(enemySpawnNumber == 0)
+            {
+                // Choose a new type of enemy that should be spawned
+                SetNextEnemyType(LevelInfo.normalEnemies[currentWave - 1], LevelInfo.fastEnemies[currentWave - 1], LevelInfo.superFastEnemies[currentWave - 1], LevelInfo.flyingEnemies[currentWave - 1], LevelInfo.tankEnemies[currentWave - 1], LevelInfo.slowEnemies[currentWave - 1], LevelInfo.berzerkerEnemies[currentWave - 1], LevelInfo.berzerkerFlyingEnemies[currentWave - 1], LevelInfo.berzerkerTankEnemies[currentWave - 1]);
+            }
+
+            // Check if currently a group of enemy should be spawned
+            if(enemySpawnNumber > 0)
+            {
+                // Spawn enemy of the type given
+                SpawnAnEnemy(enemyType);
+
+                // Reduce the number of enemies that should spawn as a group
+                enemySpawnNumber = enemySpawnNumber - 1;
+
+                // // Reset the flag that an enemy can spawn
+                // canSpawn = false;
+            }
+
+            yield return new WaitForSeconds(timeBetweenSpawns);
+
+            Debug.Log("The waiting time just finished");
+        }
+        
     }
 
     // Method that determines the next type of enemies that should be spawned

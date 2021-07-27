@@ -7,49 +7,112 @@ namespace i5.Toolkit.Core.Examples.Spawners
 
     public class SpawnEnemy : MonoBehaviour
     {
+        //
+        public static SpawnEnemy instance;
+
         // The prefab for the normal enemy
         [SerializeField]
-        private static Enemy normalEnemy;
+        private Enemy normalEnemy;
+
+        // The method used to access to the normal enemy prefab as a static object
+        public static Enemy aNormalEnemy
+        {
+            get { return instance.normalEnemy; }
+        }
 
         // The prefab for the fast enemy
         [SerializeField]
-        private static Enemy fastEnemy;
+        private Enemy fastEnemy;
+
+        // The method used to access to the fast enemy prefab as a static object
+        public static Enemy aFastEnemy
+        {
+            get { return instance.fastEnemy; }
+        }
 
         // The prefab for the super fast enemy
         [SerializeField]
-        private static Enemy superFastEnemy;
+        private Enemy superFastEnemy;
+
+        // The method used to access to the super fast enemy prefab as a static object
+        public static Enemy aSuperFastEnemy
+        {
+            get { return instance.superFastEnemy; }
+        }
 
         // The prefab for the flying enemy
         [SerializeField]
-        private static Enemy flyingEnemy;
+        private Enemy flyingEnemy;
+
+        // The method used to access to the flying enemy prefab as a static object
+        public static Enemy aFlyingEnemy
+        {
+            get { return instance.flyingEnemy; }
+        }
 
         // The prefab for the tank enemy
         [SerializeField]
-        private static Enemy tankEnemy;
+        private Enemy tankEnemy;
+
+        // The method used to access to the tank enemy prefab as a static object
+        public static Enemy aTankEnemy
+        {
+            get { return instance.tankEnemy; }
+        }
         
         // The prefab for the slow enemy
         [SerializeField]
-        private static Enemy slowEnemy;
+        private Enemy slowEnemy;
+
+        // The method used to access to the slow enemy prefab as a static object
+        public static Enemy aSlowEnemy
+        {
+            get { return instance.slowEnemy; }
+        }
 
         // The prefab for the berzerker enemy
         [SerializeField]
-        private static Enemy berzerkerEnemy;
+        private Enemy berzerkerEnemy;
+
+        // The method used to access to the berzerker enemy prefab as a static object
+        public static Enemy aBerzerkerEnemy
+        {
+            get { return instance.berzerkerEnemy; }
+        }
 
         // The prefab for the berzerker flying enemy
         [SerializeField]
-        private static Enemy berzerkerFlyingEnemy;
+        private Enemy berzerkerFlyingEnemy;
+
+        // The method used to access to the berzerker flying enemy prefab as a static object
+        public static Enemy aBerzerkerFlyingEnemy
+        {
+            get { return instance.berzerkerFlyingEnemy; }
+        }
 
         // The prefab for the berzerker tank enemy
         [SerializeField]
-        private static Enemy berzerkerTankEnemy;
+        private Enemy berzerkerTankEnemy;
+
+        // The method used to access to the berzerker tank enemy prefab as a static object
+        public static Enemy aBerzerkerTankEnemy
+        {
+            get { return instance.berzerkerTankEnemy; }
+        }
 
         [SerializeField]
         private static Spawner spawner;
 
-        [SerializeField]
-        private GameObject parentObject;
+        // // The parent game object, so the board
+        // [SerializeField]
+        // private GameObject parentObject;
 
         private string mode = "object pool";
+
+        void Start()
+        {
+            instance = this;
+        }
 
         private void Update()
         {
@@ -72,16 +135,16 @@ namespace i5.Toolkit.Core.Examples.Spawners
                 } else {
 
                     // Get a new enemy from the object pool 1
-                    Enemy enemy1 = ObjectPool<Enemy>.RequestResource(EnemyPools.enemyPoolIds[9], () => {return Instantiate(normalEnemy);});
+                    Enemy enemy1 = ObjectPool<Enemy>.RequestResource(EnemyPools.enemyPoolIds[9], () => {return Instantiate(aNormalEnemy);});
 
                     // Set the enemy as active
                     enemy1.gameObject.SetActive(true);
 
                     // Set them as children of the game board
-                    enemy1.transform.parent = parentObject.transform;
+                    enemy1.transform.parent = Waypoints.enemySpawn.transform;
 
                     // Set the position of the child to the position of the parent object
-                    enemy1.transform.position = parentObject.transform.position;
+                    enemy1.transform.position = Waypoints.enemySpawn.transform.position;
 
                     // Set the health points to max
                     enemy1.ResetHealthPoints();
@@ -121,36 +184,36 @@ namespace i5.Toolkit.Core.Examples.Spawners
             switch(type)
             {
                 case "Normal Enemy":
-                    return normalEnemy;
+                    return aNormalEnemy;
                 break;
                 case "Fast Enemy":
-                    return fastEnemy;
+                    return aFastEnemy;
                 break;
                 case "Super Fast Enemy":
-                    return superFastEnemy;
+                    return aSuperFastEnemy;
                 break;
                 case "Flying Enemy":
-                    return flyingEnemy;
+                    return aFlyingEnemy;
                 break;
                 case "Tank Enemy":
-                    return tankEnemy;
+                    return aTankEnemy;
                 break;
                 case "Slow Enemy":
-                    return slowEnemy;
+                    return aSlowEnemy;
                 break;
                 case "Berzerker Enemy":
-                    return berzerkerEnemy;
+                    return aBerzerkerEnemy;
                 break;
                 case "Berzerker Flying Enemy":
-                    return berzerkerFlyingEnemy;
+                    return aBerzerkerFlyingEnemy;
                 break;
                 case "Berzerker Tank Enemy":
-                    return berzerkerTankEnemy;
+                    return aBerzerkerTankEnemy;
                 break;
             }
 
             // Just in case return normal enemy if the type was not found
-            return normalEnemy;
+            return aNormalEnemy;
         }
     }
 }

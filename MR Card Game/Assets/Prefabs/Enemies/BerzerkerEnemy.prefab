@@ -445,28 +445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1149d3072ef1b2942bf08844eb3e72cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waypoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  enemyType: Berzerker Enemy
   maximumHP: 150
   currentHP: 150
   size: 1.1
@@ -476,7 +455,9 @@ MonoBehaviour:
   flying: 0
   healthBarUI: {fileID: 7713422292183319083}
   healthBar: {fileID: 7713422293839842646}
-  gameBoard: {fileID: 0}
+  resistance: 
+  weakness: 
+  isAlive: 1
 --- !u!54 &7713422293666972038
 Rigidbody:
   m_ObjectHideFlags: 0

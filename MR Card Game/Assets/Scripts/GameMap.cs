@@ -17,6 +17,9 @@ namespace map
         [SerializeField]
         private Transform[] mapWaypoints;
 
+        [SerializeField]
+        private GameObject enemySpawn;
+
         // Need to define the spawns here too TODO
 
         void Start()
@@ -28,6 +31,8 @@ namespace map
         private void SetMapWaypoints()
         {
             Waypoints.mapWaypoints = mapWaypoints;
+
+            Waypoints.enemySpawn = enemySpawn;
         }
     }
 }
