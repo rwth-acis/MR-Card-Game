@@ -204,7 +204,7 @@ public class ActivateQuestions : MonoBehaviour
         } else {
 
             // Editor case
-            Questions.pathToLevel = levelDirectoryPath;
+            levelDirectoryPath = Questions.pathToLevel = levelDirectoryPath;
         }
     }
 
@@ -1491,15 +1491,40 @@ public class ActivateQuestions : MonoBehaviour
         // Import all models
         foreach(string model in models)
         {
+            // // Access the model gameobject
+            // string json = File.ReadAllText(model);
+
+            // // Extract the gameobject
+            // Model modelObject = JsonUtility.FromJson<Model>(json);
+
+            // // Import the first model
+            // string url = urlBegin + modelObject.modelName;
+            // GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
+
+            // // Initialize the model (resize it correctly) and set it as the child of the same model object
+            // InitializeModel(obj, saveModelObject);
+
+            // // When the model finished loading, increase the loaded model counter
+            // Questions.numberOfModelsLoaded = Questions.numberOfModelsLoaded + 1;
+
+            // Debug.Log("The current number of models that are loaded is: " + Questions.numberOfModelsLoaded);
+            // Debug.Log("Currently we have: " + Questions.numberOfModelsLoaded + " >= "  + Questions.numberOfModels);
+
+            // ------------------------------------------
+            // Under here from local disc, over from url
+            // ------------------------------------------
+            
             // Access the model gameobject
             string json = File.ReadAllText(model);
 
             // Extract the gameobject
             Model modelObject = JsonUtility.FromJson<Model>(json);
 
+            // From the model name and the current path, get the path to the real model object
+            string modelPath = Path.Combine(Path.Combine(Questions.pathToLevel, modelObject.modelName), ".json");
+
             // Import the first model
-            string url = urlBegin + modelObject.modelName;
-            GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
+            GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(modelPath);
 
             // Initialize the model (resize it correctly) and set it as the child of the same model object
             InitializeModel(obj, saveModelObject);
@@ -1510,6 +1535,7 @@ public class ActivateQuestions : MonoBehaviour
             Debug.Log("The current number of models that are loaded is: " + Questions.numberOfModelsLoaded);
             Debug.Log("Currently we have: " + Questions.numberOfModelsLoaded + " >= "  + Questions.numberOfModels);
         }
+        
         Debug.Log("The number of models is: " + Questions.numberOfModels);
 
         // Activate the view model menu, where questions can be answered
