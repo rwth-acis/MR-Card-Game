@@ -1521,7 +1521,9 @@ public class ActivateQuestions : MonoBehaviour
             Model modelObject = JsonUtility.FromJson<Model>(json);
 
             // From the model name and the current path, get the path to the real model object
-            string modelPath = Path.Combine(Path.Combine(Questions.pathToLevel, modelObject.modelName), ".json");
+            string modelPath = Path.Combine(Questions.pathToLevel, modelObject.modelName);
+
+            Debug.Log("Trying to import: " + modelPath);
 
             // Import the first model
             GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(modelPath);
