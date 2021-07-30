@@ -204,7 +204,7 @@ public class ActivateQuestions : MonoBehaviour
         } else {
 
             // Editor case
-            levelDirectoryPath = Questions.pathToLevel = levelDirectoryPath;
+            levelDirectoryPath = Questions.pathToLevel;
         }
     }
 

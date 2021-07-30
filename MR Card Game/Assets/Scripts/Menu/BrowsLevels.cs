@@ -117,7 +117,7 @@ public class BrowsLevels : MonoBehaviour
     // Method that returns you the path to the root directory of the directory structure saved in the back end
     private string GetPathToRootDirectory(string scriptPath)
     {
-        string rootPath = Path.GetFullPath(Path.Combine(scriptPath, @"..\..\..\..\"));
+        string rootPath = Path.GetFullPath(Path.Combine(scriptPath, @"..\..\..\..\..\"));
         string rootDirectoryPath = Path.GetFullPath(Path.Combine(rootPath, @"Backend\"));
         return rootDirectoryPath;
     }
@@ -579,8 +579,10 @@ public class BrowsLevels : MonoBehaviour
         // Enable the start level overlay
         startLevelMenu.SetActive(true);
 
-        // // Set the path to the root directory of the level correctly
-        // Questions.pathToLevel = currentPath;
+        // Set the path to the root directory of the level correctly
+        Questions.pathToLevel = currentPath;
+
+        Debug.Log("The path to the current level is set to: " + currentPath);
 
         // At the end disable the background of all menus
         backGround.SetActive(false);
