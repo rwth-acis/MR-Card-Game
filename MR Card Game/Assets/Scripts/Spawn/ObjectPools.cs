@@ -25,14 +25,21 @@ public class ObjectPools : MonoBehaviour
         int poolId7 = ObjectPool<Enemy>.CreateNewPool(); // Pool for berzerker enemies
         int poolId8 = ObjectPool<Enemy>.CreateNewPool(); // Pool for berzerker flying enemies
         int poolId9 = ObjectPool<Enemy>.CreateNewPool(); // Pool for berzerker tanky enemies
+
         int poolId10 = ObjectPool<Enemy>.CreateNewPool(); // Pool for arrows
         int poolId11 = ObjectPool<Enemy>.CreateNewPool(); // Pool for fire balls
         int poolId12 = ObjectPool<Enemy>.CreateNewPool(); // Pool for stones
 
         int poolId13 = ObjectPool<Enemy>.CreateNewPool(); // Pool for dumping enemies with wrong enemy type
 
+        int poolId14 = ObjectPool<Enemy>.CreateNewPool(); // Pool for archer tower
+        int poolId15 = ObjectPool<Enemy>.CreateNewPool(); // Pool for fire tower
+        int poolId16 = ObjectPool<Enemy>.CreateNewPool(); // Pool for earth tower
+        int poolId17 = ObjectPool<Enemy>.CreateNewPool(); // Pool for lightning tower
+        int poolId18 = ObjectPool<Enemy>.CreateNewPool(); // Pool for wind tower
+
         // Store the pool ids so that they are not lost
-        EnemyPools.enemyPoolIds = new int[13];
+        EnemyPools.enemyPoolIds = new int[18];
         EnemyPools.enemyPoolIds[0] = poolId1;
         EnemyPools.enemyPoolIds[1] = poolId2;
         EnemyPools.enemyPoolIds[2] = poolId3;
@@ -42,12 +49,18 @@ public class ObjectPools : MonoBehaviour
         EnemyPools.enemyPoolIds[6] = poolId7;
         EnemyPools.enemyPoolIds[7] = poolId8;
         EnemyPools.enemyPoolIds[8] = poolId9;
+
         EnemyPools.enemyPoolIds[9] = poolId10;
         EnemyPools.enemyPoolIds[10] = poolId11;
         EnemyPools.enemyPoolIds[11] = poolId12;
-        EnemyPools.enemyPoolIds[12] = poolId13;
 
-        // Add a normal enemy to the first enemy pool
+        EnemyPools.enemyPoolIds[12] = poolId13;
+        
+        EnemyPools.enemyPoolIds[13] = poolId14;
+        EnemyPools.enemyPoolIds[14] = poolId15;
+        EnemyPools.enemyPoolIds[15] = poolId16;
+        EnemyPools.enemyPoolIds[16] = poolId17;
+        EnemyPools.enemyPoolIds[17] = poolId18;
     }
 
     // Update is called once per frame
@@ -131,5 +144,31 @@ public class ObjectPools : MonoBehaviour
 
         // Set the enemy as inactive
         enemy.gameObject.SetActive(false);
+    }
+
+    // Method that returns the correct object pool index given the enemy type
+    public static int GetTowerPoolIndex(string type)
+    {
+        switch(type)
+        {
+            case "Archer Tower":
+                return EnemyPools.enemyPoolIds[13];
+            break;
+            case "Fire Tower":
+                return EnemyPools.enemyPoolIds[14];
+            break;
+            case "Earth Tower":
+                return EnemyPools.enemyPoolIds[15];
+            break;
+            case "Lightning Tower":
+                return EnemyPools.enemyPoolIds[16];
+            break;
+            case "Wind Tower":
+                return EnemyPools.enemyPoolIds[17];
+            break;
+        }
+
+        // Case the enemy does not have a correct type
+        return EnemyPools.enemyPoolIds[12];
     }
 }

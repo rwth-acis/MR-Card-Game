@@ -30,6 +30,16 @@ public class Tower : MonoBehaviour
         get { return level; }
     }
 
+    // The weakness multiplier of the tower type
+    [SerializeField]
+    private float cost;
+
+    // The variable used to access the value of the weakness multiplier of projectiles from the projectile class
+    public float getCost
+    {
+        get { return cost; }
+    }
+
     // The attack range of the tower
     [SerializeField]
     private float attackRange;
