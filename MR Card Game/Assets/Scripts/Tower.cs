@@ -163,8 +163,12 @@ public class Tower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Attack if there are enemies in range
-        Attack();
+        // If the game is not paused, make the tower attack
+        if(GameAdvancement.gamePaused == false)
+        {
+            // Attack if there are enemies in range
+            Attack();
+        }
     }
 
 

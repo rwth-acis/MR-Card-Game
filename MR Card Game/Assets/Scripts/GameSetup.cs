@@ -28,6 +28,9 @@ static class GameAdvancement
     
     // The health counter C / M displayed on the health bar
     public static TMP_Text castleHealthCounter;
+
+    // The status of the game, if it should be paused or not
+    public static bool gamePaused = false;
 }
    
 public class GameSetup : MonoBehaviour

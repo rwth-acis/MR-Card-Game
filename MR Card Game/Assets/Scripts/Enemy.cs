@@ -139,30 +139,34 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // If the current health of the unit is not at its maximum, activate the health bar
-        if(currentHP < maximumHP)
+        // If the game is not paused, update
+        if(GameAdvancement.gamePaused == false)
         {
-            healthBarUI.SetActive(true);
+            // If the current health of the unit is not at its maximum, activate the health bar
+            if(currentHP < maximumHP)
+            {
+                healthBarUI.SetActive(true);
+            }
+
+            // Kill the enemy if it its health points reach zero
+            if(currentHP <= 0)
+            {
+                // Set the enemy as dead
+                isAlive = false;
+
+                // Return the enemy to the object pool
+                ReturnEnemyToObjectPool();
+
+                // Make the player win the currency points
+                WinPoints();
+            }
+
+            // Make the enemy mode
+            Move();
+
+            // Set the health value correctly
+            healthBar.value = CalculateHealth();
         }
-
-        // Kill the enemy if it its health points reach zero
-        if(currentHP <= 0)
-        {
-            // Set the enemy as dead
-            isAlive = false;
-
-            // Return the enemy to the object pool
-            ReturnEnemyToObjectPool();
-
-            // Make the player win the currency points
-            WinPoints();
-        }
-
-        // Move enemy
-        Move();
-
-        // Set the health value correctly
-        healthBar.value = CalculateHealth();
     }
 
     // Method that make the enemy walk

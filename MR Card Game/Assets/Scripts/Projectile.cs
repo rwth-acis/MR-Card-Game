@@ -31,8 +31,12 @@ public class Projectile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // If a projectile was created, it should move to the target
-        MoveToTarget();
+        // If the game is not paused, update and make the projectile move
+        if(GameAdvancement.gamePaused == false)
+        {
+            // If a projectile was created, it should move to the target
+            MoveToTarget();
+        }
     }
 
     // The initialize method used to set the parent and target objects

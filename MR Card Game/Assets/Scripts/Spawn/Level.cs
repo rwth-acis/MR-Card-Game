@@ -144,6 +144,9 @@ public class Level : MonoBehaviour
     {
         // Set the wave began flag to true
         waveBegan = true;
+
+        // Ground all towers so that they cannot be moved around after the start of the wave
+        // TODO
     }
 
     // Method that creates the level information
@@ -163,48 +166,48 @@ public class Level : MonoBehaviour
         LevelInfo.berzerkerTankEnemies[0] = 3;
     }
 
-    // Method that spawns the level, the given counters are the number of enemies of each type that should be spawned
-    public void SpawnLevel(int CounterE1, int CounterE2, int CounterE3, int CounterE4, int CounterE5, int CounterE6, int CounterE7, int CounterE8, int CounterE9)
-    {
-        // Check if the can spawn flag is true or false
-        if(!canSpawn)
-        {
-            // If it is false, increase the timer by the time passed
-            spawnTimer = spawnTimer + Time.deltaTime;
+    // // Method that spawns the level, the given counters are the number of enemies of each type that should be spawned
+    // public void SpawnLevel(int CounterE1, int CounterE2, int CounterE3, int CounterE4, int CounterE5, int CounterE6, int CounterE7, int CounterE8, int CounterE9)
+    // {
+    //     // Check if the can spawn flag is true or false
+    //     if(!canSpawn)
+    //     {
+    //         // If it is false, increase the timer by the time passed
+    //         spawnTimer = spawnTimer + Time.deltaTime;
 
-            // Check if the attack timer has reached the attack cooldown
-            if(spawnTimer >= timeBetweenSpawns)
-            {
-                // If it is the case, set the can attack flag to true
-                canSpawn = true;
+    //         // Check if the attack timer has reached the attack cooldown
+    //         if(spawnTimer >= timeBetweenSpawns)
+    //         {
+    //             // If it is the case, set the can attack flag to true
+    //             canSpawn = true;
 
-                // Reset the attack timer
-                spawnTimer = 0;
-            }
-        }
-        if(canSpawn == true)
-        {
-            // Check if currently there is no group of enemy that should be spawned
-            if(enemySpawnNumber == 0)
-            {
-                // Choose a new type of enemy that should be spawned
-                SetNextEnemyType(CounterE1, CounterE2, CounterE3, CounterE4, CounterE5, CounterE6, CounterE7, CounterE8, CounterE9);
-            }
+    //             // Reset the attack timer
+    //             spawnTimer = 0;
+    //         }
+    //     }
+    //     if(canSpawn == true)
+    //     {
+    //         // Check if currently there is no group of enemy that should be spawned
+    //         if(enemySpawnNumber == 0)
+    //         {
+    //             // Choose a new type of enemy that should be spawned
+    //             SetNextEnemyType(CounterE1, CounterE2, CounterE3, CounterE4, CounterE5, CounterE6, CounterE7, CounterE8, CounterE9);
+    //         }
 
-            // Check if currently a group of enemy should be spawned
-            if(enemySpawnNumber > 0)
-            {
-                // Spawn enemy of the type given
-                SpawnAnEnemy(enemyType);
+    //         // Check if currently a group of enemy should be spawned
+    //         if(enemySpawnNumber > 0)
+    //         {
+    //             // Spawn enemy of the type given
+    //             SpawnAnEnemy(enemyType);
 
-                // Reduce the number of enemies that should spawn as a group
-                enemySpawnNumber = enemySpawnNumber - 1;
+    //             // Reduce the number of enemies that should spawn as a group
+    //             enemySpawnNumber = enemySpawnNumber - 1;
 
-                // Reset the flag that an enemy can spawn
-                canSpawn = false;
-            }
-        }
-    }
+    //             // Reset the flag that an enemy can spawn
+    //             canSpawn = false;
+    //         }
+    //     }
+    // }
 
     // The method that starts a wave
     public void StartWave()

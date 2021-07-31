@@ -34,6 +34,9 @@ static class Questions
 
     // If it is for android or not, to switch easily between editor and device testing
     public static bool androidBoot;
+
+    // The number of questions that need to be answered correctly before the action can take place
+    public static int numberOfQuestionsNeededToAnswer;
 }
 
 public class ActivateQuestions : MonoBehaviour
@@ -900,6 +903,12 @@ public class ActivateQuestions : MonoBehaviour
 
         // Check if the question was answered correctly or not and give visual feedback
         DisplayFeedbackButton(feedbackInput, answeredCorrectly);
+
+        // If the question was answered correclty, reduce the number of questions that need to be answered by one
+        if(answeredCorrectly == true)
+        {
+            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer;
+        }
     }
 
     // Method that checks if both strings begin with or without capital letter, if not check if it is the same letter
@@ -1054,6 +1063,12 @@ public class ActivateQuestions : MonoBehaviour
         // Activate the close button and deactivate the confirm button
         closeQuestionMC.gameObject.SetActive(true);
         confirmAnswerMC.gameObject.SetActive(false);
+
+        // If the question was answered correclty, reduce the number of questions that need to be answered by one
+        if(answeredCorrectly == true)
+        {
+            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer;
+        }
     }
 
     // Method that displays the correctly or incorrectly answered question
@@ -1446,30 +1461,38 @@ public class ActivateQuestions : MonoBehaviour
     // Method that closes the current question, and changes the current question index
     public void GoToNextQuestion()
     {
-        // Check if the the current question index reached the end of the index
-        if(Questions.currentQuestionIndex < Questions.lastQuestionIndex)
+        // Check if any question still need to be answered
+        if(Questions.numberOfQuestionsNeededToAnswer > 0)
         {
-            // Case the current question index is smaller than the last question index, increase the current question index by one
-            Questions.currentQuestionIndex = Questions.currentQuestionIndex + 1;
+            // Check if the the current question index reached the end of the index
+            if(Questions.currentQuestionIndex < Questions.lastQuestionIndex)
+            {
+                // Case the current question index is smaller than the last question index, increase the current question index by one
+                Questions.currentQuestionIndex = Questions.currentQuestionIndex + 1;
 
+            } else {
+
+                // Case the current question index reached the end of the array, shuffle the array and set the current question index to 0
+                Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
+                Questions.currentQuestionIndex = 0;
+            }
+
+            // Disable the feedback buttons
+            feedbackInput.gameObject.SetActive(false);
+            feedbackMC.gameObject.SetActive(false);
+
+            // // After waiting, enable the view model menu
+            // viewModel.SetActive(true);
+
+            // Display the models of the current questions
+            DisplayModels();
+
+            Debug.Log("The current question is: " + Questions.questionArray[Questions.currentQuestionIndex]);
         } else {
 
-            // Case the current question index reached the end of the array, shuffle the array and set the current question index to 0
-            Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
-            Questions.currentQuestionIndex = 0;
+            // If no questions is needed to be answered, disable the window
+            viewModel.SetActive(false);
         }
-
-        // Disable the feedback buttons
-        feedbackInput.gameObject.SetActive(false);
-        feedbackMC.gameObject.SetActive(false);
-
-        // // After waiting, enable the view model menu
-        // viewModel.SetActive(true);
-
-        // Display the models of the current questions
-        DisplayModels();
-
-        Debug.Log("The current question is: " + Questions.questionArray[Questions.currentQuestionIndex]);
     }
 
     // Define the game object under which all models are saved (so that they can be found with their name, even if they have the same name as a game object)

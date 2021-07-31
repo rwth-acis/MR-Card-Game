@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using static i5.Toolkit.Core.Examples.Spawners.SpawnTower;
+using UnityEngine.EventSystems;
 
 public class BuildTower : MonoBehaviour
 {
@@ -42,6 +43,10 @@ public class BuildTower : MonoBehaviour
     // Define the build trap window
     [SerializeField]
     private GameObject buildTrapWindow;
+
+    // Define the answer questions menu
+    [SerializeField]
+    private GameObject answerQuestions;
 
     // Define the build archer tower button
     [SerializeField]
@@ -115,6 +120,9 @@ public class BuildTower : MonoBehaviour
     // The method that opens the build tower menu
     private void OpenBuildTowerMenu()
     {
+        // Pause the game
+        GameAdvancement.gamePaused = true;
+
         // Set the canvas as active
         buildTowerCanvas.SetActive(true);
 
@@ -189,37 +197,119 @@ public class BuildTower : MonoBehaviour
         // Here the game should be paused
     }
 
-    // The method that builds an archer tower over the image target
-    private void BuildArcherTower()
+    // The method that activates when the player wants to build an archer tower by pressing on the archer tower button in the build menu
+    private void InitiateArcherTowerBuild()
     {
+        // Enable the answer question menu
+        answerQuestions.SetActive(true);
+
+        // Set the number of questions that are needed to answer to 1
+        Questions.numberOfQuestionsNeededToAnswer = 1;
+
+        StartCoroutine(BuildArcherTower());
+    }
+
+    // The method that activates when the player wants to build an fire tower by pressing on the fire tower button in the build menu
+    private void InitiateFireTowerBuild()
+    {
+        // Enable the answer question menu
+        answerQuestions.SetActive(true);
+
+        // Set the number of questions that are needed to answer to 1
+        Questions.numberOfQuestionsNeededToAnswer = 1;
+
+        StartCoroutine(BuildFireTower());
+    }
+
+    // The method that activates when the player wants to build an earth tower by pressing on the earth tower button in the build menu
+    private void InitiateEarthTowerBuild()
+    {
+        // Enable the answer question menu
+        answerQuestions.SetActive(true);
+
+        // Set the number of questions that are needed to answer to 1
+        Questions.numberOfQuestionsNeededToAnswer = 1;
+
+        StartCoroutine(BuildEarthTower());
+    }
+
+    // The method that activates when the player wants to build an lightning tower by pressing on the lightning tower button in the build menu
+    private void InitiateLightningTowerBuild()
+    {
+        // Enable the answer question menu
+        answerQuestions.SetActive(true);
+
+        // Set the number of questions that are needed to answer to 1
+        Questions.numberOfQuestionsNeededToAnswer = 1;
+
+        StartCoroutine(BuildLightningTower());
+    }
+
+    // The method that activates when the player wants to build an wind tower by pressing on the wind tower button in the build menu
+    private void InitiateWindTowerBuild()
+    {
+        // Enable the answer question menu
+        answerQuestions.SetActive(true);
+
+        // Set the number of questions that are needed to answer to 1
+        Questions.numberOfQuestionsNeededToAnswer = 1;
+
+        StartCoroutine(BuildWindTower());
+    }
+
+    // Function that is used to test when all questions that were needed to be answered were answered correctly
+    private bool NoMoreQuestionsNeeded()
+    {
+        return Questions.numberOfQuestionsNeededToAnswer == 0;
+    }
+
+    // The method that builds an archer tower over the image target
+    IEnumerator BuildArcherTower()
+    {
+        // Wait until the number of questions that need to be answered is 0
+        yield return new WaitUntil(NoMoreQuestionsNeeded);
+
         // Spawn the archer tower or extract it from the object pool
         SpawnArcherTower(this.gameObject);
     }
 
+
     // The method that builds a fire tower over the image target
-    private void BuildFireTower()
+    IEnumerator BuildFireTower()
     {
+        // Wait until the number of questions that need to be answered is 0
+        yield return new WaitUntil(NoMoreQuestionsNeeded);
+
         // Spawn the fire tower or extract it from the object pool
         SpawnFireTower(this.gameObject);
     }
 
     // The method that builds a earth tower over the image target
-    private void BuildEarthTower()
+    IEnumerator BuildEarthTower()
     {
+        // Wait until the number of questions that need to be answered is 0
+        yield return new WaitUntil(NoMoreQuestionsNeeded);
+
         // Spawn the earth tower or extract it from the object pool
         SpawnEarthTower(this.gameObject);
     }
 
     // The method that builds a lightning tower over the image target
-    private void BuildLightningTower()
+    IEnumerator BuildLightningTower()
     {
+        // Wait until the number of questions that need to be answered is 0
+        yield return new WaitUntil(NoMoreQuestionsNeeded);
+
         // Spawn the lightning tower or extract it from the object pool
         SpawnLightningTower(this.gameObject);
     }
 
     // The method that builds a wind tower over the image target
-    private void BuildWindTower()
+    IEnumerator BuildWindTower()
     {
+        // Wait until the number of questions that need to be answered is 0
+        yield return new WaitUntil(NoMoreQuestionsNeeded);
+
         // Spawn the wind tower or extract it from the object pool
         SpawnWindTower(this.gameObject);
     }
