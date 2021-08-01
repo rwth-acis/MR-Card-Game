@@ -149,7 +149,7 @@ public class Enemy : MonoBehaviour
             }
 
             // Kill the enemy if it its health points reach zero
-            if(currentHP <= 0)
+            if(currentHP <= 0 && isAlive == true)
             {
                 // Set the enemy as dead
                 isAlive = false;
@@ -159,6 +159,9 @@ public class Enemy : MonoBehaviour
 
                 // Make the player win the currency points
                 WinPoints();
+
+                // Reduce the number of undefeated enemies of the wave by one
+                LevelInfo.numberOfUndefeatedEnemies = LevelInfo.numberOfUndefeatedEnemies - 1;
             }
 
             // Make the enemy mode

@@ -26,7 +26,10 @@ static class Board
     // The gameboard object
     public static GameObject gameBoard;
 
-    //
+    // The game object that should contain all towers (child of the game board)
+    public static GameObject buildingsStorage;
+
+    // Define the camera so that UI elements on units can be oriented towards it
     public static Transform camera;
 }
 

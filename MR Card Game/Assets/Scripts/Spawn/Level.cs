@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 using static i5.Toolkit.Core.Examples.Spawners.SpawnEnemy;
 using UnityEngine.EventSystems;
@@ -9,6 +10,12 @@ static class LevelInfo
 {
     // The number of waves of the level
     public static int numberOfWaves;
+
+    // The number of additional enemies per wave
+    public static int numberOfAdditionalEnemiesPerWave;
+
+    // The number of enemies that were not defeated for now in the wave
+    public static int numberOfUndefeatedEnemies;
 
     // The number of enemies per wave
     public static int[] numberOfEnemies;
@@ -49,8 +56,13 @@ public class Level : MonoBehaviour
     // The current wave counter
     private int currentWave;
 
-    // The boolean that indicates if the wave is currently spawning
-    private bool waveBegan = false;
+    // The number of additional enemies per wave
+    [SerializeField]
+    private int numberOfAdditionalEnemiesPerWave;
+
+    // The start next wave button
+    [SerializeField]
+    private Button startNextWave;
 
     // The current enemy index that should be spawned together
     private string enemyType = "";
@@ -83,20 +95,26 @@ public class Level : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Set the current wave to wave 1
-        currentWave = 1;
+        // Set the number of waves
+        SetNumberOfWaves();
+
+        // Set the current wave to wave 0
+        currentWave = 0;
 
         // Initilaize the arrays
-        LevelInfo.numberOfEnemies = new int[currentWave];
-        LevelInfo.normalEnemies = new int[currentWave];
-        LevelInfo.fastEnemies = new int[currentWave];
-        LevelInfo.superFastEnemies = new int[currentWave];
-        LevelInfo.flyingEnemies = new int[currentWave];
-        LevelInfo.tankEnemies = new int[currentWave];
-        LevelInfo.slowEnemies = new int[currentWave];
-        LevelInfo.berzerkerEnemies = new int[currentWave];
-        LevelInfo.berzerkerFlyingEnemies = new int[currentWave];
-        LevelInfo.berzerkerTankEnemies = new int[currentWave];
+        LevelInfo.numberOfEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.normalEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.fastEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.superFastEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.flyingEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.tankEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.slowEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.berzerkerEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.berzerkerFlyingEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.berzerkerTankEnemies = new int[LevelInfo.numberOfWaves];
+
+        // Set the right additional number of enemies per wave
+        LevelInfo.numberOfAdditionalEnemiesPerWave = numberOfAdditionalEnemiesPerWave;
 
         // Create level information given the number of question
         CreateLevelInformation();
@@ -115,103 +133,37 @@ public class Level : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // If the next wave flag is set, then the next wave should be spawned
-        if(LevelInfo.nextWave == true && currentWave < LevelInfo.numberOfWaves)
+        // Check if the current wave is smaller than the number of waves and if the number of undefeated enemies is 0
+        if(LevelInfo.numberOfUndefeatedEnemies == 0 && currentWave < LevelInfo.numberOfWaves)
         {
-            // Increase the current wave counter
-            currentWave = currentWave + 1;
-
-            // Set the flag down
-            LevelInfo.nextWave = false;
-
-            // Set the boolean that the new wave began to false
-            waveBegan = false;
-        }
-
-        // Spawn the level
-        if(waveBegan == true)
-        {
-            // Start the new wave
-            StartWave();
-
-            // Set the wave began flag to false
-            waveBegan = false;
+            // Make the next wave setup
+            MakeNextWaveSetup();
         }
     }
 
-    // Method that starts the first wave
-    public void StartFirstWave()
+    // The method that does the setup to make sure the next wave can spawn
+    public void MakeNextWaveSetup()
     {
-        // Set the wave began flag to true
-        waveBegan = true;
+        // Set the current wave to + 1
+        currentWave = currentWave + 1;
 
-        // Ground all towers so that they cannot be moved around after the start of the wave
-        // TODO
+        // Activate the start next wave button
+        startNextWave.gameObject.SetActive(true);
+
+        // Set the number of undefeated enemies to the number of enemies in the wave
+        LevelInfo.numberOfUndefeatedEnemies = LevelInfo.numberOfEnemies[currentWave - 1];
+
+        // Unground all the buildings now that the wave is finished
+        UngroundAllBuildings();
     }
-
-    // Method that creates the level information
-    public void CreateLevelInformation()
-    {
-        LevelInfo.numberOfWaves = 1;
-        //
-        LevelInfo.numberOfEnemies[0] = 29;
-        LevelInfo.normalEnemies[0] = 5;
-        LevelInfo.fastEnemies[0] = 3;
-        LevelInfo.superFastEnemies[0] = 3;
-        LevelInfo.flyingEnemies[0] = 3;
-        LevelInfo.tankEnemies[0] = 3;
-        LevelInfo.slowEnemies[0] = 3;
-        LevelInfo.berzerkerEnemies[0] = 3;
-        LevelInfo.berzerkerFlyingEnemies[0] = 3;
-        LevelInfo.berzerkerTankEnemies[0] = 3;
-    }
-
-    // // Method that spawns the level, the given counters are the number of enemies of each type that should be spawned
-    // public void SpawnLevel(int CounterE1, int CounterE2, int CounterE3, int CounterE4, int CounterE5, int CounterE6, int CounterE7, int CounterE8, int CounterE9)
-    // {
-    //     // Check if the can spawn flag is true or false
-    //     if(!canSpawn)
-    //     {
-    //         // If it is false, increase the timer by the time passed
-    //         spawnTimer = spawnTimer + Time.deltaTime;
-
-    //         // Check if the attack timer has reached the attack cooldown
-    //         if(spawnTimer >= timeBetweenSpawns)
-    //         {
-    //             // If it is the case, set the can attack flag to true
-    //             canSpawn = true;
-
-    //             // Reset the attack timer
-    //             spawnTimer = 0;
-    //         }
-    //     }
-    //     if(canSpawn == true)
-    //     {
-    //         // Check if currently there is no group of enemy that should be spawned
-    //         if(enemySpawnNumber == 0)
-    //         {
-    //             // Choose a new type of enemy that should be spawned
-    //             SetNextEnemyType(CounterE1, CounterE2, CounterE3, CounterE4, CounterE5, CounterE6, CounterE7, CounterE8, CounterE9);
-    //         }
-
-    //         // Check if currently a group of enemy should be spawned
-    //         if(enemySpawnNumber > 0)
-    //         {
-    //             // Spawn enemy of the type given
-    //             SpawnAnEnemy(enemyType);
-
-    //             // Reduce the number of enemies that should spawn as a group
-    //             enemySpawnNumber = enemySpawnNumber - 1;
-
-    //             // Reset the flag that an enemy can spawn
-    //             canSpawn = false;
-    //         }
-    //     }
-    // }
 
     // The method that starts a wave
     public void StartWave()
     {
+        // Ground all buildings when the wave begins
+        GroundAllBuildings();
+
+        // Start the coroutine that spawns all the wave
         StartCoroutine(SpawnWave());
     }
 
@@ -244,7 +196,6 @@ public class Level : MonoBehaviour
 
             Debug.Log("The waiting time just finished");
         }
-        
     }
 
     // Method that determines the next type of enemies that should be spawned
@@ -355,20 +306,392 @@ public class Level : MonoBehaviour
         enemySpawnNumber = RandomNumber(1, 3) + (currentWave - 1);
     }
 
-    // // Method that waits a certain time before a next action can take place
-    // public void WaitTime()
-    // {
-    //     // If it is false, increase the timer by the time passed
-    //     spawnTimer = spawnTimer + Time.deltaTime;
+    //---------------------------------------------------------------------------------------------------------------------------------
+    // Creating all the wave informations
+    //---------------------------------------------------------------------------------------------------------------------------------
 
-    //     // Check if the attack timer has reached the attack cooldown
-    //     if(spawnTimer >= timeBetweenSpawns)
-    //     {
-    //         // If it is the case, set the can attack flag to true
-    //         canSpawn = true;
 
-    //         // Reset the attack timer
-    //         spawnTimer = 0;
-    //     }
-    // }
+    // Method that creates the level information
+    public void CreateLevelInformation()
+    {
+        if(false)
+        {
+            // For testing
+            LevelInfo.numberOfWaves = 1;
+            //
+            LevelInfo.numberOfEnemies[0] = 29;
+            LevelInfo.normalEnemies[0] = 5;
+            LevelInfo.fastEnemies[0] = 3;
+            LevelInfo.superFastEnemies[0] = 3;
+            LevelInfo.flyingEnemies[0] = 3;
+            LevelInfo.tankEnemies[0] = 3;
+            LevelInfo.slowEnemies[0] = 3;
+            LevelInfo.berzerkerEnemies[0] = 3;
+            LevelInfo.berzerkerFlyingEnemies[0] = 3;
+            LevelInfo.berzerkerTankEnemies[0] = 3;
+
+        } else {
+            
+            // The real method
+            
+            // -------------------------------------------------------------------------------------------------------
+            // Generate the first wave
+            // -------------------------------------------------------------------------------------------------------
+
+            // Get a random number between 10 and 20 and set the number of enemies to this number
+            int numberOfEnemiesInTheWave = RandomNumber(10, 20);
+            LevelInfo.numberOfEnemies[0] = numberOfEnemiesInTheWave;
+
+            // Save the number of enemies that do not have a category
+            int enemiesWithoutCategory = numberOfEnemiesInTheWave;
+
+            // A high number of enemies in the first wave should be normal enemies
+            int normalEnemies = RandomNumber(10, 20);
+            LevelInfo.normalEnemies[0] = normalEnemies;
+
+            // Set the number of enemies without category correctly
+            enemiesWithoutCategory = enemiesWithoutCategory - normalEnemies;
+
+            // Initialize the enemy index and the number of enemies in the new category
+            int enemyIndex = 0;
+            int numberOfEnmiesInNewCategory = 0;
+
+            // For as long as there are enemies, choose what enemy should be added and the number
+            while(enemiesWithoutCategory > 0)
+            {
+                // Generate a random number between 0 and 3
+                enemyIndex = RandomNumber(0, 3);
+
+                // Generate a random number between 1 and the number of enemies without category
+                numberOfEnmiesInNewCategory = RandomNumber(1, enemiesWithoutCategory);
+
+                //
+                switch(enemyIndex)
+                {
+                    case 0:
+                        LevelInfo.normalEnemies[0] = LevelInfo.normalEnemies[0] + numberOfEnmiesInNewCategory;
+                    break;
+
+                    case 1:
+                        LevelInfo.fastEnemies[0] = LevelInfo.fastEnemies[0] + numberOfEnmiesInNewCategory;
+                    break;
+
+                    case 2:
+                        LevelInfo.flyingEnemies[0] = LevelInfo.flyingEnemies[0] + numberOfEnmiesInNewCategory;
+                    break;
+
+                    case 3:
+                        LevelInfo.tankEnemies[0] = LevelInfo.tankEnemies[0] + numberOfEnmiesInNewCategory;
+                    break;
+                }
+
+                // Reduce the number of enemies without category by the number of enemies that were but in a category
+                enemiesWithoutCategory = enemiesWithoutCategory - numberOfEnmiesInNewCategory;
+            }
+
+            // -------------------------------------------------------------------------------------------------------
+            // Generate the other waves
+            // -------------------------------------------------------------------------------------------------------
+
+            // Generate the number of waves - 1 other waves
+            for(int index = 1; index < LevelInfo.numberOfWaves; index = index + 1)
+            {
+                // Set the number of enemies in the wave
+                numberOfEnemiesInTheWave = RandomNumber(10, 20) + index * numberOfAdditionalEnemiesPerWave;
+                LevelInfo.numberOfEnemies[index] = numberOfEnemiesInTheWave;
+
+                // Save the number of enemies that do not have a category
+                enemiesWithoutCategory = numberOfEnemiesInTheWave;
+
+                // For as long as there are enemies, choose what enemy should be added and the number
+                while(enemiesWithoutCategory > 0)
+                {
+                    // Not all enemies should be added at the second wave, only standard berzerker enemy
+                    if(index == 1)
+                    {
+                        // Generate a random number between 0 and 10
+                        enemyIndex = RandomNumber(0, 9);
+
+                    } else {
+
+                        // Generate a random number between 0 and 12
+                        enemyIndex = RandomNumber(0, 11);
+                    }
+
+                    // Generate a random number between 1 and the number of enemies without category
+                    numberOfEnmiesInNewCategory = RandomNumber(1, enemiesWithoutCategory);
+
+                    // Add this number of enemies in the right category. The probability it is a normal enemy is higher than the rest
+                    switch(enemyIndex)
+                    {
+                        case 0:
+                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnmiesInNewCategory;
+                        break;
+
+                        case 1:
+                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnmiesInNewCategory;
+                        break;
+
+                        case 2:
+                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnmiesInNewCategory;
+                        break;
+
+                        case 3:
+                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnmiesInNewCategory;
+                        break;
+
+                        case 4:
+                            LevelInfo.fastEnemies[index] = LevelInfo.fastEnemies[index] + numberOfEnmiesInNewCategory;
+                        break;
+
+                        case 5:
+                            LevelInfo.superFastEnemies[index] = LevelInfo.superFastEnemies[index] + numberOfEnmiesInNewCategory;
+                        break;
+
+                        case 6:
+                            LevelInfo.flyingEnemies[index] = LevelInfo.flyingEnemies[index] + numberOfEnmiesInNewCategory;
+                        break;
+
+                        case 7:
+                            LevelInfo.tankEnemies[index] = LevelInfo.tankEnemies[index] + numberOfEnmiesInNewCategory;
+                        break;
+
+                        case 8:
+                            LevelInfo.slowEnemies[index] = LevelInfo.slowEnemies[index] + numberOfEnmiesInNewCategory;
+                        break;
+
+                        case 9:
+                            LevelInfo.berzerkerEnemies[index] = LevelInfo.berzerkerEnemies[index] + numberOfEnmiesInNewCategory;
+                        break;
+
+                        case 10:
+                            LevelInfo.berzerkerFlyingEnemies[index] = LevelInfo.berzerkerFlyingEnemies[index] + numberOfEnmiesInNewCategory;
+                        break;
+
+                        case 11:
+                            LevelInfo.berzerkerTankEnemies[index] = LevelInfo.berzerkerTankEnemies[index] + numberOfEnmiesInNewCategory;
+                        break;
+                    }
+
+                    // Reduce the number of enemies without category by the number of enemies that were but in a category
+                    enemiesWithoutCategory = enemiesWithoutCategory - numberOfEnmiesInNewCategory;
+                }
+            }
+        }
+    }
+
+    private void SetNumberOfWaves()
+    {
+        // Check how many questions there are
+        if(Questions.lastQuestionIndex + 1 <= 7)
+        {
+            // Set the number of waves to 1
+            LevelInfo.numberOfWaves = 1;
+
+        } else if(Questions.lastQuestionIndex + 1 <= 14) 
+        {
+            // Set the number of waves to 2
+            LevelInfo.numberOfWaves = 2;
+
+        } else if(Questions.lastQuestionIndex + 1 <= 21) 
+        {
+            // Set the number of waves to 3
+            LevelInfo.numberOfWaves = 3;
+
+        } else if(Questions.lastQuestionIndex + 1 <= 28) 
+        {
+            // Set the number of waves to 4
+            LevelInfo.numberOfWaves = 4;
+
+        } else if(Questions.lastQuestionIndex + 1 <= 35) 
+        {
+            // Set the number of waves to 5
+            LevelInfo.numberOfWaves = 5;
+
+        } else if(Questions.lastQuestionIndex + 1 <= 42) 
+        {
+            // Set the number of waves to 6
+            LevelInfo.numberOfWaves = 6;
+
+        } else if(Questions.lastQuestionIndex + 1 <= 49) 
+        {
+            // Set the number of waves to 7
+            LevelInfo.numberOfWaves = 7;
+
+        } else if(Questions.lastQuestionIndex + 1 <= 56) 
+        {
+            // Set the number of waves to 8
+            LevelInfo.numberOfWaves = 8;
+
+        } else if(Questions.lastQuestionIndex + 1 <= 63) 
+        {
+            // Set the number of waves to 9
+            LevelInfo.numberOfWaves = 9;
+
+        } else if(Questions.lastQuestionIndex + 1 <= 70) 
+        {
+            // Set the number of waves to 10
+            LevelInfo.numberOfWaves = 10;
+
+        } else if(Questions.lastQuestionIndex + 1 > 70) 
+        {
+            // Set the number of waves to 11
+            LevelInfo.numberOfWaves = 11;
+
+        }
+    }
+
+    //---------------------------------------------------------------------------------------------------------------------------------
+    // Grounding and ungrounding towers
+    //---------------------------------------------------------------------------------------------------------------------------------
+
+    // Method that grounds the buildings on the game board when the wave starts
+    public void GroundAllBuildings()
+    {
+        // Ground the first building if it exists
+        if(Buildings.numberOfBuildings > 0)
+        {
+            // Ground the first building
+            GroundBuilding(Buildings.firstBuilding, 0);
+
+            // Ground the second building if it exists
+            if(Buildings.numberOfBuildings > 1)
+            {
+                GroundBuilding(Buildings.secondBuilding, 1);
+
+                // Ground the third building if it exists
+                if(Buildings.numberOfBuildings > 2)
+                {
+                    GroundBuilding(Buildings.thirdBuilding, 2);
+
+                    // Ground the fourth building if it exists
+                    if(Buildings.numberOfBuildings > 3)
+                    {
+                        GroundBuilding(Buildings.fourthBuilding, 3);
+
+                        // Ground the fifth building if it exists
+                        if(Buildings.numberOfBuildings > 4)
+                        {
+                            GroundBuilding(Buildings.fifthBuilding, 4);
+
+                            // Ground the sixth building if it exists
+                            if(Buildings.numberOfBuildings > 5)
+                            {
+                                GroundBuilding(Buildings.sixthBuilding, 5);
+
+                                // Ground the seventh building if it exists
+                                if(Buildings.numberOfBuildings > 6)
+                                {
+                                    GroundBuilding(Buildings.seventhBuilding, 6);
+
+                                    // Ground the eighth building if it exists
+                                    if(Buildings.numberOfBuildings > 7)
+                                    {
+                                        GroundBuilding(Buildings.eighthBuilding, 7);
+
+                                        // Ground the ninth building if it exists
+                                        if(Buildings.numberOfBuildings > 8)
+                                        {
+                                            GroundBuilding(Buildings.ninthBuilding, 8);
+
+                                            // Ground the tenth building if it exists
+                                            if(Buildings.numberOfBuildings > 9)
+                                            {
+                                                GroundBuilding(Buildings.tenthBuilding, 9);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // The method used to ground buildings
+    public void GroundBuilding(GameObject building, int index)
+    {
+        // Set the position of the building to the position of the image target
+        building.transform.position = Buildings.imageTargetToBuilding[index].transform.position;
+
+        // Set the building as child of the buildings storage object that is a child of the game board
+        building.transform.parent = Board.buildingsStorage.transform;
+    }
+
+    // Method that ungrounds all the buildings on the game board when the wave starts
+    public void UngroundAllBuildings()
+    {
+        // Ground the first building if it exists
+        if(Buildings.numberOfBuildings > 0)
+        {
+            // Ground the first building
+            UngroundBuilding(Buildings.firstBuilding, 0);
+
+            // Ground the second building if it exists
+            if(Buildings.numberOfBuildings > 1)
+            {
+                UngroundBuilding(Buildings.secondBuilding, 1);
+
+                // Ground the third building if it exists
+                if(Buildings.numberOfBuildings > 2)
+                {
+                    UngroundBuilding(Buildings.thirdBuilding, 2);
+
+                    // Ground the fourth building if it exists
+                    if(Buildings.numberOfBuildings > 3)
+                    {
+                        UngroundBuilding(Buildings.fourthBuilding, 3);
+
+                        // Ground the fifth building if it exists
+                        if(Buildings.numberOfBuildings > 4)
+                        {
+                            UngroundBuilding(Buildings.fifthBuilding, 4);
+
+                            // Ground the sixth building if it exists
+                            if(Buildings.numberOfBuildings > 5)
+                            {
+                                UngroundBuilding(Buildings.sixthBuilding, 5);
+
+                                // Ground the seventh building if it exists
+                                if(Buildings.numberOfBuildings > 6)
+                                {
+                                    UngroundBuilding(Buildings.seventhBuilding, 6);
+
+                                    // Ground the eighth building if it exists
+                                    if(Buildings.numberOfBuildings > 7)
+                                    {
+                                        UngroundBuilding(Buildings.eighthBuilding, 7);
+
+                                        // Ground the ninth building if it exists
+                                        if(Buildings.numberOfBuildings > 8)
+                                        {
+                                            UngroundBuilding(Buildings.ninthBuilding, 8);
+
+                                            // Ground the tenth building if it exists
+                                            if(Buildings.numberOfBuildings > 9)
+                                            {
+                                                UngroundBuilding(Buildings.tenthBuilding, 9);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // The method used to unground buildings
+    public void UngroundBuilding(GameObject building, int index)
+    {
+        // Reset the position of the building 
+        building.transform.position = new Vector3(0, 0, 0);
+
+        // Set the building as child of the image target
+        building.transform.parent = Buildings.imageTargetToBuilding[index].transform;
+    }
 }

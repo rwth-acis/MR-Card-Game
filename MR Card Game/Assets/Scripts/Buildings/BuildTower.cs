@@ -28,6 +28,12 @@ public class BuildTower : MonoBehaviour
     [SerializeField]
     private int windTowerCost;
 
+    [SerializeField]
+    private int holeCost;
+
+    [SerializeField]
+    private int swampCost;
+
     // Define the individual canvas for the build tower button
     [SerializeField]
     private GameObject buildUI;
@@ -68,6 +74,13 @@ public class BuildTower : MonoBehaviour
     [SerializeField]
     private Button buildWindTower;
 
+    // Define the build wind tower button
+    [SerializeField]
+    private Button buildHole;
+
+    // Define the build wind tower button
+    [SerializeField]
+    private Button buildSwamp;
 
     // Start is called before the first frame update
     void Start()
@@ -79,7 +92,7 @@ public class BuildTower : MonoBehaviour
     void Update()
     {
         // Check if the image target just entered the game board or left it
-        if(makeBuildAppear == true)
+        if(makeBuildAppear == true && GameAdvancement.gamePaused == false)
         {
             // Make the ui button appear that should be clickable to construct a tower
             buildUI.SetActive(true);
@@ -94,6 +107,16 @@ public class BuildTower : MonoBehaviour
 
             // Set the flag to false
             makeBuildDisappear = false;
+        }
+
+        // Check if the build UI is active and if the game was paused
+        if(GameAdvancement.gamePaused == true && buildUI.activeSelf == true)
+        {
+            // Make the ui button disappear
+            buildUI.SetActive(false);
+
+            // Set the flag to false
+            makeBuildAppear = true;
         }
     }
 
@@ -118,7 +141,7 @@ public class BuildTower : MonoBehaviour
     }
 
     // The method that opens the build tower menu
-    private void OpenBuildTowerMenu()
+    public void OpenBuildTowerMenu()
     {
         // Pause the game
         GameAdvancement.gamePaused = true;
@@ -193,8 +216,48 @@ public class BuildTower : MonoBehaviour
             // Disable the wind tower
             buildWindTower.interactable = false;
         }
+    }
 
-        // Here the game should be paused
+    // The method that opens the build tower menu
+    public void OpenBuildTrapMenu()
+    {
+        // Pause the game
+        GameAdvancement.gamePaused = true;
+
+        // Set the canvas as active
+        buildTowerCanvas.SetActive(true);
+
+        // Set the build trap menu as active
+        buildTrapWindow.SetActive(true);
+
+        // Make sure the build tower menu is inactive
+        buildTowerWindow.SetActive(false);
+
+        // Disable the trap buttons that cannot be bought, and enable the trap buttons that can be bought
+
+        // Check if the player has enough coin to build a hole
+        if(GameAdvancement.currencyPoints >= holeCost)
+        {
+            // Enable the hole button
+            buildHole.interactable = true;
+
+        } else {
+
+            // Disable the hole button
+            buildHole.interactable = false;
+        }
+
+        // Check if the player has enough coin to build a swamp
+        if(GameAdvancement.currencyPoints >= swampCost)
+        {
+            // Enable the swamp button
+            buildSwamp.interactable = true;
+
+        } else {
+
+            // Disable the swamp button
+            buildSwamp.interactable = false;
+        }
     }
 
     // The method that activates when the player wants to build an archer tower by pressing on the archer tower button in the build menu

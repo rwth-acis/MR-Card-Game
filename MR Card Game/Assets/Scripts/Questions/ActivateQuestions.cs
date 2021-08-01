@@ -202,7 +202,7 @@ public class ActivateQuestions : MonoBehaviour
         if(Questions.androidBoot == true)
         {
             // Android case
-            Questions.pathToLevel = Path.Combine(Application.persistentDataPath, "Level1");
+            Questions.pathToLevel = Application.persistentDataPath;
 
         } else {
 

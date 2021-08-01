@@ -15,6 +15,10 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private string towerType;
 
+    // The projectile prefab of the tower
+    [SerializeField]
+    private Projectile towerProjectile;
+
     // Method used in the projectile class to read the tower type
     public string GetTowerType
     {
