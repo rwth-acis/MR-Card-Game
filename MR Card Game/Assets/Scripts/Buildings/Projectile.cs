@@ -4,11 +4,29 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    // A projectile instance needed to access non static variables in a static way
+    public static Projectile instance;
+
     // The target of the projectile
     private Enemy target;
 
     // The parent tower of the projectile
     private Tower parent;
+
+    // Method used to get the type of the tower
+    public static Tower GetParent
+    {
+        get { return instance.parent; }
+    }
+
+    // The parent tower of the projectile
+    private Tower projectileType;
+
+    // Method used to get the type of the tower
+    public static Tower GetProjectileType
+    {
+        get { return instance.projectileType; }
+    }
 
     // The last position of the target is saved so that the projectile can continue travelling after the enemy is dead
     private Vector3 lastPosition;
@@ -25,7 +43,24 @@ public class Projectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Initialie the instance
+        instance = this;
 
+        // Get the right type
+        switch(GetParent.GetTowerType)
+        {
+            case "Archer Tower":
+                projectileType = "Arrow";
+            break;
+
+            case "Fire Tower":
+                projectileType = "Fire Ball";
+            break;
+
+            case "Earth Tower":
+                projectileType = "Stone";
+            break;
+        }
     }
 
     // Update is called once per frame
@@ -93,18 +128,19 @@ public class Projectile : MonoBehaviour
                 }
 
                 // Delete the projectile
-                Destroy(gameObject);
+                // Destroy(gameObject);
+                ObjectPools.ReleaseProjectile(gameObject);
             }
 
         } else {
 
-            // Check if it is not a wind projectile
-            if(parent.GetTowerType == "Wind Tower" || parent.GetTowerType == "Lightning Tower")
+            // Check if it is not a wind tower or lightning tower that do not have a projectile
+            if(parent.GetTowerType != "Wind Tower" || parent.GetTowerType != "Lightning Tower")
             {
-                // Destroy the projectile since there is no target anymore
-                Destroy(gameObject);
+            //     // // Destroy the projectile since there is no target anymore
+            //     // Destroy(gameObject);
 
-            } else {
+            // } else {
 
                 // Make the projectile move to the last position
                 transform.position = Vector3.MoveTowards(transform.position, lastPosition, Time.deltaTime * parent.GetProjectileSpeed);
@@ -126,8 +162,9 @@ public class Projectile : MonoBehaviour
                         break;
                     }
 
-                    // Delete the projectile
-                    Destroy(gameObject);
+                    // // Delete the projectile
+                    // Destroy(gameObject);
+                    ObjectPools.ReleaseProjectile(gameObject);
                 }
             }
         }
@@ -299,4 +336,32 @@ public class Projectile : MonoBehaviour
         // Remove colliders that leave the collider of the projectile collider
         colliders.Remove(other);
     }
+
+    // Method used to return the enemy to the right object pool uppon death
+    public void ReturnProjectileoObjectPool()
+    {
+        // Call the release enemy of the object pool class
+        ObjectPools.ReleaseProjectile(gameObject);
+    }
+
+    // public static string GetProjectileType()
+    // {
+    //     // Return the right projectile type given the parent game object tower type
+    //     switch(GetParent.GetTowerType)
+    //     {
+    //         case "Archer Tower":
+    //             return "Arrow";
+    //         break;
+
+    //         case "Fire Tower":
+    //             return "Fire Ball";
+    //         break;
+
+    //         case "Earth Tower":
+    //             return "Stone";
+    //         break;
+    //     }
+
+    //     return "Arrow";
+    // }
 }

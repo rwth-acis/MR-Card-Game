@@ -134,6 +134,7 @@ public class ObjectPools : MonoBehaviour
         return EnemyPools.enemyPoolIds[12];
     }
 
+    // The method that releses the enemy game objects
     public static void ReleaseEnemy(Enemy enemy)
     {
         // Get the correclt object pool index from the object pools class
@@ -146,7 +147,7 @@ public class ObjectPools : MonoBehaviour
         enemy.gameObject.SetActive(false);
     }
 
-    // Method that returns the correct object pool index given the enemy type
+    // Method that returns the correct object pool index given the tower type
     public static int GetTowerPoolIndex(string type)
     {
         switch(type)
@@ -170,5 +171,56 @@ public class ObjectPools : MonoBehaviour
 
         // Case the enemy does not have a correct type
         return EnemyPools.enemyPoolIds[12];
+    }
+
+    // The method that releses the tower game objects
+    public static void ReleaseTower(GameObject tower)
+    {
+        string towerType = tower.GetComponent<Tower>().GetTowerType();
+
+        // Get the correclt object pool index from the object pools class
+        int objectPoolIndex = GetTowerPoolIndex(towerType);
+
+        // Release the enemy into the right object pool
+        ObjectPool<GameObject>.ReleaseResource(objectPoolIndex, tower);
+
+        // Set the enemy as inactive
+        tower.gameObject.SetActive(false);
+    }
+
+    // Method that returns the correct object pool index given the projectile type
+    public static int GetProjectilePoolIndex(string type)
+    {
+        // Return the right projectile pool index given the projectile type
+        switch(type)
+        {
+            case "Arrrow":
+                return EnemyPools.enemyPoolIds[9];
+            break;
+            case "Fire Ball":
+                return EnemyPools.enemyPoolIds[10];
+            break;
+            case "Stone":
+                return EnemyPools.enemyPoolIds[11];
+            break;
+        }
+
+        // In case the name is incorrect return an arrow
+        return EnemyPools.enemyPoolIds[9];
+    }
+
+    // The method that releses the projectile game objects
+    public static void ReleaseProjectile(Projectile projectile)
+    {
+        string projectileType = projectile.GetProjectileType;
+
+        // Get the correclt object pool index from the object pools class
+        int objectPoolIndex = GetProjectilePoolIndex(projectile.GetProjectileTyp);
+
+        // Release the enemy into the right object pool
+        ObjectPool<Projectile>.ReleaseResource(objectPoolIndex, projectile);
+
+        // Set the enemy as inactive
+        projectile.gameObject.SetActive(false);
     }
 }

@@ -305,7 +305,7 @@ public class Tower : MonoBehaviour
         } else {
 
             // Spawn the projectile
-            Projectile spawnedProjectile = SpawnProjectileForTower(projectileSpawner).GetComponent<Projectile>();
+            Projectile spawnedProjectile = SpawnProjectileForTower(towerType).GetComponent<Projectile>();
 
             // Make sure the projectile is active
             // spawnedProjectile.gameObject.SetActive(true);
