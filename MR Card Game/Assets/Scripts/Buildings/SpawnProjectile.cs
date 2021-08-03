@@ -18,6 +18,11 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Set the projectile active
             spawner.MostRecentlySpawnedObject.SetActive(true);
 
+            // Scale the projectile down with the board scale
+            spawner.MostRecentlySpawnedObject.transform.localScale = spawner.MostRecentlySpawnedObject.transform.localScale * Board.greatestBoardDimension;
+
+            Debug.Log("Projectile spawned");
+
             // Return the projectile game object
             return spawner.MostRecentlySpawnedObject;
         }

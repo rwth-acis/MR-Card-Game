@@ -166,6 +166,10 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Set the enemy as active
             enemy.gameObject.SetActive(true);
 
+            Debug.Log("Enemy spawned at spawn at: " + Waypoints.enemySpawn.transform.position.x);
+            Debug.Log("Enemy spawned at spawn at: " + Waypoints.enemySpawn.transform.position.y);
+            Debug.Log("Enemy spawned at spawn at: " + Waypoints.enemySpawn.transform.position.z);
+
             // Set them as children of the game board
             enemy.transform.parent = Waypoints.enemySpawn.transform;
 

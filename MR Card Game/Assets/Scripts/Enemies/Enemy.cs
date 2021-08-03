@@ -106,6 +106,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Set the gameboard object
         gameBoard = Board.gameBoard;
         
         // Set the waypoints that apply to this map
@@ -127,7 +128,7 @@ public class Enemy : MonoBehaviour
         healthBar.value = CalculateHealth();
 
         // Scale the enemy down to have the right size
-        transform.localScale = new Vector3((float)0.2 * size, (float)0.1 * size, (float)0.1 * size);
+        transform.localScale = new Vector3((float)0.3 * size, (float)0.3 * size, (float)0.3 * size);
 
         // Set it to the position of the first waypoint on spawn
         transform.position = (waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0));
@@ -175,6 +176,7 @@ public class Enemy : MonoBehaviour
     // Method that make the enemy walk
     private void Move()
     {
+        Debug.Log("Enemy is trying to move");
         // If the last waypoint was not reached, move the enemy
         if(waypointIndex <= waypoints.Length - 1)
         {
@@ -186,6 +188,7 @@ public class Enemy : MonoBehaviour
 
             // If the enemy reached the position of a waypoint, increase the waypoint index by one
             if(transform.position == (waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0)))
+            // if(transform.position.x == waypoints[waypointIndex].transform.position.x && transform.position.z == waypoints[waypointIndex].transform.position.z)
             {
                 // // Set the passed waypoint as last waypoint
                 // lastWaypoint = waypoints[waypointIndex].transform.position;
@@ -197,6 +200,8 @@ public class Enemy : MonoBehaviour
                 {
                     // Make the enemy face the direction it is moving
                     transform.LookAt(waypoints[waypointIndex].transform.position);
+
+                    // Change the scaling of the enemy
                 }
             }
         }

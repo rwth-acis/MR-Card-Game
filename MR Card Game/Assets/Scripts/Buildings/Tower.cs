@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TMPro;
 using i5.Toolkit.Core.Utilities;
 using static i5.Toolkit.Core.Examples.Spawners.SpawnProjectile;
 
@@ -445,5 +446,112 @@ public class Tower : MonoBehaviour
         // target.transform.position = transform.Translate(targetPosition);
         // targetEnemy.transform.position = Vector3.MoveTowards(transform.position, targetPosition, GetProjectileSpeed * GetEffectTime * GetLevel * targetEnemy.gameBoard.transform.localScale.x);
         targetEnemy.transform.position = targetEnemy.transform.position - targetEnemy.transform.forward * GetEffectRange;
+    }
+
+    //--------------------------------------------------------------------------------------
+    // Upgrading towers
+    //--------------------------------------------------------------------------------------
+    
+    // Define the updrage tower menu
+    [SerializeField]
+    private GameObject upgradeTowerMenu;
+
+    // Define all the text fields of the build tower menu
+    [SerializeField]
+    private TMP_Text towerTypeField;
+
+    [SerializeField]
+    private TMP_Text towerDamageField;
+
+    [SerializeField]
+    private TMP_Text towerAttackCooldownField;
+
+    [SerializeField]
+    private TMP_Text towerRangeField;
+
+    [SerializeField]
+    private TMP_Text additionalField1;
+
+    [SerializeField]
+    private TMP_Text additionalField2;
+
+    // Method used to open the upgrade menu
+    public void OpenUpgradeTowerMenu()
+    {
+        // Pause the game
+        GameAdvancement.gamePaused = true;
+
+        // Set the upgrade tower menu as active
+        upgradeTowerMenu.SetActive(true);
+
+        // Actualize the tower type field
+        towerTypeField.text = towerType;
+
+        // For three towers, additional fields are needed as well as individual buffs
+        if(towerType == "Lightning Tower") 
+        {
+            // Enable the two additional fields for the lightning tower
+            additionalField1.gameObject.SetActive(true);
+            additionalField2.gameObject.SetActive(true);
+
+            // Actualize the standard fields
+            towerDamageField.text = "Damage " + damage + " > " + (damage + 15);
+            towerAttackCooldownField.text = "Attack cooldown " + attackCooldown;
+            towerRangeField.text = "Range " + attackRange;
+
+            // Fill the aditional fields
+            additionalField1.text = "Number of jumps: " + numberOfEffect + " > " + (numberOfEffect + 1);
+            additionalField2.text = "Jump range: " + effectRange + " > " + (effectRange + (float)0.1);
+
+        } else if(towerType == "Earth Tower") 
+        {
+            // Enable one of the additional fields for the earth tower
+            additionalField1.gameObject.SetActive(true);
+            additionalField2.gameObject.SetActive(false);
+
+            // Actualize the standard fields
+            towerDamageField.text = "Damage " + damage + " > " + (damage + 50);
+            towerAttackCooldownField.text = "Attack cooldown " + attackCooldown;
+            towerRangeField.text = "Range " + attackRange;
+
+            // Fill the aditional field
+            additionalField1.text = "Projectile size: " + effectRange + " > " + (effectRange + (float)0.2);
+
+        } else if(towerType == "Wind Tower") 
+        {
+            // Enable one of the additional fields for the wind tower
+            additionalField1.gameObject.SetActive(true);
+            additionalField2.gameObject.SetActive(false);
+
+            // Actualize the standard fields
+            towerAttackCooldownField.text = "Attack cooldown " + attackCooldown + " > " + (attackCooldown - (float)0.15);
+            towerDamageField.text = "Damage " + damage;
+            towerRangeField.text = "Range " + attackRange;
+
+            // Fill the aditional fields
+            additionalField1.text = "Drop back distance: " + effectRange + " > " + (effectRange + (float)0.1);
+
+        } else {
+
+            // Disable the two additinal fields for the other towers
+            additionalField1.gameObject.SetActive(false);
+            additionalField2.gameObject.SetActive(false);
+
+            // Make the individual inprovements to the other towers
+            if(towerType == "Archer Tower")
+            {
+                // Actualize all standard fields
+                towerDamageField.text = "Damage " + damage + " > " + (damage + 20);
+                towerAttackCooldownField.text = "Attack cooldown " + attackCooldown + " > " + (attackCooldown - (float)0.15);
+                towerRangeField.text = "Range " + attackRange + " > " + (attackRange + (float)0.1);
+
+            } else if(towerType == "Fire Tower")
+            {
+                // Actualize all standard fields
+                towerDamageField.text = "Damage " + damage + " > " + (damage + 40);
+                towerAttackCooldownField.text = "Attack cooldown " + attackCooldown + " > " + (attackCooldown - (float)0.10);
+                towerRangeField.text = "Range " + attackRange;
+            }
+        }
     }
 }

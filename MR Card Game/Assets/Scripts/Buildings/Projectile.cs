@@ -62,6 +62,13 @@ public class Projectile : MonoBehaviour
             // If the target is not null and alive, move the projectile in the direction of the target
             transform.position = Vector3.MoveTowards(transform.position, target.gameObject.transform.position, Time.deltaTime * parent.GetProjectileSpeed);
 
+            // Check if the projectile is an arrow
+            if(parent.GetTowerType == "Archer Tower")
+            {
+                // Make the arrow face his target
+                transform.LookAt(target.transform.position);
+            }
+
             // Check if the projectile reached the destination
             if(transform.position == target.transform.position)
             {

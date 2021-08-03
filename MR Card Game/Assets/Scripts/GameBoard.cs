@@ -200,14 +200,15 @@ public class GameBoard : MonoBehaviour
         }
 
         // Set the y position to the maximum value of the y position of the two corners
-        if(positionTopLeftCorner.y >= positionBottomRightCorner.y)
+        if(positionTopLeftCorner.y < positionBottomRightCorner.y)
         {
-            position.y = positionTopLeftCorner.y;
+            position.y = positionBottomRightCorner.y - positionTopLeftCorner.y;
 
-        } else {
-
-            position.y = positionBottomRightCorner.y;
         }
+        //  else {
+
+        //     position.y = positionBottomRightCorner.y;
+        // }
 
         // Set the board height variable correctly
         Board.boardHeight = position.y;
@@ -252,16 +253,16 @@ public class GameBoard : MonoBehaviour
             // Depending on the anle, resize the board correctly
             Vector3 correctScale = GetTheCorrectScaleFormAngle(boardAngle, xDiffTopLeft, zDiffBottomRight, intersection.x, intersection.z);
 
-            // Since the ratio should be 2:1 get the smalles scale and scale the plane accordingly
-            if(correctScale.x < correctScale.z * 2)
+            // Since the ratio should be 1:1 get the smalles scale and scale the plane accordingly
+            if(correctScale.x < correctScale.z)
             {
                 // Case the z scale is too big, scale it down
-                correctScale.z = correctScale.x  / 2;
+                correctScale.z = correctScale.x;
 
             } else {
 
                 // Case the x scale is too big, scale it down
-                correctScale.x = correctScale.z  * 2;
+                correctScale.x = correctScale.z;
             }
 
             // Set the y scale to the x scale so that the height of things is correct
@@ -272,11 +273,13 @@ public class GameBoard : MonoBehaviour
             // Scale the board correctly, a plane is 10 units big so divide the scale by 10
             gameBoard.transform.localScale = (correctScale / 10);
 
-            // Make sure the mesh renderer is enabled, or the game board could disapear
-            gameBoard.GetComponent<Renderer>().enabled = true;
+            // // Make sure the mesh renderer is enabled, or the game board could disapear // This was necessary before I change the board model
+            // gameBoard.GetComponent<Renderer>().enabled = true;
 
             // Set the position of the game board between the two corner markers and set it a bit higher so that it is not covered by the target images
-            gameBoard.transform.position = position + new Vector3(0, (float)0.002, 0);
+            gameBoard.transform.position = position + new Vector3(0, (float)0.002 + Board.greatestBoardDimension * (float)1, 0);
+
+            Debug.Log("The board height is: " + Board.boardHeight);
 
         } else {
 

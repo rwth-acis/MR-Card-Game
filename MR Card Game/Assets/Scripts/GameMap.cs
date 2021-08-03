@@ -25,6 +25,8 @@ namespace map
         void Start()
         {
             SetMapWaypoints();
+
+            Debug.Log("The map waypoints and enemy spawn were set.");
         }
 
         // The variable used to access the value of the map waypoints from the enemies class

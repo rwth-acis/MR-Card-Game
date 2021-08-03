@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using static i5.Toolkit.Core.Examples.Spawners.SpawnTower;
 using UnityEngine.EventSystems;
 
@@ -42,13 +43,13 @@ public class BuildTower : MonoBehaviour
     [SerializeField]
     private GameObject buildTowerCanvas;
 
-    // Define the build tower window
-    [SerializeField]
-    private GameObject buildTowerWindow;
-
     // Define the build trap window
     [SerializeField]
     private GameObject buildTrapWindow;
+
+    // Define the build tower window
+    [SerializeField]
+    private GameObject buildTowerWindow;
 
     // Define the answer questions menu
     [SerializeField]
@@ -376,5 +377,4 @@ public class BuildTower : MonoBehaviour
         // Spawn the wind tower or extract it from the object pool
         SpawnWindTower(this.gameObject);
     }
-
 }
