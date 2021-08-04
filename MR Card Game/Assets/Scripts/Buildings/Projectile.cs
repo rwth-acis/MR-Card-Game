@@ -343,25 +343,4 @@ public class Projectile : MonoBehaviour
         // Call the release enemy of the object pool class
         ObjectPools.ReleaseProjectile(this);
     }
-
-    // public static string GetProjectileType()
-    // {
-    //     // Return the right projectile type given the parent game object tower type
-    //     switch(GetParent.GetTowerType)
-    //     {
-    //         case "Archer Tower":
-    //             return "Arrow";
-    //         break;
-
-    //         case "Fire Tower":
-    //             return "Fire Ball";
-    //         break;
-
-    //         case "Earth Tower":
-    //             return "Stone";
-    //         break;
-    //     }
-
-    //     return "Arrow";
-    // }
 }

@@ -229,7 +229,7 @@ public class Tower : MonoBehaviour
         {
             // If the target left the range, set it to null
             target = null;
-            Debug.Log("The target was not contained anymore in the range and was set to null");
+            // Debug.Log("The target was not contained anymore in the range and was set to null");
         }
 
         // Check if the tower needs a new target and if there are any enemies in range
@@ -237,7 +237,7 @@ public class Tower : MonoBehaviour
         {
             // If a new target is needed, and there are enemies in range, set the oldest enemy as target
             target = GetColliders()[0];
-            Debug.Log("The new target was set to " + target);
+            // Debug.Log("The new target was set to " + target);
         }
 
         // Check if there is a current target
@@ -248,7 +248,7 @@ public class Tower : MonoBehaviour
             {
                 // Attack the target
                 Shoot();
-                Debug.Log("The current enemey that is targeted is named: " + target.name);
+                // Debug.Log("The current enemey that is targeted is named: " + target.name);
 
                 // Set the can attack flag to false
                 canAttack = false;
@@ -324,7 +324,7 @@ public class Tower : MonoBehaviour
             // float scaleY = scale.y;
             // float scaleZ = scale.z;
 
-            // spawnedProjectile.gameObject.transform.localScale = new Vector3(scaleX * (float)0.1, scaleY * (float)0.5, scaleZ * (float)0.1);
+            // spawnedProjectile.gameObject.transform.localScale = new Vector3(scaleX * (float)0.1, scaleY * (float)0.1, scaleZ * (float)0.1);
         }
     }
 

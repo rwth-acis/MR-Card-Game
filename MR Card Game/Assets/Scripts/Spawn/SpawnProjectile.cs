@@ -20,6 +20,11 @@ namespace i5.Toolkit.Core.Examples.Spawners
             get { return instance.projectile; }
         }
 
+        void Start()
+        {
+            instance = this;
+        }
+
         // // The prefab for the archer tower
         // [SerializeField]
         // private GameObject arrow;
@@ -114,6 +119,12 @@ namespace i5.Toolkit.Core.Examples.Spawners
 
             // Reset the position of the projectile game object
             projectileObject.gameObject.transform.position = new Vector3(0, 0, 0);
+
+            // Resize the projectile
+            if(type == "Archer Tower")
+            {
+                projectileObject.gameObject.transform.localScale = new Vector3(1, 1, 1) * Board.greatestBoardDimension * 10;
+            }
 
             // Return the projectile game object
             return projectileObject;

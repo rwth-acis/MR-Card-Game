@@ -176,7 +176,6 @@ public class Enemy : MonoBehaviour
     // Method that make the enemy walk
     private void Move()
     {
-        Debug.Log("Enemy is trying to move");
         // If the last waypoint was not reached, move the enemy
         if(waypointIndex <= waypoints.Length - 1)
         {

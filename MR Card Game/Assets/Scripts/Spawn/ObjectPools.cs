@@ -26,17 +26,17 @@ public class ObjectPools : MonoBehaviour
         int poolId8 = ObjectPool<Enemy>.CreateNewPool(); // Pool for berzerker flying enemies
         int poolId9 = ObjectPool<Enemy>.CreateNewPool(); // Pool for berzerker tanky enemies
 
-        int poolId10 = ObjectPool<Enemy>.CreateNewPool(); // Pool for arrows
-        int poolId11 = ObjectPool<Enemy>.CreateNewPool(); // Pool for fire balls
-        int poolId12 = ObjectPool<Enemy>.CreateNewPool(); // Pool for stones
+        int poolId10 = ObjectPool<Projectile>.CreateNewPool(); // Pool for arrows
+        int poolId11 = ObjectPool<Projectile>.CreateNewPool(); // Pool for fire balls
+        int poolId12 = ObjectPool<Projectile>.CreateNewPool(); // Pool for stones
 
         int poolId13 = ObjectPool<Enemy>.CreateNewPool(); // Pool for dumping enemies with wrong enemy type
 
-        int poolId14 = ObjectPool<Enemy>.CreateNewPool(); // Pool for archer tower
-        int poolId15 = ObjectPool<Enemy>.CreateNewPool(); // Pool for fire tower
-        int poolId16 = ObjectPool<Enemy>.CreateNewPool(); // Pool for earth tower
-        int poolId17 = ObjectPool<Enemy>.CreateNewPool(); // Pool for lightning tower
-        int poolId18 = ObjectPool<Enemy>.CreateNewPool(); // Pool for wind tower
+        int poolId14 = ObjectPool<Tower>.CreateNewPool(); // Pool for archer tower
+        int poolId15 = ObjectPool<Tower>.CreateNewPool(); // Pool for fire tower
+        int poolId16 = ObjectPool<Tower>.CreateNewPool(); // Pool for earth tower
+        int poolId17 = ObjectPool<Tower>.CreateNewPool(); // Pool for lightning tower
+        int poolId18 = ObjectPool<Tower>.CreateNewPool(); // Pool for wind tower
 
         // Store the pool ids so that they are not lost
         EnemyPools.enemyPoolIds = new int[18];
