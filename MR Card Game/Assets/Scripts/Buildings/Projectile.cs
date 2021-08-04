@@ -20,10 +20,10 @@ public class Projectile : MonoBehaviour
     }
 
     // The parent tower of the projectile
-    private Tower projectileType;
+    private string projectileType;
 
     // Method used to get the type of the tower
-    public static Tower GetProjectileType
+    public string GetProjectileType
     {
         get { return instance.projectileType; }
     }
@@ -129,7 +129,7 @@ public class Projectile : MonoBehaviour
 
                 // Delete the projectile
                 // Destroy(gameObject);
-                ObjectPools.ReleaseProjectile(gameObject);
+                ObjectPools.ReleaseProjectile(this);
             }
 
         } else {
@@ -164,7 +164,7 @@ public class Projectile : MonoBehaviour
 
                     // // Delete the projectile
                     // Destroy(gameObject);
-                    ObjectPools.ReleaseProjectile(gameObject);
+                    ObjectPools.ReleaseProjectile(this);
                 }
             }
         }
@@ -341,7 +341,7 @@ public class Projectile : MonoBehaviour
     public void ReturnProjectileoObjectPool()
     {
         // Call the release enemy of the object pool class
-        ObjectPools.ReleaseProjectile(gameObject);
+        ObjectPools.ReleaseProjectile(this);
     }
 
     // public static string GetProjectileType()

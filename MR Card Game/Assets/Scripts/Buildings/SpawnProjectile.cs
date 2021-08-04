@@ -12,33 +12,43 @@ namespace i5.Toolkit.Core.Examples.Spawners
 
         // The prefab for the archer tower
         [SerializeField]
-        private GameObject arrow;
+        private Projectile projectile;
 
         // The method used to access to the archer tower prefab as a static object
-        public static GameObject anArrow
+        public static Projectile aProjectile
         {
-            get { return instance.arrow; }
+            get { return instance.projectile; }
         }
 
-        // The prefab for the fire tower
-        [SerializeField]
-        private GameObject fireBall;
+        // // The prefab for the archer tower
+        // [SerializeField]
+        // private GameObject arrow;
 
-        // The method used to access to the fire towerprefab as a static object
-        public static GameObject aFireBall
-        {
-            get { return instance.fireBall; }
-        }
+        // // The method used to access to the archer tower prefab as a static object
+        // public static GameObject anArrow
+        // {
+        //     get { return instance.arrow; }
+        // }
 
-        // The prefab for the earth tower
-        [SerializeField]
-        private GameObject stone;
+        // // The prefab for the fire tower
+        // [SerializeField]
+        // private GameObject fireBall;
 
-        // The method used to access to the earth tower prefab as a static object
-        public static GameObject aStone
-        {
-            get { return instance.stone; }
-        }
+        // // The method used to access to the fire towerprefab as a static object
+        // public static GameObject aFireBall
+        // {
+        //     get { return instance.fireBall; }
+        // }
+
+        // // The prefab for the earth tower
+        // [SerializeField]
+        // private GameObject stone;
+
+        // // The method used to access to the earth tower prefab as a static object
+        // public static GameObject aStone
+        // {
+        //     get { return instance.stone; }
+        // }
 
         // // Define the "spawner" object that is the location where the projectile should appear
         // public GameObject spawner;
@@ -61,104 +71,118 @@ namespace i5.Toolkit.Core.Examples.Spawners
         //     return spawner.MostRecentlySpawnedObject;
         // }
 
-        // Define the "spawner" object that is the location where the projectile should appear
-        public GameObject spawner;
+        // // Define the "spawner" object that is the location where the projectile should appear
+        // private GameObject spawner;
 
-        public static GameObject aSpawner
-        {
-            get { return instance.spawner; }
-        }
+        // public static GameObject aSpawner
+        // {
+        //     get { return instance.spawner; }
+        // }
 
         // Method used to spawn the projectile for the tower
-        public static GameObject SpawnProjectileForTower(string type)
+        public static Projectile SpawnProjectileForTower(string type, GameObject spawner)
         {
-            // Initialize the projectile object
-            GameObject projectile = null;
-            
-            // Depending on the type of the tower, spawn the right projectile
+            // Initialize the pool index for the object pool of the projectile
+            int poolId = ObjectPools.GetProjectilePoolIndex("Arrow");
+
+            // Depending on the type of the tower, find the right projectile pool index
             switch(type)
             {
                 case "Archer Tower":
-                    projectile = SpawnArrow(aSpawner);
+                    poolId = ObjectPools.GetProjectilePoolIndex("Arrow");
                 break;
 
                 case "Fire Tower":
-                    projectile = SpawnFireBall(aSpawner);
+                    poolId = ObjectPools.GetProjectilePoolIndex("Fire Ball");
                 break;
 
                 case "Earth Tower":
-                    projectile = SpawnStone(aSpawner);
+                    poolId = ObjectPools.GetProjectilePoolIndex("Stone");
                 break;
             }
 
+            Debug.Log("The current object pool index is: " + poolId);
+
+            // Get a new projectile from the object pool of the projectile type
+            Projectile projectileObject = ObjectPool<Projectile>.RequestResource(poolId, () => {return Instantiate(aProjectile);});
+
+            // Set the tower as active
+            projectileObject.gameObject.SetActive(true);
+
+            // Set them as children of the parent that was passed
+            projectileObject.gameObject.transform.parent = spawner.transform;
+
+            // Reset the position of the projectile game object
+            projectileObject.gameObject.transform.position = new Vector3(0, 0, 0);
+
             // Return the projectile game object
-            return projectile;
+            return projectileObject;
         }
 
-        // Method that spawns an arrow
-        public static GameObject SpawnArrow(GameObject spawner)
-        {
-            // Get the right object pool index for the tower type
-            int poolIndex = ObjectPools.GetTowerPoolIndex("Arrow");
+        // // Method that spawns an arrow
+        // public static GameObject SpawnArrow(GameObject spawner)
+        // {
+        //     // Get the right object pool index for the tower type
+        //     int poolIndex = ObjectPools.GetTowerPoolIndex("Arrow");
 
-            // Get a new tower from the object pool of the archer tower
-            GameObject projectile = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(anArrow);});
+        //     // Get a new tower from the object pool of the archer tower
+        //     GameObject projectile = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(anArrow);});
 
-            // Set the tower as active
-            projectile.gameObject.SetActive(true);
+        //     // Set the tower as active
+        //     projectile.gameObject.SetActive(true);
 
-            // Set them as children of the parent that was passed
-            projectile.transform.parent = spawner.transform;
+        //     // Set them as children of the parent that was passed
+        //     projectile.transform.parent = spawner.transform;
 
-            // Reset the position of the projectile
-            projectile.transform.position = new Vector3(0, 0, 0);
+        //     // Reset the position of the projectile
+        //     projectile.transform.position = new Vector3(0, 0, 0);
 
-            // Return the projectile
-            return projectile;
-        }
+        //     // Return the projectile
+        //     return projectile;
+        // }
 
-        // Method that spawns a fire ball
-        public static GameObject SpawnFireBall(GameObject spawner)
-        {
-            // Get the right object pool index for the tower type
-            int poolIndex = ObjectPools.GetTowerPoolIndex("Fire Ball");
+        // // Method that spawns a fire ball
+        // public static GameObject SpawnFireBall(GameObject spawner)
+        // {
+        //     // Get the right object pool index for the tower type
+        //     int poolIndex = ObjectPools.GetTowerPoolIndex("Fire Ball");
 
-            // Get a new tower from the object pool of the archer tower
-            GameObject projectile = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(aFireBall);});
+        //     // Get a new tower from the object pool of the archer tower
+        //     GameObject projectile = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(aFireBall);});
 
-            // Set the tower as active
-            projectile.gameObject.SetActive(true);
+        //     // Set the tower as active
+        //     projectile.gameObject.SetActive(true);
 
-            // Set them as children of the parent that was passed
-            projectile.transform.parent = spawner.transform;
+        //     // Set them as children of the parent that was passed
+        //     projectile.transform.parent = spawner.transform;
 
-            // Reset the position of the projectile
-            projectile.transform.position = new Vector3(0, 0, 0);
+        //     // Reset the position of the projectile
+        //     projectile.transform.position = new Vector3(0, 0, 0);
 
-            // Return the projectile
-            return projectile;
-        }
+        //     // Return the projectile
+        //     return projectile;
+        // }
 
-        // Method that spawns a stone
-        public static GameObject SpawnStone(GameObject spawner)
-        {
-            // Get the right object pool index for the tower type
-            int poolIndex = ObjectPools.GetTowerPoolIndex("Stone");
+        // // Method that spawns a stone
+        // public static GameObject SpawnStone(GameObject spawner)
+        // {
+        //     // Get the right object pool index for the tower type
+        //     int poolIndex = ObjectPools.GetTowerPoolIndex("Stone");
 
-            // Get a new tower from the object pool of the archer tower
-            GameObject projectile = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(aStone);});
+        //     // Get a new tower from the object pool of the archer tower
+        //     GameObject projectile = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(aStone);});
 
-            // Set the tower as active
-            projectile.gameObject.SetActive(true);
+        //     // Set the tower as active
+        //     projectile.gameObject.SetActive(true);
 
-            // Set them as children of the parent that was passed
-            projectile.transform.parent = spawner.transform;
+        //     // Set them as children of the parent that was passed
+        //     projectile.transform.parent = spawner.transform;
 
-            // Reset the position of the projectile
-            projectile.transform.position = new Vector3(0, 0, 0);
+        //     // Reset the position of the projectile
+        //     projectile.transform.position = new Vector3(0, 0, 0);
 
-            // Return the projectile
-            return projectile;
-        }
+        //     // Return the projectile
+        //     return projectile;
+        // }
     }
 }

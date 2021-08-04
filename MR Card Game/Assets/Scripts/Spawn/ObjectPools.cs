@@ -61,6 +61,26 @@ public class ObjectPools : MonoBehaviour
         EnemyPools.enemyPoolIds[15] = poolId16;
         EnemyPools.enemyPoolIds[16] = poolId17;
         EnemyPools.enemyPoolIds[17] = poolId18;
+
+        // Debug.Log("Pool index: " + poolId1);
+        // Debug.Log("Pool index: " + poolId2);
+        // Debug.Log("Pool index: " + poolId3);
+        // Debug.Log("Pool index: " + poolId4);
+        // Debug.Log("Pool index: " + poolId5);
+        // Debug.Log("Pool index: " + poolId6);
+        // Debug.Log("Pool index: " + poolId7);
+        // Debug.Log("Pool index: " + poolId8);
+        // Debug.Log("Pool index: " + poolId9);
+        // Debug.Log("Pool index: " + poolId10);
+        // Debug.Log("Pool index: " + poolId11);
+        // Debug.Log("Pool index: " + poolId12);
+        // Debug.Log("Pool index: " + poolId13);
+        // Debug.Log("Pool index: " + poolId14);
+        // Debug.Log("Pool index: " + poolId15);
+        // Debug.Log("Pool index: " + poolId16);
+        // Debug.Log("Pool index: " + poolId17);
+        // Debug.Log("Pool index: " + poolId18);
+
     }
 
     // Update is called once per frame
@@ -69,26 +89,26 @@ public class ObjectPools : MonoBehaviour
         
     }
 
-    [SerializeField]
-    private GameObject[] objectPrefabs;
+    // [SerializeField]
+    // private GameObject[] objectPrefabs;
 
-    // Get an object form the pool
-    public GameObject GetObject(string type)
-    {
-        // Go through the array
-        for(int i = 0; i < objectPrefabs.Length; i++)
-        {
-            // Check if there is an object that has the name of the type
-            if(objectPrefabs[i].name == type)
-            {
-                // Instantiate the object
-                GameObject newObject = Instantiate(objectPrefabs[i]);
-                newObject.name = type;
-                return newObject;
-            }
-        }
-        return null;
-    }
+    // // Get an object form the pool
+    // public GameObject GetObject(string type)
+    // {
+    //     // Go through the array
+    //     for(int i = 0; i < objectPrefabs.Length; i++)
+    //     {
+    //         // Check if there is an object that has the name of the type
+    //         if(objectPrefabs[i].name == type)
+    //         {
+    //             // Instantiate the object
+    //             GameObject newObject = Instantiate(objectPrefabs[i]);
+    //             newObject.name = type;
+    //             return newObject;
+    //         }
+    //     }
+    //     return null;
+    // }
 
     // //
     // public void ReleaseObject(GameObject object) 
@@ -176,7 +196,7 @@ public class ObjectPools : MonoBehaviour
     // The method that releses the tower game objects
     public static void ReleaseTower(GameObject tower)
     {
-        string towerType = tower.GetComponent<Tower>().GetTowerType();
+        string towerType = tower.GetComponent<Tower>().GetTowerType;
 
         // Get the correclt object pool index from the object pools class
         int objectPoolIndex = GetTowerPoolIndex(towerType);
@@ -194,7 +214,7 @@ public class ObjectPools : MonoBehaviour
         // Return the right projectile pool index given the projectile type
         switch(type)
         {
-            case "Arrrow":
+            case "Arrow":
                 return EnemyPools.enemyPoolIds[9];
             break;
             case "Fire Ball":
@@ -212,10 +232,10 @@ public class ObjectPools : MonoBehaviour
     // The method that releses the projectile game objects
     public static void ReleaseProjectile(Projectile projectile)
     {
-        string projectileType = projectile.GetProjectileType;
+        string projectileType = projectile.GetComponent<Projectile>().GetProjectileType;
 
         // Get the correclt object pool index from the object pools class
-        int objectPoolIndex = GetProjectilePoolIndex(projectile.GetProjectileTyp);
+        int objectPoolIndex = GetProjectilePoolIndex(projectile.GetComponent<Projectile>().GetProjectileType);
 
         // Release the enemy into the right object pool
         ObjectPool<Projectile>.ReleaseResource(objectPoolIndex, projectile);

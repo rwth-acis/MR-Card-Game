@@ -10,7 +10,7 @@ using static i5.Toolkit.Core.Examples.Spawners.SpawnProjectile;
 public class Tower : MonoBehaviour
 {
     [SerializeField]
-    private Spawner projectileSpawner;
+    private GameObject projectileSpawner;
 
     // The type of the tower
     [SerializeField]
@@ -305,7 +305,8 @@ public class Tower : MonoBehaviour
         } else {
 
             // Spawn the projectile
-            Projectile spawnedProjectile = SpawnProjectileForTower(towerType).GetComponent<Projectile>();
+            // Projectile spawnedProjectile = SpawnProjectileForTower(towerType).GetComponent<Projectile>();
+            Projectile spawnedProjectile = SpawnProjectileForTower(towerType, projectileSpawner);
 
             // Make sure the projectile is active
             // spawnedProjectile.gameObject.SetActive(true);
