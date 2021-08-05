@@ -67,6 +67,12 @@ public class Level : MonoBehaviour
     // The current number of the enemies that should be spawned at the same time that remain
     private int enemySpawnNumber = 0;
 
+    // The current weakness of the enemies
+    private string weakness = "";
+
+    // The current resistance of the enemies;
+    private string resistance = "";
+
     // The number of enemy categories that are non empty at the moment
     private int numberOfCategoriesNotEmpty = 7;
 
@@ -183,7 +189,17 @@ public class Level : MonoBehaviour
             if(enemySpawnNumber > 0)
             {
                 // Spawn enemy of the type given
-                SpawnAnEnemy(enemyType);
+                Enemy enemy = SpawnAnEnemy(enemyType);
+
+                // // Set the resistance of the enemy
+                // enemy.SetResistance(resistance);
+
+                enemy.resistance = resistance;
+
+                // // Set the weakness of the enemy
+                // enemy.SetWeakness(weakness);
+
+                enemy.weakness = weakness;
 
                 // Reduce the number of enemies that should spawn as a group
                 enemySpawnNumber = enemySpawnNumber - 1;
@@ -302,6 +318,159 @@ public class Level : MonoBehaviour
 
         // Get another random number and set the enemy spawn number to it
         enemySpawnNumber = RandomNumber(1, 3) + (GameAdvancement.currentWave - 1);
+
+        // Initialize the two maximal numbers that state if the enemies should have a weakness and resistance or not
+        int weaknessRandom = 6;
+        int resistanceRandom = 8;
+
+        // Depending on the current wave, choose what maximal random it could be
+        switch(GameAdvancement.currentWave)
+        {
+            case 1:
+            break;
+
+            case 2:
+                weaknessRandom = 7;
+                resistanceRandom = 9;
+            break;
+
+            case 3:
+                weaknessRandom = 7;
+                resistanceRandom = 9;
+            break;
+
+            case 4:
+                weaknessRandom = 8;
+                resistanceRandom = 10;
+            break;
+
+            case 5:
+                weaknessRandom = 8;
+                resistanceRandom = 10;
+            break;
+
+            case 6:
+                weaknessRandom = 9;
+                resistanceRandom = 11;
+            break;
+
+            case 7:
+                weaknessRandom = 9;
+                resistanceRandom = 11;
+            break;
+
+            case 8:
+                weaknessRandom = 10;
+                resistanceRandom = 12;
+            break;
+
+            case 9:
+                weaknessRandom = 10;
+                resistanceRandom = 12;
+            break;
+
+            case 10:
+                weaknessRandom = 10;
+                resistanceRandom = 12;
+            break;
+
+            case 11:
+                weaknessRandom = 10;
+                resistanceRandom = 12;
+            break;
+        }
+
+        // Get a random number to decide if the enemies should have a resistance or not
+        int resistanceOrNot = RandomNumber(0, resistanceRandom);
+
+        // If the number is greater than 6, give a resistance and a weakness
+        if(resistanceOrNot > 6)
+        {
+            // Initialize the random number for the resitance
+            int randomNumberResistance = RandomNumber(0, 4);
+
+            // Give resistance
+            resistance = GetRandomType(randomNumberResistance);
+
+            // Initialize the random number for the weakness
+            int randomNumberWeakness = RandomNumber(0, 3);
+
+            // If the random number for the resistance is the same as the one for the weakness, add one
+            if(randomNumberResistance == randomNumberWeakness)
+            {
+                randomNumberWeakness = randomNumberWeakness + 1;
+            }
+
+            // Give weakness
+            weakness = GetRandomType(randomNumberWeakness);
+
+        } else {
+
+            // Delete the resistance
+            resistance = "";
+
+            // Get a random number to decide if the enemies should have a weakness or not
+            int weaknessOrNot = enemySpawnNumber = RandomNumber(0, weaknessRandom);
+
+            // If the number is greater than 5, give a weakness
+            if(weaknessOrNot > 5)
+            {
+                // Initialize the random number for the resitance
+                int randomNumberWeakness = RandomNumber(0, 4);
+
+                // Give resistance
+                weakness = GetRandomType(randomNumberWeakness);
+
+            } else {
+
+                // Delete the weakness
+                weakness = "";
+            }
+        }
+    }
+
+    // // Method that attributes a resistance to the currently spawned enemies
+    // public void GiveResistance()
+    // {
+    //     // Get a random type and set the resistance to it
+    //     resistance = GetRandomType();
+    // }
+
+    // // Method that attributes a weakness to the currently spawned enemies
+    // public void GiveWeakness()
+    // {
+    //     // Get a random type and set the weakness to it
+    //     weakness = GetRandomType();
+    // }
+
+    // Method that returns a random damage type
+    public string GetRandomType(int randomNumber)
+    {
+        // Depending on that number, return a type
+        switch(randomNumber)
+        {
+            case 0:
+                return "Piercing";
+            break;
+
+            case 1:
+                return "Fire";
+            break;
+
+            case 2:
+                return "Earth";
+            break;
+
+            case 3:
+                return "Lightning";
+            break;
+
+            case 4:
+                return "Wind";
+            break;
+        }
+
+        return "Piercing";
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------

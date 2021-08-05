@@ -153,7 +153,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
         }
 
         // Method that spawns an enemy given the enemy type
-        public static void SpawnAnEnemy(string type)
+        public static Enemy SpawnAnEnemy(string type)
         {
             // Get the right object pool index for the enemy type
             int poolIndex = ObjectPools.GetObjectPoolIndex(type);
@@ -178,6 +178,9 @@ namespace i5.Toolkit.Core.Examples.Spawners
 
             // Set the health points to max and make it alive again
             enemy.ReviveEnemy();
+
+            // Return the enemy object
+            return enemy;
         }
 
         // Method that returns the right enemy prefab given the enemy tpye

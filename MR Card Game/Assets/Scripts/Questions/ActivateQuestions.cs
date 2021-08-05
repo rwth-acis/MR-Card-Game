@@ -1563,8 +1563,11 @@ public class ActivateQuestions : MonoBehaviour
         
         Debug.Log("The number of models is: " + Questions.numberOfModels);
 
-        // Activate the view model menu, where questions can be answered
-        ActivateViewModels();
+        // // Activate the view model menu, where questions can be answered
+        // ActivateViewModels();
+
+        // Disable the start menu
+        startMenu.SetActive(false);
 
         // Activate the game menu, where wave and currency are displayed
         ActivateGame();

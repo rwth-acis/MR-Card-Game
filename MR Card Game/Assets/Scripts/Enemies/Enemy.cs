@@ -77,7 +77,7 @@ public class Enemy : MonoBehaviour
 
     // What the enemy is resistant to
     [SerializeField]
-    private string resistance;
+    public string resistance;
 
     // Method used to get the restistance of the enemy
     public string GetEnemyResistance
@@ -87,7 +87,7 @@ public class Enemy : MonoBehaviour
 
     // What the enemy is weak to
     [SerializeField]
-    private string weakness;
+    public string weakness;
 
     // Method used to get the weakness of the enemy
     public string GetEnemyWeakness
@@ -293,4 +293,19 @@ public class Enemy : MonoBehaviour
         // Return the enemy to the object pool
         ReturnEnemyToObjectPool();
     }
+
+
+    // // Method that sets the resistance of this enemy
+    // public static void SetResistance(string type)
+    // {
+    //     // Set the resistance to type
+    //     resistance = type;
+    // }
+
+    // // Method that sets the weakness of this enemy
+    // public static void SetWeakness(string type)
+    // {
+    //     // Set the weakness to type
+    //     weakness = type;
+    // }
 }

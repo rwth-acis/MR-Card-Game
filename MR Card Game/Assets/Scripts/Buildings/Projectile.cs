@@ -279,6 +279,7 @@ public class Projectile : MonoBehaviour
                 }
 
             break;
+            
             case "Fire Tower":
                 if(target.GetEnemyWeakness == "Fire")
                 {
@@ -288,6 +289,7 @@ public class Projectile : MonoBehaviour
                     additianlDamageMultiplier = -1;
                 }
             break;
+
             case "Lightning Tower":
                 if(target.GetEnemyWeakness == "Lightning")
                 {
@@ -297,6 +299,7 @@ public class Projectile : MonoBehaviour
                     additianlDamageMultiplier = -1;
                 }
             break;
+
             case "Earth Tower":
                 if(target.GetEnemyWeakness == "Earth")
                 {
@@ -306,6 +309,7 @@ public class Projectile : MonoBehaviour
                     additianlDamageMultiplier = -1;
                 }
             break;
+
             case "Wind Tower":
                 if(target.GetEnemyWeakness == "Wind")
                 {
