@@ -29,6 +29,9 @@ static class GameAdvancement
     // The health counter C / M displayed on the health bar
     public static TMP_Text castleHealthCounter;
 
+    // The wave display button;
+    public static Button waveDisplay;
+
     // The status of the game, if it should be paused or not
     public static bool gamePaused = false;
 }
@@ -116,7 +119,9 @@ public class GameSetup : MonoBehaviour
         GameAdvancement.currencyPoints = beginingCurrency;
 
         // Set the wave counter to wave 1
-        GameAdvancement.currentWave = 1;
+        GameAdvancement.currentWave = 0;
+
+        GameAdvancement.waveDisplay = waveDisplay;
 
         // Set the currency display button
         GameAdvancement.currencyDisplay = currencyDisplay;
@@ -127,13 +132,14 @@ public class GameSetup : MonoBehaviour
         // Set the castle health counter
         GameAdvancement.castleHealthCounter = castleHealthCounter;
 
-        // Set the text of the wave button to wave 1
-        waveDisplay.GetComponentInChildren<TMP_Text>().text = "Wave: 1";
+        // Actualize the wave display
+        ActualizeWaveDisplay();
 
-        // Set the text of the wave button to wave 1
-        ActualizeCurrencyDisplay(currencyDisplay);
+        // Actualize the currency display
+        ActualizeCurrencyDisplay();
 
-        ActualizeCastleHealthPoints(castleHealthBar, castleHealthCounter, castleHP, castleHP);
+        // Actualize the castle health points
+        ActualizeCastleHealthPoints();
     }
 
     // Update is called once per frame
@@ -143,21 +149,26 @@ public class GameSetup : MonoBehaviour
     }
 
     // Method used to actualize the current currency display of the player
-    public static void ActualizeCurrencyDisplay(Button currencyDisplay)
+    public static void ActualizeCurrencyDisplay()
     {
         // Actualize the currency currently owned
-        currencyDisplay.GetComponentInChildren<TMP_Text>().text = "Currency: " + GameAdvancement.currencyPoints;
+        GameAdvancement.currencyDisplay.GetComponentInChildren<TMP_Text>().text = "Currency: " + GameAdvancement.currencyPoints;
     }
 
     // Method used to actualize the current health points of the castle
-    public static void ActualizeCastleHealthPoints(Slider castleHBar, TMP_Text counter, int currentHP, int maxHP)
+    public static void ActualizeCastleHealthPoints()
     {
         // Actualize the value of the castle health bar
-        castleHBar.value = (float)currentHP / (float)maxHP;
-
-        Debug.Log("The castle health bar value is currently: " + castleHBar.value);
+        GameAdvancement.castleHealthBar.value = (float)(GameAdvancement.castlecurrentHP / GameAdvancement.castleMaxHP);
 
         // Change the text field that displayed current HP / max HP
-        counter.text = currentHP + " / " + maxHP;
+        GameAdvancement.castleHealthCounter.text = GameAdvancement.castlecurrentHP + " / " + GameAdvancement.castleMaxHP;
+    }
+
+    // Method used to actualize the current wave
+    public static void  ActualizeWaveDisplay()
+    {
+        // Change the button display
+        GameAdvancement.waveDisplay.GetComponentInChildren<TMP_Text>().text = "Wave: " + GameAdvancement.currentWave;
     }
 }
