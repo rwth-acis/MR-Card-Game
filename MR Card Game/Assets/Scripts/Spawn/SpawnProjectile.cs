@@ -7,23 +7,23 @@ namespace i5.Toolkit.Core.Examples.Spawners
 
     public class SpawnProjectile : MonoBehaviour
     {
-        // The instance, needed to access the static versions of the projectile prefabs
-        public static SpawnProjectile instance;
+        // // The instance, needed to access the static versions of the projectile prefabs
+        // public static SpawnProjectile instance;
 
-        // The prefab for the archer tower
-        [SerializeField]
-        private Projectile projectile;
+        // // The prefab for the archer tower
+        // [SerializeField]
+        // private Projectile projectile;
 
-        // The method used to access to the archer tower prefab as a static object
-        public static Projectile aProjectile
-        {
-            get { return instance.projectile; }
-        }
+        // // The method used to access to the archer tower prefab as a static object
+        // public static Projectile aProjectile
+        // {
+        //     get { return instance.projectile; }
+        // }
 
-        void Start()
-        {
-            instance = this;
-        }
+        // void Start()
+        // {
+        //     instance = this;
+        // }
 
         // // The prefab for the archer tower
         // [SerializeField]
@@ -85,7 +85,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
         // }
 
         // Method used to spawn the projectile for the tower
-        public static Projectile SpawnProjectileForTower(string type, GameObject spawner)
+        public static Projectile SpawnProjectileForTower(string type, Projectile projectile)
         {
             // Initialize the pool index for the object pool of the projectile
             int poolId = ObjectPools.GetProjectilePoolIndex("Arrow");
@@ -106,24 +106,24 @@ namespace i5.Toolkit.Core.Examples.Spawners
                 break;
             }
 
-            Debug.Log("The current object pool index is: " + poolId);
+            // Debug.Log("The current object pool index is: " + poolId);
 
             // Get a new projectile from the object pool of the projectile type
-            Projectile projectileObject = ObjectPool<Projectile>.RequestResource(poolId, () => {return Instantiate(aProjectile);});
+            Projectile projectileObject = ObjectPool<Projectile>.RequestResource(poolId, () => {return Instantiate(projectile);});
 
             // Set the tower as active
             projectileObject.gameObject.SetActive(true);
 
-            // Set them as children of the parent that was passed
-            projectileObject.gameObject.transform.parent = spawner.transform;
+            // // Set them as children of the parent that was passed
+            // projectileObject.gameObject.transform.parent = spawner.transform;
 
-            // Reset the position of the projectile game object
-            projectileObject.gameObject.transform.position = new Vector3(0, 0, 0);
+            // // Reset the position of the projectile game object
+            // projectileObject.gameObject.transform.position = new Vector3(0, 0, 0);
 
             // Resize the projectile
             if(type == "Archer Tower")
             {
-                projectileObject.gameObject.transform.localScale = new Vector3(1, 1, 1) * Board.greatestBoardDimension * 10;
+                projectileObject.gameObject.transform.localScale = new Vector3(1, 1, 1) * Board.greatestBoardDimension * 5;
             }
 
             // Return the projectile game object

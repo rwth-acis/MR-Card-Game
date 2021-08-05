@@ -61,6 +61,8 @@ public class Projectile : MonoBehaviour
                 projectileType = "Stone";
             break;
         }
+
+        Debug.Log("Projectile type: " + projectileType + " with parent: " + parent.gameObject.name);
     }
 
     // Update is called once per frame

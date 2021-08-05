@@ -193,8 +193,6 @@ public class Level : MonoBehaviour
             }
 
             yield return new WaitForSeconds(timeBetweenSpawns);
-
-            Debug.Log("The waiting time just finished");
         }
     }
 

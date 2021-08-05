@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class Enemy : MonoBehaviour
 {
@@ -60,6 +61,12 @@ public class Enemy : MonoBehaviour
     // Initialize the flight height variable
     private float flightHeight;
 
+    // Method used to get the flight height of the enemy
+    public float GetFlightHeight
+    {
+        get { return flightHeight; }
+    }
+
     // The UI for the health bar
     [SerializeField]
     private GameObject healthBarUI;
@@ -116,10 +123,10 @@ public class Enemy : MonoBehaviour
         transform.parent = gameBoard.transform;
 
         // When spawning, set the current health points to the maximum health points
-        ResetHealthPoints();
+        ReviveEnemy();
 
         // Set the flight height and standing size
-        flightHeight = flying * Board.greatestBoardDimension * (float)0.6  + (float)0.1 * size * Board.greatestBoardDimension;
+        flightHeight = flying * Board.greatestBoardDimension * (float)0.6  + (float)0.2 * size * Board.greatestBoardDimension;
 
         // Deactivate the health bar since it is full
         healthBarUI.SetActive(false);
@@ -141,7 +148,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         // If the game is not paused, update
-        if(GameAdvancement.gamePaused == false)
+        if(GameAdvancement.gamePaused == false && isAlive == true)
         {
             // If the current health of the unit is not at its maximum, activate the health bar
             if(currentHP < maximumHP)
@@ -155,14 +162,14 @@ public class Enemy : MonoBehaviour
                 // Set the enemy as dead
                 isAlive = false;
 
-                // Return the enemy to the object pool
-                ReturnEnemyToObjectPool();
-
                 // Make the player win the currency points
                 WinPoints();
 
                 // Reduce the number of undefeated enemies of the wave by one
                 LevelInfo.numberOfUndefeatedEnemies = LevelInfo.numberOfUndefeatedEnemies - 1;
+
+                // Make the enemy die
+                StartCoroutine(Die());
             }
 
             // Make the enemy mode
@@ -265,8 +272,25 @@ public class Enemy : MonoBehaviour
     }
 
     // Method used to set the health points of the enemy correclty uppon respawn
-    public void ResetHealthPoints()
+    public void ReviveEnemy()
     {
-        currentHP = maximumHP;
+        // Make sure the enemy is alive
+        isAlive = true;
+
+        // Set the health points to max hp
+        currentHP = GetMaximumHP;
+    }
+
+    // The coroutine that spawns an oponent and waits for a time before the next spawn
+    IEnumerator Die()
+    {
+        Debug.Log("Enemy is dying.");
+
+        // Wait for 0.5 second
+        yield return new WaitForSeconds((float)0.5);
+
+        Debug.Log("Enemy died and is being returned to the object pool.");
+        // Return the enemy to the object pool
+        ReturnEnemyToObjectPool();
     }
 }

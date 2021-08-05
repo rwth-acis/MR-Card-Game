@@ -180,6 +180,17 @@ public class Tower : MonoBehaviour
     // Method used to attack
     public void Attack()
     {
+        // Remove all dead enemeies of the collider list
+        foreach(Collider coll in colliders)
+        {
+            // Check if the enemy is dead
+            if(coll.GetComponent<Enemy>().isAlive == false)
+            {
+                // Remove the collider of the list of enemies if 
+                colliders.Remove(coll);
+            }
+        }
+
         // Check if the can attack flag is true or false
         if(!canAttack)
         {
@@ -194,6 +205,8 @@ public class Tower : MonoBehaviour
 
                 // Reset the attack timer
                 attackTimer = 0;
+
+                Debug.Log("Tower: " + this.gameObject.name + " can now attack again.");
             }
         }
 
@@ -207,22 +220,26 @@ public class Tower : MonoBehaviour
         //     Debug.Log("The target was dead and was removed");
         // }
 
-        // Check if the enemy was just respawned, tagged as dead but has full health points
-        if(target != null && target.GetComponent<Enemy>().isAlive == false && target.GetComponent<Enemy>().GetCurrentHP == target.GetComponent<Enemy>().GetMaximumHP)
-        {
-            // Set the target as alive again
-            target.GetComponent<Enemy>().isAlive = true;
-        }
+        // // Check if the enemy was just respawned, tagged as dead but has full health points
+        // if(target != null && target.GetComponent<Enemy>().isAlive == false && target.GetComponent<Enemy>().GetCurrentHP == target.GetComponent<Enemy>().GetMaximumHP)
+        // {
+        //     // Set the target as alive again
+        //     target.GetComponent<Enemy>().isAlive = true;
 
-        // If the Target isn't null and dead, remove it from the colliders list
-        if(target != null && target.GetComponent<Enemy>().isAlive == false)
-        {
-            // Remove the target from the list
-            colliders.Remove(target);
+        //     Debug.Log("An enemy was reseted in the tower range of: " + this.gameObject.name);
+        // }
 
-            // // Destroy the game enemy
-            // Destroy(target.gameObject);
-        }
+        // // If the Target isn't null and dead, remove it from the colliders list
+        // if(target != null && target.GetComponent<Enemy>().isAlive == false)
+        // {
+        //     // Remove the target from the list
+        //     colliders.Remove(target);
+
+        //     Debug.Log("A dead enemy was removed form the collider list of the tower: " + this.gameObject.name);
+
+        //     // // Destroy the game enemy
+        //     // Destroy(target.gameObject);
+        // }
 
         // Check if the sphere colider around the tower still contains the target enemy
         if(GetColliders().Contains(target) == false)
@@ -230,6 +247,8 @@ public class Tower : MonoBehaviour
             // If the target left the range, set it to null
             target = null;
             // Debug.Log("The target was not contained anymore in the range and was set to null");
+
+            Debug.Log("The target has left the attack range of the tower: " + this.gameObject.name);
         }
 
         // Check if the tower needs a new target and if there are any enemies in range
@@ -238,14 +257,17 @@ public class Tower : MonoBehaviour
             // If a new target is needed, and there are enemies in range, set the oldest enemy as target
             target = GetColliders()[0];
             // Debug.Log("The new target was set to " + target);
+            Debug.Log("The new target of tower: " + this.gameObject.name + " has been set to: " + target);
         }
 
         // Check if there is a current target
         if(target != null && target.GetComponent<Enemy>().isAlive == true)
         {
+            Debug.Log("Tower: " + this.gameObject.name + " has a target and can attack");
             // Check if the can attack flag is set to true
             if(canAttack == true)
             {
+                Debug.Log("Tower: " + this.gameObject.name + " is shooting");
                 // Attack the target
                 Shoot();
                 // Debug.Log("The current enemey that is targeted is named: " + target.name);
@@ -306,17 +328,24 @@ public class Tower : MonoBehaviour
 
             // Spawn the projectile
             // Projectile spawnedProjectile = SpawnProjectileForTower(towerType).GetComponent<Projectile>();
-            Projectile spawnedProjectile = SpawnProjectileForTower(towerType, projectileSpawner);
+            Projectile spawnedProjectile = SpawnProjectileForTower(towerType, towerProjectile);
+
+            // Initialize the projectile object, so that it knows what his parent is
+            spawnedProjectile.Initialize(this);
+
+            // Set the position of the projectile game object to the position of the projectile spawner
+            spawnedProjectile.gameObject.transform.position = projectileSpawner.transform.position;
 
             // Make sure the projectile is active
             // spawnedProjectile.gameObject.SetActive(true);
 
-            // Set the position of the projectile to the position of the tower
-            spawnedProjectile.transform.position = transform.position;
+            // // Set the position of the projectile to the position of the tower
+            // spawnedProjectile.transform.position = transform.position;
+
             Debug.Log("A projectile was shot.");
 
-            // Initialize the projectile object, so that it knows what his parent is
-            spawnedProjectile.Initialize(this);
+            // // Initialize the projectile object, so that it knows what his parent is
+            // spawnedProjectile.Initialize(this);
 
             // // Resize the projectile
             // Vector3 scale = spawnedProjectile.gameObject.transform.localScale;
@@ -333,6 +362,7 @@ public class Tower : MonoBehaviour
         if(!colliders.Contains(other))
         {
             colliders.Add(other);
+            Debug.Log("An enemy has entered the tower range of: " + this.gameObject.name);
         }
     }
 

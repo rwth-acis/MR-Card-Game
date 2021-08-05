@@ -147,7 +147,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
                     enemy1.transform.position = Waypoints.enemySpawn.transform.position;
 
                     // Set the health points to max
-                    enemy1.ResetHealthPoints();
+                    enemy1.ReviveEnemy();
                 }
             }
         }
@@ -166,18 +166,18 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Set the enemy as active
             enemy.gameObject.SetActive(true);
 
-            Debug.Log("Enemy spawned at spawn at: " + Waypoints.enemySpawn.transform.position.x);
-            Debug.Log("Enemy spawned at spawn at: " + Waypoints.enemySpawn.transform.position.y);
-            Debug.Log("Enemy spawned at spawn at: " + Waypoints.enemySpawn.transform.position.z);
+            // Debug.Log("Enemy spawned at spawn at: " + Waypoints.enemySpawn.transform.position.x);
+            // Debug.Log("Enemy spawned at spawn at: " + Waypoints.enemySpawn.transform.position.y);
+            // Debug.Log("Enemy spawned at spawn at: " + Waypoints.enemySpawn.transform.position.z);
 
             // Set them as children of the game board
             enemy.transform.parent = Waypoints.enemySpawn.transform;
 
             // Set the position of the child to the position of the parent object
-            enemy.transform.position = Waypoints.enemySpawn.transform.position;
+            enemy.transform.position = Waypoints.enemySpawn.transform.position + new Vector3(0, enemy.GetFlightHeight, 0);
 
-            // Set the health points to max
-            enemy.ResetHealthPoints();
+            // Set the health points to max and make it alive again
+            enemy.ReviveEnemy();
         }
 
         // Method that returns the right enemy prefab given the enemy tpye
