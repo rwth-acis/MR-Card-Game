@@ -15,7 +15,7 @@ static class LevelInfo
     public static int numberOfAdditionalEnemiesPerWave;
 
     // The number of enemies that were not defeated for now in the wave
-    public static int numberOfUndefeatedEnemies;
+    public static int numberOfUndefeatedEnemies = 0;
 
     // The number of enemies per wave
     public static int[] numberOfEnemies;
@@ -53,9 +53,6 @@ static class LevelInfo
 
 public class Level : MonoBehaviour
 {
-    // The current wave counter
-    private int currentWave;
-
     // The number of additional enemies per wave
     [SerializeField]
     private int numberOfAdditionalEnemiesPerWave;
@@ -99,7 +96,7 @@ public class Level : MonoBehaviour
         SetNumberOfWaves();
 
         // Set the current wave to wave 0
-        currentWave = 0;
+        GameAdvancement.currentWave = 0;
 
         // Initilaize the arrays
         LevelInfo.numberOfEnemies = new int[LevelInfo.numberOfWaves];
@@ -134,7 +131,7 @@ public class Level : MonoBehaviour
     void Update()
     {
         // Check if the current wave is smaller than the number of waves and if the number of undefeated enemies is 0
-        if(LevelInfo.numberOfUndefeatedEnemies == 0 && currentWave < LevelInfo.numberOfWaves)
+        if(LevelInfo.numberOfUndefeatedEnemies == 0 && GameAdvancement.currentWave < LevelInfo.numberOfWaves)
         {
             // Make the next wave setup
             MakeNextWaveSetup();
@@ -144,14 +141,11 @@ public class Level : MonoBehaviour
     // The method that does the setup to make sure the next wave can spawn
     public void MakeNextWaveSetup()
     {
-        // Set the current wave to + 1
-        currentWave = currentWave + 1;
-
         // Activate the start next wave button
         startNextWave.gameObject.SetActive(true);
 
         // Set the number of undefeated enemies to the number of enemies in the wave
-        LevelInfo.numberOfUndefeatedEnemies = LevelInfo.numberOfEnemies[currentWave - 1];
+        LevelInfo.numberOfUndefeatedEnemies = LevelInfo.numberOfEnemies[GameAdvancement.currentWave];
 
         // Unground all the buildings now that the wave is finished
         UngroundAllBuildings();
@@ -163,6 +157,12 @@ public class Level : MonoBehaviour
         // Ground all buildings when the wave begins
         GroundAllBuildings();
 
+        // Increase the ucrrent wave number
+        GameAdvancement.currentWave = GameAdvancement.currentWave + 1;
+
+        // Actualize the wave display
+        GameSetup.ActualizeWaveDisplay();
+
         // Start the coroutine that spawns all the wave
         StartCoroutine(SpawnWave());
     }
@@ -170,13 +170,13 @@ public class Level : MonoBehaviour
     // The coroutine that spawns an oponent and waits for a time before the next spawn
     IEnumerator SpawnWave()
     {
-        for(int counter = LevelInfo.numberOfEnemies[currentWave - 1]; counter > 0; counter = counter - 1)
+        for(int counter = LevelInfo.numberOfEnemies[GameAdvancement.currentWave - 1]; counter > 0; counter = counter - 1)
         {
             // Check if currently there is no group of enemy that should be spawned
             if(enemySpawnNumber == 0)
             {
                 // Choose a new type of enemy that should be spawned
-                SetNextEnemyType(LevelInfo.normalEnemies[currentWave - 1], LevelInfo.fastEnemies[currentWave - 1], LevelInfo.superFastEnemies[currentWave - 1], LevelInfo.flyingEnemies[currentWave - 1], LevelInfo.tankEnemies[currentWave - 1], LevelInfo.slowEnemies[currentWave - 1], LevelInfo.berzerkerEnemies[currentWave - 1], LevelInfo.berzerkerFlyingEnemies[currentWave - 1], LevelInfo.berzerkerTankEnemies[currentWave - 1]);
+                SetNextEnemyType(LevelInfo.normalEnemies[GameAdvancement.currentWave - 1], LevelInfo.fastEnemies[GameAdvancement.currentWave - 1], LevelInfo.superFastEnemies[GameAdvancement.currentWave - 1], LevelInfo.flyingEnemies[GameAdvancement.currentWave - 1], LevelInfo.tankEnemies[GameAdvancement.currentWave - 1], LevelInfo.slowEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerFlyingEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerTankEnemies[GameAdvancement.currentWave - 1]);
             }
 
             // Check if currently a group of enemy should be spawned
@@ -301,7 +301,7 @@ public class Level : MonoBehaviour
         }
 
         // Get another random number and set the enemy spawn number to it
-        enemySpawnNumber = RandomNumber(1, 3) + (currentWave - 1);
+        enemySpawnNumber = RandomNumber(1, 3) + (GameAdvancement.currentWave - 1);
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------
