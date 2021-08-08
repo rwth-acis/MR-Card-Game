@@ -66,7 +66,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
         // Start is called before the first frame update
         void Start()
         {
-            
+            instance = this;
         }
 
         // Update is called once per frame
@@ -80,6 +80,8 @@ namespace i5.Toolkit.Core.Examples.Spawners
         {
             // Get the right object pool index for the tower type
             int poolIndex = ObjectPools.GetTowerPoolIndex("Archer Tower");
+
+            Debug.Log("Tower is being spawned.");
 
             // Get a new tower from the object pool of the archer tower
             GameObject tower = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(anArcherTower);});
@@ -131,11 +133,20 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Set the tower as active
             tower.gameObject.SetActive(true);
 
-            // Reset the position of the tower and add the necessary overhead so that the tower is over the ground
-            tower.transform.position = new Vector3(0, towerOverhead, 0);
+            // // Reset the position of the tower and add the necessary overhead so that the tower is over the ground
+            // tower.transform.position = new Vector3(0, towerOverhead, 0);
+
+            // // Set them as children of the parent that was passed
+            // tower.transform.parent = parent.transform;
+
+            // Scale the tower down
+            tower.transform.localScale = Board.gameBoard.transform.localScale * (float)0.2;
 
             // Set them as children of the parent that was passed
             tower.transform.parent = parent.transform;
+
+            // Reset the position of the tower and add the necessary overhead so that the tower is over the ground
+            tower.transform.position = new Vector3(0, towerOverhead, 0);
 
             // Add the reference to this building to the Buildings class so that it can be accessed
             AddBuildingReference(tower, parent);

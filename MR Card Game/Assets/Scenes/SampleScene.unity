@@ -271,7 +271,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 9965433}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 868698477}
+        m_TargetAssemblyTypeName: build.BuildTowerMenu, Assembly-CSharp
+        m_MethodName: InitiateLightningTowerBuild
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &9965433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1149,7 +1161,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1964776857}
+  - {fileID: 280336003}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1249,25 +1261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e127522552b7049b128b459751cfa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  archerTowerCost: 50
-  fireTowerCost: 65
-  earthTowerCost: 80
-  lightningTowerCost: 75
-  windTowerCost: 40
-  holeCost: 70
-  swampCost: 110
   buildUI: {fileID: 514093672}
-  buildTowerCanvas: {fileID: 325453207}
-  buildTrapWindow: {fileID: 1744364149}
-  buildTowerWindow: {fileID: 997189540}
-  answerQuestions: {fileID: 897248710}
-  buildArcherTower: {fileID: 1547885768}
-  buildFireTower: {fileID: 703075432}
-  buildEarthTower: {fileID: 372943511}
-  buildLightningTower: {fileID: 9965432}
-  buildWindTower: {fileID: 1827854815}
-  buildHole: {fileID: 1335396220}
-  buildSwamp: {fileID: 792656911}
 --- !u!65 &51229617
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1624,7 +1618,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 107239220}
+  - {fileID: 463950674}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1709,25 +1703,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e127522552b7049b128b459751cfa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  archerTowerCost: 50
-  fireTowerCost: 65
-  earthTowerCost: 80
-  lightningTowerCost: 75
-  windTowerCost: 40
-  holeCost: 70
-  swampCost: 110
   buildUI: {fileID: 1421336678}
-  buildTowerCanvas: {fileID: 325453207}
-  buildTrapWindow: {fileID: 1744364149}
-  buildTowerWindow: {fileID: 997189540}
-  answerQuestions: {fileID: 897248710}
-  buildArcherTower: {fileID: 1547885768}
-  buildFireTower: {fileID: 703075432}
-  buildEarthTower: {fileID: 372943511}
-  buildLightningTower: {fileID: 9965432}
-  buildWindTower: {fileID: 1827854815}
-  buildHole: {fileID: 1335396220}
-  buildSwamp: {fileID: 792656911}
 --- !u!65 &61031307
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2038,35 +2014,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 73796186}
   m_CullTransparentMesh: 1
---- !u!21 &79375337
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Spell6Material
-
-    17926'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: fad4c7f0a9a04fb68d7ad42199c743b1, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1001 &83141252
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3184,35 +3131,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 97778277}
   m_CullTransparentMesh: 1
---- !u!21 &107239220
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Tower6Material
-
-    16170'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 0adb58fe92e84a02b0f64ecb570c7fab, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!4 &110719076
 Transform:
   m_ObjectHideFlags: 0
@@ -4045,35 +3963,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 162097192}
   m_CullTransparentMesh: 1
---- !u!21 &169714585
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Helper1Material
-
-    18124'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: b4a55f88c5664e55b239e466e9fda639, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &171452331
 GameObject:
   m_ObjectHideFlags: 0
@@ -4501,6 +4390,35 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!21 &185935766
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Corner1Material
+
+    16510'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 3a909fbae5b445039ad4d31a50dc74ec, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &194127215
 GameObject:
   m_ObjectHideFlags: 0
@@ -4960,6 +4878,35 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7137871232826482573, guid: 4b8b1e5df77856842a51553a716442fb, type: 3}
   m_PrefabInstance: {fileID: 202173441}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &204724865
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Spell4Material
+
+    18222'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 2670a636eda04d72acb6fc273446687c, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &207031916
 GameObject:
   m_ObjectHideFlags: 0
@@ -5864,6 +5811,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 276162468}
   m_CullTransparentMesh: 1
+--- !u!21 &280336003
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Tower3Material
+
+    16138'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: b6dfbc6e83104832af603c131a9e78bf, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!43 &282025340
 Mesh:
   m_ObjectHideFlags: 0
@@ -6962,35 +6938,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!21 &313457878
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Spell2Material
-
-    18570'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: e49d457cb5fc452481d53b1df38d4be7, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &325453207
 GameObject:
   m_ObjectHideFlags: 0
@@ -7159,35 +7106,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0.623}
   m_SizeDelta: {x: 160, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!21 &340845119
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Tower4Material
-
-    18280'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 6986efb7a1a440289942320a9f54d8b5, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!43 &345105267
 Mesh:
   m_ObjectHideFlags: 0
@@ -7451,7 +7369,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1915308012}
+  - {fileID: 185935766}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7548,6 +7466,35 @@ MonoBehaviour:
   mWidth: 0.1
   mHeight: 0.159021
   mRuntimeTexture: {fileID: 0}
+--- !u!21 &361080951
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Helper4Material
+
+    17582'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: c18ec632b506446c90df769a40b4699a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &363015338
 GameObject:
   m_ObjectHideFlags: 0
@@ -7764,7 +7711,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 372943512}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 868698477}
+        m_TargetAssemblyTypeName: build.BuildTowerMenu, Assembly-CSharp
+        m_MethodName: InitiateEarthTowerBuild
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &372943512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8539,6 +8498,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 398964967}
   m_CullTransparentMesh: 1
+--- !u!21 &409208412
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Spell3Material
+
+    17876'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 9631e88b33d24de0ba1885de660df9c2, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &409450689
 GameObject:
   m_ObjectHideFlags: 0
@@ -8624,7 +8612,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1437618997}
         m_TargetAssemblyTypeName: BuildTower, Assembly-CSharp
-        m_MethodName: OpenBuildTrapMenu
+        m_MethodName: BeginBuildingTrap
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8868,35 +8856,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 426175750}
   m_CullTransparentMesh: 1
---- !u!21 &433342772
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Spell5Material
-
-    17664'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: b247db3c5e7543a395027093ec581492, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &437829517
 GameObject:
   m_ObjectHideFlags: 0
@@ -9315,35 +9274,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!21 &441338069
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Helper3Material
-
-    18148'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: b4239faa9e424a79bca0c47c43755176, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &442941258
 GameObject:
   m_ObjectHideFlags: 0
@@ -9848,6 +9778,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!21 &463950674
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Tower6Material
+
+    16174'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 0adb58fe92e84a02b0f64ecb570c7fab, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &465914465
 GameObject:
   m_ObjectHideFlags: 0
@@ -11570,6 +11529,35 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!21 &573495299
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Helper1Material
+
+    18138'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: b4a55f88c5664e55b239e466e9fda639, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &577310455
 GameObject:
   m_ObjectHideFlags: 0
@@ -12426,7 +12414,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 666674740}
+  - {fileID: 711497403}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12511,25 +12499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e127522552b7049b128b459751cfa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  archerTowerCost: 50
-  fireTowerCost: 65
-  earthTowerCost: 80
-  lightningTowerCost: 75
-  windTowerCost: 40
-  holeCost: 70
-  swampCost: 110
   buildUI: {fileID: 2136614714}
-  buildTowerCanvas: {fileID: 325453207}
-  buildTrapWindow: {fileID: 1744364149}
-  buildTowerWindow: {fileID: 997189540}
-  answerQuestions: {fileID: 897248710}
-  buildArcherTower: {fileID: 1547885768}
-  buildFireTower: {fileID: 703075432}
-  buildEarthTower: {fileID: 372943511}
-  buildLightningTower: {fileID: 9965432}
-  buildWindTower: {fileID: 1827854815}
-  buildHole: {fileID: 1335396220}
-  buildSwamp: {fileID: 792656911}
 --- !u!65 &622650379
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -12688,35 +12658,6 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
---- !u!21 &644999405
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Tower1Material
-
-    17802'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 198144a34b534863834c796a623704a7, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &646881046
 GameObject:
   m_ObjectHideFlags: 0
@@ -13150,64 +13091,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 647868363}
   m_CullTransparentMesh: 1
---- !u!21 &664291949
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Tower9Material
-
-    17464'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 03b5436154f247809bf365f064c41086, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
---- !u!21 &666674740
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Tower7Material
-
-    16870'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: caaa94b862e64a30b71ec58061f1921e, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &668517831
 GameObject:
   m_ObjectHideFlags: 0
@@ -14709,7 +14592,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 703075433}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 868698477}
+        m_TargetAssemblyTypeName: build.BuildTowerMenu, Assembly-CSharp
+        m_MethodName: InitiateFireTowerBuild
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &703075433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14856,6 +14751,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!21 &711497403
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Tower7Material
+
+    16886'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: caaa94b862e64a30b71ec58061f1921e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &712401854
 GameObject:
   m_ObjectHideFlags: 0
@@ -15402,35 +15326,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 731471989}
   m_CullTransparentMesh: 1
---- !u!21 &737445775
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Corner2Material
-
-    18790'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c48bd44b7b614fc2a0bd94457e0e3af4, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &744064973
 GameObject:
   m_ObjectHideFlags: 0
@@ -16446,35 +16341,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 792656909}
   m_CullTransparentMesh: 1
---- !u!21 &794095627
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Spell3Material
-
-    17852'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 9631e88b33d24de0ba1885de660df9c2, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &798266615
 GameObject:
   m_ObjectHideFlags: 0
@@ -16609,6 +16475,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 798266615}
   m_CullTransparentMesh: 1
+--- !u!21 &802111838
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Tower8Material
+
+    17704'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: a7316a2e34044c879abf930ef4c6b14f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &803349090
 GameObject:
   m_ObjectHideFlags: 0
@@ -17505,35 +17400,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 856850285}
   m_CullTransparentMesh: 1
---- !u!21 &863753932
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Spell1Material
-
-    18250'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 3d0127cda4ce4d24a0001e4ab3bbff46, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1001 &867323782
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17618,6 +17484,7 @@ GameObject:
   - component: {fileID: 868698471}
   - component: {fileID: 868698475}
   - component: {fileID: 868698476}
+  - component: {fileID: 868698477}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -17787,11 +17654,70 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5af1eb0bf501a7649b551c272b190a66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  archerTower: {fileID: 4635730557382407252, guid: b3df067559ca77848bcba1cdeec9c601, type: 3}
-  fireTower: {fileID: 6285897294142917469, guid: 86711b28da271f843af6ea8350e057ae, type: 3}
+  archerTower: {fileID: 604543747050905921, guid: b3df067559ca77848bcba1cdeec9c601, type: 3}
+  fireTower: {fileID: 3577546902984414806, guid: 86711b28da271f843af6ea8350e057ae, type: 3}
   earthTower: {fileID: 68961215578333516, guid: f57aa0f62c26f9149b6c362ee9ed05d4, type: 3}
   lightningTower: {fileID: 3249887945948580918, guid: fc8e94dbb59bfed409763a1a551d129c, type: 3}
   windTower: {fileID: 5326048971135465581, guid: 551566d40efc559478a5059b6a01aac4, type: 3}
+--- !u!114 &868698477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868698470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e40c9692a4849f14abb57917f202610e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  archerTowerCost: 50
+  fireTowerCost: 65
+  earthTowerCost: 80
+  lightningTowerCost: 75
+  windTowerCost: 40
+  holeCost: 70
+  swampCost: 110
+  buildTowerCanvas: {fileID: 325453207}
+  buildTrapWindow: {fileID: 1744364149}
+  buildTowerWindow: {fileID: 997189540}
+  answerQuestions: {fileID: 897248710}
+  buildArcherTower: {fileID: 1547885768}
+  buildFireTower: {fileID: 703075432}
+  buildEarthTower: {fileID: 372943511}
+  buildLightningTower: {fileID: 9965432}
+  buildWindTower: {fileID: 1827854815}
+  buildHole: {fileID: 1335396220}
+  buildSwamp: {fileID: 792656911}
+--- !u!21 &874425382
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Tower5Material
+
+    17978'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: c752dba6da27431383148b3d2bd1823d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &881559524
 GameObject:
   m_ObjectHideFlags: 0
@@ -18028,7 +17954,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1043766051}
+  - {fileID: 1362919717}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18113,25 +18039,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e127522552b7049b128b459751cfa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  archerTowerCost: 50
-  fireTowerCost: 65
-  earthTowerCost: 80
-  lightningTowerCost: 75
-  windTowerCost: 40
-  holeCost: 70
-  swampCost: 110
   buildUI: {fileID: 641723843}
-  buildTowerCanvas: {fileID: 325453207}
-  buildTrapWindow: {fileID: 1744364149}
-  buildTowerWindow: {fileID: 997189540}
-  answerQuestions: {fileID: 897248710}
-  buildArcherTower: {fileID: 1547885768}
-  buildFireTower: {fileID: 703075432}
-  buildEarthTower: {fileID: 372943511}
-  buildLightningTower: {fileID: 9965432}
-  buildWindTower: {fileID: 1827854815}
-  buildHole: {fileID: 1335396220}
-  buildSwamp: {fileID: 792656911}
 --- !u!65 &890732128
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18439,7 +18347,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1273119188}
+  - {fileID: 1448668889}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18539,25 +18447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e127522552b7049b128b459751cfa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  archerTowerCost: 50
-  fireTowerCost: 65
-  earthTowerCost: 80
-  lightningTowerCost: 75
-  windTowerCost: 40
-  holeCost: 70
-  swampCost: 110
   buildUI: {fileID: 496225206}
-  buildTowerCanvas: {fileID: 325453207}
-  buildTrapWindow: {fileID: 1744364149}
-  buildTowerWindow: {fileID: 997189540}
-  answerQuestions: {fileID: 897248710}
-  buildArcherTower: {fileID: 1547885768}
-  buildFireTower: {fileID: 703075432}
-  buildEarthTower: {fileID: 372943511}
-  buildLightningTower: {fileID: 9965432}
-  buildWindTower: {fileID: 1827854815}
-  buildHole: {fileID: 1335396220}
-  buildSwamp: {fileID: 792656911}
 --- !u!65 &910123062
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -18571,35 +18461,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.1, y: 0, z: 0.159021}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!21 &913707978
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Tower5Material
-
-    17962'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c752dba6da27431383148b3d2bd1823d, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &918156120
 GameObject:
   m_ObjectHideFlags: 0
@@ -19691,6 +19552,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 975118261}
   m_CullTransparentMesh: 1
+--- !u!21 &979984506
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Tower9Material
+
+    17486'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 03b5436154f247809bf365f064c41086, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &997189540
 GameObject:
   m_ObjectHideFlags: 0
@@ -20323,6 +20213,35 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: -8, y: -5, z: -8, w: -5}
   m_Softness: {x: 0, y: 0}
+--- !u!21 &1022344900
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Spell1Material
+
+    18266'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 3d0127cda4ce4d24a0001e4ab3bbff46, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1026403477
 GameObject:
   m_ObjectHideFlags: 0
@@ -20494,64 +20413,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1026647735}
   m_CullTransparentMesh: 1
---- !u!21 &1040369557
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Spell7Material
-
-    18418'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c416c60d8b2b4763b0083209b6183517, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
---- !u!21 &1043766051
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Tower0Material
-
-    17230'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 9dc869b35c0944b795e7e08746d58019, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1001 &1061077674
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20774,8 +20635,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1437618997}
-        m_TargetAssemblyTypeName: BuildTower, Assembly-CSharp
+      - m_Target: {fileID: 868698477}
+        m_TargetAssemblyTypeName: build.BuildTowerMenu, Assembly-CSharp
         m_MethodName: CloseBuildTowerMenu
         m_Mode: 1
         m_Arguments:
@@ -20909,7 +20770,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1437618997}
         m_TargetAssemblyTypeName: BuildTower, Assembly-CSharp
-        m_MethodName: OpenBuildTowerMenu
+        m_MethodName: BeginBuildingTower
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -21022,7 +20883,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 664291949}
+  - {fileID: 979984506}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21107,25 +20968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e127522552b7049b128b459751cfa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  archerTowerCost: 50
-  fireTowerCost: 65
-  earthTowerCost: 80
-  lightningTowerCost: 75
-  windTowerCost: 40
-  holeCost: 70
-  swampCost: 110
   buildUI: {fileID: 1499224584}
-  buildTowerCanvas: {fileID: 325453207}
-  buildTrapWindow: {fileID: 1744364149}
-  buildTowerWindow: {fileID: 997189540}
-  answerQuestions: {fileID: 897248710}
-  buildArcherTower: {fileID: 1547885768}
-  buildFireTower: {fileID: 703075432}
-  buildEarthTower: {fileID: 372943511}
-  buildLightningTower: {fileID: 9965432}
-  buildWindTower: {fileID: 1827854815}
-  buildHole: {fileID: 1335396220}
-  buildSwamp: {fileID: 792656911}
 --- !u!65 &1073453810
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -22189,7 +22032,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1669845715}
+  - {fileID: 361080951}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -23634,7 +23477,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 433342772}
+  - {fileID: 1333976333}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -23862,7 +23705,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1939459058}
+  - {fileID: 802111838}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -23947,25 +23790,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e127522552b7049b128b459751cfa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  archerTowerCost: 50
-  fireTowerCost: 65
-  earthTowerCost: 80
-  lightningTowerCost: 75
-  windTowerCost: 40
-  holeCost: 70
-  swampCost: 110
   buildUI: {fileID: 1500016833}
-  buildTowerCanvas: {fileID: 325453207}
-  buildTrapWindow: {fileID: 1744364149}
-  buildTowerWindow: {fileID: 997189540}
-  answerQuestions: {fileID: 897248710}
-  buildArcherTower: {fileID: 1547885768}
-  buildFireTower: {fileID: 703075432}
-  buildEarthTower: {fileID: 372943511}
-  buildLightningTower: {fileID: 9965432}
-  buildWindTower: {fileID: 1827854815}
-  buildHole: {fileID: 1335396220}
-  buildSwamp: {fileID: 792656911}
 --- !u!65 &1205467234
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -24276,35 +24101,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!21 &1224295838
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Spell4Material
-
-    18208'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 2670a636eda04d72acb6fc273446687c, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!43 &1225821245
 Mesh:
   m_ObjectHideFlags: 0
@@ -24552,7 +24348,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 868698475}
         m_TargetAssemblyTypeName: ActivateQuestions, Assembly-CSharp
         m_MethodName: ActivateQuestion
         m_Mode: 1
@@ -24665,7 +24461,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1957770772}
+  - {fileID: 2028958242}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -24872,6 +24668,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1244769725}
   m_CullTransparentMesh: 1
+--- !u!21 &1247544967
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Helper3Material
+
+    18162'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: b4239faa9e424a79bca0c47c43755176, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1249698388
 GameObject:
   m_ObjectHideFlags: 0
@@ -25200,35 +25025,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1256413657}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!21 &1273119188
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Tower2Material
-
-    17268'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 2e53417c67fc4812b263c3cca78f0a44, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &1290163407
 GameObject:
   m_ObjectHideFlags: 0
@@ -25585,7 +25381,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 644999405}
+  - {fileID: 1612491964}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -26121,6 +25917,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1332516100}
   m_CullTransparentMesh: 1
+--- !u!21 &1333976333
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Spell5Material
+
+    17684'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: b247db3c5e7543a395027093ec581492, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1335396218
 GameObject:
   m_ObjectHideFlags: 0
@@ -26203,7 +26028,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1335396221}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 868698470}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1335396221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26406,6 +26243,35 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!21 &1362919717
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Tower0Material
+
+    17254'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 9dc869b35c0944b795e7e08746d58019, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1372127542
 GameObject:
   m_ObjectHideFlags: 0
@@ -26469,7 +26335,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 794095627}
+  - {fileID: 409208412}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -27338,7 +27204,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 79375337}
+  - {fileID: 1776624007}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -27457,25 +27323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e127522552b7049b128b459751cfa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  archerTowerCost: 50
-  fireTowerCost: 65
-  earthTowerCost: 80
-  lightningTowerCost: 75
-  windTowerCost: 40
-  holeCost: 70
-  swampCost: 110
   buildUI: {fileID: 447277838}
-  buildTowerCanvas: {fileID: 325453207}
-  buildTrapWindow: {fileID: 1744364149}
-  buildTowerWindow: {fileID: 997189540}
-  answerQuestions: {fileID: 897248710}
-  buildArcherTower: {fileID: 1547885768}
-  buildFireTower: {fileID: 703075432}
-  buildEarthTower: {fileID: 372943511}
-  buildLightningTower: {fileID: 9965432}
-  buildWindTower: {fileID: 1827854815}
-  buildHole: {fileID: 1335396220}
-  buildSwamp: {fileID: 792656911}
 --- !u!65 &1437618998
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27629,6 +27477,35 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1447340158}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!21 &1448668889
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Tower2Material
+
+    17292'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 2e53417c67fc4812b263c3cca78f0a44, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1453130312
 GameObject:
   m_ObjectHideFlags: 0
@@ -27679,7 +27556,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 913707978}
+  - {fileID: 874425382}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -27779,25 +27656,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e127522552b7049b128b459751cfa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  archerTowerCost: 50
-  fireTowerCost: 65
-  earthTowerCost: 80
-  lightningTowerCost: 75
-  windTowerCost: 40
-  holeCost: 70
-  swampCost: 110
   buildUI: {fileID: 2133407723}
-  buildTowerCanvas: {fileID: 325453207}
-  buildTrapWindow: {fileID: 1744364149}
-  buildTowerWindow: {fileID: 997189540}
-  answerQuestions: {fileID: 897248710}
-  buildArcherTower: {fileID: 1547885768}
-  buildFireTower: {fileID: 703075432}
-  buildEarthTower: {fileID: 372943511}
-  buildLightningTower: {fileID: 9965432}
-  buildWindTower: {fileID: 1827854815}
-  buildHole: {fileID: 1335396220}
-  buildSwamp: {fileID: 792656911}
 --- !u!65 &1453130320
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -28835,6 +28694,35 @@ Transform:
   m_Father: {fileID: 1125187356}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!21 &1542114222
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Spell7Material
+
+    18432'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: c416c60d8b2b4763b0083209b6183517, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1547885766
 GameObject:
   m_ObjectHideFlags: 0
@@ -28917,7 +28805,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1547885769}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 868698477}
+        m_TargetAssemblyTypeName: build.BuildTowerMenu, Assembly-CSharp
+        m_MethodName: InitiateArcherTowerBuild
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1547885769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29851,7 +29751,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 169714585}
+  - {fileID: 573495299}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -30120,7 +30020,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 441338069}
+  - {fileID: 1247544967}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -30612,6 +30512,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1610564480}
   m_CullTransparentMesh: 1
+--- !u!21 &1612491964
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Tower1Material
+
+    17824'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 198144a34b534863834c796a623704a7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1613432149
 GameObject:
   m_ObjectHideFlags: 0
@@ -30845,7 +30774,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1224295838}
+  - {fileID: 204724865}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -30923,6 +30852,35 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 604543747050905920, guid: b3df067559ca77848bcba1cdeec9c601, type: 3}
   m_PrefabInstance: {fileID: 604543747593822925}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &1647410780
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Tower4Material
+
+    18296'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 6986efb7a1a440289942320a9f54d8b5, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1649504771
 GameObject:
   m_ObjectHideFlags: 0
@@ -31295,35 +31253,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1661841739}
   m_CullTransparentMesh: 1
---- !u!21 &1669845715
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Helper4Material
-
-    17562'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: c18ec632b506446c90df769a40b4699a, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &1672057948
 GameObject:
   m_ObjectHideFlags: 0
@@ -31477,7 +31406,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 863753932}
+  - {fileID: 1022344900}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -31801,7 +31730,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 340845119}
+  - {fileID: 1647410780}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -31901,25 +31830,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e127522552b7049b128b459751cfa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  archerTowerCost: 50
-  fireTowerCost: 65
-  earthTowerCost: 80
-  lightningTowerCost: 75
-  windTowerCost: 40
-  holeCost: 70
-  swampCost: 110
   buildUI: {fileID: 378416245}
-  buildTowerCanvas: {fileID: 325453207}
-  buildTrapWindow: {fileID: 1744364149}
-  buildTowerWindow: {fileID: 997189540}
-  answerQuestions: {fileID: 897248710}
-  buildArcherTower: {fileID: 1547885768}
-  buildFireTower: {fileID: 703075432}
-  buildEarthTower: {fileID: 372943511}
-  buildLightningTower: {fileID: 9965432}
-  buildWindTower: {fileID: 1827854815}
-  buildHole: {fileID: 1335396220}
-  buildSwamp: {fileID: 792656911}
 --- !u!65 &1691881014
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -32200,6 +32111,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1707107242}
   m_CullTransparentMesh: 1
+--- !u!21 &1710892585
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Corner2Material
+
+    18800'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: c48bd44b7b614fc2a0bd94457e0e3af4, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1716735794
 GameObject:
   m_ObjectHideFlags: 0
@@ -33615,6 +33555,35 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!21 &1776624007
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Spell6Material
+
+    17944'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: fad4c7f0a9a04fb68d7ad42199c743b1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1784684075
 GameObject:
   m_ObjectHideFlags: 0
@@ -33678,7 +33647,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 1040369557}
+  - {fileID: 1542114222}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -33885,6 +33854,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1784684292}
   m_CullTransparentMesh: 1
+--- !u!21 &1789939218
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Spell2Material
+
+    18582'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: e49d457cb5fc452481d53b1df38d4be7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1 &1791464683
 GameObject:
   m_ObjectHideFlags: 0
@@ -34848,7 +34846,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1827854816}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 868698477}
+        m_TargetAssemblyTypeName: build.BuildTowerMenu, Assembly-CSharp
+        m_MethodName: InitiateWindTowerBuild
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1827854816
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35681,7 +35691,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 313457878}
+  - {fileID: 1789939218}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -35962,35 +35972,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7137871232826482573, guid: 4b8b1e5df77856842a51553a716442fb, type: 3}
   m_PrefabInstance: {fileID: 1906792542}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &1915308012
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Corner1Material
-
-    16496'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 3a909fbae5b445039ad4d31a50dc74ec, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &1918169522
 GameObject:
   m_ObjectHideFlags: 0
@@ -36257,35 +36238,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1918335573}
   m_CullTransparentMesh: 1
---- !u!21 &1939459058
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Tower8Material
-
-    17684'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: a7316a2e34044c879abf930ef4c6b14f, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &1939968710
 GameObject:
   m_ObjectHideFlags: 0
@@ -36472,35 +36424,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 725bf8b9f4ee14e468e36b0e885a883b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!21 &1957770772
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Helper2Material
-
-    17726'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 5c7c62e712d046468dc049c4dabca790, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &1958690012
 GameObject:
   m_ObjectHideFlags: 0
@@ -36799,35 +36722,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!21 &1964776857
-Material:
-  serializedVersion: 6
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 'Tower3Material
-
-    16134'
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 5
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 2800000, guid: b6dfbc6e83104832af603c131a9e78bf, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Floats: []
-    m_Colors:
-    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
-  m_BuildTextureStacks: []
 --- !u!1 &1969606237
 GameObject:
   m_ObjectHideFlags: 0
@@ -38009,6 +37903,35 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!21 &2028958242
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 'Helper2Material
+
+    17748'
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 5
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: 5c7c62e712d046468dc049c4dabca790, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats: []
+    m_Colors:
+    - _Color: {r: 0.82089555, g: 0.82089555, b: 0.82089555, a: 1}
+  m_BuildTextureStacks: []
 --- !u!1001 &2030539082
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -38624,7 +38547,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 737445775}
+  - {fileID: 1710892585}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

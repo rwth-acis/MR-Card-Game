@@ -907,7 +907,7 @@ public class ActivateQuestions : MonoBehaviour
         // If the question was answered correclty, reduce the number of questions that need to be answered by one
         if(answeredCorrectly == true)
         {
-            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer;
+            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer - 1;
         }
     }
 
@@ -1067,7 +1067,7 @@ public class ActivateQuestions : MonoBehaviour
         // If the question was answered correclty, reduce the number of questions that need to be answered by one
         if(answeredCorrectly == true)
         {
-            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer;
+            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer - 1;
         }
     }
 
