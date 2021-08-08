@@ -248,7 +248,7 @@ public class Tower : MonoBehaviour
             target = null;
             // Debug.Log("The target was not contained anymore in the range and was set to null");
 
-            Debug.Log("The target has left the attack range of the tower: " + this.gameObject.name);
+            // Debug.Log("The target has left the attack range of the tower: " + this.gameObject.name);
         }
 
         // Check if the tower needs a new target and if there are any enemies in range
@@ -358,8 +358,10 @@ public class Tower : MonoBehaviour
     }
 
     // The method that adds entering enemies to the collider list
-    private void OnTriggerEnter(Collider other) {
-        if(!colliders.Contains(other))
+    private void OnTriggerEnter(Collider other)
+    {
+        // Make sure it is a game object with enemy tag
+        if(other.gameObject.tag == "Enemy" && !colliders.Contains(other) )
         {
             colliders.Add(other);
             Debug.Log("An enemy has entered the tower range of: " + this.gameObject.name);
@@ -369,7 +371,10 @@ public class Tower : MonoBehaviour
     // The method that removes exiting enemies of the collider list
     private void OnTriggerExit (Collider other)
     {
-        colliders.Remove(other);
+        if(other.gameObject.tag == "Enemy")
+        {
+            colliders.Remove(other);
+        }
     }
 
     //-----------------------------------------------------------------------------------------------------------

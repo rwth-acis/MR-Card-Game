@@ -319,6 +319,14 @@ public class Level : MonoBehaviour
         // Get another random number and set the enemy spawn number to it
         enemySpawnNumber = RandomNumber(1, 3) + (GameAdvancement.currentWave - 1);
 
+        // Check that there are enough enemies in the wave
+        if(enemySpawnNumber > LevelInfo.numberOfUndefeatedEnemies)
+        {
+            // Set the enemy spawn number to the number of undefeated enemies
+            enemySpawnNumber = LevelInfo.numberOfUndefeatedEnemies;
+        }
+
+
         // Initialize the two maximal numbers that state if the enemies should have a weakness and resistance or not
         int weaknessRandom = 6;
         int resistanceRandom = 8;

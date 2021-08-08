@@ -86,7 +86,7 @@ public class BuildTower : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        this.GetComponent<BoxCollider>().enabled = true;
     }
 
     // Update is called once per frame
@@ -97,6 +97,11 @@ public class BuildTower : MonoBehaviour
         {
             // Make the ui button appear that should be clickable to construct a tower
             buildUI.SetActive(true);
+
+            // buildUI.GetComponent<Canvas>().enabled = true;
+
+            // Activate the billboard script
+            buildUI.GetComponent<Billboard>().enabled = true;
 
             // Set the flag to false
             makeBuildAppear = false;
@@ -110,10 +115,23 @@ public class BuildTower : MonoBehaviour
             makeBuildDisappear = false;
         }
 
+        // // Check if the build UI is active and if the game was paused
+        // if(GameAdvancement.gamePaused == true && buildUI.GetComponent<Canvas>().enabled == true)
+        // {
+        //     // Deactivate the billboard script
+        //     buildUI.GetComponent<Billboard>().enabled = false;
+
+        //     // Make the ui button disappear
+        //     buildUI.GetComponent<Canvas>().enabled = false;
+
+        //     // Set the flag to false
+        //     makeBuildAppear = true;
+        // }
+
         // Check if the build UI is active and if the game was paused
         if(GameAdvancement.gamePaused == true && buildUI.activeSelf == true)
         {
-            // Make the ui button disappear
+            // Deactivate the billboard script
             buildUI.SetActive(false);
 
             // Set the flag to false
@@ -124,9 +142,12 @@ public class BuildTower : MonoBehaviour
     // The method that adds entering enemies to the collider list
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log("On trigger enter was activated");
+
         // Check if the collider that enetered the box collider of the image target is the game board
-        if(other.gameObject.name == "Board")
+        if(other.gameObject.tag == "Board")
         {
+            Debug.Log("Build should appear now.");
             makeBuildAppear = true;
         }
     }
@@ -135,7 +156,7 @@ public class BuildTower : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         // Check if the collider that left the box collider of the image target is the game board
-        if(other.gameObject.name == "Board")
+        if(other.gameObject.tag == "Board")
         {
             makeBuildDisappear = true;
         }
@@ -144,6 +165,8 @@ public class BuildTower : MonoBehaviour
     // The method that opens the build tower menu
     public void OpenBuildTowerMenu()
     {
+        Debug.Log("Opening build tower menu");
+
         // Pause the game
         GameAdvancement.gamePaused = true;
 
@@ -219,6 +242,22 @@ public class BuildTower : MonoBehaviour
         }
     }
 
+    // Method used to close the build tower menu
+    public void CloseBuildTowerMenu()
+    {
+        // Pause the game
+        GameAdvancement.gamePaused = false;
+
+        // Set the canvas as active
+        buildTowerCanvas.SetActive(false);
+
+        // Set the build tower menu as active
+        buildTowerWindow.SetActive(false);
+
+        // Make sure the build trap menu is inactive
+        buildTrapWindow.SetActive(false);
+    }
+
     // The method that opens the build tower menu
     public void OpenBuildTrapMenu()
     {
@@ -273,7 +312,7 @@ public class BuildTower : MonoBehaviour
         StartCoroutine(BuildArcherTower());
     }
 
-    // The method that activates when the player wants to build an fire tower by pressing on the fire tower button in the build menu
+    // The method that activates when the player wants to build a fire tower by pressing on the fire tower button in the build menu
     private void InitiateFireTowerBuild()
     {
         // Enable the answer question menu
@@ -297,7 +336,7 @@ public class BuildTower : MonoBehaviour
         StartCoroutine(BuildEarthTower());
     }
 
-    // The method that activates when the player wants to build an lightning tower by pressing on the lightning tower button in the build menu
+    // The method that activates when the player wants to build a lightning tower by pressing on the lightning tower button in the build menu
     private void InitiateLightningTowerBuild()
     {
         // Enable the answer question menu
@@ -309,7 +348,7 @@ public class BuildTower : MonoBehaviour
         StartCoroutine(BuildLightningTower());
     }
 
-    // The method that activates when the player wants to build an wind tower by pressing on the wind tower button in the build menu
+    // The method that activates when the player wants to build a wind tower by pressing on the wind tower button in the build menu
     private void InitiateWindTowerBuild()
     {
         // Enable the answer question menu
