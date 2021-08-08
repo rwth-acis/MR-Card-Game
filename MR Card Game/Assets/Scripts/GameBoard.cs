@@ -26,6 +26,9 @@ static class Board
     // The gameboard object
     public static GameObject gameBoard;
 
+    // The castle game object
+    public static GameObject castle;
+
     // The game object that should contain all towers (child of the game board)
     public static GameObject buildingStorage;
 
@@ -42,6 +45,10 @@ public class GameBoard : MonoBehaviour
     // Define the game board object
     [SerializeField]
     private GameObject gameBoard;
+
+    // Define the castle object
+    [SerializeField]
+    private GameObject castle;
 
     // Define the camera object
     [SerializeField]
@@ -70,6 +77,9 @@ public class GameBoard : MonoBehaviour
 
         // Set the building storage of the static class Board to the given building storage object
         Board.buildingStorage = buildingStorage;
+
+        // Set the castle of the static class Board to the given castle object
+        Board.castle = castle;
     }
 
     // Update is called once per frame

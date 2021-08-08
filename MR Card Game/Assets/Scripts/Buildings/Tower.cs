@@ -7,6 +7,14 @@ using TMPro;
 using i5.Toolkit.Core.Utilities;
 using static i5.Toolkit.Core.Examples.Spawners.SpawnProjectile;
 
+
+// The class where the tower that needs to be enhanced is saved
+public static class TowerEnhancer
+{
+    public static Tower currentlyEnhancedTower;
+}
+
+
 public class Tower : MonoBehaviour
 {
     [SerializeField]
@@ -497,9 +505,83 @@ public class Tower : MonoBehaviour
     }
 
     // The method activated when clicking on the hidden button on towers to upgrade them
-    private void TryOpeningUpgradeTowerMenu()
+    public void TryOpeningUpgradeTowerMenu()
     {
+        Debug.Log("Upgrade tower button was pressed!");
+
         // Open the upgrade tower menu with the method of another script
         UpgradeTower.OpenUpgradeTowerMenu(this);
+    }
+
+    //-----------------------------------------------------------------------------------------------
+    // Upgrade tower methods
+    //-----------------------------------------------------------------------------------------------
+
+    // Method used to upgrade an archer tower
+    public void UpgradeArcherTower(float damageMultiplicator, float attackCooldownMultiplicator, float attackRangeMultiplicator)
+    {
+        // Increase the tower level by one
+        level = level + 1;
+
+        // Increase the damage by the multiplicator
+        damage = (int)(damage * damageMultiplicator);
+
+        // Increase the attack cooldown by the multiplicator
+        attackCooldown = attackCooldown * attackCooldownMultiplicator;
+
+        // Increase the range cooldown by the multiplicator
+        attackRange = attackRange * attackRangeMultiplicator;
+    }
+
+    // Method used to upgrade a fire tower
+    public void UpgradeFireTower(float damageMultiplicator, float attackCooldownMultiplicator)
+    {
+        // Increase the tower level by one
+        level = level + 1;
+
+        // Increase the damage by the multiplicator
+        damage = (int)(damage * damageMultiplicator);
+
+        // Increase the attack cooldown by the multiplicator
+        attackCooldown = attackCooldown * attackCooldownMultiplicator;
+    }
+
+    // Method used to upgrade an earth tower
+    public void UpgradeEarthTower(float damageMultiplicator, float sizeMultiplicator)
+    {
+        // Increase the tower level by one
+        level = level + 1;
+
+        // Increase the damage by the multiplicator
+        damage = (int)(damage * damageMultiplicator);
+
+        // Increase the effect range by the multiplicator
+        effectRange = effectRange * sizeMultiplicator;
+    }
+
+    // Method used to upgrade a lightning tower
+    public void UpgradeLightningTower(float damageMultiplicator, float jumpRangeMultiplicator)
+    {
+        // Increase the tower level by one
+        level = level + 1;
+
+        // Increase the damage by the multiplicator
+        damage = (int)(damage * damageMultiplicator);
+
+        // Increase the effect range by the multiplicator
+        effectRange = effectRange * jumpRangeMultiplicator;
+    }
+
+    // Method used to upgrade a wind tower
+    public void UpgradeWindTower(float attackCooldownMultiplicator, float dropBackRangeMultiplicator)
+    {
+        // Increase the tower level by one
+        level = level + 1;
+
+        // Increase the attack cooldown by the multiplicator
+        attackCooldown = attackCooldown * attackCooldownMultiplicator;
+
+        // Increase the effect range by the multiplicator
+        effectRange = effectRange * dropBackRangeMultiplicator;
     }
 }
