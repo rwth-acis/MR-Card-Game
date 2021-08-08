@@ -47,7 +47,7 @@ public class Projectile : MonoBehaviour
         instance = this;
 
         // Get the right type
-        switch(GetParent.GetTowerType)
+        switch(GetParent.getTowerType)
         {
             case "Archer Tower":
                 projectileType = "Arrow";
@@ -97,10 +97,10 @@ public class Projectile : MonoBehaviour
             lastPosition = target.transform.position;
 
             // If the target is not null and alive, move the projectile in the direction of the target
-            transform.position = Vector3.MoveTowards(transform.position, target.gameObject.transform.position, Time.deltaTime * parent.GetProjectileSpeed);
+            transform.position = Vector3.MoveTowards(transform.position, target.gameObject.transform.position, Time.deltaTime * parent.getProjectileSpeed);
 
             // Check if the projectile is an arrow
-            if(parent.GetTowerType == "Archer Tower")
+            if(parent.getTowerType == "Archer Tower")
             {
                 // Make the arrow face his target
                 transform.LookAt(target.transform.position);
@@ -110,7 +110,7 @@ public class Projectile : MonoBehaviour
             if(transform.position == target.transform.position)
             {
                 // Here, depending on the tower type, the enemy or enemies need to take damage depending on the type of projectile of the tower
-                switch(parent.GetTowerType)
+                switch(parent.getTowerType)
                 {
                     case "Archer Tower":
                         ProjectileThatCanHitMultipleEnemiesEffect();
@@ -137,7 +137,7 @@ public class Projectile : MonoBehaviour
         } else {
 
             // Check if it is not a wind tower or lightning tower that do not have a projectile
-            if(parent.GetTowerType != "Wind Tower" || parent.GetTowerType != "Lightning Tower")
+            if(parent.getTowerType != "Wind Tower" || parent.getTowerType != "Lightning Tower")
             {
             //     // // Destroy the projectile since there is no target anymore
             //     // Destroy(gameObject);
@@ -145,13 +145,13 @@ public class Projectile : MonoBehaviour
             // } else {
 
                 // Make the projectile move to the last position
-                transform.position = Vector3.MoveTowards(transform.position, lastPosition, Time.deltaTime * parent.GetProjectileSpeed);
+                transform.position = Vector3.MoveTowards(transform.position, lastPosition, Time.deltaTime * parent.getProjectileSpeed);
 
                 // Check if the projectile reached the destination
                 if(transform.position == target.transform.position)
                 {
                     // Check what is the type of the parent tower
-                    switch(parent.GetTowerType)
+                    switch(parent.getTowerType)
                     {
                         case "Archer Tower":
                             ProjectileThatCanHitMultipleEnemiesEffect();
@@ -196,7 +196,7 @@ public class Projectile : MonoBehaviour
         foreach(var targetEnemy in GetColliders())
         {
             // Calculate the damage
-            damage = CalculateDamage(parent.GetDamage, parent.GetWeaknessMultiplier, parent.GetTowerType, targetEnemy.GetComponent<Enemy>());
+            damage = CalculateDamage(parent.getDamage, parent.GetWeaknessMultiplier, parent.getTowerType, targetEnemy.GetComponent<Enemy>());
 
             // Make the enemy take damage
             targetEnemy.GetComponent<Enemy>().TakeDamage(damage);
@@ -208,7 +208,7 @@ public class Projectile : MonoBehaviour
     // private void LightningStrikeEffect(int numberOfStrikes, Enemy targetEnemy)
     // {
     //     // Calculate the damage
-    //     int damage = CalculateDamage(parent.GetDamage, parent.GetWeaknessMultiplier, parent.GetTowerType, targetEnemy);
+    //     int damage = CalculateDamage(parent.getDamage, parent.GetWeaknessMultiplier, parent.getTowerType, targetEnemy);
 
     //     // Make the enemy take damage
     //     targetEnemy.TakeDamage(damage);
@@ -245,19 +245,19 @@ public class Projectile : MonoBehaviour
     // private void WindGustEffect()
     // {
     //     // Calculate the damage
-    //     int damage = CalculateDamage(parent.GetDamage, parent.GetWeaknessMultiplier, parent.GetTowerType, target);
+    //     int damage = CalculateDamage(parent.getDamage, parent.GetWeaknessMultiplier, parent.getTowerType, target);
 
     //     // Make the enemy take damage
     //     target.TakeDamage(damage);
 
     //     // Calculate the direction in which the enemy should be pushed
-    //     Vector3 targetPosition = transform.position + (transform.position - target.lastWaypoint).normalized * parent.GetProjectileSpeed * parent.GetEffectTime * parent.GetLevel * target.gameBoard.transform.localScale.x; // TODO
+    //     Vector3 targetPosition = transform.position + (transform.position - target.lastWaypoint).normalized * parent.getProjectileSpeed * parent.GetEffectTime * parent.GetLevel * target.gameBoard.transform.localScale.x; // TODO
     //     // Vector3 targetPosition = new Vector3(0, 0, 0);
 
     //     // Push the enemy back by the distance scaled down to the board size * the level in the direction of the last waypoint
     //     // target.transform.position = Vector3.MoveTowards(transform.position, target.waypoints[target.waypointIndex - 1].transform.position + new Vector3(0, target.flightHeight, 0), parent.GetProjectileSpeed * parent.effectTime * parent.level * target.gameBoard.transform.localScale.x);    
     //     // target.transform.position = transform.Translate(targetPosition);
-    //     target.transform.position = Vector3.MoveTowards(transform.position, targetPosition, parent.GetProjectileSpeed * parent.GetEffectTime * parent.GetLevel * target.gameBoard.transform.localScale.x);
+    //     target.transform.position = Vector3.MoveTowards(transform.position, targetPosition, parent.getProjectileSpeed * parent.GetEffectTime * parent.GetLevel * target.gameBoard.transform.localScale.x);
     // }
 
     // The method that calculates the damage a unit should take depending on the enemy, tower and tower attack type

@@ -16,21 +16,21 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private string towerType;
 
-    // The projectile prefab of the tower
-    [SerializeField]
-    private Projectile towerProjectile;
-
     // Method used in the projectile class to read the tower type
-    public string GetTowerType
+    public string getTowerType
     {
         get { return towerType; }
     }
+
+    // The projectile prefab of the tower
+    [SerializeField]
+    private Projectile towerProjectile;
 
     // The level of the tower
     private int level;
 
     // Method used to access the current level of the tower
-    public float GetLevel
+    public float getLevel
     {
         get { return level; }
     }
@@ -49,12 +49,18 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private float attackRange;
 
+    // The method used to access the attack range value
+    public float getAttackRange
+    {
+        get { return attackRange; }
+    }
+
     // The damage of the tower
     [SerializeField]
     private int damage;
 
     // The method used to access the damage value
-    public int GetDamage
+    public int getDamage
     {
         get { return damage; }
     }
@@ -69,12 +75,18 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private float attackCooldown;
 
+    // The method used to access the attack cooldown value
+    public float getAttackCooldown
+    {
+        get { return attackCooldown; }
+    }
+
     // The projectile speed of the projectiles of this tower
     [SerializeField]
     private float projectileSpeed;
 
     // The variable used to access the value of the projectile speed from the projectile class
-    public float GetProjectileSpeed
+    public float getProjectileSpeed
     {
         get { return projectileSpeed; }
     }
@@ -94,7 +106,7 @@ public class Tower : MonoBehaviour
     private float effectRange;
 
     // The variable used to access the value of the effect range of projectiles from the projectile class
-    public float GetEffectRange
+    public float getEffectRange
     {
         get { return effectRange; }
     }
@@ -104,7 +116,7 @@ public class Tower : MonoBehaviour
     private int numberOfEffect;
 
     // The variable used to access the value of the effect number of projectiles from the projectile class
-    public int GetNumberOfEffect
+    public int getNumberOfEffect
     {
         get { return numberOfEffect; }
     }
@@ -306,7 +318,7 @@ public class Tower : MonoBehaviour
         // Get a projectile form the object pool
         // Projectile spawnedProjectile = ObjectPool<Projectile>.RequestResource(() => {return new Projectile();});
 
-        if(GetTowerType == "Lightning Tower")
+        if(getTowerType == "Lightning Tower")
         {
             // Set the list of targets to the list of colliders
             enemies = GetColliders();
@@ -315,11 +327,11 @@ public class Tower : MonoBehaviour
             enemies.Remove(target);
 
             // Apply the effect to the enemy
-            LightningStrikeEffect(GetNumberOfEffect, target.gameObject.GetComponent<Enemy>());
+            LightningStrikeEffect(getNumberOfEffect, target.gameObject.GetComponent<Enemy>());
 
             // Apply a visual effect on all enemies hit
 
-        } else if(GetTowerType == "Wind Tower")
+        } else if(getTowerType == "Wind Tower")
         {
             // Apply the effect to the enemy
             WindGustEffect();
@@ -385,7 +397,7 @@ public class Tower : MonoBehaviour
     private void LightningStrikeEffect(int numberOfStrikes, Enemy targetEnemy)
     {
         // Calculate the damage
-        int damage = Projectile.CalculateDamage(GetDamage, GetWeaknessMultiplier, GetTowerType, targetEnemy);
+        int damage = Projectile.CalculateDamage(getDamage, GetWeaknessMultiplier, getTowerType, targetEnemy);
 
         // Make the enemy take damage
         targetEnemy.TakeDamage(damage);
@@ -402,7 +414,7 @@ public class Tower : MonoBehaviour
             // GameObject nearestEnemy;
 
             // Calculate the radius of the effect
-            // float radius = GetEffectRange * targetEnemy.gameBoard.transform.localScale.x;
+            // float radius = getEffectRange * targetEnemy.gameBoard.transform.localScale.x;
 
             Debug.Log("The collider count is: " + GetColliders().Count);
 
@@ -413,7 +425,7 @@ public class Tower : MonoBehaviour
                 Collider nearestEnemy = null;
 
                 // Initialize the shortest distance
-                float shortestDistance = GetEffectRange;
+                float shortestDistance = getEffectRange;
 
                 // Go through all other enemies, so skip the first index of the array
                 for(int counter = 1; counter < GetEnemies().Count; counter = counter + 1)
@@ -469,125 +481,25 @@ public class Tower : MonoBehaviour
         // Get the enemy component of the target collinder
         Enemy targetEnemy = target.GetComponent<Enemy>();
         // Calculate the damage
-        int damage = Projectile.CalculateDamage(GetDamage, GetWeaknessMultiplier, GetTowerType, targetEnemy);
+        int damage = Projectile.CalculateDamage(getDamage, GetWeaknessMultiplier, getTowerType, targetEnemy);
 
         // Make the enemy take damage
         targetEnemy.TakeDamage(damage);
 
         // // Calculate the direction in which the enemy should be pushed
-        // Vector3 targetPosition = transform.position + (transform.position - targetEnemy.lastWaypoint).normalized * GetProjectileSpeed * GetEffectTime * GetLevel * targetEnemy.gameBoard.transform.localScale.x; // TODO
+        // Vector3 targetPosition = transform.position + (transform.position - targetEnemy.lastWaypoint).normalized * getProjectileSpeed * GetEffectTime * getLevel * targetEnemy.gameBoard.transform.localScale.x; // TODO
 
         // Push the enemy back by the distance scaled down to the board size * the level in the direction of the last waypoint
         // target.transform.position = Vector3.MoveTowards(transform.position, target.waypoints[target.waypointIndex - 1].transform.position + new Vector3(0, target.flightHeight, 0), parent.GetProjectileSpeed * parent.effectTime * parent.level * target.gameBoard.transform.localScale.x);    
         // target.transform.position = transform.Translate(targetPosition);
-        // targetEnemy.transform.position = Vector3.MoveTowards(transform.position, targetPosition, GetProjectileSpeed * GetEffectTime * GetLevel * targetEnemy.gameBoard.transform.localScale.x);
-        targetEnemy.transform.position = targetEnemy.transform.position - targetEnemy.transform.forward * GetEffectRange;
+        // targetEnemy.transform.position = Vector3.MoveTowards(transform.position, targetPosition, getProjectileSpeed * GetEffectTime * getLevel * targetEnemy.gameBoard.transform.localScale.x);
+        targetEnemy.transform.position = targetEnemy.transform.position - targetEnemy.transform.forward * getEffectRange;
     }
 
-    //--------------------------------------------------------------------------------------
-    // Upgrading towers
-    //--------------------------------------------------------------------------------------
-    
-    // Define the updrage tower menu
-    [SerializeField]
-    private GameObject upgradeTowerMenu;
-
-    // Define all the text fields of the build tower menu
-    [SerializeField]
-    private TMP_Text towerTypeField;
-
-    [SerializeField]
-    private TMP_Text towerDamageField;
-
-    [SerializeField]
-    private TMP_Text towerAttackCooldownField;
-
-    [SerializeField]
-    private TMP_Text towerRangeField;
-
-    [SerializeField]
-    private TMP_Text additionalField1;
-
-    [SerializeField]
-    private TMP_Text additionalField2;
-
-    // Method used to open the upgrade menu
-    public void OpenUpgradeTowerMenu()
+    // The method activated when clicking on the hidden button on towers to upgrade them
+    private void TryOpeningUpgradeTowerMenu()
     {
-        // Pause the game
-        GameAdvancement.gamePaused = true;
-
-        // Set the upgrade tower menu as active
-        upgradeTowerMenu.SetActive(true);
-
-        // Actualize the tower type field
-        towerTypeField.text = towerType;
-
-        // For three towers, additional fields are needed as well as individual buffs
-        if(towerType == "Lightning Tower") 
-        {
-            // Enable the two additional fields for the lightning tower
-            additionalField1.gameObject.SetActive(true);
-            additionalField2.gameObject.SetActive(true);
-
-            // Actualize the standard fields
-            towerDamageField.text = "Damage " + damage + " > " + (damage + 15);
-            towerAttackCooldownField.text = "Attack cooldown " + attackCooldown;
-            towerRangeField.text = "Range " + attackRange;
-
-            // Fill the aditional fields
-            additionalField1.text = "Number of jumps: " + numberOfEffect + " > " + (numberOfEffect + 1);
-            additionalField2.text = "Jump range: " + effectRange + " > " + (effectRange + (float)0.1);
-
-        } else if(towerType == "Earth Tower") 
-        {
-            // Enable one of the additional fields for the earth tower
-            additionalField1.gameObject.SetActive(true);
-            additionalField2.gameObject.SetActive(false);
-
-            // Actualize the standard fields
-            towerDamageField.text = "Damage " + damage + " > " + (damage + 50);
-            towerAttackCooldownField.text = "Attack cooldown " + attackCooldown;
-            towerRangeField.text = "Range " + attackRange;
-
-            // Fill the aditional field
-            additionalField1.text = "Projectile size: " + effectRange + " > " + (effectRange + (float)0.2);
-
-        } else if(towerType == "Wind Tower") 
-        {
-            // Enable one of the additional fields for the wind tower
-            additionalField1.gameObject.SetActive(true);
-            additionalField2.gameObject.SetActive(false);
-
-            // Actualize the standard fields
-            towerAttackCooldownField.text = "Attack cooldown " + attackCooldown + " > " + (attackCooldown - (float)0.15);
-            towerDamageField.text = "Damage " + damage;
-            towerRangeField.text = "Range " + attackRange;
-
-            // Fill the aditional fields
-            additionalField1.text = "Drop back distance: " + effectRange + " > " + (effectRange + (float)0.1);
-
-        } else {
-
-            // Disable the two additinal fields for the other towers
-            additionalField1.gameObject.SetActive(false);
-            additionalField2.gameObject.SetActive(false);
-
-            // Make the individual inprovements to the other towers
-            if(towerType == "Archer Tower")
-            {
-                // Actualize all standard fields
-                towerDamageField.text = "Damage " + damage + " > " + (damage + 20);
-                towerAttackCooldownField.text = "Attack cooldown " + attackCooldown + " > " + (attackCooldown - (float)0.15);
-                towerRangeField.text = "Range " + attackRange + " > " + (attackRange + (float)0.1);
-
-            } else if(towerType == "Fire Tower")
-            {
-                // Actualize all standard fields
-                towerDamageField.text = "Damage " + damage + " > " + (damage + 40);
-                towerAttackCooldownField.text = "Attack cooldown " + attackCooldown + " > " + (attackCooldown - (float)0.10);
-                towerRangeField.text = "Range " + attackRange;
-            }
-        }
+        // Open the upgrade tower menu with the method of another script
+        UpgradeTower.OpenUpgradeTowerMenu(this);
     }
 }

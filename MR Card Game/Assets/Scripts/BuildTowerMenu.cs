@@ -460,6 +460,12 @@ namespace build
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getArcherTowerCost;
 
+            // Actualize the currency display
+            GameSetup.ActualizeCurrencyDisplay();
+
+            // Set the flag that this image target was used to build a tower on it
+            TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+
             // Unpause the game
             GameAdvancement.gamePaused = false;
         }
@@ -476,6 +482,9 @@ namespace build
 
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getFireTowerCost;
+
+            // Set the flag that this image target was used to build a tower on it
+            TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
             
             // Unpause the game
             GameAdvancement.gamePaused = false;
@@ -493,6 +502,12 @@ namespace build
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getEarthTowerCost;
 
+            // Actualize the currency display
+            GameSetup.ActualizeCurrencyDisplay();
+
+            // Set the flag that this image target was used to build a tower on it
+            TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+
             // Unpause the game
             GameAdvancement.gamePaused = false;
         }
@@ -509,6 +524,9 @@ namespace build
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getLightningTowerCost;
 
+            // Set the flag that this image target was used to build a tower on it
+            TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+
             // Unpause the game
             GameAdvancement.gamePaused = false;
         }
@@ -524,6 +542,9 @@ namespace build
 
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getWindTowerCost;
+
+            // Set the flag that this image target was used to build a tower on it
+            TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
 
             // Unpause the game
             GameAdvancement.gamePaused = false;

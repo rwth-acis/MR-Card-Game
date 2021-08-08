@@ -785,6 +785,8 @@ public class Level : MonoBehaviour
         }
     }
 
+    private float additionalOffset = (float)0.2;
+
     // The method used to ground buildings
     public void GroundBuilding(GameObject building, int index)
     {
@@ -792,7 +794,10 @@ public class Level : MonoBehaviour
         building.transform.position = Buildings.imageTargetToBuilding[index].transform.position;
 
         // Set the building as child of the buildings storage object that is a child of the game board
-        building.transform.parent = Board.buildingsStorage.transform;
+        building.transform.parent = Board.buildingStorage.transform;
+
+        // Give an aditional offset to the tower building
+        building.transform.localPosition = building.transform.localPosition + new Vector3(0, additionalOffset * Board.greatestBoardDimension, 0);
     }
 
     // Method that ungrounds all the buildings on the game board when the wave starts

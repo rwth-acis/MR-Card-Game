@@ -27,7 +27,7 @@ static class Board
     public static GameObject gameBoard;
 
     // The game object that should contain all towers (child of the game board)
-    public static GameObject buildingsStorage;
+    public static GameObject buildingStorage;
 
     // Define the camera so that UI elements on units can be oriented towards it
     public static Transform camera;
@@ -39,11 +39,17 @@ public class GameBoard : MonoBehaviour
     public GameObject topLeftCorner;
     public GameObject bottomRightCorner;
 
+    // Define the game board object
+    [SerializeField]
+    private GameObject gameBoard;
+
+    // Define the camera object
     [SerializeField]
     private Transform camera;
 
-    // Define the game board object
-    public GameObject gameBoard;
+    // Define the building storage object
+    [SerializeField]
+    private GameObject buildingStorage;
 
     // Define the model storage object to make models disapear
     public GameObject saveModelObject;
@@ -59,8 +65,11 @@ public class GameBoard : MonoBehaviour
         // Set the game board of the static class Board to the given game board object
         Board.gameBoard = gameBoard;
 
-        // Set thecamera of the static class Board to the given camera object
+        // Set the camera of the static class Board to the given camera object
         Board.camera = camera;
+
+        // Set the building storage of the static class Board to the given building storage object
+        Board.buildingStorage = buildingStorage;
     }
 
     // Update is called once per frame
