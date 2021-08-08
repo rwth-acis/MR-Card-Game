@@ -11,7 +11,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
         public static SpawnTower instance;
 
         // The distance tower have to be placed over the image target so that they are not in the game board but over it
-        private static float towerOverhead = (float)0.22;
+        private static float towerOverhead = (float)0.35;
 
         // The prefab for the archer tower
         [SerializeField]
@@ -89,11 +89,24 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Set the tower as active
             tower.gameObject.SetActive(true);
 
-            // Reset the position of the tower and add the necessary overhead so that the tower is over the ground
-            tower.transform.position = new Vector3(0, towerOverhead, 0);
+            // Scale the tower down
+            tower.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * (float)0.2;
 
+            Debug.Log("Tower was scaled down");
             // Set them as children of the parent that was passed
             tower.transform.parent = parent.transform;
+            Debug.Log("Tower has new parent");
+
+            Vector3 newPosition =  new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
+
+            // Reset the position of the tower and add the necessary overhead so that the tower is over the ground
+            tower.transform.localPosition = new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
+
+            Debug.Log("Towers position was set to: " +  newPosition.x + "," + newPosition.y + ", " + newPosition.z);
+
+            Debug.Log("Towers position is: " +  tower.transform.localPosition.x + "," + tower.transform.localPosition.y + ", " + tower.transform.localPosition.z);
+
+            Debug.Log("The name of the tower is: " +  tower.name);
 
             // Add the reference to this building to the Buildings class so that it can be accessed
             AddBuildingReference(tower, parent);

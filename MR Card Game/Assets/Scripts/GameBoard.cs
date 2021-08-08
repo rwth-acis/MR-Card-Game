@@ -56,8 +56,10 @@ public class GameBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Set the game board of the static class Board to the given game board object
         Board.gameBoard = gameBoard;
 
+        // Set thecamera of the static class Board to the given camera object
         Board.camera = camera;
     }
 
