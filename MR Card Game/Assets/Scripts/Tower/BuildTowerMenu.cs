@@ -335,7 +335,7 @@ namespace build
             answerQuestions.SetActive(true);
 
             // Set the number of questions that are needed to answer to 1
-            Questions.numberOfQuestionsNeededToAnswer = 1;
+            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + 1;
 
             // Close the menu
             // Disable the build canvas
@@ -358,7 +358,7 @@ namespace build
             answerQuestions.SetActive(true);
 
             // Set the number of questions that are needed to answer to 1
-            Questions.numberOfQuestionsNeededToAnswer = 1;
+            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + 1;
 
             // Close the menu
             // Disable the build canvas
@@ -381,7 +381,7 @@ namespace build
             answerQuestions.SetActive(true);
 
             // Set the number of questions that are needed to answer to 1
-            Questions.numberOfQuestionsNeededToAnswer = 1;
+            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + 1;
 
             // Close the menu
             // Disable the build canvas
@@ -404,7 +404,7 @@ namespace build
             answerQuestions.SetActive(true);
 
             // Set the number of questions that are needed to answer to 1
-            Questions.numberOfQuestionsNeededToAnswer = 1;
+            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + 1;
 
             // Close the menu
             // Disable the build canvas
@@ -427,7 +427,7 @@ namespace build
             answerQuestions.SetActive(true);
 
             // Set the number of questions that are needed to answer to 1
-            Questions.numberOfQuestionsNeededToAnswer = 1;
+            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + 1;
 
             // Close the menu
             // Disable the build canvas

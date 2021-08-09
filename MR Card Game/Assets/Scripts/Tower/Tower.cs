@@ -526,9 +526,15 @@ public class Tower : MonoBehaviour
     public void TryOpeningUpgradeTowerMenu()
     {
         Debug.Log("Upgrade tower button was pressed!");
+        Debug.Log("The number of questions that need to be answered is: " + Questions.numberOfQuestionsNeededToAnswer);
+        Debug.Log("The value of the game paused variable is: " + GameAdvancement.gamePaused);
 
-        // Open the upgrade tower menu with the method of another script
-        UpgradeTower.OpenUpgradeTowerMenu(this);
+        // Check that nothing is beeing build or upgraded
+        if(GameAdvancement.gamePaused == false)
+        {
+            // Open the upgrade tower menu with the method of another script
+            UpgradeTower.OpenUpgradeTowerMenu(this);
+        }
     }
 
     //-----------------------------------------------------------------------------------------------

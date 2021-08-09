@@ -34,6 +34,9 @@ static class GameAdvancement
 
     // The status of the game, if it should be paused or not
     public static bool gamePaused = false;
+
+    // // The global flag that states if the player is currently building or upgrading something
+    // public static bool currentlyBuildingOrUpgrading = false;
 }
 
 // The class of the castle game object

@@ -9079,7 +9079,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 594261270}
   m_Father: {fileID: 543450652553821537}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11219,6 +11220,48 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!1001 &594261269
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 444928197}
+    m_Modifications:
+    - target: {fileID: 9115442717137184712, guid: b3df067559ca77848bcba1cdeec9c601, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9115442717137184712, guid: b3df067559ca77848bcba1cdeec9c601, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.19999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 9115442717137184712, guid: b3df067559ca77848bcba1cdeec9c601, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.19999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 9115442717137184712, guid: b3df067559ca77848bcba1cdeec9c601, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.19999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 9115442717137184712, guid: b3df067559ca77848bcba1cdeec9c601, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.97
+      objectReference: {fileID: 0}
+    - target: {fileID: 9115442717137184712, guid: b3df067559ca77848bcba1cdeec9c601, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 9115442717137184712, guid: b3df067559ca77848bcba1cdeec9c601, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.63
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b3df067559ca77848bcba1cdeec9c601, type: 3}
+--- !u!4 &594261270 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 9115442717137184712, guid: b3df067559ca77848bcba1cdeec9c601, type: 3}
+  m_PrefabInstance: {fileID: 594261269}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &603571526
 GameObject:
   m_ObjectHideFlags: 0
@@ -16434,6 +16477,7 @@ MonoBehaviour:
   additionalField2: {fileID: 186978228}
   upgradeCostField: {fileID: 1701078673}
   upgradeTowerButton: {fileID: 1218048370}
+  answerQuestions: {fileID: 897248710}
 --- !u!1 &881559524
 GameObject:
   m_ObjectHideFlags: 0
@@ -23120,7 +23164,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 868698478}
         m_TargetAssemblyTypeName: UpgradeTower, Assembly-CSharp
-        m_MethodName: UpgradeTowerMethod
+        m_MethodName: InitiateTowerUpgrade
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

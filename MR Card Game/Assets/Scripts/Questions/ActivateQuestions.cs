@@ -36,7 +36,7 @@ static class Questions
     public static bool androidBoot;
 
     // The number of questions that need to be answered correctly before the action can take place
-    public static int numberOfQuestionsNeededToAnswer;
+    public static int numberOfQuestionsNeededToAnswer = 0;
 }
 
 public class ActivateQuestions : MonoBehaviour
@@ -1461,36 +1461,36 @@ public class ActivateQuestions : MonoBehaviour
     // Method that closes the current question, and changes the current question index
     public void GoToNextQuestion()
     {
+        // Check if the the current question index reached the end of the index
+        if(Questions.currentQuestionIndex < Questions.lastQuestionIndex)
+        {
+            // Case the current question index is smaller than the last question index, increase the current question index by one
+            Questions.currentQuestionIndex = Questions.currentQuestionIndex + 1;
+
+        } else {
+
+            // Case the current question index reached the end of the array, shuffle the array and set the current question index to 0
+            Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
+            Questions.currentQuestionIndex = 0;
+        }
+
+        // Disable the feedback buttons
+        feedbackInput.gameObject.SetActive(false);
+        feedbackMC.gameObject.SetActive(false);
+
+        // // After waiting, enable the view model menu
+        // viewModel.SetActive(true);
+
         // Check if any question still need to be answered
         if(Questions.numberOfQuestionsNeededToAnswer > 0)
         {
-            // Check if the the current question index reached the end of the index
-            if(Questions.currentQuestionIndex < Questions.lastQuestionIndex)
-            {
-                // Case the current question index is smaller than the last question index, increase the current question index by one
-                Questions.currentQuestionIndex = Questions.currentQuestionIndex + 1;
-
-            } else {
-
-                // Case the current question index reached the end of the array, shuffle the array and set the current question index to 0
-                Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
-                Questions.currentQuestionIndex = 0;
-            }
-
-            // Disable the feedback buttons
-            feedbackInput.gameObject.SetActive(false);
-            feedbackMC.gameObject.SetActive(false);
-
-            // // After waiting, enable the view model menu
-            // viewModel.SetActive(true);
-
             // Display the models of the current questions
             DisplayModels();
 
-            Debug.Log("The current question is: " + Questions.questionArray[Questions.currentQuestionIndex]);
         } else {
+            // Display the models of the current questions
+            DisplayModels();
 
-            // If no questions is needed to be answered, disable the window
             viewModel.SetActive(false);
         }
     }
@@ -1571,5 +1571,12 @@ public class ActivateQuestions : MonoBehaviour
 
         // Activate the game menu, where wave and currency are displayed
         ActivateGame();
+    }
+
+    // Method used to increase the number of questions that need to be answered
+    public static void IncreaseNumberOfQuestionsThatNeedToBeAnswered(int number)
+    {
+        // Increase the number of questions that need to be answered by the number given
+        Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + number;
     }
 }
