@@ -200,14 +200,32 @@ public class Tower : MonoBehaviour
     // Method used to attack
     public void Attack()
     {
+        // Create a new list that contains the same colliders as the colliders list
+        List<Collider> listOfDead = new List<Collider>();
+
         // Remove all dead enemeies of the collider list
         foreach(Collider coll in colliders)
         {
             // Check if the enemy is dead
             if(coll.GetComponent<Enemy>().isAlive == false)
             {
+                // Debug.Log("The enemy: " + coll.gameObject.name + " will removed from the collider list of: " + this.gameObject.name);
                 // Remove the collider of the list of enemies if 
-                colliders.Remove(coll);
+                // colliders.Remove(coll);
+                listOfDead.Add(coll);
+
+                // bool contained = colliders.Contains(coll);
+
+                // Debug.Log("The collider is contained: " + contained);
+            }
+        }
+
+        if(listOfDead != null)
+        {
+            // Remove all dead enemies of the colliders list
+            foreach(Collider coll2 in listOfDead)
+            {
+                colliders.Remove(coll2);
             }
         }
 

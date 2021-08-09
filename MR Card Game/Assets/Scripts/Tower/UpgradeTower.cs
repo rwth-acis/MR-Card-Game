@@ -164,13 +164,13 @@ public class UpgradeTower : MonoBehaviour
                 getAdditionalField2.gameObject.SetActive(true);
 
                 // Actualize the standard fields
-                getTowerDamageField.text = "Damage " + (tower.getDamage * Mathf.Pow(lightningDamageEnhancer, tower.getLevel)) + " > " + (tower.getDamage * Mathf.Pow(lightningDamageEnhancer, tower.getLevel));
+                getTowerDamageField.text = "Damage " + tower.getDamage + " > " + (tower.getDamage * lightningDamageEnhancer);
                 getTowerAttackCooldownField.text = "Attack cooldown " + tower.getAttackCooldown;
                 getTowerRangeField.text = "Range " + tower.getAttackRange;
 
                 // Fill the aditional fields
-                getAdditionalField1.text = "Number of jumps: " + (tower.getNumberOfEffect + (1 * (tower.getLevel - 1))) + " > " + (tower.getNumberOfEffect + (1 * tower.getLevel));
-                getAdditionalField2.text = "Jump range: " + (tower.getEffectRange * Mathf.Pow(lightningJumpRangeEnhancer, tower.getLevel)) + " > " + (tower.getEffectRange * Mathf.Pow(lightningJumpRangeEnhancer, tower.getLevel));
+                getAdditionalField1.text = "Number of jumps: " + tower.getNumberOfEffect + " > " + (tower.getNumberOfEffect + 1);
+                getAdditionalField2.text = "Jump range: " + tower.getEffectRange + " > " + (tower.getEffectRange * lightningJumpRangeEnhancer);
                 
                 // Calculate the cost of upgrading this tower
                 upgradeCost = (int)(lightningTowerUpgradeBaseCost * Mathf.Pow(lightningTowerUpgradeCostMultiplicator, tower.getLevel - 1));
@@ -198,12 +198,12 @@ public class UpgradeTower : MonoBehaviour
                 getAdditionalField2.gameObject.SetActive(false);
 
                 // Actualize the standard fields
-                getTowerDamageField.text = "Damage " + (tower.getDamage * Mathf.Pow(earthDamageEnhancer, tower.getLevel)) + " > " + (tower.getDamage * Mathf.Pow(earthDamageEnhancer, tower.getLevel + 1));
+                getTowerDamageField.text = "Damage " + tower.getDamage + " > " + (tower.getDamage * earthDamageEnhancer);
                 getTowerAttackCooldownField.text = "Attack cooldown " + tower.getAttackCooldown;
                 getTowerRangeField.text = "Range " + tower.getAttackRange;
 
                 // Fill the aditional field
-                getAdditionalField1.text = "Projectile size: " + (tower.getEffectRange * Mathf.Pow(earthSizeEnhancer, tower.getLevel - 1)) + " > " + (tower.getEffectRange * Mathf.Pow(earthSizeEnhancer, tower.getLevel + 1));
+                getAdditionalField1.text = "Projectile size: " + tower.getEffectRange + " > " + (tower.getEffectRange * earthSizeEnhancer);
             
                 // Calculate the cost of upgrading this tower
                 upgradeCost = (int)(earthTowerUpgradeBaseCost * Mathf.Pow(earthTowerUpgradeCostMultiplicator, tower.getLevel - 1));
@@ -231,12 +231,12 @@ public class UpgradeTower : MonoBehaviour
                 getAdditionalField2.gameObject.SetActive(false);
 
                 // Actualize the standard fields
-                getTowerAttackCooldownField.text = "Attack cooldown " + (tower.getAttackCooldown * Mathf.Pow(windAttackCooldownEnhancer, tower.getLevel)) + " > " + (tower.getAttackCooldown * Mathf.Pow(windAttackCooldownEnhancer, tower.getLevel + 1));
+                getTowerAttackCooldownField.text = "Attack cooldown " + tower.getAttackCooldown + " > " + (tower.getAttackCooldown * windAttackCooldownEnhancer);
                 getTowerDamageField.text = "Damage " + tower.getDamage;
                 getTowerRangeField.text = "Range " + tower.getAttackRange;
 
                 // Fill the aditional fields
-                getAdditionalField1.text = "Drop back distance: " + (tower.getEffectRange * Mathf.Pow(windDropBackEnhancer, tower.getLevel)) + " > " + (tower.getEffectRange * Mathf.Pow(windDropBackEnhancer, tower.getLevel + 1));
+                getAdditionalField1.text = "Drop back distance: " + tower.getEffectRange + " > " + (tower.getEffectRange * windDropBackEnhancer);
                 
                 // Calculate the cost of upgrading this tower
                 upgradeCost = (int)(windTowerUpgradeBaseCost * Mathf.Pow(windTowerUpgradeCostMultiplicator, tower.getLevel - 1));
@@ -264,9 +264,9 @@ public class UpgradeTower : MonoBehaviour
                 getAdditionalField2.gameObject.SetActive(false);
 
                 // Actualize all standard fields
-                getTowerDamageField.text = "Damage " + (tower.getDamage * Mathf.Pow(arrowDamageEnhancer, tower.getLevel)) + " > " + (tower.getDamage * Mathf.Pow(arrowDamageEnhancer, tower.getLevel + 1));
-                getTowerAttackCooldownField.text = "Attack cooldown " + (tower.getAttackCooldown * Mathf.Pow(arrowAttackCooldownEnhancer, tower.getLevel - 1)) + " > " + (tower.getAttackCooldown * Mathf.Pow(arrowAttackCooldownEnhancer, tower.getLevel + 1));
-                getTowerRangeField.text = "Range " + (tower.getAttackRange * Mathf.Pow(arrowRangeEnhancer, tower.getLevel)) + " > " + (tower.getAttackRange * Mathf.Pow(arrowRangeEnhancer, tower.getLevel + 1));
+                getTowerDamageField.text = "Damage " + tower.getDamage + " > " + (tower.getDamage * arrowDamageEnhancer);
+                getTowerAttackCooldownField.text = "Attack cooldown " + tower.getAttackCooldown + " > " + (tower.getAttackCooldown * arrowAttackCooldownEnhancer);
+                getTowerRangeField.text = "Range " + tower.getAttackRange + " > " + (tower.getAttackRange * arrowRangeEnhancer);
             
                 Debug.Log("The damage on level 1 is multiplied with: " + (Mathf.Pow(arrowDamageEnhancer, tower.getLevel)));
 
@@ -296,8 +296,8 @@ public class UpgradeTower : MonoBehaviour
                 getAdditionalField2.gameObject.SetActive(false);
 
                 // Actualize all standard fields
-                getTowerDamageField.text = "Damage " + (tower.getDamage * Mathf.Pow(fireDamageEnhancer, tower.getLevel)) + " > " + (tower.getDamage * Mathf.Pow(fireDamageEnhancer, tower.getLevel + 1));
-                getTowerAttackCooldownField.text = "Attack cooldown " + (tower.getAttackCooldown * Mathf.Pow(fireAttackCooldownEnhancer, tower.getLevel - 1)) + " > " + (tower.getAttackCooldown * Mathf.Pow(fireAttackCooldownEnhancer, tower.getLevel + 1));
+                getTowerDamageField.text = "Damage " + tower.getDamage + " > " + (tower.getDamage * fireDamageEnhancer);
+                getTowerAttackCooldownField.text = "Attack cooldown " + tower.getAttackCooldown + " > " + (tower.getAttackCooldown * fireAttackCooldownEnhancer);
                 getTowerRangeField.text = "Range " + tower.getAttackRange;
 
                 // Calculate the cost of upgrading this tower
