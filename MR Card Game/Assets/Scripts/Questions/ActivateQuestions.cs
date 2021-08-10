@@ -36,7 +36,7 @@ static class Questions
     public static bool androidBoot;
 
     // The number of questions that need to be answered correctly before the action can take place
-    public static int numberOfQuestionsNeededToAnswer = 0;
+    public static int numberOfQuestionsNeededToAnswer;
 }
 
 public class ActivateQuestions : MonoBehaviour
@@ -48,8 +48,17 @@ public class ActivateQuestions : MonoBehaviour
     public GameObject viewInputQuestion;
     public GameObject gameOverlay;
 
+    // The instance of this script
+    public static ActivateQuestions instance;
+
     // Define the button on which the number of questions that need to be answered is written
     public Button numberOfQuestionsThatNeedToBeAnsweredDisplay;
+
+    // The method used to access to the additional field 2 as a static object
+    public static Button getNumberOfQuestionsThatNeedToBeAnsweredDisplay
+    {
+        get { return instance.numberOfQuestionsThatNeedToBeAnsweredDisplay; }
+    }
 
     // Define the children of the slider that permits to see all multiple choice answers
     public GameObject multipleChoice2Answers;
@@ -189,6 +198,9 @@ public class ActivateQuestions : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
+
+        Questions.numberOfQuestionsNeededToAnswer = 0;
         Questions.androidBoot = false;
 
         // Disable the question menus
@@ -635,6 +647,8 @@ public class ActivateQuestions : MonoBehaviour
     // Method that is executed when a user presses the "view question" button in the model view
     public void ActivateQuestion()
     {
+        numberOfQuestionsThatNeedToBeAnsweredDisplay.GetComponentInChildren<TMP_Text>().text = "42";
+
         // Get the current question path
         string questionPath = Questions.questionArray[Questions.currentQuestionIndex];
 
@@ -910,7 +924,11 @@ public class ActivateQuestions : MonoBehaviour
         // If the question was answered correclty, reduce the number of questions that need to be answered by one
         if(answeredCorrectly == true)
         {
-            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer - 1;
+            lastQuestionWasAnsweredCorrectly = true;
+
+        } else {
+
+            lastQuestionWasAnsweredCorrectly = false;
         }
     }
 
@@ -1070,7 +1088,11 @@ public class ActivateQuestions : MonoBehaviour
         // If the question was answered correclty, reduce the number of questions that need to be answered by one
         if(answeredCorrectly == true)
         {
-            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer - 1;
+            lastQuestionWasAnsweredCorrectly = true;
+
+        } else {
+
+            lastQuestionWasAnsweredCorrectly = false;
         }
     }
 
@@ -1461,9 +1483,19 @@ public class ActivateQuestions : MonoBehaviour
         gameOverlay.SetActive(true);
     }
 
+    private bool lastQuestionWasAnsweredCorrectly = false;
+
     // Method that closes the current question, and changes the current question index
     public void GoToNextQuestion()
     {
+        // Check if the last question was answered correctly
+        if(lastQuestionWasAnsweredCorrectly == true)
+        {
+            // Reduce the number of questions that need to be answered by one
+            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer - 1;
+            ActualizeNumberOfQuestionsThatNeedToBeAnsweredDisplay();
+        }
+
         // Check if the the current question index reached the end of the index
         if(Questions.currentQuestionIndex < Questions.lastQuestionIndex)
         {
@@ -1581,12 +1613,14 @@ public class ActivateQuestions : MonoBehaviour
     {
         // Increase the number of questions that need to be answered by the number given
         Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + number;
+
+        ActualizeNumberOfQuestionsThatNeedToBeAnsweredDisplay();
     }
 
     // Method that actualizes the button that displays the number of questions that need to be answered
-    public void ActualizeNumberOfQuestionsThatNeedToBeAnsweredDisplay()
+    public static void ActualizeNumberOfQuestionsThatNeedToBeAnsweredDisplay()
     {
         // Change the number displayed to the global variables
-        numberOfQuestionsThatNeedToBeAnsweredDisplay.GetComponentInChildren<TMP_Text>().text = Questions.numberOfQuestionsNeededToAnswer.ToString();
+        getNumberOfQuestionsThatNeedToBeAnsweredDisplay.GetComponentInChildren<TMP_Text>().text = Questions.numberOfQuestionsNeededToAnswer.ToString();
     }
 }

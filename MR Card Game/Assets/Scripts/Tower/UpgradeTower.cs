@@ -353,17 +353,27 @@ public class UpgradeTower : MonoBehaviour
     // Method called when the user clicks on the upgrade tower button
     public void InitiateTowerUpgrade()
     {
-        // Enable the answer question menu
-        answerQuestions.SetActive(true);
-
         // Disable the game overlay
         gameOverlay.SetActive(false);
 
+        ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered((int)(TowerEnhancer.currentlyEnhancedTower.getLevel + 2 / 2));
+        Debug.Log("The number of questions that need to be answered that was added was: " + (int)(TowerEnhancer.currentlyEnhancedTower.getLevel / 2));
+
+        // ActivateQuestions.ActualizeNumberOfQuestionsThatNeedToBeAnsweredDisplay();
+
+        // // Enable the answer question menu
+        // answerQuestions.SetActive(true);
+
+        // // Disable the game overlay
+        // gameOverlay.SetActive(false);
+
         Debug.Log("The game overlay was deactivated");
+        Debug.Log("Last question index: " + Questions.lastQuestionIndex);
+        Debug.Log("Number of questions: " + Questions.numberOfQuestionsNeededToAnswer);
 
         // Set the number of questions that are needed to answer to the level of the tower divided by 2
         // Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + (int)(TowerEnhancer.currentlyEnhancedTower.getLevel / 2);
-        ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered((int)(TowerEnhancer.currentlyEnhancedTower.getLevel / 2));
+        // ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered((int)(1));
 
         // Save the content of the get tower type field
         string towerTypeText = getTowerTypeField.text;
@@ -376,6 +386,9 @@ public class UpgradeTower : MonoBehaviour
 
         // Start the coroutine that upgrades the tower
         StartCoroutine(UpgradeTowerMethod(towerTypeText));
+
+        // Enable the answer question menu
+        answerQuestions.SetActive(true);
     }
 
     // Function that is used to test when all questions that were needed to be answered were answered correctly

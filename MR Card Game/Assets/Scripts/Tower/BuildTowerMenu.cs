@@ -107,6 +107,10 @@ namespace build
         [SerializeField]
         private GameObject answerQuestions;
 
+        // Define the game overlay
+        [SerializeField]
+        private GameObject gameOverlay;
+
         // Define the build archer tower button
         [SerializeField]
         private Button buildArcherTower;
@@ -331,11 +335,14 @@ namespace build
         // The method that activates when the player wants to build an archer tower by pressing on the archer tower button in the build menu
         public void InitiateArcherTowerBuild()
         {
+            // Disable the game overlay
+            gameOverlay.SetActive(false);
+
             // Enable the answer question menu
             answerQuestions.SetActive(true);
 
             // Set the number of questions that are needed to answer to 1
-            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + 1;
+            ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
 
             // Close the menu
             // Disable the build canvas
@@ -354,11 +361,14 @@ namespace build
         // The method that activates when the player wants to build a fire tower by pressing on the fire tower button in the build menu
         public void InitiateFireTowerBuild()
         {
+            // Disable the game overlay
+            gameOverlay.SetActive(false);
+
             // Enable the answer question menu
             answerQuestions.SetActive(true);
 
             // Set the number of questions that are needed to answer to 1
-            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + 1;
+            ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
 
             // Close the menu
             // Disable the build canvas
@@ -377,11 +387,14 @@ namespace build
         // The method that activates when the player wants to build an earth tower by pressing on the earth tower button in the build menu
         public void InitiateEarthTowerBuild()
         {
+            // Disable the game overlay
+            gameOverlay.SetActive(false);
+
             // Enable the answer question menu
             answerQuestions.SetActive(true);
 
             // Set the number of questions that are needed to answer to 1
-            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + 1;
+            ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
 
             // Close the menu
             // Disable the build canvas
@@ -400,11 +413,14 @@ namespace build
         // The method that activates when the player wants to build a lightning tower by pressing on the lightning tower button in the build menu
         public void InitiateLightningTowerBuild()
         {
+            // Disable the game overlay
+            gameOverlay.SetActive(false);
+
             // Enable the answer question menu
             answerQuestions.SetActive(true);
 
             // Set the number of questions that are needed to answer to 1
-            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + 1;
+            ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
 
             // Close the menu
             // Disable the build canvas
@@ -423,11 +439,14 @@ namespace build
         // The method that activates when the player wants to build a wind tower by pressing on the wind tower button in the build menu
         public void InitiateWindTowerBuild()
         {
+            // Disable the game overlay
+            gameOverlay.SetActive(false);
+
             // Enable the answer question menu
             answerQuestions.SetActive(true);
 
             // Set the number of questions that are needed to answer to 1
-            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + 1;
+            ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
 
             // Close the menu
             // Disable the build canvas
@@ -448,11 +467,23 @@ namespace build
             return Questions.numberOfQuestionsNeededToAnswer == 0;
         }
 
+        // Function that is used to test when the game overlay is enabled correctly
+        private bool GameOverlayEnabled()
+        {
+            return gameOverlay.activeSelf == true;
+        }
+
         // The method that builds an archer tower over the image target
         IEnumerator BuildArcherTower()
         {
             // Wait until the number of questions that need to be answered is 0
             yield return new WaitUntil(NoMoreQuestionsNeeded);
+
+            // Enable the game overlay
+            gameOverlay.SetActive(true);
+
+            // Wait until the game overlay is activated
+            yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the archer tower or extract it from the object pool
             SpawnArcherTower(TowerImageTarget.currentImageTarget);
@@ -477,6 +508,12 @@ namespace build
             // Wait until the number of questions that need to be answered is 0
             yield return new WaitUntil(NoMoreQuestionsNeeded);
 
+            // Enable the game overlay
+            gameOverlay.SetActive(true);
+
+            // Wait until the game overlay is activated
+            yield return new WaitUntil(GameOverlayEnabled);
+
             // Spawn the fire tower or extract it from the object pool
             SpawnFireTower(TowerImageTarget.currentImageTarget);
 
@@ -495,6 +532,12 @@ namespace build
         {
             // Wait until the number of questions that need to be answered is 0
             yield return new WaitUntil(NoMoreQuestionsNeeded);
+
+            // Enable the game overlay
+            gameOverlay.SetActive(true);
+
+            // Wait until the game overlay is activated
+            yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the earth tower or extract it from the object pool
             SpawnEarthTower(TowerImageTarget.currentImageTarget);
@@ -518,6 +561,12 @@ namespace build
             // Wait until the number of questions that need to be answered is 0
             yield return new WaitUntil(NoMoreQuestionsNeeded);
 
+            // Enable the game overlay
+            gameOverlay.SetActive(true);
+
+            // Wait until the game overlay is activated
+            yield return new WaitUntil(GameOverlayEnabled);
+
             // Spawn the lightning tower or extract it from the object pool
             SpawnLightningTower(TowerImageTarget.currentImageTarget);
 
@@ -536,6 +585,12 @@ namespace build
         {
             // Wait until the number of questions that need to be answered is 0
             yield return new WaitUntil(NoMoreQuestionsNeeded);
+
+            // Enable the game overlay
+            gameOverlay.SetActive(true);
+
+            // Wait until the game overlay is activated
+            yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the wind tower or extract it from the object pool
             SpawnWindTower(TowerImageTarget.currentImageTarget);
