@@ -113,6 +113,10 @@ public class UpgradeTower : MonoBehaviour
     [SerializeField]
     private GameObject answerQuestions;
 
+    // Define the game overlay menu
+    [SerializeField]
+    private GameObject gameOverlay;
+
     // The level up multiplicators
     private static float lightningDamageEnhancer = 1.1f;
     private static float lightningJumpRangeEnhancer = 1.4f;
@@ -352,6 +356,11 @@ public class UpgradeTower : MonoBehaviour
         // Enable the answer question menu
         answerQuestions.SetActive(true);
 
+        // Disable the game overlay
+        gameOverlay.SetActive(false);
+
+        Debug.Log("The game overlay was deactivated");
+
         // Set the number of questions that are needed to answer to the level of the tower divided by 2
         // Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + (int)(TowerEnhancer.currentlyEnhancedTower.getLevel / 2);
         ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered((int)(TowerEnhancer.currentlyEnhancedTower.getLevel / 2));
@@ -449,5 +458,8 @@ public class UpgradeTower : MonoBehaviour
 
         // Unpause the game
         GameAdvancement.gamePaused = false;
+
+        // Enable the game overlay
+        gameOverlay.SetActive(true);
     }
 }

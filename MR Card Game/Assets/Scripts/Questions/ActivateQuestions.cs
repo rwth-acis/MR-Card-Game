@@ -48,6 +48,9 @@ public class ActivateQuestions : MonoBehaviour
     public GameObject viewInputQuestion;
     public GameObject gameOverlay;
 
+    // Define the button on which the number of questions that need to be answered is written
+    public Button numberOfQuestionsThatNeedToBeAnsweredDisplay;
+
     // Define the children of the slider that permits to see all multiple choice answers
     public GameObject multipleChoice2Answers;
 
@@ -1578,5 +1581,12 @@ public class ActivateQuestions : MonoBehaviour
     {
         // Increase the number of questions that need to be answered by the number given
         Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + number;
+    }
+
+    // Method that actualizes the button that displays the number of questions that need to be answered
+    public void ActualizeNumberOfQuestionsThatNeedToBeAnsweredDisplay()
+    {
+        // Change the number displayed to the global variables
+        numberOfQuestionsThatNeedToBeAnsweredDisplay.GetComponentInChildren<TMP_Text>().text = Questions.numberOfQuestionsNeededToAnswer.ToString();
     }
 }
