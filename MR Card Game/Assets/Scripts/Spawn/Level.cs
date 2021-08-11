@@ -206,6 +206,12 @@ public class Level : MonoBehaviour
 
                 // // Reset the flag that an enemy can spawn
                 // canSpawn = false;
+
+                // Set them as children of the game board
+                enemy.transform.parent = Waypoints.enemySpawn.transform;
+
+                // Set the position of the child to the position of the parent object
+                enemy.transform.position = Waypoints.enemySpawn.transform.position + new Vector3(0, enemy.GetFlightHeight, 0);
             }
 
             yield return new WaitForSeconds(timeBetweenSpawns);

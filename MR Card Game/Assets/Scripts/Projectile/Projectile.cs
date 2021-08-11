@@ -23,7 +23,7 @@ public class Projectile : MonoBehaviour
     private string projectileType;
 
     // Method used to get the type of the tower
-    public string GetProjectileType
+    public string getProjectileType
     {
         get { return instance.projectileType; }
     }
@@ -150,22 +150,10 @@ public class Projectile : MonoBehaviour
                 // Check if the projectile reached the destination
                 if(transform.position == target.transform.position)
                 {
-                    // Check what is the type of the parent tower
-                    switch(parent.getTowerType)
-                    {
-                        case "Archer Tower":
-                            ProjectileThatCanHitMultipleEnemiesEffect();
-                        break;
-                        case "Fire Tower":
-                            ProjectileThatCanHitMultipleEnemiesEffect();
-                        break;
-                        case "Earth Tower":
-                            ProjectileThatCanHitMultipleEnemiesEffect();
-                        break;
-                    }
+                    // Make the effect of the projectile reaching his destination take effect
+                    ProjectileThatCanHitMultipleEnemiesEffect();
 
-                    // // Delete the projectile
-                    // Destroy(gameObject);
+                    // Release the projectile
                     ObjectPools.ReleaseProjectile(this);
                 }
             }
@@ -195,6 +183,7 @@ public class Projectile : MonoBehaviour
         // For each enemy in the collider, calculate the damage they should take
         foreach(var targetEnemy in GetColliders())
         {
+            Debug.Log("The enemy " + targetEnemy.gameObject.name + " was in the range of " + getProjectileType + "and was hit");
             // Calculate the damage
             damage = CalculateDamage(parent.getDamage, parent.GetWeaknessMultiplier, parent.getTowerType, targetEnemy.GetComponent<Enemy>());
 

@@ -32,11 +32,11 @@ public class ObjectPools : MonoBehaviour
 
         int poolId13 = ObjectPool<Enemy>.CreateNewPool(); // Pool for dumping enemies with wrong enemy type
 
-        int poolId14 = ObjectPool<Tower>.CreateNewPool(); // Pool for archer tower
-        int poolId15 = ObjectPool<Tower>.CreateNewPool(); // Pool for fire tower
-        int poolId16 = ObjectPool<Tower>.CreateNewPool(); // Pool for earth tower
-        int poolId17 = ObjectPool<Tower>.CreateNewPool(); // Pool for lightning tower
-        int poolId18 = ObjectPool<Tower>.CreateNewPool(); // Pool for wind tower
+        int poolId14 = ObjectPool<GameObject>.CreateNewPool(); // Pool for archer tower
+        int poolId15 = ObjectPool<GameObject>.CreateNewPool(); // Pool for fire tower
+        int poolId16 = ObjectPool<GameObject>.CreateNewPool(); // Pool for earth tower
+        int poolId17 = ObjectPool<GameObject>.CreateNewPool(); // Pool for lightning tower
+        int poolId18 = ObjectPool<GameObject>.CreateNewPool(); // Pool for wind tower
 
         // Store the pool ids so that they are not lost
         EnemyPools.enemyPoolIds = new int[18];
@@ -232,10 +232,8 @@ public class ObjectPools : MonoBehaviour
     // The method that releses the projectile game objects
     public static void ReleaseProjectile(Projectile projectile)
     {
-        string projectileType = projectile.GetComponent<Projectile>().GetProjectileType;
-
-        // Get the correclt object pool index from the object pools class
-        int objectPoolIndex = GetProjectilePoolIndex(projectile.GetComponent<Projectile>().GetProjectileType);
+        // Get the correctly object pool index from the object pools class
+        int objectPoolIndex = GetProjectilePoolIndex(projectile.GetComponent<Projectile>().getProjectileType);
 
         // Release the enemy into the right object pool
         ObjectPool<Projectile>.ReleaseResource(objectPoolIndex, projectile);

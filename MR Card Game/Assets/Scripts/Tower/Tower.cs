@@ -203,23 +203,18 @@ public class Tower : MonoBehaviour
         // Create a new list that contains the same colliders as the colliders list
         List<Collider> listOfDead = new List<Collider>();
 
-        // Remove all dead enemeies of the collider list
+        // Go over all enemies in the colliders list
         foreach(Collider coll in colliders)
         {
-            // Check if the enemy is dead
+            // Check if there are any dead enemies in the colliders list
             if(coll.GetComponent<Enemy>().isAlive == false)
             {
-                // Debug.Log("The enemy: " + coll.gameObject.name + " will removed from the collider list of: " + this.gameObject.name);
-                // Remove the collider of the list of enemies if 
-                // colliders.Remove(coll);
+                // Add theses enemies to the list of dead enemies
                 listOfDead.Add(coll);
-
-                // bool contained = colliders.Contains(coll);
-
-                // Debug.Log("The collider is contained: " + contained);
             }
         }
 
+        // Check if there were any dead enemies in the colliders list
         if(listOfDead != null)
         {
             // Remove all dead enemies of the colliders list

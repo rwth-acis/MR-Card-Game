@@ -170,11 +170,11 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Debug.Log("Enemy spawned at spawn at: " + Waypoints.enemySpawn.transform.position.y);
             // Debug.Log("Enemy spawned at spawn at: " + Waypoints.enemySpawn.transform.position.z);
 
-            // Set them as children of the game board
-            enemy.transform.parent = Waypoints.enemySpawn.transform;
+            // // Set them as children of the game board
+            // enemy.transform.parent = Waypoints.enemySpawn.transform;
 
-            // Set the position of the child to the position of the parent object
-            enemy.transform.position = Waypoints.enemySpawn.transform.position + new Vector3(0, enemy.GetFlightHeight, 0);
+            // // Set the position of the child to the position of the parent object
+            // enemy.transform.position = Waypoints.enemySpawn.transform.position + new Vector3(0, enemy.GetFlightHeight, 0);
 
             // Set the health points to max and make it alive again
             enemy.ReviveEnemy();
