@@ -119,6 +119,7 @@ public class UpgradeTower : MonoBehaviour
 
     // The level up multiplicators
     private static float lightningDamageEnhancer = 1.1f;
+    private static float lightningRangeEnhancer = 1.2f;
     private static float lightningJumpRangeEnhancer = 1.4f;
     private static float earthDamageEnhancer = 1.6f;
     private static float earthSizeEnhancer = 1.2f;
@@ -180,7 +181,7 @@ public class UpgradeTower : MonoBehaviour
                     // Actualize the standard fields
                     getTowerDamageField.text = "Damage " + tower.getDamage + " > " + (tower.getDamage * lightningDamageEnhancer);
                     getTowerAttackCooldownField.text = "Attack cooldown " + tower.getAttackCooldown;
-                    getTowerRangeField.text = "Range " + tower.getAttackRange;
+                    getTowerRangeField.text = "Range " + tower.getAttackRange + " > " + (tower.getDamage * lightningRangeEnhancer);
 
                     // Fill the aditional fields
                     getAdditionalField1.text = "Number of jumps: " + tower.getNumberOfEffect + " > " + (tower.getNumberOfEffect + 1);

@@ -7,7 +7,6 @@ using TMPro;
 using i5.Toolkit.Core.Utilities;
 using static i5.Toolkit.Core.Examples.Spawners.SpawnProjectile;
 
-
 // The class where the tower that needs to be enhanced is saved
 public static class TowerEnhancer
 {
@@ -144,7 +143,7 @@ public class Tower : MonoBehaviour
     private Collider target;
 
     // The variable used to access the value of the target from the projectile class
-    public Collider Target
+    public Collider getTarget
     {
         get { return target; }
     }
@@ -289,6 +288,7 @@ public class Tower : MonoBehaviour
         {
             // If a new target is needed, and there are enemies in range, set the oldest enemy as target
             target = GetColliders()[0];
+
             // Debug.Log("The new target was set to " + target);
             Debug.Log("The new target of tower: " + this.gameObject.name + " has been set to: " + target);
         }
@@ -341,8 +341,9 @@ public class Tower : MonoBehaviour
 
         if(getTowerType == "Lightning Tower")
         {
-            // Set the list of targets to the list of colliders
-            enemies = GetColliders();
+            // // Set the list of targets to the list of colliders
+            // enemies = GetColliders();
+            enemies = new List<Collider>(colliders);
 
             // Remove the current target form the list
             enemies.Remove(target);
@@ -423,6 +424,11 @@ public class Tower : MonoBehaviour
     // The method that produces the effect of a lightning strike arriving at destination
     private void LightningStrikeEffect(int numberOfStrikes, Enemy targetEnemy)
     {
+        // // Create a new list that contains the same colliders as the colliders list
+        // List<Collider> enemiesList = new List<Collider>();
+
+        // enemiesList = 
+
         // Calculate the damage
         int damage = Projectile.CalculateDamage(getDamage, GetWeaknessMultiplier, getTowerType, targetEnemy);
 
@@ -452,7 +458,7 @@ public class Tower : MonoBehaviour
                 Collider nearestEnemy = null;
 
                 // Initialize the shortest distance
-                float shortestDistance = getEffectRange;
+                float shortestDistance = getEffectRange * Board.greatestBoardDimension;
 
                 // Go through all other enemies, so skip the first index of the array
                 for(int counter = 1; counter < GetEnemies().Count; counter = counter + 1)
@@ -520,7 +526,7 @@ public class Tower : MonoBehaviour
         // target.transform.position = Vector3.MoveTowards(transform.position, target.waypoints[target.waypointIndex - 1].transform.position + new Vector3(0, target.flightHeight, 0), parent.GetProjectileSpeed * parent.effectTime * parent.level * target.gameBoard.transform.localScale.x);    
         // target.transform.position = transform.Translate(targetPosition);
         // targetEnemy.transform.position = Vector3.MoveTowards(transform.position, targetPosition, getProjectileSpeed * GetEffectTime * getLevel * targetEnemy.gameBoard.transform.localScale.x);
-        targetEnemy.transform.position = targetEnemy.transform.position - targetEnemy.transform.forward * getEffectRange;
+        targetEnemy.transform.position = targetEnemy.transform.position - targetEnemy.transform.forward * getEffectRange * Board.greatestBoardDimension;
     }
 
     // The method activated when clicking on the hidden button on towers to upgrade them

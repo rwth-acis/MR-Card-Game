@@ -80,7 +80,7 @@ public class Projectile : MonoBehaviour
     public void Initialize(Tower parent)
     {
         // Set the parent tower of the projectile as the parent of the projectile
-        this.target = parent.Target.gameObject.GetComponent<Enemy>();
+        this.target = parent.getTarget.gameObject.GetComponent<Enemy>();
         this.parent = parent;
 
         // // Set the game object as child under the tower
