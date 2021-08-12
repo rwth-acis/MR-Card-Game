@@ -1,4 +1,5 @@
 using i5.Toolkit.Core.Spawners;
+using System.Collections.Generic;
 using UnityEngine;
 using i5.Toolkit.Core.Utilities;
 
@@ -7,6 +8,8 @@ namespace i5.Toolkit.Core.Examples.Spawners
 
     public class SpawnProjectile : MonoBehaviour
     {
+
+        public static float towerDownScaleCounter = 5;
         // // The instance, needed to access the static versions of the projectile prefabs
         // public static SpawnProjectile instance;
 
@@ -85,7 +88,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
         // }
 
         // Method used to spawn the projectile for the tower
-        public static Projectile SpawnProjectileForTower(string type, Projectile projectile)
+        public static Projectile SpawnProjectileForTower(string type, Projectile projectile, GameObject parent, float size)
         {
             // Initialize the pool index for the object pool of the projectile
             int poolId = ObjectPools.GetProjectilePoolIndex("Arrow");
@@ -106,91 +109,40 @@ namespace i5.Toolkit.Core.Examples.Spawners
                 break;
             }
 
-            // Debug.Log("The current object pool index is: " + poolId);
-
             // Get a new projectile from the object pool of the projectile type
             Projectile projectileObject = ObjectPool<Projectile>.RequestResource(poolId, () => {return Instantiate(projectile);});
 
             // Set the tower as active
             projectileObject.gameObject.SetActive(true);
 
-            // // Resize the projectile
-            // if(type == "Archer Tower")
-            // {
-            //     projectileObject.gameObject.transform.localScale = new Vector3(1, 1, 1) * Board.greatestBoardDimension * 5;
-            // }
+            // Set the parent of the projectile as the projectile spawner
+            projectileObject.transform.parent = parent.transform;
 
-            // Scale the projectile down
-            projectileObject.transform.localScale = new Vector3(1, 1, 1);
+            // Reset the position of the projectile game object
+            projectileObject.gameObject.transform.localPosition = new Vector3(0, 0, 0);
+
+            // Reset the colliders list of the projectile
+            projectileObject.colliders = new List<Collider>();
+
+            if(type == "Archer Tower")
+            {
+                // Scale the projectile correctly
+                projectileObject.transform.localScale = new Vector3(1, 1, 1);
+
+            } else {
+
+                // Calculate the projectile scale
+                float projectileSize = size * Board.greatestBoardDimension * towerDownScaleCounter;
+
+                // Scale the projectile correctly
+                projectileObject.transform.localScale = new Vector3(projectileSize, projectileSize, projectileSize);
+
+            }
+
+            Debug.Log("Projectile was just scaled down.");
 
             // Return the projectile game object
             return projectileObject;
         }
-
-        // // Method that spawns an arrow
-        // public static GameObject SpawnArrow(GameObject spawner)
-        // {
-        //     // Get the right object pool index for the tower type
-        //     int poolIndex = ObjectPools.GetTowerPoolIndex("Arrow");
-
-        //     // Get a new tower from the object pool of the archer tower
-        //     GameObject projectile = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(anArrow);});
-
-        //     // Set the tower as active
-        //     projectile.gameObject.SetActive(true);
-
-        //     // Set them as children of the parent that was passed
-        //     projectile.transform.parent = spawner.transform;
-
-        //     // Reset the position of the projectile
-        //     projectile.transform.position = new Vector3(0, 0, 0);
-
-        //     // Return the projectile
-        //     return projectile;
-        // }
-
-        // // Method that spawns a fire ball
-        // public static GameObject SpawnFireBall(GameObject spawner)
-        // {
-        //     // Get the right object pool index for the tower type
-        //     int poolIndex = ObjectPools.GetTowerPoolIndex("Fire Ball");
-
-        //     // Get a new tower from the object pool of the archer tower
-        //     GameObject projectile = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(aFireBall);});
-
-        //     // Set the tower as active
-        //     projectile.gameObject.SetActive(true);
-
-        //     // Set them as children of the parent that was passed
-        //     projectile.transform.parent = spawner.transform;
-
-        //     // Reset the position of the projectile
-        //     projectile.transform.position = new Vector3(0, 0, 0);
-
-        //     // Return the projectile
-        //     return projectile;
-        // }
-
-        // // Method that spawns a stone
-        // public static GameObject SpawnStone(GameObject spawner)
-        // {
-        //     // Get the right object pool index for the tower type
-        //     int poolIndex = ObjectPools.GetTowerPoolIndex("Stone");
-
-        //     // Get a new tower from the object pool of the archer tower
-        //     GameObject projectile = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(aStone);});
-
-        //     // Set the tower as active
-        //     projectile.gameObject.SetActive(true);
-
-        //     // Set them as children of the parent that was passed
-        //     projectile.transform.parent = spawner.transform;
-
-        //     // Reset the position of the projectile
-        //     projectile.transform.position = new Vector3(0, 0, 0);
-
-        //     // Return the projectile
-        //     return projectile;
-        // }
     }
 }

@@ -32,7 +32,7 @@ public class Projectile : MonoBehaviour
     private Vector3 lastPosition;
 
     // The list of coliders that enter the range of the tower
-    private List<Collider> colliders = new List<Collider>();
+    public List<Collider> colliders = new List<Collider>();
 
     // The method used to access the list of colliders
     public List<Collider> GetColliders()
@@ -177,6 +177,9 @@ public class Projectile : MonoBehaviour
         // Initialize the damage variable
         int damage = 0;
 
+        // Initialize the list of dead enemies
+        List<Collider> listOfDead = new List<Collider>();
+
         // For each enemy in the collider, calculate the damage they should take
         foreach(var targetEnemy in GetColliders())
         {
@@ -185,67 +188,28 @@ public class Projectile : MonoBehaviour
             // Calculate the damage
             damage = CalculateDamage(parent.getDamage, parent.GetWeaknessMultiplier, parent.getTowerType, targetEnemy.GetComponent<Enemy>());
 
+            // Check if the enemy will die from this attack
+            if(damage >= targetEnemy.GetComponent<Enemy>().GetCurrentHP)
+            {
+                // Add the target enemy to the list of dead enemies
+                listOfDead.Add(targetEnemy);
+            }
+
             // Make the enemy take damage
             targetEnemy.GetComponent<Enemy>().TakeDamage(damage);
         }
 
+        // Check that the list of dead enemies is not empty
+        if(listOfDead != null)
+        {
+            // Go over the list of dead enemies
+            foreach(var enemy in listOfDead)
+            {
+                // Remove the enemies that are dead from the colliders list
+                colliders.Remove(enemy);
+            }
+        }
     }
-
-    // // The method that produces the effect of a lightning strike arriving at destination
-    // private void LightningStrikeEffect(int numberOfStrikes, Enemy targetEnemy)
-    // {
-    //     // Calculate the damage
-    //     int damage = CalculateDamage(parent.getDamage, parent.GetWeaknessMultiplier, parent.getTowerType, targetEnemy);
-
-    //     // Make the enemy take damage
-    //     targetEnemy.TakeDamage(damage);
-
-    //     // Check if the lightning strike should jump
-    //     if(numberOfStrikes < 0)
-    //     {
-    //         // Initialise the raycast hit
-    //         RaycastHit hit;
-
-    //         // Initialise the nearest enemy game object
-    //         GameObject nearestEnemy;
-
-    //         // Calculate the radius of the effect
-    //         float radius = parent.GetEffectRange * targetEnemy.gameBoard.transform.localScale.x;
-
-    //         // Find the nearest enemy with a Physics.SphereCast
-    //         if(Physics.SphereCast(transform.position, radius, transform.forward, out hit, 0) == true)
-    //         {
-    //             // Get the nearest enemy
-    //             nearestEnemy = hit.transform.gameObject;
-    //             Debug.Log("Nearest enemy: " + nearestEnemy.name);
-
-    //             // Cast Lightning strike effect on it with number of strikes - 1
-    //             LightningStrikeEffect(numberOfStrikes - 1, nearestEnemy.GetComponent<Enemy>());
-
-    //         } else {
-    //             // No enemy near enough, finished
-    //         }
-    //     }
-    // }
-
-    // // The method that produces the effect of a gust of wind arriving at destination
-    // private void WindGustEffect()
-    // {
-    //     // Calculate the damage
-    //     int damage = CalculateDamage(parent.getDamage, parent.GetWeaknessMultiplier, parent.getTowerType, target);
-
-    //     // Make the enemy take damage
-    //     target.TakeDamage(damage);
-
-    //     // Calculate the direction in which the enemy should be pushed
-    //     Vector3 targetPosition = transform.position + (transform.position - target.lastWaypoint).normalized * parent.getProjectileSpeed * parent.GetEffectTime * parent.GetLevel * target.gameBoard.transform.localScale.x; // TODO
-    //     // Vector3 targetPosition = new Vector3(0, 0, 0);
-
-    //     // Push the enemy back by the distance scaled down to the board size * the level in the direction of the last waypoint
-    //     // target.transform.position = Vector3.MoveTowards(transform.position, target.waypoints[target.waypointIndex - 1].transform.position + new Vector3(0, target.flightHeight, 0), parent.GetProjectileSpeed * parent.effectTime * parent.level * target.gameBoard.transform.localScale.x);    
-    //     // target.transform.position = transform.Translate(targetPosition);
-    //     target.transform.position = Vector3.MoveTowards(transform.position, targetPosition, parent.getProjectileSpeed * parent.GetEffectTime * parent.GetLevel * target.gameBoard.transform.localScale.x);
-    // }
 
     // The method that calculates the damage a unit should take depending on the enemy, tower and tower attack type
     public static int CalculateDamage(int damage, float weaknessMultiplier, string towerType, Enemy target)
@@ -312,6 +276,13 @@ public class Projectile : MonoBehaviour
         return (int) (damage + additianlDamageMultiplier * damage * weaknessMultiplier);
     }
 
+    // Method used to reinitialize the colliders list
+    public void ClearCollidersList()
+    {
+        // Reinitialize colliders list as a new list
+        colliders = new List<Collider>();
+    }
+
     // The method that adds entering enemies to the collider list
     private void OnTriggerEnter(Collider other)
     {
@@ -331,7 +302,7 @@ public class Projectile : MonoBehaviour
     }
 
     // Method used to return the enemy to the right object pool uppon death
-    public void ReturnProjectileoObjectPool()
+    public void ReturnProjectileToObjectPool()
     {
         // Call the release enemy of the object pool class
         ObjectPools.ReleaseProjectile(this);

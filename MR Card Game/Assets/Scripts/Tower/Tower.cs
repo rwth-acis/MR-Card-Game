@@ -362,16 +362,16 @@ public class Tower : MonoBehaviour
 
             // Spawn the projectile
             // Projectile spawnedProjectile = SpawnProjectileForTower(towerType).GetComponent<Projectile>();
-            Projectile spawnedProjectile = SpawnProjectileForTower(towerType, towerProjectile);
+            Projectile spawnedProjectile = SpawnProjectileForTower(towerType, towerProjectile, projectileSpawner, getEffectRange);
 
             // Initialize the projectile object, so that it knows what his parent is
             spawnedProjectile.Initialize(this);
 
-            // Set the projectile as child of the object where the projectile spawner
-            spawnedProjectile.gameObject.transform.parent = projectileSpawner.transform;
+            // // Set the projectile as child of the object where the projectile spawner
+            // spawnedProjectile.gameObject.transform.parent = projectileSpawner.transform;
 
-            // Reset the position of the projectile game object
-            spawnedProjectile.gameObject.transform.localPosition = new Vector3(0, 0, 0);
+            // // Reset the position of the projectile game object
+            // spawnedProjectile.gameObject.transform.localPosition = new Vector3(0, 0, 0);
 
             // // Set the position of the projectile game object to the position of the projectile spawner
             // spawnedProjectile.gameObject.transform.position = projectileSpawner.transform.position;
