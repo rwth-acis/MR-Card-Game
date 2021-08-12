@@ -14,7 +14,7 @@ public class Projectile : MonoBehaviour
     private Tower parent;
 
     // Method used to get the type of the tower
-    public static Tower GetParent
+    public static Tower getParent
     {
         get { return instance.parent; }
     }
@@ -47,7 +47,7 @@ public class Projectile : MonoBehaviour
         instance = this;
 
         // Get the right type
-        switch(GetParent.getTowerType)
+        switch(getParent.getTowerType)
         {
             case "Archer Tower":
                 projectileType = "Arrow";
@@ -83,8 +83,8 @@ public class Projectile : MonoBehaviour
         this.target = parent.Target.gameObject.GetComponent<Enemy>();
         this.parent = parent;
 
-        // Set the game object as child under the tower
-        transform.parent = parent.transform;
+        // // Set the game object as child under the tower
+        // transform.parent = parent.transform;
     }
 
     // Method that makes a projectile move to a target
@@ -110,40 +110,26 @@ public class Projectile : MonoBehaviour
             if(transform.position == target.transform.position)
             {
                 // Here, depending on the tower type, the enemy or enemies need to take damage depending on the type of projectile of the tower
-                switch(parent.getTowerType)
+                if(parent.getTowerType == "Archer Tower")
                 {
-                    case "Archer Tower":
-                        ProjectileThatCanHitMultipleEnemiesEffect();
-                    break;
-                    case "Fire Tower":
-                        ProjectileThatCanHitMultipleEnemiesEffect();
-                    break;
-                    // case "Lightning Tower":
-                    //     LightningStrikeEffect(parent.GetNumberOfEffect, target);
-                    // break;
-                    case "Earth Tower":
-                        ProjectileThatCanHitMultipleEnemiesEffect();
-                    break;
-                    // case "Wind Tower":
-                    //     WindGustEffect();
-                    // break;
+                    // Make a single enemy take damage
+                    ArrowEffect();
+
+                } else {
+                    
+                    // Make all enemies inside the projectile collider take damage
+                    ProjectileThatCanHitMultipleEnemiesEffect();
                 }
 
-                // Delete the projectile
-                // Destroy(gameObject);
+                // Release the projectile to the right object pool
                 ObjectPools.ReleaseProjectile(this);
             }
 
         } else {
 
             // Check if it is not a wind tower or lightning tower that do not have a projectile
-            if(parent.getTowerType != "Wind Tower" || parent.getTowerType != "Lightning Tower")
+            if(parent.getTowerType != "Wind Tower" && parent.getTowerType != "Lightning Tower" && parent.getTowerType != "Archer Tower")
             {
-            //     // // Destroy the projectile since there is no target anymore
-            //     // Destroy(gameObject);
-
-            // } else {
-
                 // Make the projectile move to the last position
                 transform.position = Vector3.MoveTowards(transform.position, lastPosition, Time.deltaTime * parent.getProjectileSpeed);
 
@@ -156,6 +142,9 @@ public class Projectile : MonoBehaviour
                     // Release the projectile
                     ObjectPools.ReleaseProjectile(this);
                 }
+            } else {
+                // Case it is an arrow and needs to despawn
+                ObjectPools.ReleaseProjectile(this);
             }
         }
     }
@@ -167,12 +156,20 @@ public class Projectile : MonoBehaviour
     //     Vector3 targetPosition = target.position + 
     // }
 
-    // // The method that produces the effect of an arrow arriving at destination
-    // private void ArrowEffect(int damage)
-    // {
-    //     // Make the enemy take damage
-    //     target.TakeDamage(damage);
-    // }
+    // The method that produces the effect of an arrow arriving at destination
+    private void ArrowEffect()
+    {
+        Debug.Log("The enemy " + target.gameObject.name + " was in the range of " + getProjectileType + " and was hit with the arrow effect");
+
+        // Initialize the damage variable
+        int damage = 0;
+
+        // Calculate the damage
+        damage = CalculateDamage(parent.getDamage, parent.GetWeaknessMultiplier, parent.getTowerType, target.GetComponent<Enemy>());
+
+        // Make the enemy take damage
+        target.TakeDamage(damage);
+    }
 
     // The method that produces the effect of a fire ball and rock arriving at destination
     private void ProjectileThatCanHitMultipleEnemiesEffect()
@@ -183,7 +180,8 @@ public class Projectile : MonoBehaviour
         // For each enemy in the collider, calculate the damage they should take
         foreach(var targetEnemy in GetColliders())
         {
-            Debug.Log("The enemy " + targetEnemy.gameObject.name + " was in the range of " + getProjectileType + "and was hit");
+            Debug.Log("The enemy " + targetEnemy.gameObject.name + " was in the range of " + getProjectileType + " and was hit with the projectile that can hit multiple enemies");
+
             // Calculate the damage
             damage = CalculateDamage(parent.getDamage, parent.GetWeaknessMultiplier, parent.getTowerType, targetEnemy.GetComponent<Enemy>());
 

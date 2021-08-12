@@ -114,17 +114,14 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Set the tower as active
             projectileObject.gameObject.SetActive(true);
 
-            // // Set them as children of the parent that was passed
-            // projectileObject.gameObject.transform.parent = spawner.transform;
+            // // Resize the projectile
+            // if(type == "Archer Tower")
+            // {
+            //     projectileObject.gameObject.transform.localScale = new Vector3(1, 1, 1) * Board.greatestBoardDimension * 5;
+            // }
 
-            // // Reset the position of the projectile game object
-            // projectileObject.gameObject.transform.position = new Vector3(0, 0, 0);
-
-            // Resize the projectile
-            if(type == "Archer Tower")
-            {
-                projectileObject.gameObject.transform.localScale = new Vector3(1, 1, 1) * Board.greatestBoardDimension * 5;
-            }
+            // Scale the projectile down
+            projectileObject.transform.localScale = new Vector3(1, 1, 1);
 
             // Return the projectile game object
             return projectileObject;

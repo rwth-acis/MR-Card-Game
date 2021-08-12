@@ -119,8 +119,8 @@ public class Enemy : MonoBehaviour
         // Set the waypoints that apply to this map
         waypoints = Waypoints.mapWaypoints;
 
-        // Set the enemy as child of the gameboard
-        transform.parent = gameBoard.transform;
+        // // Set the enemy as child of the gameboard
+        // transform.parent = gameBoard.transform;
 
         // When spawning, set the current health points to the maximum health points
         ReviveEnemy();

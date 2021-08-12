@@ -303,7 +303,7 @@ public class Tower : MonoBehaviour
                 Debug.Log("Tower: " + this.gameObject.name + " is shooting");
                 // Attack the target
                 Shoot();
-                // Debug.Log("The current enemey that is targeted is named: " + target.name);
+                // Debug.Log("The current enemy that is targeted is named: " + target.name);
 
                 // Set the can attack flag to false
                 canAttack = false;
@@ -366,8 +366,14 @@ public class Tower : MonoBehaviour
             // Initialize the projectile object, so that it knows what his parent is
             spawnedProjectile.Initialize(this);
 
-            // Set the position of the projectile game object to the position of the projectile spawner
-            spawnedProjectile.gameObject.transform.position = projectileSpawner.transform.position;
+            // Set the projectile as child of the object where the projectile spawner
+            spawnedProjectile.gameObject.transform.parent = projectileSpawner.transform;
+
+            // Reset the position of the projectile game object
+            spawnedProjectile.gameObject.transform.localPosition = new Vector3(0, 0, 0);
+
+            // // Set the position of the projectile game object to the position of the projectile spawner
+            // spawnedProjectile.gameObject.transform.position = projectileSpawner.transform.position;
 
             // Make sure the projectile is active
             // spawnedProjectile.gameObject.SetActive(true);
