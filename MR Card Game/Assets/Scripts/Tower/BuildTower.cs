@@ -30,6 +30,7 @@ public class BuildTower : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Make sure the box collider is enabled
         this.GetComponent<BoxCollider>().enabled = true;
     }
 
@@ -39,6 +40,10 @@ public class BuildTower : MonoBehaviour
         // Check that no tower was built on the image target
         if(towerBuiltCorrectly == false)
         {
+
+            // Make sure the box collider is enabled
+            this.GetComponent<BoxCollider>().enabled = true;
+
             // Check if the image target just entered the game board or left it
             if(makeBuildAppear == true && GameAdvancement.gamePaused == false)
             {
