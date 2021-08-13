@@ -520,6 +520,9 @@ namespace build
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getFireTowerCost;
 
+            // Actualize the currency display
+            GameSetup.ActualizeCurrencyDisplay();
+
             // Set the flag that this image target was used to build a tower on it
             TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
             
@@ -573,6 +576,9 @@ namespace build
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getLightningTowerCost;
 
+            // Actualize the currency display
+            GameSetup.ActualizeCurrencyDisplay();
+
             // Set the flag that this image target was used to build a tower on it
             TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
 
@@ -597,6 +603,9 @@ namespace build
 
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getWindTowerCost;
+
+            // Actualize the currency display
+            GameSetup.ActualizeCurrencyDisplay();
 
             // Set the flag that this image target was used to build a tower on it
             TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;

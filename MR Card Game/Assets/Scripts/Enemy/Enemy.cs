@@ -168,6 +168,9 @@ public class Enemy : MonoBehaviour
                 // Reduce the number of undefeated enemies of the wave by one
                 LevelInfo.numberOfUndefeatedEnemies = LevelInfo.numberOfUndefeatedEnemies - 1;
 
+                // Reset the current waypoint index so that enemies walk toward the first waypoint upon respawn
+                waypointIndex = 0;
+
                 // Make the enemy die
                 StartCoroutine(Die());
             }
