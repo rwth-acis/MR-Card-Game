@@ -35,6 +35,18 @@ static class GameAdvancement
     // The status of the game, if it should be paused or not
     public static bool gamePaused = false;
 
+    // The variable that states if the time was stopped for the enemies
+    public static bool timeStopped = false;
+
+    // The variable that states what the global enemy slow factor is currently
+    public static float globalSlow = 1;
+
+    // The flag that states if it is raining
+    public static bool raining = false;
+
+    // The type of enemy that is plagued. Plagued enemy take damage over time and are slowed
+    public static string plaguedEnemyType = "";
+
     // // The global flag that states if the player is currently building or upgrading something
     // public static bool currentlyBuildingOrUpgrading = false;
 }
@@ -161,6 +173,8 @@ public class GameSetup : MonoBehaviour
     // Method used to actualize the current health points of the castle
     public static void ActualizeCastleHealthPoints()
     {
+        // TODO add armor points
+
         // Actualize the value of the castle health bar
         GameAdvancement.castleHealthBar.value = (float)(GameAdvancement.castlecurrentHP / GameAdvancement.castleMaxHP);
 

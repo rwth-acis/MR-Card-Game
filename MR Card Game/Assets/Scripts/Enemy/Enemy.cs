@@ -99,10 +99,13 @@ public class Enemy : MonoBehaviour
     private GameObject gameBoard;
 
     // The current waypoint index so that enemies go from waypoint to waypoint
-    private int waypointIndex = 0;
+    public int waypointIndex = 0;
 
     // The flag that tells if the enemy is currently alive or not
     public bool isAlive = true;
+
+    // The personal slow factor of the enemy
+    public float personalSlowFactor = 1;
 
     // // Method used to get the weakness of the enemy
     // public bool isAlive
@@ -190,7 +193,7 @@ public class Enemy : MonoBehaviour
         if(waypointIndex <= waypoints.Length - 1)
         {
             // Move the enemy toward the next waypoint
-            transform.position = Vector3.MoveTowards(transform.position, waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0), moveSpeed * Time.deltaTime * gameBoard.transform.localScale.x);
+            transform.position = Vector3.MoveTowards(transform.position, waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0), moveSpeed * GameAdvancement.globalSlow * personalSlowFactor * Time.deltaTime * gameBoard.transform.localScale.x);
 
             // // Make the enemy face the direction it is moving
             // transform.LookAt(waypoints[waypointIndex].transform.position);
@@ -248,8 +251,35 @@ public class Enemy : MonoBehaviour
     // Method that reduces the health points of the castle if an enemy reaches it
     public void ReduceCastleHealth()
     {
-        // Reduce the castle health by the amount of damage the unit does
-        GameAdvancement.castlecurrentHP = GameAdvancement.castlecurrentHP - damage;
+        // Check if the castle has armor points
+        if(GameAdvancement.castleCurrentAP != 0) 
+        {
+            // Check if the armor points of the castle exceed the damage of the enemy
+            if(GameAdvancement.castleCurrentAP >= damage)
+            {
+                // Reduce the castle armor points by the enemy damage
+                GameAdvancement.castleCurrentAP = GameAdvancement.castleCurrentAP - damage;
+
+            } else {
+
+                // Initialize the additional damage variable
+                int additionalDamage = 0;
+
+                // Set the additional damage to the damage reduced by the castle armor points
+                additionalDamage = damage - GameAdvancement.castleCurrentAP;
+
+                // Set the armor points of the castle to 0
+                GameAdvancement.castleCurrentAP = 0;
+
+                // Reduce the castle health by the additional amount of damage the unit does
+                GameAdvancement.castlecurrentHP = GameAdvancement.castlecurrentHP - additionalDamage;
+            }
+            
+        } else {
+
+            // Reduce the castle health by the amount of damage the unit does
+            GameAdvancement.castlecurrentHP = GameAdvancement.castlecurrentHP - damage;
+        }
 
         // Display the lost health points on the castle
         GameSetup.ActualizeCastleHealthPoints();

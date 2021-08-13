@@ -214,6 +214,14 @@ public class Level : MonoBehaviour
                 enemy.transform.position = Waypoints.enemySpawn.transform.position + new Vector3(0, enemy.GetFlightHeight, 0);
             }
 
+            // Check that the stop time card is not taking effect
+            if(GameAdvancement.timeStopped == true)
+            {
+                // Make sure that no enemy is spawned in the duration of this stop time card
+                yield return new WaitForSeconds(SpellEffect.getStopTimeDuration);
+            }
+
+            // Wait for the time between spawns
             yield return new WaitForSeconds(timeBetweenSpawns);
         }
     }

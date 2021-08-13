@@ -215,7 +215,7 @@ public class Projectile : MonoBehaviour
     public static int CalculateDamage(int damage, float weaknessMultiplier, string towerType, Enemy target)
     {
         // Initialize the additinal damage multiplier
-        int additianlDamageMultiplier = 0;
+        int additionalDamageMultiplier = 0;
 
         switch(towerType)
         {
@@ -223,10 +223,10 @@ public class Projectile : MonoBehaviour
 
                 if(target.GetEnemyWeakness == "Piercing")
                 {
-                    additianlDamageMultiplier = 1;
+                    additionalDamageMultiplier = 1;
                 } else if(target.GetEnemyResistance == "Piercing")
                 {
-                    additianlDamageMultiplier = -1;
+                    additionalDamageMultiplier = -1;
                 }
 
             break;
@@ -234,46 +234,56 @@ public class Projectile : MonoBehaviour
             case "Fire Tower":
                 if(target.GetEnemyWeakness == "Fire")
                 {
-                    additianlDamageMultiplier = 1;
+                    additionalDamageMultiplier = 1;
                 } else if(target.GetEnemyResistance == "Fire")
                 {
-                    additianlDamageMultiplier = -1;
+                    additionalDamageMultiplier = -1;
                 }
             break;
 
             case "Lightning Tower":
                 if(target.GetEnemyWeakness == "Lightning")
                 {
-                    additianlDamageMultiplier = 1;
+                    if(GameAdvancement.raining == true)
+                    {
+                        additionalDamageMultiplier = 2;
+                    } else {
+                        additionalDamageMultiplier = 1;
+                    }
                 } else if(target.GetEnemyResistance == "Lightning")
                 {
-                    additianlDamageMultiplier = -1;
+                    if(GameAdvancement.raining == true)
+                    {
+                        additionalDamageMultiplier = 0;
+                    } else {
+                        additionalDamageMultiplier = -1;
+                    }
                 }
             break;
 
             case "Earth Tower":
                 if(target.GetEnemyWeakness == "Earth")
                 {
-                    additianlDamageMultiplier = 1;
+                    additionalDamageMultiplier = 1;
                 } else if(target.GetEnemyResistance == "Earth")
                 {
-                    additianlDamageMultiplier = -1;
+                    additionalDamageMultiplier = -1;
                 }
             break;
 
             case "Wind Tower":
                 if(target.GetEnemyWeakness == "Wind")
                 {
-                    additianlDamageMultiplier = 1;
+                    additionalDamageMultiplier = 1;
                 } else if(target.GetEnemyResistance == "Wind")
                 {
-                    additianlDamageMultiplier = -1;
+                    additionalDamageMultiplier = -1;
                 }
             break;
         }
 
         // Return the damage with a bonus, a malus or flat depending on if a weakness or resistance was found
-        return (int) (damage + additianlDamageMultiplier * damage * weaknessMultiplier);
+        return (int) (damage + additionalDamageMultiplier * damage * weaknessMultiplier);
     }
 
     // Method used to reinitialize the colliders list
