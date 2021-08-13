@@ -446,7 +446,7 @@ public class UpgradeTower : MonoBehaviour
                 upgradeCost = (int)(lightningTowerUpgradeBaseCost * Mathf.Pow(lightningTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.getLevel - 1));
 
                 // Upgrade the tower
-                TowerEnhancer.currentlyEnhancedTower.UpgradeLightningTower(lightningDamageEnhancer, lightningJumpRangeEnhancer);
+                TowerEnhancer.currentlyEnhancedTower.UpgradeLightningTower(lightningDamageEnhancer, lightningJumpRangeEnhancer, lightningRangeEnhancer);
 
             break;
 

@@ -562,6 +562,9 @@ public class Tower : MonoBehaviour
 
         // Increase the range cooldown by the multiplicator
         attackRange = attackRange * attackRangeMultiplicator;
+
+        // Adjust the attack range
+        AdjustTowerRange();
     }
 
     // Method used to upgrade a fire tower
@@ -591,7 +594,7 @@ public class Tower : MonoBehaviour
     }
 
     // Method used to upgrade a lightning tower
-    public void UpgradeLightningTower(float damageMultiplicator, float jumpRangeMultiplicator)
+    public void UpgradeLightningTower(float damageMultiplicator, float jumpRangeMultiplicator, float attackRangeMultiplicator)
     {
         // Increase the tower level by one
         level = level + 1;
@@ -601,6 +604,12 @@ public class Tower : MonoBehaviour
 
         // Increase the effect range by the multiplicator
         effectRange = effectRange * jumpRangeMultiplicator;
+
+        // Increase the attack range of the lightning tower
+        attackRange = attackRange * attackRangeMultiplicator;
+
+        // Adjust the attack range
+        AdjustTowerRange();
     }
 
     // Method used to upgrade a wind tower
@@ -614,5 +623,12 @@ public class Tower : MonoBehaviour
 
         // Increase the effect range by the multiplicator
         effectRange = effectRange * dropBackRangeMultiplicator;
+    }
+
+    // Method used to adjust the tower range (size of the light blue collider)
+    private void AdjustTowerRange()
+    {
+        // Set the radius of the sphere collider on the tower range component with the tower script to the attack range
+        this.gameObject.transform.localScale = new Vector3(getAttackRange, getAttackRange, getAttackRange);
     }
 }
