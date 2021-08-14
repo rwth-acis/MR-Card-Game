@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public static class Cards
 {
@@ -33,7 +35,15 @@ public class SpellCard : MonoBehaviour
 
     // The canvas game object on which the reveal spell button is 
     [SerializeField]
-    private GameObject revealSpellCanvas;
+    private GameObject spellCardCanvas;
+
+    // The draw spell button 
+    [SerializeField]
+    private Button drawSpellButton;
+
+    // The play spell button 
+    [SerializeField]
+    private Button playSpellButton;
 
     // The boolean variable that states that the image target is in the camera field
     private bool cardVisibleButNotDisplayed = false;
@@ -66,7 +76,7 @@ public class SpellCard : MonoBehaviour
             cardVisibleButNotDisplayed = false;
 
             // Display the reveal spell menu
-            DisplayRevealSpell();
+            DisplayDrawSpell();
         }
     }
 
@@ -184,7 +194,7 @@ public class SpellCard : MonoBehaviour
         if(GameAdvancement.gamePaused == false)
         {
             // Display the reveal spell menu
-            DisplayRevealSpell();
+            DisplayDrawSpell();
 
         } else {
 
@@ -197,19 +207,26 @@ public class SpellCard : MonoBehaviour
     public void SpellCardLeftCameraField()
     {
         // Hide the reveal spell menu
-        HideRevealSpell();
+        HideDrawSpell();
     }
 
     // The method that activates the canvas on which the reveal spell button is
-    private void DisplayRevealSpell()
+    private void DisplayDrawSpell()
     {
-        revealSpellCanvas.SetActive(true);
+        // Enable the spell card canvas
+        spellCardCanvas.SetActive(true);
+
+        // Enable the draw spell button
+        drawSpellButton.gameObject.SetActive(true);
+
+        // Disable the play spell button
+        playSpellButton.gameObject.SetActive(false);
     }
 
     // The method that deactivates the canvas on which the reveal spell button is
-    private void HideRevealSpell()
+    private void HideDrawSpell()
     {
-        revealSpellCanvas.SetActive(false);
+        spellCardCanvas.SetActive(false);
     }
 
     // The method that is activated when the user clicks on the draw spell button
@@ -225,7 +242,7 @@ public class SpellCard : MonoBehaviour
         ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
 
         // Make the canvas disappear
-        HideRevealSpell();
+        HideDrawSpell();
 
         // Start the routine that waits for the questions to be answered
         StartCoroutine(DrawSpell());
@@ -243,6 +260,21 @@ public class SpellCard : MonoBehaviour
         // Wait until the number of questions that need to be answered is 0
         yield return new WaitUntil(NoMoreQuestionsNeeded);
 
+        // The current card index needs to be changed, check if the end of the array was reached
+        if(Cards.currentCardIndex < Cards.lastCardIndex)
+        {
+            // Increase the current card index by one
+            Cards.currentCardIndex = Cards.currentCardIndex + 1;
+
+        } else {
+
+            // Shuffle the card deck
+            ShuffleCardDeck();
+
+            // Set the current card index to 0
+            Cards.currentCardIndex = 0;
+        }
+
         // Enable the game overlay
         gameOverlay.SetActive(true);
 
@@ -258,68 +290,78 @@ public class SpellCard : MonoBehaviour
         {
             case "Meteor":
                 MakeMeteorCardAppear();
-                spellType = "Meteor";
+                spellType = "meteor";
             break;
 
             case "Arrow rain":
                 MakeArrowRainCardAppear();
-                spellType = "Arrow rain";
+                spellType = "arrow rain";
             break;
 
             case "Thunder strike":
                 MakeThunderStrikeCardAppear();
-                spellType = "Thunder strike";
+                spellType = "thunder strike";
             break;
 
             case "Armor":
                 MakeArmorCardAppear();
-                spellType = "Armor";
+                spellType = "armor";
             break;
 
             case "Heal":
                 MakeHealCardAppear();
-                spellType = "Heal";
+                spellType = "heal";
             break;
 
             case "Plague":
                 MakePlagueCardAppear();
-                spellType = "Plague";
+                spellType = "plague";
             break;
 
             case "Obliteration":
                 MakeObliterationCardAppear();
-                spellType = "Obliteration";
+                spellType = "obliteration";
             break;
 
             case "Draw":
                 MakeDrawCardAppear();
-                spellType = "Draw";
+                spellType = "draw";
             break;
 
             case "Teleport":
                 MakeTeleportCardAppear();
-                spellType = "Teleport";
+                spellType = "teleport";
             break;
 
             case "Space distortion":
                 MakeSpaceDistortionCardAppear();
-                spellType = "Space distortion";
+                spellType = "space distortion";
             break;
 
             case "Slow time":
                 MakeSlowTimeCardAppear();
-                spellType = "Slow time";
+                spellType = "slow time";
             break;
 
             case "Stop time":
                 MakeStopTimeCardAppear();
-                spellType = "Stop time";
+                spellType = "stop time";
             break;
 
             case "Rain":
                 MakeRainCardAppear();
-                spellType = "Rain";
+                spellType = "rain";
             break;
+        }
+
+        // Check if the spell card is on the game board
+        if(onGameBoard == true)
+        {
+            // Display the play spell button
+            DisplayPlaySpell();
+
+            // Pause the game
+            GameAdvancement.gamePaused = true;
         }
 
         Debug.Log("The spell card that was drawn was: " + spellType);
@@ -435,6 +477,12 @@ public class SpellCard : MonoBehaviour
             // Set the variable that states that the spell card is on the board to true
             onGameBoard = true;
 
+            // Pause the game
+            GameAdvancement.gamePaused = true;
+
+            // Display the play spell button
+            DisplayPlaySpell();
+
             // Start the wait before launch method
             // StartCoroutine(PrepareForLaunchingSpell());
         }
@@ -447,7 +495,92 @@ public class SpellCard : MonoBehaviour
         if(other.gameObject.tag == "Board")
         {
             onGameBoard = true;
+
+            // Un-pause the game
+            GameAdvancement.gamePaused = false;
         }
+    }
+
+    // The method that displays the spell card canvas correctly so that the play spell button is enabled
+    private void DisplayPlaySpell()
+    {
+        // Enable the spell card canvas game object
+        spellCardCanvas.SetActive(true);
+
+        // Enable the play spell button
+        playSpellButton.gameObject.SetActive(true);
+
+        // Rename the button accordingly to the current spell
+        playSpellButton.GetComponentInChildren<TMP_Text>().text = "Play " + spellType;
+
+        // Disable the draw spell button
+        drawSpellButton.gameObject.SetActive(true);
+    }
+
+    // The method that displays the spell card canvas correctly so that the play spell button is enabled
+    public void PlaySpell()
+    {
+        // Un-pause the game
+        GameAdvancement.gamePaused = false;
+
+        // Depending on the type of card that is next in the card deck, make the right overlay appear and set the spell type variable to the right type
+        switch(Cards.cardDeck[Cards.currentCardIndex])
+        {
+            case "Meteor":
+                PlayMeteor(this.gameObject);
+            break;
+
+            case "Arrow rain":
+                PlayArrowRain(this.gameObject);
+            break;
+
+            case "Thunder strike":
+                PlayThunderStrike(this.gameObject);
+            break;
+
+            case "Armor":
+                PlayArmor();
+            break;
+
+            case "Heal":
+                PlayHeal();
+            break;
+
+            case "Plague":
+                PlayPlague();
+            break;
+
+            case "Obliteration":
+                PlayObliteration();
+            break;
+
+            case "Draw":
+                PlayDraw();
+            break;
+
+            case "Teleport":
+                PlayTeleport(this.gameObject);
+            break;
+
+            case "Space distortion":
+                PlaySpaceDistortion(this.gameObject);
+            break;
+
+            case "Slow time":
+                PlaySlowTime();
+            break;
+
+            case "Stop time":
+                PlayStopTime();
+            break;
+
+            case "Rain":
+                PlayRain();
+            break;
+        }
+
+        // Make sure a new spell card can be drawn on this card
+        DisplayDrawSpell();
     }
 
     // Method that wait the appropriate time before launching the spell
