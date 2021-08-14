@@ -218,7 +218,7 @@ public class Level : MonoBehaviour
             if(GameAdvancement.timeStopped == true)
             {
                 // Make sure that no enemy is spawned in the duration of this stop time card
-                yield return new WaitForSeconds(SpellEffect.getStopTimeDuration);
+                yield return new WaitForSeconds(SpellCard.getStopTimeDuration);
             }
 
             // Wait for the time between spawns
