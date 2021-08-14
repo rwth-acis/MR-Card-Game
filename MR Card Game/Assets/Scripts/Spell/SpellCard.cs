@@ -59,6 +59,9 @@ public class SpellCard : MonoBehaviour
         // Fill the card deck
         FillCardDeck();
 
+        // Shuffle the card deck
+        ShuffleCardDeck(Cards.cardDeck);
+
         // Set the current card index to 0
         Cards.currentCardIndex = 0;
 
@@ -153,10 +156,10 @@ public class SpellCard : MonoBehaviour
     private readonly System.Random random = new System.Random();
 
     // Method that shuffles the card deck
-    private void ShuffleCardDeck()
+    private void ShuffleCardDeck(string[] array)
     {
         // Get the length of the question array
-        int length = Cards.cardDeck.Length;
+        int length = array.Length;
 
         // Initialize the swap index
         int swapIndex = 0;
@@ -171,9 +174,9 @@ public class SpellCard : MonoBehaviour
             swapIndex = random.Next(0, index);
 
             // Copy entry at swapIndex to the entry index of the array
-            string value = Cards.cardDeck[swapIndex];
-            Cards.cardDeck[swapIndex] = Cards.cardDeck[index];
-            Cards.cardDeck[index] = value;
+            string value = array[swapIndex];
+            array[swapIndex] = array[index];
+            array[index] = value;
 
             // Reduce the index by one
             index = index - 1;
@@ -232,20 +235,31 @@ public class SpellCard : MonoBehaviour
     // The method that is activated when the user clicks on the draw spell button
     public void InitiateDrawSpell()
     {
-        // Disable the game overlay
-        gameOverlay.SetActive(false);
+        if(Cards.freeDraws == 0)
+        {
+            // Disable the game overlay
+            gameOverlay.SetActive(false);
 
-        // Enable the answer question menu
-        answerQuestions.SetActive(true);
+            // Enable the answer question menu
+            answerQuestions.SetActive(true);
 
-        // Set the number of questions that are needed to answer to 1
-        ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
+            // Set the number of questions that are needed to answer to 1
+            ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
 
-        // Make the canvas disappear
-        HideDrawSpell();
+            // Make the canvas disappear
+            HideDrawSpell();
 
-        // Start the routine that waits for the questions to be answered
-        StartCoroutine(DrawSpell());
+            // Start the routine that waits for the questions to be answered
+            StartCoroutine(DrawSpell());
+
+        } else {
+
+            // Reduce the number of free draws by one
+            Cards.freeDraws = Cards.freeDraws - 1;
+
+            // Reveal the spell card
+            RevealSpell();
+        }
     }
 
     // Function that is used to test when all questions that were needed to be answered were answered correctly
@@ -269,7 +283,7 @@ public class SpellCard : MonoBehaviour
         } else {
 
             // Shuffle the card deck
-            ShuffleCardDeck();
+            ShuffleCardDeck(Cards.cardDeck);
 
             // Set the current card index to 0
             Cards.currentCardIndex = 0;
@@ -795,6 +809,7 @@ public class SpellCard : MonoBehaviour
                     
                 }
             }
+            Debug.Log("The enemies were not null");
 
             // Kill this enemy by making it take more damage than the maximum number of health points that exist
             closestEnemy.GetComponent<Enemy>().TakeDamage(1000);
