@@ -48,6 +48,9 @@ public class SpellCard : MonoBehaviour
     // The boolean variable that states that the image target is in the camera field
     private bool cardVisibleButNotDisplayed = false;
 
+    // The boolean variable that states that the image target with a drawn spell is in the game board field but was not displayed
+    private bool cardDrawnButNotDisplayed = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -72,14 +75,48 @@ public class SpellCard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Check if the reveal spell card overlay is not displayed while the image target is in the camera field and the game is not paused
-        if(cardVisibleButNotDisplayed == true && GameAdvancement.gamePaused == false)
+        // Check if the wave is not ongoing anymore
+        if(LevelInfo.waveOngoing == false)
         {
-            // Set the variable that the spell card is visible but the overlay not displayed to false
-            cardVisibleButNotDisplayed = false;
+            // Check if the spell card was already drawn
+            if(spellType != "")
+            {
+                // Hide the play spell button
+                HideSpellCanvas();
 
-            // Display the reveal spell menu
-            DisplayDrawSpell();
+                // Set the variable that states that the spell card is visible but the overlay not displayed to true
+                cardDrawnButNotDisplayed = true;
+
+            } else {
+
+                // Hide the spell card canvas
+                HideSpellCanvas();
+
+                // Set the variable that states that the spell card is visible but the overlay not displayed to true
+                cardVisibleButNotDisplayed = true;
+            }
+
+        } else {
+
+            // Check if the reveal spell card overlay is not displayed while the image target is in the camera field and the game is not paused
+            if(cardVisibleButNotDisplayed == true && GameAdvancement.gamePaused == false)
+            {
+                // Set the variable that states that the spell card is visible but the overlay not displayed to false
+                cardVisibleButNotDisplayed = false;
+
+                // Display the reveal spell menu
+                DisplayDrawSpell();
+            }
+
+            // Check if the reveal spell card overlay is not displayed while the image target is in the camera field and the game is not paused
+            if(cardDrawnButNotDisplayed == true && onGameBoard == true)
+            {
+                // Set the variable that states that the spell card is visible but the overlay not displayed to false
+                cardDrawnButNotDisplayed = false;
+
+                // Display the reveal spell menu
+                DisplayPlaySpell();
+            }
         }
     }
 
@@ -194,7 +231,7 @@ public class SpellCard : MonoBehaviour
     public void SpellCardEnteredCameraField()
     {
         // Check that the game is not paused
-        if(GameAdvancement.gamePaused == false)
+        if(GameAdvancement.gamePaused == false && LevelInfo.waveOngoing == true)
         {
             // Display the reveal spell menu
             DisplayDrawSpell();
@@ -210,7 +247,7 @@ public class SpellCard : MonoBehaviour
     public void SpellCardLeftCameraField()
     {
         // Hide the reveal spell menu
-        HideDrawSpell();
+        HideSpellCanvas();
     }
 
     // The method that activates the canvas on which the reveal spell button is
@@ -227,7 +264,7 @@ public class SpellCard : MonoBehaviour
     }
 
     // The method that deactivates the canvas on which the reveal spell button is
-    private void HideDrawSpell()
+    private void HideSpellCanvas()
     {
         spellCardCanvas.SetActive(false);
     }
@@ -247,7 +284,7 @@ public class SpellCard : MonoBehaviour
             ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
 
             // Make the canvas disappear
-            HideDrawSpell();
+            HideSpellCanvas();
 
             // Start the routine that waits for the questions to be answered
             StartCoroutine(DrawSpell());
@@ -491,14 +528,20 @@ public class SpellCard : MonoBehaviour
             // Set the variable that states that the spell card is on the board to true
             onGameBoard = true;
 
-            // Pause the game
-            GameAdvancement.gamePaused = true;
+            // Check if the wave is ongoing
+            if(LevelInfo.waveOngoing == true)
+            {
+                // Pause the game
+                GameAdvancement.gamePaused = true;
 
-            // Display the play spell button
-            DisplayPlaySpell();
+                // Display the play spell button
+                DisplayPlaySpell();
 
-            // Start the wait before launch method
-            // StartCoroutine(PrepareForLaunchingSpell());
+            } else {
+
+                // Set the flag that the card is drawn but not displayed
+                cardDrawnButNotDisplayed = true;
+            }
         }
     }
 
@@ -508,7 +551,8 @@ public class SpellCard : MonoBehaviour
         // Check if the collider that left the box collider of the image target is the game board
         if(other.gameObject.tag == "Board")
         {
-            onGameBoard = true;
+            // Set the variable that states that the spell card is on the board to false
+            onGameBoard = false;
 
             // Un-pause the game
             GameAdvancement.gamePaused = false;
@@ -528,7 +572,7 @@ public class SpellCard : MonoBehaviour
         playSpellButton.GetComponentInChildren<TMP_Text>().text = "Play " + spellType;
 
         // Disable the draw spell button
-        drawSpellButton.gameObject.SetActive(true);
+        drawSpellButton.gameObject.SetActive(false);
     }
 
     // The method that displays the spell card canvas correctly so that the play spell button is enabled

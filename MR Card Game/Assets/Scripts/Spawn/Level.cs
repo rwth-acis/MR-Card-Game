@@ -49,6 +49,9 @@ static class LevelInfo
 
     // The flag that triggers the next wave
     public static bool nextWave = false;
+
+    // The flag that states if the wave is ongoing
+    public static bool waveOngoing = false;
 }
 
 public class Level : MonoBehaviour
@@ -141,6 +144,9 @@ public class Level : MonoBehaviour
         {
             // Make the next wave setup
             MakeNextWaveSetup();
+
+            // Set the wave ongoing flag to false
+            LevelInfo.waveOngoing = false;
         }
     }
 
@@ -168,6 +174,9 @@ public class Level : MonoBehaviour
 
         // Actualize the wave display
         GameSetup.ActualizeWaveDisplay();
+
+        // Set the wave ongoing flag to true
+        LevelInfo.waveOngoing = true;
 
         // Start the coroutine that spawns all the wave
         StartCoroutine(SpawnWave());
