@@ -273,8 +273,8 @@ public class Level : MonoBehaviour
                 // Wait for 0.1 seconds
                 yield return new WaitForSeconds(0.1f);
 
-                // Check that the game is not paused
-                if(GameAdvancement.gamePaused == false && GameAdvancement.timeStopped == false)
+                // Check that the game is not paused, the time not stopped, and the board visible
+                if(GameAdvancement.gamePaused == false && GameAdvancement.timeStopped == false && Board.boardVisible == true)
                 {
                     // Increase the time waited by 0.1 seconds
                     timeWaited = timeWaited + 0.1f;

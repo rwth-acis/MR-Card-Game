@@ -35,6 +35,9 @@ static class Board
 
     // Define the camera so that UI elements on units can be oriented towards it
     public static Transform camera;
+
+    // The flag that statest if the game board is visible or not
+    public static bool boardVisible;
 }
 
 public class GameBoard : MonoBehaviour
@@ -74,6 +77,9 @@ public class GameBoard : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Set the board visible variable to false
+        Board.boardVisible = false;
+
         // Set the game board of the static class Board to the given game board object
         Board.gameBoard = gameBoard;
 
@@ -118,11 +124,7 @@ public class GameBoard : MonoBehaviour
 
             // Enable the start next wave button
             EnableStartNextWave();
-
-            Debug.Log("The start next wave button should be enabled");
         }
-
-        Debug.Log("Top left corner image target has entered the camera field!");
     }
 
     // Method that is activated when the bottom right corner image target becomes visible
@@ -139,11 +141,7 @@ public class GameBoard : MonoBehaviour
 
             // Enable the start next wave button
             EnableStartNextWave();
-
-            Debug.Log("The start next wave button should be enabled");
         }
-
-        Debug.Log("Bottom right corner image target has entered the camera field!");
     }
 
     // Method that is activated when the top left corner image target leaves the camera field
@@ -152,12 +150,11 @@ public class GameBoard : MonoBehaviour
         // Set the flag that the top left corner is not in view anymore
         Board.topLeftCornerVisible = false;
 
-        // // Remove the game board
-        // RemoveGameBoard();
+        // Remove the game board
+        RemoveGameBoard();
 
         // Disable the 
-
-        Debug.Log("Top left corner image target left the camera field!");
+        
     }
 
     // Method that is activated when the bottom right corner image target leaves the camera field
@@ -166,10 +163,8 @@ public class GameBoard : MonoBehaviour
         // Set the flag that the bottom right corner is not in view anymore
         Board.bottomRightCornerVisible = false;
 
-        // // Remove the game board
-        // RemoveGameBoard();
-
-        Debug.Log("Bottom right corner image target left the camera field!");
+        // Remove the game board
+        RemoveGameBoard();
     }
 
     // ---------------------------------------------------------------------------------------------------
@@ -181,6 +176,9 @@ public class GameBoard : MonoBehaviour
     {
         // Set the game board active
         gameBoard.SetActive(true);
+
+        // Set the flag that states that the game board is visible to true
+        Board.boardVisible = true;
         
         // Get the positions and rotations of the two corners
         Vector3 positionTopLeftCorner = topLeftCorner.transform.position;
@@ -670,5 +668,8 @@ public class GameBoard : MonoBehaviour
         // Set the game board as child of the save model object so that it disapears
         // gameBoard.transform.parent = saveModelObject.transform;
         gameBoard.SetActive(false);
+
+        // Set the flag that states that the game board is visible to false
+        Board.boardVisible = false;
     }
 }
