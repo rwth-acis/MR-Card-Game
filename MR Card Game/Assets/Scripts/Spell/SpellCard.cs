@@ -4,19 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-// List of spell cards:     Status:
-// - Meteor                 Done (animation missing)
-// - Arrow rain             Done (animation missing)
-// - Thunder strike         Done (animation missing)
-// - Armor                  Done (armor display missing)
-// - Heal                   Done
-// - Obliteration           Done
-// - Draw                   Done
-// - Telport                Done
-// - Space distortion       Done
-// - Slow time              Done
-// - stop time              Done
-// - rain                   Done
+// List of spell cards:     Status:     Comments:           Tested:
+// - Meteor                 Done        animation done!     working
+// - Arrow rain             Done        animation done!     working
+// - Thunder strike         Done        animation done!     working
+// - Armor                  Done        display is there    working
+// - Heal                   Done                            working
+// - Obliteration           Done                            working
+// - Draw                   Done                            not working!
+// - Telport                Done                            working
+// - Space distortion       Done                            working
+// - Slow time              Done                            working
+// - stop time              Done                            working
+// - rain                   Done                            working but did not test double damage of lightning tower
 
 public static class Cards
 {
@@ -177,7 +177,7 @@ public class SpellCard : MonoBehaviour
         getWaveDisplay.gameObject.SetActive(true);
 
         // Check if the wave is currently ongoing
-        if(LevelInfo.waveOngoing == false)
+        if(LevelInfo.waveOngoing == false || (LevelInfo.numberOfUndefeatedEnemies == 0 && GameAdvancement.currentWave < LevelInfo.numberOfWaves))
         {
             // If it is not the case, activate the start next wave button
             getStartNextWave.gameObject.SetActive(true);
@@ -369,8 +369,30 @@ public class SpellCard : MonoBehaviour
             // Reduce the number of free draws by one
             Cards.freeDraws = Cards.freeDraws - 1;
 
+            // increase the current card index
+            IncreaseCurrentCardIndex();
+
             // Reveal the spell card
             RevealSpell();
+        }
+    }
+
+    // Method used to increase the current card index
+    private void IncreaseCurrentCardIndex()
+    {
+        // The current card index needs to be changed, check if the end of the array was reached
+        if(Cards.currentCardIndex < Cards.lastCardIndex)
+        {
+            // Increase the current card index by one
+            Cards.currentCardIndex = Cards.currentCardIndex + 1;
+
+        } else {
+
+            // Shuffle the card deck
+            ShuffleCardDeck(Cards.cardDeck);
+
+            // Set the current card index to 0
+            Cards.currentCardIndex = 0;
         }
     }
 
@@ -386,29 +408,17 @@ public class SpellCard : MonoBehaviour
         // Wait until the number of questions that need to be answered is 0
         yield return new WaitUntil(NoMoreQuestionsNeeded);
 
-        // The current card index needs to be changed, check if the end of the array was reached
-        if(Cards.currentCardIndex < Cards.lastCardIndex)
-        {
-            // Increase the current card index by one
-            Cards.currentCardIndex = Cards.currentCardIndex + 1;
-
-        } else {
-
-            // Shuffle the card deck
-            ShuffleCardDeck(Cards.cardDeck);
-
-            // Set the current card index to 0
-            Cards.currentCardIndex = 0;
-        }
+        // Increase the current card index
+        IncreaseCurrentCardIndex();
 
         // Enable the game overlay
         ActivateGameOverlay();
 
-        // Reveal the spell card
-        RevealSpell();
-
         // Set the flag that states that the card was drawn
         cardDrawn = true;
+
+        // Reveal the spell card
+        RevealSpell();
     }
 
     // The method that reveals the spell card that was just drawn
@@ -483,6 +493,8 @@ public class SpellCard : MonoBehaviour
         {
             // Display the play spell button
             DisplayPlaySpell();
+
+            Debug.Log("Trying to display the spell");
 
             // Pause the game
             GameAdvancement.gamePaused = true;
@@ -598,6 +610,7 @@ public class SpellCard : MonoBehaviour
             // Check if the wave is ongoing
             if(LevelInfo.waveOngoing == true && cardDrawn == true)
             {
+                Debug.Log("Entered the display spell if statement");
                 // Pause the game
                 GameAdvancement.gamePaused = true;
 
@@ -629,17 +642,24 @@ public class SpellCard : MonoBehaviour
     // The method that displays the spell card canvas correctly so that the play spell button is enabled
     private void DisplayPlaySpell()
     {
-        // Enable the spell card canvas game object
-        spellCardCanvas.SetActive(true);
+        // Check that the wave is ongoing and the card was already drawn
+        if(LevelInfo.waveOngoing == true && cardDrawn == true)
+        {
+            Debug.Log("Currently, the wave is ongoing is: " + LevelInfo.waveOngoing + " and the card was drawn is: " + cardDrawn);
+            // Enable the spell card canvas game object
+            spellCardCanvas.SetActive(true);
 
-        // Enable the play spell button
-        playSpellButton.gameObject.SetActive(true);
+            Debug.Log("Spell card canvas should be active");
 
-        // Rename the button accordingly to the current spell
-        playSpellButton.GetComponentInChildren<TMP_Text>().text = "Play " + spellType;
+            // Enable the play spell button
+            playSpellButton.gameObject.SetActive(true);
 
-        // Disable the draw spell button
-        drawSpellButton.gameObject.SetActive(false);
+            // Rename the button accordingly to the current spell
+            playSpellButton.GetComponentInChildren<TMP_Text>().text = "Play " + spellType;
+
+            // Disable the draw spell button
+            drawSpellButton.gameObject.SetActive(false);
+        }
     }
 
     // The method that displays the spell card canvas correctly so that the play spell button is enabled
@@ -879,7 +899,7 @@ public class SpellCard : MonoBehaviour
     IEnumerator ActivateMeteorAnimation()
     {
         // Make the arrow rain prefab appear at the position of the image target
-        GameObject lightningStrike = SpawnSpellEffect.SpawnAThunderStrike();
+        GameObject lightningStrike = SpawnSpellEffect.SpawnAMeteorImpact();
 
         // Set the position of the spell effect to the position of the image target
         lightningStrike.transform.position = this.transform.position;
@@ -902,7 +922,7 @@ public class SpellCard : MonoBehaviour
         }
 
         // Release the arrow rain object
-        ObjectPools.ReleaseSpellEffect(lightningStrike, "Thunder Strike");
+        ObjectPools.ReleaseSpellEffect(lightningStrike, "Meteor Impact");
     }
 
     // The method used to make the arrow rain spell card take effect
@@ -985,18 +1005,18 @@ public class SpellCard : MonoBehaviour
             closestEnemy.GetComponent<Enemy>().TakeDamage(1000);
 
             // Make the arrow rain animation
-            StartCoroutine(ActivateThunderStrikeAnimation());
+            StartCoroutine(ActivateThunderStrikeAnimation(closestEnemy));
         }
     }
 
     // The coroutine that spawns the thunder strike animation and returns it to the object pool
-    IEnumerator ActivateThunderStrikeAnimation()
+    IEnumerator ActivateThunderStrikeAnimation(GameObject enemy)
     {
         // Make the thunder strike prefab appear at the position of the image target
         GameObject thunderStrike = SpawnSpellEffect.SpawnAThunderStrike();
 
         // Set the position of the spell effect to the position of the image target
-        thunderStrike.transform.position = this.transform.position;
+        thunderStrike.transform.position = enemy.transform.position;
 
         // Initialize the time waited variable
         float timeWaited = 0;

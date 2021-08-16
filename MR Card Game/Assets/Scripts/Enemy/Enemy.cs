@@ -178,8 +178,12 @@ public class Enemy : MonoBehaviour
                 StartCoroutine(Die());
             }
 
-            // Make the enemy mode
-            Move();
+            // Check if the game is stopped
+            if(GameAdvancement.timeStopped == false)
+            {
+                // Make the enemy mode
+                Move();
+            }
 
             // Set the health value correctly
             healthBar.value = CalculateHealth();

@@ -173,7 +173,7 @@ public class Level : MonoBehaviour
         // Ground all buildings when the wave begins
         GroundAllBuildings();
 
-        // Increase the ucrrent wave number
+        // Increase the current wave number
         GameAdvancement.currentWave = GameAdvancement.currentWave + 1;
 
         // Actualize the wave display
