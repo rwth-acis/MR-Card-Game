@@ -61,6 +61,9 @@ public class SpellCard : MonoBehaviour
     // The boolean variable that states that the image target with a drawn spell is in the game board field but was not displayed
     private bool cardDrawnButNotDisplayed = false;
 
+    // The flag that states that the card was drawn
+    private bool cardDrawn = false;
+
     // Define the currency display button
     [SerializeField]
     private Button currencyDisplay;
@@ -403,6 +406,9 @@ public class SpellCard : MonoBehaviour
 
         // Reveal the spell card
         RevealSpell();
+
+        // Set the flag that states that the card was drawn
+        cardDrawn = true;
     }
 
     // The method that reveals the spell card that was just drawn
@@ -590,7 +596,7 @@ public class SpellCard : MonoBehaviour
             onGameBoard = true;
 
             // Check if the wave is ongoing
-            if(LevelInfo.waveOngoing == true)
+            if(LevelInfo.waveOngoing == true && cardDrawn == true)
             {
                 // Pause the game
                 GameAdvancement.gamePaused = true;
@@ -696,6 +702,9 @@ public class SpellCard : MonoBehaviour
 
         // Make sure a new spell card can be drawn on this card
         DisplayDrawSpell();
+
+        // Lower the flag that states that the card was drawn
+        cardDrawn = false;
     }
 
     // Method that wait the appropriate time before launching the spell
@@ -862,6 +871,38 @@ public class SpellCard : MonoBehaviour
     {
         // Make the damage in radius take effect in the meteor radius and with the meteor damage
         PlayDamageInRadiusSpell(spellCard, meteorRadius, meteorDamage);
+
+        // Make the meteor animation
+        StartCoroutine(ActivateMeteorAnimation());
+    }
+
+    IEnumerator ActivateMeteorAnimation()
+    {
+        // Make the arrow rain prefab appear at the position of the image target
+        GameObject lightningStrike = SpawnSpellEffect.SpawnAThunderStrike();
+
+        // Set the position of the spell effect to the position of the image target
+        lightningStrike.transform.position = this.transform.position;
+
+        // Initialize the time waited variable
+        float timeWaited = 0;
+
+        // Wait until the time waited equals the duration of one seconds
+        while(timeWaited <= 1)
+        {
+            // Wait for 0.1 seconds
+            yield return new WaitForSeconds(0.1f);
+
+            // Check that the game is not paused
+            if(GameAdvancement.gamePaused == false)
+            {
+                // Increase the time waited by 0.1 seconds
+                timeWaited = timeWaited + 0.1f;
+            }
+        }
+
+        // Release the arrow rain object
+        ObjectPools.ReleaseSpellEffect(lightningStrike, "Thunder Strike");
     }
 
     // The method used to make the arrow rain spell card take effect
@@ -869,6 +910,38 @@ public class SpellCard : MonoBehaviour
     {
         // Make the damage in radius take effect in the meteor radius and with the meteor damage
         PlayDamageInRadiusSpell(spellCard, arrowRainRadius, arrowRainDamage);
+
+        // Make the arrow rain animation
+        StartCoroutine(ActivateArrowRainAnimation());
+    }
+
+    IEnumerator ActivateArrowRainAnimation()
+    {
+        // Make the arrow rain prefab appear at the position of the image target
+        GameObject arrowRain = SpawnSpellEffect.SpawnAnArrowRain();
+
+        // Set the position of the spell effect to the position of the image target
+        arrowRain.transform.position = this.transform.position;
+
+        // Initialize the time waited variable
+        float timeWaited = 0;
+
+        // Wait until the time waited equals the duration of one second
+        while(timeWaited <= 1)
+        {
+            // Wait for 0.1 seconds
+            yield return new WaitForSeconds(0.1f);
+
+            // Check that the game is not paused
+            if(GameAdvancement.gamePaused == false)
+            {
+                // Increase the time waited by 0.1 seconds
+                timeWaited = timeWaited + 0.1f;
+            }
+        }
+
+        // Release the arrow rain object
+        ObjectPools.ReleaseSpellEffect(arrowRain, "Arrow Rain");
     }
 
     // The method used to make the thunder strike spell card take effect
@@ -910,7 +983,40 @@ public class SpellCard : MonoBehaviour
 
             // Kill this enemy by making it take more damage than the maximum number of health points that exist
             closestEnemy.GetComponent<Enemy>().TakeDamage(1000);
+
+            // Make the arrow rain animation
+            StartCoroutine(ActivateThunderStrikeAnimation());
         }
+    }
+
+    // The coroutine that spawns the thunder strike animation and returns it to the object pool
+    IEnumerator ActivateThunderStrikeAnimation()
+    {
+        // Make the thunder strike prefab appear at the position of the image target
+        GameObject thunderStrike = SpawnSpellEffect.SpawnAThunderStrike();
+
+        // Set the position of the spell effect to the position of the image target
+        thunderStrike.transform.position = this.transform.position;
+
+        // Initialize the time waited variable
+        float timeWaited = 0;
+
+        // Wait until the time waited equals the duration of 0.2 seconds
+        while(timeWaited <= 0.2f)
+        {
+            // Wait for 0.1 seconds
+            yield return new WaitForSeconds(0.1f);
+
+            // Check that the game is not paused
+            if(GameAdvancement.gamePaused == false)
+            {
+                // Increase the time waited by 0.1 seconds
+                timeWaited = timeWaited + 0.1f;
+            }
+        }
+
+        // Release the thunder strike object
+        ObjectPools.ReleaseSpellEffect(thunderStrike, "Thunder Strike");
     }
 
     // The method used to make the armor spell card take effect

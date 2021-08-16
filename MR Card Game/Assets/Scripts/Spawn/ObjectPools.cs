@@ -38,8 +38,12 @@ public class ObjectPools : MonoBehaviour
         int poolId17 = ObjectPool<GameObject>.CreateNewPool(); // Pool for lightning tower
         int poolId18 = ObjectPool<GameObject>.CreateNewPool(); // Pool for wind tower
 
+        int poolId19 = ObjectPool<GameObject>.CreateNewPool(); // Pool for arrow rain
+        int poolId20 = ObjectPool<GameObject>.CreateNewPool(); // Pool for meteor impact
+        int poolId21 = ObjectPool<GameObject>.CreateNewPool(); // Pool for lightning strike
+
         // Store the pool ids so that they are not lost
-        EnemyPools.enemyPoolIds = new int[18];
+        EnemyPools.enemyPoolIds = new int[21];
         EnemyPools.enemyPoolIds[0] = poolId1;
         EnemyPools.enemyPoolIds[1] = poolId2;
         EnemyPools.enemyPoolIds[2] = poolId3;
@@ -61,6 +65,10 @@ public class ObjectPools : MonoBehaviour
         EnemyPools.enemyPoolIds[15] = poolId16;
         EnemyPools.enemyPoolIds[16] = poolId17;
         EnemyPools.enemyPoolIds[17] = poolId18;
+
+        EnemyPools.enemyPoolIds[18] = poolId19;
+        EnemyPools.enemyPoolIds[19] = poolId20;
+        EnemyPools.enemyPoolIds[20] = poolId21;
 
         // Debug.Log("Pool index: " + poolId1);
         // Debug.Log("Pool index: " + poolId2);
@@ -240,5 +248,39 @@ public class ObjectPools : MonoBehaviour
 
         // Set the enemy as inactive
         projectile.gameObject.SetActive(false);
+    }
+
+    // Method that returns the correct object pool index given the projectile type
+    public static int GetSpellEffectPoolIndex(string type)
+    {
+        // Return the right projectile pool index given the projectile type
+        switch(type)
+        {
+            case "Arrow Rain":
+                return EnemyPools.enemyPoolIds[18];
+            break;
+            case "Meteor Impact":
+                return EnemyPools.enemyPoolIds[19];
+            break;
+            case "Thunder Strike":
+                return EnemyPools.enemyPoolIds[20];
+            break;
+        }
+
+        // In case the name is incorrect return an arrow
+        return EnemyPools.enemyPoolIds[20];
+    }
+
+    // The method that releses the projectile game objects
+    public static void ReleaseSpellEffect(GameObject spellEffect, string type)
+    {
+        // Get the correctly object pool index from the object pools class
+        int objectPoolIndex = GetSpellEffectPoolIndex(type);
+
+        // Release the enemy into the right object pool
+        ObjectPool<GameObject>.ReleaseResource(objectPoolIndex, spellEffect);
+
+        // Set the enemy as inactive
+        spellEffect.SetActive(false);
     }
 }
