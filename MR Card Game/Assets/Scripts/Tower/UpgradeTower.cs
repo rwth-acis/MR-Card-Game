@@ -113,9 +113,35 @@ public class UpgradeTower : MonoBehaviour
     [SerializeField]
     private GameObject answerQuestions;
 
-    // Define the game overlay menu
+    // Define the currency display button
     [SerializeField]
-    private GameObject gameOverlay;
+    private Button currencyDisplay;
+
+    // The method used to access to the currency display button as a static object
+    public static Button getCurrencyDisplay
+    {
+        get { return instance.currencyDisplay; }
+    }
+
+    // Define the wave display button
+    [SerializeField]
+    private Button waveDisplay;
+
+    // The method used to access to the wave display button as a static object
+    public static Button getWaveDisplay
+    {
+        get { return instance.waveDisplay; }
+    }
+
+    // Define the start next wave button
+    [SerializeField]
+    private Button startNextWave;
+
+    // The method used to access to the start next wave button as a static object
+    public static Button getStartNextWave
+    {
+        get { return instance.startNextWave; }
+    }
 
     // The level up multiplicators
     private static float lightningDamageEnhancer = 1.1f;
@@ -144,6 +170,36 @@ public class UpgradeTower : MonoBehaviour
     private static float earthTowerUpgradeCostMultiplicator = 2f;
     private static float lightningTowerUpgradeCostMultiplicator = 1.85f;
     private static float windTowerUpgradeCostMultiplicator = 1.4f;
+
+    // Method that activates the components of the game overlay
+    public static void ActivateGameOverlay()
+    {
+        // Activate the currency display button
+        getCurrencyDisplay.gameObject.SetActive(true);
+
+        // Activate the wave display button
+        getWaveDisplay.gameObject.SetActive(true);
+
+        // Check if the wave is currently ongoing
+        if(LevelInfo.waveOngoing == false)
+        {
+            // If it is not the case, activate the start next wave button
+            getStartNextWave.gameObject.SetActive(true);
+        }
+    }
+
+    // Method that deactivates the components of the game overlay
+    public static void DeactivateGameOverlay()
+    {
+        // Deactivate the currency display button
+        getCurrencyDisplay.gameObject.SetActive(false);
+
+        // Deactivate the wave display button
+        getWaveDisplay.gameObject.SetActive(false);
+
+        // Deactivate the start next wave button
+        getStartNextWave.gameObject.SetActive(false);
+    }
 
 
     // Method used to open the upgrade menu
@@ -355,7 +411,7 @@ public class UpgradeTower : MonoBehaviour
     public void InitiateTowerUpgrade()
     {
         // Disable the game overlay
-        gameOverlay.SetActive(false);
+        DeactivateGameOverlay();
 
         ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered((int)(TowerEnhancer.currentlyEnhancedTower.getLevel + 2 / 2));
         Debug.Log("The number of questions that need to be answered that was added was: " + (int)(TowerEnhancer.currentlyEnhancedTower.getLevel / 2));
@@ -474,6 +530,6 @@ public class UpgradeTower : MonoBehaviour
         GameAdvancement.gamePaused = false;
 
         // Enable the game overlay
-        gameOverlay.SetActive(true);
+        ActivateGameOverlay();
     }
 }

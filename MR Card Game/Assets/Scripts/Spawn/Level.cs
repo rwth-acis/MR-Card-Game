@@ -182,11 +182,20 @@ public class Level : MonoBehaviour
         StartCoroutine(SpawnWave());
     }
 
-    // The coroutine that spawns an oponent and waits for a time before the next spawn
+    // Function that is used to test when the game is not paused anymore
+    private bool GameNotPaused()
+    {
+        return GameAdvancement.gamePaused == true;
+    }
+
+    // The coroutine that spawns an opponent and waits for a time before the next spawn
     IEnumerator SpawnWave()
     {
         for(int counter = LevelInfo.numberOfEnemies[GameAdvancement.currentWave - 1]; counter > 0; counter = counter - 1)
         {
+            // // Wait for the game not being paused
+            // yield return new WaitUntil(GameNotPaused);
+
             // Check if currently there is no group of enemy that should be spawned
             if(enemySpawnNumber == 0)
             {

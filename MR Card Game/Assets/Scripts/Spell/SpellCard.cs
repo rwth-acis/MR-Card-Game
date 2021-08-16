@@ -25,10 +25,6 @@ public class SpellCard : MonoBehaviour
     // The boolean variable that states that the image target is on or off the game board
     private bool onGameBoard = false;
 
-    // The game overlay object
-    [SerializeField]
-    private GameObject gameOverlay;
-
     // The answer question overlay object
     [SerializeField]
     private GameObject answerQuestions;
@@ -50,6 +46,36 @@ public class SpellCard : MonoBehaviour
 
     // The boolean variable that states that the image target with a drawn spell is in the game board field but was not displayed
     private bool cardDrawnButNotDisplayed = false;
+
+    // Define the currency display button
+    [SerializeField]
+    private Button currencyDisplay;
+
+    // The method used to access to the currency display button as a static object
+    public static Button getCurrencyDisplay
+    {
+        get { return instance.currencyDisplay; }
+    }
+
+    // Define the wave display button
+    [SerializeField]
+    private Button waveDisplay;
+
+    // The method used to access to the wave display button as a static object
+    public static Button getWaveDisplay
+    {
+        get { return instance.waveDisplay; }
+    }
+
+    // Define the start next wave button
+    [SerializeField]
+    private Button startNextWave;
+
+    // The method used to access to the start next wave button as a static object
+    public static Button getStartNextWave
+    {
+        get { return instance.startNextWave; }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -118,6 +144,40 @@ public class SpellCard : MonoBehaviour
                 DisplayPlaySpell();
             }
         }
+    }
+
+    //---------------------------------------------------------------------------------------------------------------
+    // Helper methods to activate / deactivate the game overlay
+    //---------------------------------------------------------------------------------------------------------------
+
+    // Method that activates the components of the game overlay
+    public static void ActivateGameOverlay()
+    {
+        // Activate the currency display button
+        getCurrencyDisplay.gameObject.SetActive(true);
+
+        // Activate the wave display button
+        getWaveDisplay.gameObject.SetActive(true);
+
+        // Check if the wave is currently ongoing
+        if(LevelInfo.waveOngoing == false)
+        {
+            // If it is not the case, activate the start next wave button
+            getStartNextWave.gameObject.SetActive(true);
+        }
+    }
+
+    // Method that deactivates the components of the game overlay
+    public static void DeactivateGameOverlay()
+    {
+        // Deactivate the currency display button
+        getCurrencyDisplay.gameObject.SetActive(false);
+
+        // Deactivate the wave display button
+        getWaveDisplay.gameObject.SetActive(false);
+
+        // Deactivate the start next wave button
+        getStartNextWave.gameObject.SetActive(false);
     }
 
     //---------------------------------------------------------------------------------------------------------------
@@ -275,7 +335,7 @@ public class SpellCard : MonoBehaviour
         if(Cards.freeDraws == 0)
         {
             // Disable the game overlay
-            gameOverlay.SetActive(false);
+            DeactivateGameOverlay();
 
             // Enable the answer question menu
             answerQuestions.SetActive(true);
@@ -327,7 +387,7 @@ public class SpellCard : MonoBehaviour
         }
 
         // Enable the game overlay
-        gameOverlay.SetActive(true);
+        ActivateGameOverlay();
 
         // Reveal the spell card
         RevealSpell();

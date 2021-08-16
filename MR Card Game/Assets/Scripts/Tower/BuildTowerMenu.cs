@@ -107,9 +107,35 @@ namespace build
         [SerializeField]
         private GameObject answerQuestions;
 
-        // Define the game overlay
+        // Define the currency display button
         [SerializeField]
-        private GameObject gameOverlay;
+        private Button currencyDisplay;
+
+        // The method used to access to the currency display button as a static object
+        public static Button getCurrencyDisplay
+        {
+            get { return instance.currencyDisplay; }
+        }
+
+        // Define the wave display button
+        [SerializeField]
+        private Button waveDisplay;
+
+        // The method used to access to the wave display button as a static object
+        public static Button getWaveDisplay
+        {
+            get { return instance.waveDisplay; }
+        }
+
+        // Define the start next wave button
+        [SerializeField]
+        private Button startNextWave;
+
+        // The method used to access to the start next wave button as a static object
+        public static Button getStartNextWave
+        {
+            get { return instance.startNextWave; }
+        }
 
         // Define the build archer tower button
         [SerializeField]
@@ -192,6 +218,36 @@ namespace build
         void Update()
         {
             
+        }
+
+        // Method that activates the components of the game overlay
+        public static void ActivateGameOverlay()
+        {
+            // Activate the currency display button
+            getCurrencyDisplay.gameObject.SetActive(true);
+
+            // Activate the wave display button
+            getWaveDisplay.gameObject.SetActive(true);
+
+            // Check if the wave is currently ongoing
+            if(LevelInfo.waveOngoing == false)
+            {
+                // If it is not the case, activate the start next wave button
+                getStartNextWave.gameObject.SetActive(true);
+            }
+        }
+
+        // Method that deactivates the components of the game overlay
+        public static void DeactivateGameOverlay()
+        {
+            // Deactivate the currency display button
+            getCurrencyDisplay.gameObject.SetActive(false);
+
+            // Deactivate the wave display button
+            getWaveDisplay.gameObject.SetActive(false);
+
+            // Deactivate the start next wave button
+            getStartNextWave.gameObject.SetActive(false);
         }
 
         // The method that opens the build tower menu
@@ -336,7 +392,7 @@ namespace build
         public void InitiateArcherTowerBuild()
         {
             // Disable the game overlay
-            gameOverlay.SetActive(false);
+            DeactivateGameOverlay();
 
             // Enable the answer question menu
             answerQuestions.SetActive(true);
@@ -362,7 +418,7 @@ namespace build
         public void InitiateFireTowerBuild()
         {
             // Disable the game overlay
-            gameOverlay.SetActive(false);
+            DeactivateGameOverlay();
 
             // Enable the answer question menu
             answerQuestions.SetActive(true);
@@ -388,7 +444,7 @@ namespace build
         public void InitiateEarthTowerBuild()
         {
             // Disable the game overlay
-            gameOverlay.SetActive(false);
+            DeactivateGameOverlay();
 
             // Enable the answer question menu
             answerQuestions.SetActive(true);
@@ -414,7 +470,7 @@ namespace build
         public void InitiateLightningTowerBuild()
         {
             // Disable the game overlay
-            gameOverlay.SetActive(false);
+            DeactivateGameOverlay();
 
             // Enable the answer question menu
             answerQuestions.SetActive(true);
@@ -440,7 +496,7 @@ namespace build
         public void InitiateWindTowerBuild()
         {
             // Disable the game overlay
-            gameOverlay.SetActive(false);
+            DeactivateGameOverlay();
 
             // Enable the answer question menu
             answerQuestions.SetActive(true);
@@ -467,11 +523,11 @@ namespace build
             return Questions.numberOfQuestionsNeededToAnswer == 0;
         }
 
-        // Function that is used to test when the game overlay is enabled correctly
-        private bool GameOverlayEnabled()
-        {
-            return gameOverlay.activeSelf == true;
-        }
+        // // Function that is used to test when the game overlay is enabled correctly
+        // private bool GameOverlayEnabled()
+        // {
+        //     return gameOverlay.activeSelf == true;
+        // }
 
         // The method that builds an archer tower over the image target
         IEnumerator BuildArcherTower()
@@ -480,10 +536,10 @@ namespace build
             yield return new WaitUntil(NoMoreQuestionsNeeded);
 
             // Enable the game overlay
-            gameOverlay.SetActive(true);
+            ActivateGameOverlay();
 
-            // Wait until the game overlay is activated
-            yield return new WaitUntil(GameOverlayEnabled);
+            // // Wait until the game overlay is activated
+            // yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the archer tower or extract it from the object pool
             SpawnArcherTower(TowerImageTarget.currentImageTarget);
@@ -509,10 +565,10 @@ namespace build
             yield return new WaitUntil(NoMoreQuestionsNeeded);
 
             // Enable the game overlay
-            gameOverlay.SetActive(true);
+            ActivateGameOverlay();
 
-            // Wait until the game overlay is activated
-            yield return new WaitUntil(GameOverlayEnabled);
+            // // Wait until the game overlay is activated
+            // yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the fire tower or extract it from the object pool
             SpawnFireTower(TowerImageTarget.currentImageTarget);
@@ -537,10 +593,10 @@ namespace build
             yield return new WaitUntil(NoMoreQuestionsNeeded);
 
             // Enable the game overlay
-            gameOverlay.SetActive(true);
+            ActivateGameOverlay();
 
-            // Wait until the game overlay is activated
-            yield return new WaitUntil(GameOverlayEnabled);
+            // // Wait until the game overlay is activated
+            // yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the earth tower or extract it from the object pool
             SpawnEarthTower(TowerImageTarget.currentImageTarget);
@@ -565,10 +621,10 @@ namespace build
             yield return new WaitUntil(NoMoreQuestionsNeeded);
 
             // Enable the game overlay
-            gameOverlay.SetActive(true);
+            ActivateGameOverlay();
 
-            // Wait until the game overlay is activated
-            yield return new WaitUntil(GameOverlayEnabled);
+            // // Wait until the game overlay is activated
+            // yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the lightning tower or extract it from the object pool
             SpawnLightningTower(TowerImageTarget.currentImageTarget);
@@ -593,10 +649,10 @@ namespace build
             yield return new WaitUntil(NoMoreQuestionsNeeded);
 
             // Enable the game overlay
-            gameOverlay.SetActive(true);
+            ActivateGameOverlay();
 
-            // Wait until the game overlay is activated
-            yield return new WaitUntil(GameOverlayEnabled);
+            // // Wait until the game overlay is activated
+            // yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the wind tower or extract it from the object pool
             SpawnWindTower(TowerImageTarget.currentImageTarget);
