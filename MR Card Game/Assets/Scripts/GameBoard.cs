@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 // The class for flags of the anchor points of the game board
 static class Board
@@ -9,7 +10,7 @@ static class Board
     // The truth value of if the top left corner is visible at the moment or not
     public static bool topLeftCornerVisible = false;
 
-    // The truth value of if the bottm right corner is visible at the moment or not
+    // The truth value of if the bottom right corner is visible at the moment or not
     public static bool bottomRightCornerVisible = false;
 
     // Define the additional length that the board can be over the target images
@@ -61,6 +62,10 @@ public class GameBoard : MonoBehaviour
     // Define the model storage object to make models disapear
     public GameObject saveModelObject;
 
+    // Define the  start next wave button
+    [SerializeField]
+    private Button startNextWave;
+
     // public static GameObject GetGameBoard()
     // {
     //     return gameBoard;
@@ -88,6 +93,17 @@ public class GameBoard : MonoBehaviour
         
     }
 
+    // Method used to enable the start next wave button while the game board is in view
+    public void EnableStartNextWave()
+    {
+        // Check if the wave is currently ongoing
+        if(LevelInfo.waveOngoing == false)
+        {
+            // Enable the start next wave button
+            startNextWave.gameObject.SetActive(true);
+        }
+    }
+
     // Method that is activated when the top left corner image target becomes visible
     public void TopLeftBecameVisible()
     {
@@ -99,6 +115,11 @@ public class GameBoard : MonoBehaviour
         {
             // If the other corner is visible, then display the game board
             DisplayGameBoard();
+
+            // Enable the start next wave button
+            EnableStartNextWave();
+
+            Debug.Log("The start next wave button should be enabled");
         }
 
         Debug.Log("Top left corner image target has entered the camera field!");
@@ -115,6 +136,11 @@ public class GameBoard : MonoBehaviour
         {
             // If the other corner is visible, then display the game board
             DisplayGameBoard();
+
+            // Enable the start next wave button
+            EnableStartNextWave();
+
+            Debug.Log("The start next wave button should be enabled");
         }
 
         Debug.Log("Bottom right corner image target has entered the camera field!");
@@ -126,8 +152,10 @@ public class GameBoard : MonoBehaviour
         // Set the flag that the top left corner is not in view anymore
         Board.topLeftCornerVisible = false;
 
-        // Remove the game board
-        RemoveGameBoard();
+        // // Remove the game board
+        // RemoveGameBoard();
+
+        // Disable the 
 
         Debug.Log("Top left corner image target left the camera field!");
     }
@@ -138,8 +166,8 @@ public class GameBoard : MonoBehaviour
         // Set the flag that the bottom right corner is not in view anymore
         Board.bottomRightCornerVisible = false;
 
-        // Remove the game board
-        RemoveGameBoard();
+        // // Remove the game board
+        // RemoveGameBoard();
 
         Debug.Log("Bottom right corner image target left the camera field!");
     }

@@ -4,6 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+// List of spell cards:     Status:
+// - Meteor                 Done (animation missing)
+// - Arrow rain             Done (animation missing)
+// - Thunder strike         Done (animation missing)
+// - Armor                  Done (armor display missing)
+// - Heal                   Done
+// - Obliteration           Done
+// - Draw                   Done
+// - Telport                Done
+// - Space distortion       Done
+// - Slow time              Done
+// - stop time              Done
+// - rain                   Done
+
 public static class Cards
 {
     // The number of free cards that can be drawn without answering questions
@@ -205,21 +219,19 @@ public class SpellCard : MonoBehaviour
         Cards.cardDeck[10] = "Thunder strike";
         Cards.cardDeck[11] = "Thunder strike";
         Cards.cardDeck[12] = "Thunder strike";
+        Cards.cardDeck[13] = "Thunder strike";
 
         // Add three armor cards
-        Cards.cardDeck[13] = "Armor";
         Cards.cardDeck[14] = "Armor";
         Cards.cardDeck[15] = "Armor";
+        Cards.cardDeck[16] = "Armor";
+        Cards.cardDeck[17] = "Armor";
 
         // Add three heal cards
-        Cards.cardDeck[16] = "Heal";
-        Cards.cardDeck[17] = "Heal";
         Cards.cardDeck[18] = "Heal";
-
-        // Add three plague cards
-        Cards.cardDeck[19] = "Plague";
-        Cards.cardDeck[20] = "Plague";
-        Cards.cardDeck[21] = "Plague";
+        Cards.cardDeck[19] = "Heal";
+        Cards.cardDeck[20] = "Heal";
+        Cards.cardDeck[21] = "Heal";
 
         // Add one obliteration cards
         Cards.cardDeck[22] = "Obliteration";
@@ -424,11 +436,6 @@ public class SpellCard : MonoBehaviour
                 spellType = "heal";
             break;
 
-            case "Plague":
-                MakePlagueCardAppear();
-                spellType = "plague";
-            break;
-
             case "Obliteration":
                 MakeObliterationCardAppear();
                 spellType = "obliteration";
@@ -508,12 +515,6 @@ public class SpellCard : MonoBehaviour
 
     // Method used to make the heal spell card appearance appear on the image target
     private void MakeHealCardAppear()
-    {
-        //
-    }
-
-    // Method used to make the plague spell card appearance appear on the image target
-    private void MakePlagueCardAppear()
     {
         //
     }
@@ -664,10 +665,6 @@ public class SpellCard : MonoBehaviour
                 PlayHeal();
             break;
 
-            case "Plague":
-                PlayPlague();
-            break;
-
             case "Obliteration":
                 PlayObliteration();
             break;
@@ -763,10 +760,6 @@ public class SpellCard : MonoBehaviour
 
             case "Heal":
                 PlayHeal();
-            break;
-
-            case "Plague":
-                PlayPlague();
             break;
 
             case "Obliteration":
@@ -949,61 +942,61 @@ public class SpellCard : MonoBehaviour
         GameSetup.ActualizeCastleHealthPoints();
     }
 
-    // The method used to make the plague card take effect
-    private void PlayPlague()
-    {
-        // Get a random number
-        int newCategoryIndex = random.Next(0, 8);
+    // // The method used to make the plague card take effect
+    // private void PlayPlague()
+    // {
+    //     // Get a random number
+    //     int newCategoryIndex = random.Next(0, 8);
 
-        // Depending on the random number, set a category of enemy as plagued
-        switch(newCategoryIndex)
-        {
-            case 0:
-                // Set the type of plagued enemy to normal enemy
-                GameAdvancement.plaguedEnemyType = "Normal Enemy";
-            break;
+    //     // Depending on the random number, set a category of enemy as plagued
+    //     switch(newCategoryIndex)
+    //     {
+    //         case 0:
+    //             // Set the type of plagued enemy to normal enemy
+    //             GameAdvancement.plaguedEnemyType = "Normal Enemy";
+    //         break;
 
-            case 1:
-                // Set the type of plagued enemy to fast enemy
-                GameAdvancement.plaguedEnemyType = "Fast Enemy";
-            break;
+    //         case 1:
+    //             // Set the type of plagued enemy to fast enemy
+    //             GameAdvancement.plaguedEnemyType = "Fast Enemy";
+    //         break;
 
-            case 2:
-                // Set the type of plagued enemy to super fast enemy
-                GameAdvancement.plaguedEnemyType = "Super Fast Enemy";
-            break;
+    //         case 2:
+    //             // Set the type of plagued enemy to super fast enemy
+    //             GameAdvancement.plaguedEnemyType = "Super Fast Enemy";
+    //         break;
 
-            case 3:
-                // Set the type of plagued enemy to flying enemy
-                GameAdvancement.plaguedEnemyType = "Flying Enemy";
-            break;
+    //         case 3:
+    //             // Set the type of plagued enemy to flying enemy
+    //             GameAdvancement.plaguedEnemyType = "Flying Enemy";
+    //         break;
 
-            case 4:
-                // Set the type of plagued enemy to tank enemy
-                GameAdvancement.plaguedEnemyType = "Tank Enemy";
-            break;
+    //         case 4:
+    //             // Set the type of plagued enemy to tank enemy
+    //             GameAdvancement.plaguedEnemyType = "Tank Enemy";
+    //         break;
 
-            case 5:
-                // Set the type of plagued enemy to slow enemy
-                GameAdvancement.plaguedEnemyType = "Slow Enemy";
-            break;
+    //         case 5:
+    //             // Set the type of plagued enemy to slow enemy
+    //             GameAdvancement.plaguedEnemyType = "Slow Enemy";
+    //         break;
 
-            case 6:
-                // Set the type of plagued enemy to berzerker enemy
-                GameAdvancement.plaguedEnemyType = "Berzerker Enemy";
-            break;
+    //         case 6:
+    //             // Set the type of plagued enemy to berzerker enemy
+    //             GameAdvancement.plaguedEnemyType = "Berzerker Enemy";
+    //         break;
 
-            case 7:
-                // Set the type of plagued enemy to berzerkerflying enemy
-                GameAdvancement.plaguedEnemyType = "Berzerker Flying Enemy";
-            break;
+    //         case 7:
+    //             // Set the type of plagued enemy to berzerkerflying enemy
+    //             GameAdvancement.plaguedEnemyType = "Berzerker Flying Enemy";
+    //         break;
 
-            case 8:
-                // Set the type of plagued enemy to berzerker tank enemy
-                GameAdvancement.plaguedEnemyType = "Berzerker Tank Enemy";
-            break;
-        }
-    }
+    //         case 8:
+    //             // Set the type of plagued enemy to berzerker tank enemy
+    //             GameAdvancement.plaguedEnemyType = "Berzerker Tank Enemy";
+    //         break;
+    //     }
+    // }
 
     // The method used to make the obliteration spell card take effect
     private void PlayObliteration()
@@ -1109,8 +1102,22 @@ public class SpellCard : MonoBehaviour
             enemy.GetComponent<Enemy>().personalSlowFactor = spaceDistortionFactor;
         }
 
-        // Wait for the duration of the space distortion
-        yield return new WaitForSeconds(spaceDistortionDuration);
+        // Initialize the time waited variable
+        float timeWaited = 0;
+
+        // Wait until the time waited equals the duration of the slow time card
+        while(timeWaited <= spaceDistortionDuration)
+        {
+            // Wait for 0.1 seconds
+            yield return new WaitForSeconds(0.1f);
+
+            // Check that the game is not paused
+            if(GameAdvancement.gamePaused == false)
+            {
+                // Increase the time waited by 0.1 seconds
+                timeWaited = timeWaited + 0.1f;
+            }
+        }
 
         // Go through all enemies in the list
         foreach(GameObject enemy in enemies)
@@ -1132,6 +1139,23 @@ public class SpellCard : MonoBehaviour
         // Slow enemies down
         GameAdvancement.globalSlow = slowTimeFactor;
 
+        // Initialize the time waited variable
+        float timeWaited = 0;
+
+        // Wait until the time waited equals the duration of the slow time card
+        while(timeWaited <= slowTimeDuration)
+        {
+            // Wait for 0.1 seconds
+            yield return new WaitForSeconds(0.1f);
+
+            // Check that the game is not paused
+            if(GameAdvancement.gamePaused == false)
+            {
+                // Increase the time waited by 0.1 seconds
+                timeWaited = timeWaited + 0.1f;
+            }
+        }
+
         // Wait for the duration of the slow time card
         yield return new WaitForSeconds(slowTimeDuration);
 
@@ -1151,8 +1175,22 @@ public class SpellCard : MonoBehaviour
         // Stop time
         GameAdvancement.timeStopped = true;
 
-        // Wait for the duration of the stop time
-        yield return new WaitForSeconds(stopTimeDuration);
+        // Initialize the time waited variable
+        float timeWaited = 0;
+
+        // Wait until the time waited equals the duration of the slow time card
+        while(timeWaited <= stopTimeDuration)
+        {
+            // Wait for 0.1 seconds
+            yield return new WaitForSeconds(0.1f);
+
+            // Check that the game is not paused
+            if(GameAdvancement.gamePaused == false)
+            {
+                // Increase the time waited by 0.1 seconds
+                timeWaited = timeWaited + 0.1f;
+            }
+        }
 
         // Remove the stop time
         GameAdvancement.timeStopped = false;
@@ -1173,8 +1211,22 @@ public class SpellCard : MonoBehaviour
         // Set the raining flag to true
         GameAdvancement.raining = true;
 
-        // Wait for the duration of the stop time
-        yield return new WaitForSeconds(rainDuration);
+        // Initialize the time waited variable
+        float timeWaited = 0;
+
+        // Wait until the time waited equals the duration of the slow time card
+        while(timeWaited <= rainDuration)
+        {
+            // Wait for 0.1 seconds
+            yield return new WaitForSeconds(0.1f);
+
+            // Check that the game is not paused
+            if(GameAdvancement.gamePaused == false)
+            {
+                // Increase the time waited by 0.1 seconds
+                timeWaited = timeWaited + 0.1f;
+            }
+        }
 
         // Remove the slow effect
         GameAdvancement.globalSlow = 1;

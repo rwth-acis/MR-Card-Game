@@ -107,7 +107,7 @@ public class Level : MonoBehaviour
         // Set the current wave to wave 0
         GameAdvancement.currentWave = 0;
 
-        // Initilaize the arrays
+        // Initialize the arrays
         LevelInfo.numberOfEnemies = new int[LevelInfo.numberOfWaves];
         LevelInfo.normalEnemies = new int[LevelInfo.numberOfWaves];
         LevelInfo.fastEnemies = new int[LevelInfo.numberOfWaves];
@@ -153,8 +153,12 @@ public class Level : MonoBehaviour
     // The method that does the setup to make sure the next wave can spawn
     public void MakeNextWaveSetup()
     {
-        // Activate the start next wave button
-        startNextWave.gameObject.SetActive(true);
+        // Check that it is not the first wave
+        if(GameAdvancement.currentWave != 0)
+        {
+            // Activate the start next wave button
+            startNextWave.gameObject.SetActive(true);
+        }
 
         // Set the number of undefeated enemies to the number of enemies in the wave
         LevelInfo.numberOfUndefeatedEnemies = LevelInfo.numberOfEnemies[GameAdvancement.currentWave];
@@ -182,20 +186,24 @@ public class Level : MonoBehaviour
         StartCoroutine(SpawnWave());
     }
 
-    // Function that is used to test when the game is not paused anymore
-    private bool GameNotPaused()
-    {
-        return GameAdvancement.gamePaused == true;
-    }
+    // // Function that is used to test when the game is not paused anymore
+    // private bool GameNotPaused()
+    // {
+    //     return GameAdvancement.gamePaused == false;
+    // }
+
+    // // Function that is used to test when the game is not paused anymore
+    // private bool TimeNotStopped()
+    // {
+    //     return GameAdvancement.timeStopped == false;
+    // }
 
     // The coroutine that spawns an opponent and waits for a time before the next spawn
     IEnumerator SpawnWave()
     {
+        // Spawn the whole wave
         for(int counter = LevelInfo.numberOfEnemies[GameAdvancement.currentWave - 1]; counter > 0; counter = counter - 1)
         {
-            // // Wait for the game not being paused
-            // yield return new WaitUntil(GameNotPaused);
-
             // Check if currently there is no group of enemy that should be spawned
             if(enemySpawnNumber == 0)
             {
@@ -232,15 +240,55 @@ public class Level : MonoBehaviour
                 enemy.transform.position = Waypoints.enemySpawn.transform.position + new Vector3(0, enemy.GetFlightHeight, 0);
             }
 
-            // Check that the stop time card is not taking effect
-            if(GameAdvancement.timeStopped == true)
+            // // Check that the stop time card is not taking effect
+            // if(GameAdvancement.timeStopped == true)
+            // {
+            //     // // Make sure that no enemy is spawned in the duration of this stop time card
+            //     // yield return new WaitForSeconds(SpellCard.getStopTimeDuration);
+
+            //     // Initialize the time waited variable
+            //     float timeWaited = 0;
+
+            //     // Wait until the time waited equals the duration of the stop time card
+            //     while(timeWaited != SpellCard.getStopTimeDuration)
+            //     {
+            //         // Wait for 0.1 seconds
+            //         yield return new WaitForSeconds(0.1f);
+
+            //         // Check that the game is not paused
+            //         if(GameNotPaused() == true)
+            //         {
+            //             // Increase the time waited by 0.1 seconds
+            //             timeWaited = timeWaited + 0.1f;
+            //         }
+            //     }
+            // }
+
+            // Initialize the time waited variable
+            float timeWaited = 0;
+
+            // Wait until the time waited equals the duration of the slow time card
+            while(timeWaited <= timeBetweenSpawns)
             {
-                // Make sure that no enemy is spawned in the duration of this stop time card
-                yield return new WaitForSeconds(SpellCard.getStopTimeDuration);
+                // Wait for 0.1 seconds
+                yield return new WaitForSeconds(0.1f);
+
+                // Check that the game is not paused
+                if(GameAdvancement.gamePaused == false && GameAdvancement.timeStopped == false)
+                {
+                    // Increase the time waited by 0.1 seconds
+                    timeWaited = timeWaited + 0.1f;
+                }
             }
 
-            // Wait for the time between spawns
-            yield return new WaitForSeconds(timeBetweenSpawns);
+            // // Wait for the game not being paused
+            // yield return new WaitUntil(GameNotPaused);
+
+            // // Wait for the time between spawns
+            // yield return new WaitForSeconds(timeBetweenSpawns);
+
+            // // Wait until the time stopped card lost effect
+            // yield return new WaitUntil(TimeNotStopped);
         }
     }
 

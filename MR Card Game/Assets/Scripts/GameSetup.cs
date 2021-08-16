@@ -25,6 +25,9 @@ static class GameAdvancement
 
     // The health bar slider of the castle
     public static Slider castleHealthBar;
+
+    // The armor bar slider of the castle
+    public static Slider castleArmorBar;
     
     // The health counter C / M displayed on the health bar
     public static TMP_Text castleHealthCounter;
@@ -44,9 +47,6 @@ static class GameAdvancement
     // The flag that states if it is raining
     public static bool raining = false;
 
-    // The type of enemy that is plagued. Plagued enemy take damage over time and are slowed
-    public static string plaguedEnemyType = "";
-
     // // The global flag that states if the player is currently building or upgrading something
     // public static bool currentlyBuildingOrUpgrading = false;
 }
@@ -54,7 +54,7 @@ static class GameAdvancement
 // The class of the castle game object
 static class Buildings
 {
-    // The number of buildings buit in this round
+    // The number of buildings built in this round
     public static int numberOfBuildings;
 
     // The array that binds the image target to the building
@@ -117,9 +117,16 @@ public class GameSetup : MonoBehaviour
     [SerializeField]
     private TMP_Text castleHealthCounter;
 
+    // The armor icon
+    [SerializeField]
+    private Slider castleArmorBar;
+
     // Start is called before the first frame update
     void Start()
     {
+
+        // armorPoints.GetComponent<Renderer>().sortingLayerID = armorPoints.transform.parent.GetComponent<Renderer>().sortingLayerID;
+
         // Set the number of buildings built in this round to zero
         Buildings.numberOfBuildings = 0;
 
@@ -143,6 +150,9 @@ public class GameSetup : MonoBehaviour
 
         // Set the castle health bar slider
         GameAdvancement.castleHealthBar = castleHealthBar;
+
+        // Set the castle armor bar slider
+        GameAdvancement.castleArmorBar = castleArmorBar;
 
         // Set the castle health counter
         GameAdvancement.castleHealthCounter = castleHealthCounter;
@@ -173,13 +183,14 @@ public class GameSetup : MonoBehaviour
     // Method used to actualize the current health points of the castle
     public static void ActualizeCastleHealthPoints()
     {
-        // TODO add armor points
-
         // Actualize the value of the castle health bar
-        GameAdvancement.castleHealthBar.value = (float)(GameAdvancement.castlecurrentHP / GameAdvancement.castleMaxHP);
+        GameAdvancement.castleHealthBar.value = (float)((float)GameAdvancement.castlecurrentHP / (float)GameAdvancement.castleMaxHP);
 
         // Change the text field that displayed current HP / max HP
         GameAdvancement.castleHealthCounter.text = GameAdvancement.castlecurrentHP + " / " + GameAdvancement.castleMaxHP;
+
+        // Actualize the value of the castle armor bar
+        GameAdvancement.castleArmorBar.value = (float)((float)GameAdvancement.castleCurrentAP / (float)GameAdvancement.castleMaxHP);
     }
 
     // Method used to actualize the current wave
