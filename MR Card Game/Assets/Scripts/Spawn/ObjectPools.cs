@@ -204,7 +204,7 @@ public class ObjectPools : MonoBehaviour
     // The method that releses the tower game objects
     public static void ReleaseTower(GameObject tower)
     {
-        string towerType = tower.GetComponent<Tower>().getTowerType;
+        string towerType = tower.GetComponentInChildren<Tower>().getTowerType;
 
         // Get the correct object pool index from the object pools class
         int objectPoolIndex = GetTowerPoolIndex(towerType);

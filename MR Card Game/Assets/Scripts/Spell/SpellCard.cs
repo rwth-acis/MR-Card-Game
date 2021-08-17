@@ -373,6 +373,9 @@ public class SpellCard : MonoBehaviour
             // increase the current card index
             IncreaseCurrentCardIndex();
 
+            // Set the flag that states that the card was drawn
+            cardDrawn = true;
+
             // Reveal the spell card
             RevealSpell();
         }
