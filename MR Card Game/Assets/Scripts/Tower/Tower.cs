@@ -237,8 +237,6 @@ public class Tower : MonoBehaviour
 
                 // Reset the attack timer
                 attackTimer = 0;
-
-                Debug.Log("Tower: " + this.gameObject.name + " can now attack again.");
             }
         }
 
@@ -290,17 +288,14 @@ public class Tower : MonoBehaviour
             target = GetColliders()[0];
 
             // Debug.Log("The new target was set to " + target);
-            Debug.Log("The new target of tower: " + this.gameObject.name + " has been set to: " + target);
         }
 
         // Check if there is a current target
         if(target != null && target.GetComponent<Enemy>().isAlive == true)
         {
-            Debug.Log("Tower: " + this.gameObject.name + " has a target and can attack");
             // Check if the can attack flag is set to true
             if(canAttack == true)
             {
-                Debug.Log("Tower: " + this.gameObject.name + " is shooting");
                 // Attack the target
                 Shoot();
                 // Debug.Log("The current enemy that is targeted is named: " + target.name);
@@ -382,8 +377,6 @@ public class Tower : MonoBehaviour
             // // Set the position of the projectile to the position of the tower
             // spawnedProjectile.transform.position = transform.position;
 
-            Debug.Log("A projectile was shot.");
-
             // // Initialize the projectile object, so that it knows what his parent is
             // spawnedProjectile.Initialize(this);
 
@@ -404,7 +397,6 @@ public class Tower : MonoBehaviour
         if(other.gameObject.tag == "Enemy" && !colliders.Contains(other) )
         {
             colliders.Add(other);
-            Debug.Log("An enemy has entered the tower range of: " + this.gameObject.name);
         }
     }
 
@@ -435,8 +427,6 @@ public class Tower : MonoBehaviour
         // Make the enemy take damage
         targetEnemy.TakeDamage(damage);
 
-        Debug.Log("The number of strikes is: " + numberOfStrikes);
-
         // Check if the lightning strike should jump
         if(numberOfStrikes > 0)
         {
@@ -448,8 +438,6 @@ public class Tower : MonoBehaviour
 
             // Calculate the radius of the effect
             // float radius = getEffectRange * targetEnemy.gameBoard.transform.localScale.x;
-
-            Debug.Log("The collider count is: " + GetColliders().Count);
 
             // Check if there is another enemy in the range of the tower
             if(GetEnemies().Count > 1)
@@ -466,8 +454,6 @@ public class Tower : MonoBehaviour
                     // Get the distance between the current target and the current candidate
                     float distance = Vector3.Distance(targetEnemy.transform.position, GetEnemies()[counter].GetComponent<Enemy>().transform.position);
 
-                    Debug.Log("The distance to the enemy number " + counter + " is: " + distance);
-
                     // Check if this distance is shorter than the current shortest distance
                     if(distance <= shortestDistance)
                     {
@@ -476,14 +462,11 @@ public class Tower : MonoBehaviour
 
                         // Set the shortest distance to the distance between thoses two
                         shortestDistance = distance;
-
-                        Debug.Log("The shortest distance was set to " + distance);
                     }
                 }
 
                 if(nearestEnemy != null)
                 {
-                    Debug.Log("Lightning is jumping!");
                     // Remove the nearest enemy from the list
                     enemies.Remove(nearestEnemy);
                     
@@ -532,9 +515,9 @@ public class Tower : MonoBehaviour
     // The method activated when clicking on the hidden button on towers to upgrade them
     public void TryOpeningUpgradeTowerMenu()
     {
-        Debug.Log("Upgrade tower button was pressed!");
-        Debug.Log("The number of questions that need to be answered is: " + Questions.numberOfQuestionsNeededToAnswer);
-        Debug.Log("The value of the game paused variable is: " + GameAdvancement.gamePaused);
+        // Debug.Log("Upgrade tower button was pressed!");
+        // Debug.Log("The number of questions that need to be answered is: " + Questions.numberOfQuestionsNeededToAnswer);
+        // Debug.Log("The value of the game paused variable is: " + GameAdvancement.gamePaused);
 
         // Check that nothing is beeing build or upgraded
         if(GameAdvancement.gamePaused == false)

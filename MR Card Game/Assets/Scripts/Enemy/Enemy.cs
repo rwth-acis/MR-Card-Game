@@ -168,9 +168,6 @@ public class Enemy : MonoBehaviour
                 // Make the player win the currency points
                 WinPoints();
 
-                // Reduce the number of undefeated enemies of the wave by one
-                LevelInfo.numberOfUndefeatedEnemies = LevelInfo.numberOfUndefeatedEnemies - 1;
-
                 // Reset the current waypoint index so that enemies walk toward the first waypoint upon respawn
                 waypointIndex = 0;
 
@@ -255,6 +252,9 @@ public class Enemy : MonoBehaviour
     // Method that reduces the health points of the castle if an enemy reaches it
     public void ReduceCastleHealth()
     {
+        // Reduce the number of undefeated enemies of the wave by one
+        LevelInfo.numberOfUndefeatedEnemies = LevelInfo.numberOfUndefeatedEnemies - 1;
+
         // Check if the castle has armor points
         if(GameAdvancement.castleCurrentAP != 0) 
         {
@@ -321,12 +321,12 @@ public class Enemy : MonoBehaviour
     // The coroutine that spawns an oponent and waits for a time before the next spawn
     IEnumerator Die()
     {
-        Debug.Log("Enemy is dying.");
+        // Reduce the number of undefeated enemies of the wave by one
+        LevelInfo.numberOfUndefeatedEnemies = LevelInfo.numberOfUndefeatedEnemies - 1;
 
         // Wait for 0.5 second
         yield return new WaitForSeconds((float)0.5);
 
-        Debug.Log("Enemy died and is being returned to the object pool.");
         // Return the enemy to the object pool
         ReturnEnemyToObjectPool();
     }

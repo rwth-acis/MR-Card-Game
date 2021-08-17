@@ -139,20 +139,23 @@ public class Level : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("The number of undefeated enemies is: " + LevelInfo.numberOfUndefeatedEnemies);
         // Check if the current wave is smaller than the number of waves and if the number of undefeated enemies is 0
         if(LevelInfo.numberOfUndefeatedEnemies == 0 && GameAdvancement.currentWave < LevelInfo.numberOfWaves)
         {
             // Make the next wave setup
             MakeNextWaveSetup();
-
-            // Set the wave ongoing flag to false
-            LevelInfo.waveOngoing = false;
         }
     }
 
     // The method that does the setup to make sure the next wave can spawn
     public void MakeNextWaveSetup()
     {
+        // Set the wave ongoing flag to false
+        LevelInfo.waveOngoing = false;
+
+        Debug.Log("The wave is not ongoing anymore");
+
         // Check that it is not the first wave
         if(GameAdvancement.currentWave != 0)
         {
@@ -181,6 +184,8 @@ public class Level : MonoBehaviour
 
         // Set the wave ongoing flag to true
         LevelInfo.waveOngoing = true;
+
+        Debug.Log("The wave is now ongoing");
 
         // Start the coroutine that spawns all the wave
         StartCoroutine(SpawnWave());
@@ -217,14 +222,10 @@ public class Level : MonoBehaviour
                 // Spawn enemy of the type given
                 Enemy enemy = SpawnAnEnemy(enemyType);
 
-                // // Set the resistance of the enemy
-                // enemy.SetResistance(resistance);
-
+                // Set the resistance of the enemy
                 enemy.resistance = resistance;
 
-                // // Set the weakness of the enemy
-                // enemy.SetWeakness(weakness);
-
+                // Set the weakness of the enemy
                 enemy.weakness = weakness;
 
                 // Reduce the number of enemies that should spawn as a group
@@ -298,104 +299,6 @@ public class Level : MonoBehaviour
         // Get a random number
         int newCategoryIndex = RandomNumber(0, numberOfCategoriesNotEmpty);
 
-        if(CounterE1 != 0)
-        {
-            if(newCategoryIndex == 0)
-            {
-                enemyType = "Normal Enemy";
-            }
-        } else {
-            newCategoryIndex = newCategoryIndex + 1;
-        }
-
-        if(CounterE2 != 0)
-        {
-            if(newCategoryIndex == 1)
-            {
-                enemyType = "Fast Enemy";
-            }
-        } else {
-            newCategoryIndex = newCategoryIndex + 1;
-        }
-
-        if(CounterE3 != 0)
-        {
-            if(newCategoryIndex == 2)
-            {
-                enemyType = "Super Fast Enemy";
-            }
-        } else {
-            newCategoryIndex = newCategoryIndex + 1;
-        }
-
-        if(CounterE4 != 0)
-        {
-            if(newCategoryIndex == 3)
-            {
-                enemyType = "Flying Enemy";
-            }
-        } else {
-            newCategoryIndex = newCategoryIndex + 1;
-        }
-
-        if(CounterE5 != 0)
-        {
-            if(newCategoryIndex == 4)
-            {
-                enemyType = "Tank Enemy";
-            }
-        } else {
-            newCategoryIndex = newCategoryIndex + 1;
-        }
-
-        if(CounterE6 != 0)
-        {
-            if(newCategoryIndex == 5)
-            {
-                enemyType = "Slow Enemy";
-            }
-        } else {
-            newCategoryIndex = newCategoryIndex + 1;
-        }
-
-        if(CounterE6 != 0)
-        {
-            if(newCategoryIndex == 5)
-            {
-                enemyType = "Slow Enemy";
-            }
-        } else {
-            newCategoryIndex = newCategoryIndex + 1;
-        }
-
-        if(CounterE7 != 0)
-        {
-            if(newCategoryIndex == 6)
-            {
-                enemyType = "Berzerker Enemy";
-            }
-        } else {
-            newCategoryIndex = newCategoryIndex + 1;
-        }
-
-        if(CounterE8 != 7)
-        {
-            if(newCategoryIndex == 4)
-            {
-                enemyType = "Berzerker Flying Enemy";
-            }
-        } else {
-            newCategoryIndex = newCategoryIndex + 1;
-        }
-
-        if(CounterE9 != 0)
-        {
-            if(newCategoryIndex == 8)
-            {
-                enemyType = "Berzerker Tank Enemy";
-            }
-        }
-
         // Get another random number and set the enemy spawn number to it
         enemySpawnNumber = RandomNumber(1, 3) + (GameAdvancement.currentWave - 1);
 
@@ -405,6 +308,268 @@ public class Level : MonoBehaviour
             // Set the enemy spawn number to the number of undefeated enemies
             enemySpawnNumber = LevelInfo.numberOfUndefeatedEnemies;
         }
+        
+        // Get the right enemy type, and reduce the counter and number of enemies accordingly
+        if(CounterE1 != 0)
+        {
+            if(newCategoryIndex == 0)
+            {
+                // Set the enemy type correctly
+                enemyType = "Normal Enemy";
+
+                // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
+                if(CounterE1 > enemySpawnNumber)
+                {
+                    // Reduce the counter by the enemy spawn number
+                    CounterE1 = CounterE1 - enemySpawnNumber;
+
+                } else {
+
+                    // Set the enemy spawn number to the counter
+                    enemySpawnNumber = CounterE1;
+
+                    // Set the counter to 0
+                    CounterE1 = 0;
+
+                    // Reduce the number of categories not empty by one
+                    numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
+                }
+            }
+        } else {
+            newCategoryIndex = newCategoryIndex + 1;
+        }
+
+        if(CounterE2 != 0)
+        {
+            if(newCategoryIndex == 1)
+            {
+                // Set the enemy type correctly
+                enemyType = "Fast Enemy";
+
+                // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
+                if(CounterE2 > enemySpawnNumber)
+                {
+                    // Reduce the counter by the enemy spawn number
+                    CounterE2 = CounterE2 - enemySpawnNumber;
+
+                } else {
+
+                    // Set the enemy spawn number to the counter
+                    enemySpawnNumber = CounterE2;
+
+                    // Set the counter to 0
+                    CounterE2 = 0;
+
+                    // Reduce the number of categories not empty by one
+                    numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
+                }
+            }
+        } else {
+            newCategoryIndex = newCategoryIndex + 1;
+        }
+
+        if(CounterE3 != 0)
+        {
+            if(newCategoryIndex == 2)
+            {
+                // Set the enemy type correctly
+                enemyType = "Super Fast Enemy";
+
+                // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
+                if(CounterE3 > enemySpawnNumber)
+                {
+                    // Reduce the counter by the enemy spawn number
+                    CounterE3 = CounterE3 - enemySpawnNumber;
+
+                } else {
+
+                    // Set the enemy spawn number to the counter
+                    enemySpawnNumber = CounterE3;
+
+                    // Set the counter to 0
+                    CounterE3 = 0;
+
+                    // Reduce the number of categories not empty by one
+                    numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
+                }
+            }
+        } else {
+            newCategoryIndex = newCategoryIndex + 1;
+        }
+
+        if(CounterE4 != 0)
+        {
+            if(newCategoryIndex == 3)
+            {
+                // Set the enemy type correctly
+                enemyType = "Flying Enemy";
+
+                // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
+                if(CounterE4 > enemySpawnNumber)
+                {
+                    // Reduce the counter by the enemy spawn number
+                    CounterE4 = CounterE4 - enemySpawnNumber;
+
+                } else {
+
+                    // Set the enemy spawn number to the counter
+                    enemySpawnNumber = CounterE4;
+
+                    // Set the counter to 0
+                    CounterE4 = 0;
+
+                    // Reduce the number of categories not empty by one
+                    numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
+                }
+            }
+        } else {
+            newCategoryIndex = newCategoryIndex + 1;
+        }
+
+        if(CounterE5 != 0)
+        {
+            if(newCategoryIndex == 4)
+            {
+                // Set the enemy type correctly
+                enemyType = "Tank Enemy";
+
+                // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
+                if(CounterE5 > enemySpawnNumber)
+                {
+                    // Reduce the counter by the enemy spawn number
+                    CounterE5 = CounterE5 - enemySpawnNumber;
+
+                } else {
+
+                    // Set the enemy spawn number to the counter
+                    enemySpawnNumber = CounterE5;
+
+                    // Set the counter to 0
+                    CounterE5 = 0;
+
+                    // Reduce the number of categories not empty by one
+                    numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
+                }
+            }
+        } else {
+            newCategoryIndex = newCategoryIndex + 1;
+        }
+
+        if(CounterE6 != 0)
+        {
+            if(newCategoryIndex == 5)
+            {
+                // Set the enemy type correctly
+                enemyType = "Slow Enemy";
+
+                // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
+                if(CounterE6 > enemySpawnNumber)
+                {
+                    // Reduce the counter by the enemy spawn number
+                    CounterE6 = CounterE6 - enemySpawnNumber;
+
+                } else {
+
+                    // Set the enemy spawn number to the counter
+                    enemySpawnNumber = CounterE6;
+
+                    // Set the counter to 0
+                    CounterE6 = 0;
+
+                    // Reduce the number of categories not empty by one
+                    numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
+                }
+            }
+        } else {
+            newCategoryIndex = newCategoryIndex + 1;
+        }
+
+        if(CounterE7 != 0)
+        {
+            if(newCategoryIndex == 6)
+            {
+                // Set the enemy type correctly
+                enemyType = "Berzerker Enemy";
+
+                // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
+                if(CounterE7 > enemySpawnNumber)
+                {
+                    // Reduce the counter by the enemy spawn number
+                    CounterE7 = CounterE7 - enemySpawnNumber;
+
+                } else {
+
+                    // Set the enemy spawn number to the counter
+                    enemySpawnNumber = CounterE7;
+
+                    // Set the counter to 0
+                    CounterE7 = 0;
+
+                    // Reduce the number of categories not empty by one
+                    numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
+                }
+            }
+        } else {
+            newCategoryIndex = newCategoryIndex + 1;
+        }
+
+        if(CounterE8 != 0)
+        {
+            if(newCategoryIndex == 7)
+            {
+                // Set the enemy type correctly
+                enemyType = "Berzerker Flying Enemy";
+
+                // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
+                if(CounterE8 > enemySpawnNumber)
+                {
+                    // Reduce the counter by the enemy spawn number
+                    CounterE8 = CounterE8 - enemySpawnNumber;
+
+                } else {
+
+                    // Set the enemy spawn number to the counter
+                    enemySpawnNumber = CounterE8;
+
+                    // Set the counter to 0
+                    CounterE8 = 0;
+
+                    // Reduce the number of categories not empty by one
+                    numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
+                }
+            }
+        } else {
+            newCategoryIndex = newCategoryIndex + 1;
+        }
+
+        if(CounterE9 != 0)
+        {
+            if(newCategoryIndex == 8)
+            {
+                // Set the enemy type correctly
+                enemyType = "Berzerker Tank Enemy";
+
+                // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
+                if(CounterE9 > enemySpawnNumber)
+                {
+                    // Reduce the counter by the enemy spawn number
+                    CounterE9 = CounterE9 - enemySpawnNumber;
+
+                } else {
+
+                    // Set the enemy spawn number to the counter
+                    enemySpawnNumber = CounterE9;
+
+                    // Set the counter to 0
+                    CounterE9 = 0;
+
+                    // Reduce the number of categories not empty by one
+                    numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
+                }
+            }
+        }
+
+        // Reduce the number of enemies in the category
 
 
         // Initialize the two maximal numbers that state if the enemies should have a weakness and resistance or not
@@ -609,7 +774,7 @@ public class Level : MonoBehaviour
 
             // Initialize the enemy index and the number of enemies in the new category
             int enemyIndex = 0;
-            int numberOfEnmiesInNewCategory = 0;
+            int numberOfEnemiesInNewCategory = 0;
 
             // For as long as there are enemies, choose what enemy should be added and the number
             while(enemiesWithoutCategory > 0)
@@ -618,30 +783,30 @@ public class Level : MonoBehaviour
                 enemyIndex = RandomNumber(0, 3);
 
                 // Generate a random number between 1 and the number of enemies without category
-                numberOfEnmiesInNewCategory = RandomNumber(1, enemiesWithoutCategory);
+                numberOfEnemiesInNewCategory = RandomNumber(1, enemiesWithoutCategory);
 
                 //
                 switch(enemyIndex)
                 {
                     case 0:
-                        LevelInfo.normalEnemies[0] = LevelInfo.normalEnemies[0] + numberOfEnmiesInNewCategory;
+                        LevelInfo.normalEnemies[0] = LevelInfo.normalEnemies[0] + numberOfEnemiesInNewCategory;
                     break;
 
                     case 1:
-                        LevelInfo.fastEnemies[0] = LevelInfo.fastEnemies[0] + numberOfEnmiesInNewCategory;
+                        LevelInfo.fastEnemies[0] = LevelInfo.fastEnemies[0] + numberOfEnemiesInNewCategory;
                     break;
 
                     case 2:
-                        LevelInfo.flyingEnemies[0] = LevelInfo.flyingEnemies[0] + numberOfEnmiesInNewCategory;
+                        LevelInfo.flyingEnemies[0] = LevelInfo.flyingEnemies[0] + numberOfEnemiesInNewCategory;
                     break;
 
                     case 3:
-                        LevelInfo.tankEnemies[0] = LevelInfo.tankEnemies[0] + numberOfEnmiesInNewCategory;
+                        LevelInfo.tankEnemies[0] = LevelInfo.tankEnemies[0] + numberOfEnemiesInNewCategory;
                     break;
                 }
 
                 // Reduce the number of enemies without category by the number of enemies that were but in a category
-                enemiesWithoutCategory = enemiesWithoutCategory - numberOfEnmiesInNewCategory;
+                enemiesWithoutCategory = enemiesWithoutCategory - numberOfEnemiesInNewCategory;
             }
 
             // -------------------------------------------------------------------------------------------------------
@@ -674,62 +839,62 @@ public class Level : MonoBehaviour
                     }
 
                     // Generate a random number between 1 and the number of enemies without category
-                    numberOfEnmiesInNewCategory = RandomNumber(1, enemiesWithoutCategory);
+                    numberOfEnemiesInNewCategory = RandomNumber(1, enemiesWithoutCategory);
 
                     // Add this number of enemies in the right category. The probability it is a normal enemy is higher than the rest
                     switch(enemyIndex)
                     {
                         case 0:
-                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnmiesInNewCategory;
+                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnemiesInNewCategory;
                         break;
 
                         case 1:
-                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnmiesInNewCategory;
+                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnemiesInNewCategory;
                         break;
 
                         case 2:
-                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnmiesInNewCategory;
+                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnemiesInNewCategory;
                         break;
 
                         case 3:
-                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnmiesInNewCategory;
+                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnemiesInNewCategory;
                         break;
 
                         case 4:
-                            LevelInfo.fastEnemies[index] = LevelInfo.fastEnemies[index] + numberOfEnmiesInNewCategory;
+                            LevelInfo.fastEnemies[index] = LevelInfo.fastEnemies[index] + numberOfEnemiesInNewCategory;
                         break;
 
                         case 5:
-                            LevelInfo.superFastEnemies[index] = LevelInfo.superFastEnemies[index] + numberOfEnmiesInNewCategory;
+                            LevelInfo.superFastEnemies[index] = LevelInfo.superFastEnemies[index] + numberOfEnemiesInNewCategory;
                         break;
 
                         case 6:
-                            LevelInfo.flyingEnemies[index] = LevelInfo.flyingEnemies[index] + numberOfEnmiesInNewCategory;
+                            LevelInfo.flyingEnemies[index] = LevelInfo.flyingEnemies[index] + numberOfEnemiesInNewCategory;
                         break;
 
                         case 7:
-                            LevelInfo.tankEnemies[index] = LevelInfo.tankEnemies[index] + numberOfEnmiesInNewCategory;
+                            LevelInfo.tankEnemies[index] = LevelInfo.tankEnemies[index] + numberOfEnemiesInNewCategory;
                         break;
 
                         case 8:
-                            LevelInfo.slowEnemies[index] = LevelInfo.slowEnemies[index] + numberOfEnmiesInNewCategory;
+                            LevelInfo.slowEnemies[index] = LevelInfo.slowEnemies[index] + numberOfEnemiesInNewCategory;
                         break;
 
                         case 9:
-                            LevelInfo.berzerkerEnemies[index] = LevelInfo.berzerkerEnemies[index] + numberOfEnmiesInNewCategory;
+                            LevelInfo.berzerkerEnemies[index] = LevelInfo.berzerkerEnemies[index] + numberOfEnemiesInNewCategory;
                         break;
 
                         case 10:
-                            LevelInfo.berzerkerFlyingEnemies[index] = LevelInfo.berzerkerFlyingEnemies[index] + numberOfEnmiesInNewCategory;
+                            LevelInfo.berzerkerFlyingEnemies[index] = LevelInfo.berzerkerFlyingEnemies[index] + numberOfEnemiesInNewCategory;
                         break;
 
                         case 11:
-                            LevelInfo.berzerkerTankEnemies[index] = LevelInfo.berzerkerTankEnemies[index] + numberOfEnmiesInNewCategory;
+                            LevelInfo.berzerkerTankEnemies[index] = LevelInfo.berzerkerTankEnemies[index] + numberOfEnemiesInNewCategory;
                         break;
                     }
 
                     // Reduce the number of enemies without category by the number of enemies that were but in a category
-                    enemiesWithoutCategory = enemiesWithoutCategory - numberOfEnmiesInNewCategory;
+                    enemiesWithoutCategory = enemiesWithoutCategory - numberOfEnemiesInNewCategory;
                 }
             }
         }

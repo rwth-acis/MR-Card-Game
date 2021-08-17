@@ -121,8 +121,9 @@ public class SpellCard : MonoBehaviour
         // Check if the wave is not ongoing anymore
         if(LevelInfo.waveOngoing == false)
         {
+            Debug.Log("The wave was not ongoing anymore, so the canvas should be hided now");
             // Check if the spell card was already drawn
-            if(spellType != "")
+            if(cardDrawn == true)
             {
                 // Hide the play spell button
                 HideSpellCanvas();
