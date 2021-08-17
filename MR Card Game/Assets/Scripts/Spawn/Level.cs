@@ -142,7 +142,6 @@ public class Level : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("The number of undefeated enemies is: " + LevelInfo.numberOfUndefeatedEnemies);
         // Check if the current wave is smaller than the number of waves and if the number of undefeated enemies is 0
         if(LevelInfo.numberOfUndefeatedEnemies == 0 && GameAdvancement.currentWave < LevelInfo.numberOfWaves)
         {
@@ -209,6 +208,10 @@ public class Level : MonoBehaviour
     // The coroutine that spawns an opponent and waits for a time before the next spawn
     IEnumerator SpawnWave()
     {
+
+        // Set the right number of categories not empty
+        SetNumberOfCategoriesNotEmpty(LevelInfo.normalEnemies[GameAdvancement.currentWave - 1], LevelInfo.fastEnemies[GameAdvancement.currentWave - 1], LevelInfo.superFastEnemies[GameAdvancement.currentWave - 1], LevelInfo.flyingEnemies[GameAdvancement.currentWave - 1], LevelInfo.tankEnemies[GameAdvancement.currentWave - 1], LevelInfo.slowEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerFlyingEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerTankEnemies[GameAdvancement.currentWave - 1]);
+        
         Debug.Log("Spawning wave number: " + GameAdvancement.currentWave);
 
         Debug.Log("The number of enemies in the wave is: " + LevelInfo.numberOfEnemies[GameAdvancement.currentWave - 1]);
@@ -397,9 +400,6 @@ public class Level : MonoBehaviour
     // Method that determines the next type of enemies that should be spawned
     public int SetNextEnemyType(int CounterE1, int CounterE2, int CounterE3, int CounterE4, int CounterE5, int CounterE6, int CounterE7, int CounterE8, int CounterE9)
     {
-        // Set the right number of categories not empty
-        SetNumberOfCategoriesNotEmpty(CounterE1, CounterE2, CounterE3, CounterE4, CounterE5, CounterE6, CounterE7, CounterE8, CounterE9);
-
         // Get a random number
         int newCategoryIndex = RandomNumber(0, numberOfCategoriesNotEmpty);
 
@@ -425,7 +425,7 @@ public class Level : MonoBehaviour
                 if(CounterE1 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE1 = CounterE1 - newEnemySpawnNumber;
+                    LevelInfo.normalEnemies[GameAdvancement.currentWave - 1] = CounterE1 - newEnemySpawnNumber;
 
                 } else {
 
@@ -433,7 +433,7 @@ public class Level : MonoBehaviour
                     newEnemySpawnNumber = CounterE1;
 
                     // Set the counter to 0
-                    CounterE1 = 0;
+                    LevelInfo.normalEnemies[GameAdvancement.currentWave - 1] = 0;
 
                     // Reduce the number of categories not empty by one
                     numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
@@ -455,7 +455,7 @@ public class Level : MonoBehaviour
                 if(CounterE2 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE2 = CounterE2 - newEnemySpawnNumber;
+                    LevelInfo.fastEnemies[GameAdvancement.currentWave - 1] = CounterE2 - newEnemySpawnNumber;
 
                 } else {
 
@@ -463,7 +463,7 @@ public class Level : MonoBehaviour
                     newEnemySpawnNumber = CounterE2;
 
                     // Set the counter to 0
-                    CounterE2 = 0;
+                    LevelInfo.fastEnemies[GameAdvancement.currentWave - 1] = 0;
 
                     // Reduce the number of categories not empty by one
                     numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
@@ -486,7 +486,7 @@ public class Level : MonoBehaviour
                 if(CounterE3 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE3 = CounterE3 - newEnemySpawnNumber;
+                    LevelInfo.superFastEnemies[GameAdvancement.currentWave - 1] = CounterE3 - newEnemySpawnNumber;
 
                 } else {
 
@@ -494,7 +494,7 @@ public class Level : MonoBehaviour
                     newEnemySpawnNumber = CounterE3;
 
                     // Set the counter to 0
-                    CounterE3 = 0;
+                    LevelInfo.superFastEnemies[GameAdvancement.currentWave - 1] = 0;
 
                     // Reduce the number of categories not empty by one
                     numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
@@ -517,7 +517,7 @@ public class Level : MonoBehaviour
                 if(CounterE4 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE4 = CounterE4 - newEnemySpawnNumber;
+                    LevelInfo.flyingEnemies[GameAdvancement.currentWave - 1] = CounterE4 - newEnemySpawnNumber;
 
                 } else {
 
@@ -525,7 +525,7 @@ public class Level : MonoBehaviour
                     newEnemySpawnNumber = CounterE4;
 
                     // Set the counter to 0
-                    CounterE4 = 0;
+                    LevelInfo.flyingEnemies[GameAdvancement.currentWave - 1] = 0;
 
                     // Reduce the number of categories not empty by one
                     numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
@@ -548,7 +548,7 @@ public class Level : MonoBehaviour
                 if(CounterE5 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE5 = CounterE5 - newEnemySpawnNumber;
+                    LevelInfo.tankEnemies[GameAdvancement.currentWave - 1] = CounterE5 - newEnemySpawnNumber;
 
                 } else {
 
@@ -556,7 +556,7 @@ public class Level : MonoBehaviour
                     newEnemySpawnNumber = CounterE5;
 
                     // Set the counter to 0
-                    CounterE5 = 0;
+                    LevelInfo.tankEnemies[GameAdvancement.currentWave - 1] = 0;
 
                     // Reduce the number of categories not empty by one
                     numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
@@ -577,7 +577,7 @@ public class Level : MonoBehaviour
                 if(CounterE6 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE6 = CounterE6 - newEnemySpawnNumber;
+                    LevelInfo.slowEnemies[GameAdvancement.currentWave - 1] = CounterE6 - newEnemySpawnNumber;
 
                 } else {
 
@@ -585,7 +585,7 @@ public class Level : MonoBehaviour
                     newEnemySpawnNumber = CounterE6;
 
                     // Set the counter to 0
-                    CounterE6 = 0;
+                    LevelInfo.slowEnemies[GameAdvancement.currentWave - 1] = 0;
 
                     // Reduce the number of categories not empty by one
                     numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
@@ -606,7 +606,7 @@ public class Level : MonoBehaviour
                 if(CounterE7 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE7 = CounterE7 - newEnemySpawnNumber;
+                    LevelInfo.berzerkerEnemies[GameAdvancement.currentWave - 1] = CounterE7 - newEnemySpawnNumber;
 
                 } else {
 
@@ -614,7 +614,7 @@ public class Level : MonoBehaviour
                     newEnemySpawnNumber = CounterE7;
 
                     // Set the counter to 0
-                    CounterE7 = 0;
+                    LevelInfo.berzerkerEnemies[GameAdvancement.currentWave - 1] = 0;
 
                     // Reduce the number of categories not empty by one
                     numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
@@ -635,7 +635,7 @@ public class Level : MonoBehaviour
                 if(CounterE8 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE8 = CounterE8 - newEnemySpawnNumber;
+                    LevelInfo.berzerkerFlyingEnemies[GameAdvancement.currentWave - 1] = CounterE8 - newEnemySpawnNumber;
 
                 } else {
 
@@ -643,7 +643,7 @@ public class Level : MonoBehaviour
                     newEnemySpawnNumber = CounterE8;
 
                     // Set the counter to 0
-                    CounterE8 = 0;
+                    LevelInfo.berzerkerFlyingEnemies[GameAdvancement.currentWave - 1] = 0;
 
                     // Reduce the number of categories not empty by one
                     numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
@@ -664,7 +664,7 @@ public class Level : MonoBehaviour
                 if(CounterE9 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE9 = CounterE9 - newEnemySpawnNumber;
+                    LevelInfo.berzerkerTankEnemies[GameAdvancement.currentWave - 1] = CounterE9 - newEnemySpawnNumber;
 
                 } else {
 
@@ -672,7 +672,7 @@ public class Level : MonoBehaviour
                     newEnemySpawnNumber = CounterE9;
 
                     // Set the counter to 0
-                    CounterE9 = 0;
+                    LevelInfo.berzerkerTankEnemies[GameAdvancement.currentWave - 1] = 0;
 
                     // Reduce the number of categories not empty by one
                     numberOfCategoriesNotEmpty = numberOfCategoriesNotEmpty - 1;
