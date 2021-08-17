@@ -47,6 +47,9 @@ static class GameAdvancement
     // The flag that states if it is raining
     public static bool raining = false;
 
+    // The flag that states if the game setup needs to be reset or not
+    public static bool needToReset = false;
+
     // // The global flag that states if the player is currently building or upgrading something
     // public static bool currentlyBuildingOrUpgrading = false;
 }
@@ -200,7 +203,15 @@ public class GameSetup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Display currency points
+        // Check if the game setup needs to be reset
+        if(GameAdvancement.needToReset == true)
+        {
+            // Reset the game setup
+            ResetGameSetup();
+
+            // Set the flag to false
+            GameAdvancement.needToReset = false;
+        }
     }
 
     // Method used to actualize the current currency display of the player
@@ -262,5 +273,14 @@ public class GameSetup : MonoBehaviour
 
         // Make sure it is not raining
         GameAdvancement.raining = false;
+
+        // Actualize the wave display
+        ActualizeWaveDisplay();
+
+        // Actualize the currency display
+        ActualizeCurrencyDisplay();
+
+        // Actualize the castle health points
+        ActualizeCastleHealthPoints();
     }
 }

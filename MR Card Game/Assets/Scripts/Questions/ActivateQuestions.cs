@@ -1494,6 +1494,8 @@ public class ActivateQuestions : MonoBehaviour
 
         Debug.Log("Here, the game setup should be reset");
 
+        // GameAdvancement.needToReset = true;
+
         // Reset the game setup
         GameSetup.ResetGameSetup();
     }
