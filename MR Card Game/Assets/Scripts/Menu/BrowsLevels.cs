@@ -39,7 +39,6 @@ public class BrowsLevels : MonoBehaviour
     public GameObject mainMenu;
     public GameObject browsDirectoriesMenu;
     public GameObject levelDescriptionMenu;
-    public GameObject startLevelMenu;
     public GameObject backGround;
 
     // Define the page x / y text of the brows directories menu
@@ -574,17 +573,38 @@ public class BrowsLevels : MonoBehaviour
         }
     }
 
+    // The start level menu
+    [SerializeField]
+    public GameObject startLevelMenu;
+    
+    // The start level button
+    [SerializeField]
+    public Button startLevelButton;
+    
+    // The initializing button
+    [SerializeField]
+    public Button initializingButton;
+
     public void LaunchLevel()
     {
         // Enable the start level overlay
         startLevelMenu.SetActive(true);
+
+        // Enable the start level button
+        startLevelButton.gameObject.SetActive(true);
+
+        // Make sure the initializing button is disabled
+        initializingButton.gameObject.SetActive(false);
 
         // Set the path to the root directory of the level correctly
         Questions.pathToLevel = currentPath;
 
         Debug.Log("The path to the current level is set to: " + currentPath);
 
-        // At the end disable the background of all menus
-        backGround.SetActive(false);
+        // Disable the view level info menu
+        levelDescriptionMenu.SetActive(false);
+
+        // // At the end disable the background of all menus
+        // backGround.SetActive(false);
     }
 }

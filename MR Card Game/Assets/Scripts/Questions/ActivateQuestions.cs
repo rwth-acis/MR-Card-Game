@@ -1533,6 +1533,9 @@ public class ActivateQuestions : MonoBehaviour
     // Define the game object under which all models are saved (so that they can be found with their name, even if they have the same name as a game object)
     public GameObject saveModelObject;
 
+    [SerializeField]
+    private GameObject background;
+
     // Method that imports all models, and sets them invisible. Is done at the begining of a round so that no wait time is needed while playing.
     public async void ImportAllModels()
     {
@@ -1603,6 +1606,9 @@ public class ActivateQuestions : MonoBehaviour
 
         // Disable the start menu
         startMenu.SetActive(false);
+
+        // Disable the background
+        background.SetActive(false);
 
         // Activate the game menu, where wave and currency are displayed
         ActivateGame();
