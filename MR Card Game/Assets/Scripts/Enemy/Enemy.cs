@@ -125,9 +125,6 @@ public class Enemy : MonoBehaviour
         // // Set the enemy as child of the gameboard
         // transform.parent = gameBoard.transform;
 
-        // When spawning, set the current health points to the maximum health points
-        ReviveEnemy();
-
         // Set the flight height and standing size
         flightHeight = flying * Board.greatestBoardDimension * (float)0.6  + (float)0.2 * size * Board.greatestBoardDimension;
 
@@ -141,7 +138,10 @@ public class Enemy : MonoBehaviour
         transform.localScale = new Vector3((float)0.3 * size, (float)0.3 * size, (float)0.3 * size);
 
         // Set it to the position of the first waypoint on spawn
-        transform.position = (waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0));
+        transform.position = (waypoints[waypointIndex].transform.position + new Vector3(0, GetFlightHeight, 0));
+
+        // When spawning, set the current health points to the maximum health points
+        ReviveEnemy();
 
         // Set the game board correctly
         gameBoard = Board.gameBoard;
@@ -301,16 +301,19 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // Method used to return the enemy to the right object pool uppon death
+    // Method used to return the enemy to the right object pool uppn death
     public void ReturnEnemyToObjectPool()
     {
         // Call the release enemy of the object pool class
         ObjectPools.ReleaseEnemy(this);
     }
 
-    // Method used to set the health points of the enemy correclty uppon respawn
+    // Method used to set the health points of the enemy correctly upon respawn
     public void ReviveEnemy()
     {
+        // Set the waypoint index to 0
+        waypointIndex = 0;
+
         // Make sure the enemy is alive
         isAlive = true;
 

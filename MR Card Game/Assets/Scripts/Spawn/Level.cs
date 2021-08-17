@@ -77,7 +77,7 @@ public class Level : MonoBehaviour
     private string resistance = "";
 
     // The number of enemy categories that are non empty at the moment
-    private int numberOfCategoriesNotEmpty = 7;
+    private int numberOfCategoriesNotEmpty = 0;
 
     // The time between spawning enemies
     [SerializeField]
@@ -130,6 +130,9 @@ public class Level : MonoBehaviour
 
         // Set the number of enemies to spawn of that type to 5
         enemySpawnNumber = 5;
+
+        // Reduce the counter of normal enemies in the first wave by five
+        LevelInfo.normalEnemies[0] = LevelInfo.normalEnemies[0] - 5;
 
         // // Spawn the first level
         // SpawnLevel(LevelInfo.normalEnemies[0], LevelInfo.fastEnemies[0], LevelInfo.superFastEnemies[0], LevelInfo.flyingEnemies[0], LevelInfo.tankEnemies[0], LevelInfo.slowEnemies[0], LevelInfo.berzerkerEnemies[0], LevelInfo.berzerkerFlyingEnemies[0], LevelInfo.berzerkerTankEnemies[0]);
@@ -206,6 +209,20 @@ public class Level : MonoBehaviour
     // The coroutine that spawns an opponent and waits for a time before the next spawn
     IEnumerator SpawnWave()
     {
+        Debug.Log("Spawning wave number: " + GameAdvancement.currentWave);
+
+        Debug.Log("The number of enemies in the wave is: " + LevelInfo.numberOfEnemies[GameAdvancement.currentWave - 1]);
+
+        Debug.Log("The number of normal enemies in the wave is: " + LevelInfo.normalEnemies[GameAdvancement.currentWave - 1]);
+        Debug.Log("The number of fast enemies in the wave is: " + LevelInfo.fastEnemies[GameAdvancement.currentWave - 1]);
+        Debug.Log("The number of super fast enemies in the wave is: " + LevelInfo.superFastEnemies[GameAdvancement.currentWave - 1]);
+        Debug.Log("The number of flying enemies in the wave is: " + LevelInfo.flyingEnemies[GameAdvancement.currentWave - 1]);
+        Debug.Log("The number of tank enemies in the wave is: " + LevelInfo.tankEnemies[GameAdvancement.currentWave - 1]);
+        Debug.Log("The number of slow enemies in the wave is: " + LevelInfo.slowEnemies[GameAdvancement.currentWave - 1]);
+        Debug.Log("The number of berzerker enemies in the wave is: " + LevelInfo.berzerkerEnemies[GameAdvancement.currentWave - 1]);
+        Debug.Log("The number of berzerker flying enemies in the wave is: " + LevelInfo.berzerkerFlyingEnemies[GameAdvancement.currentWave - 1]);
+        Debug.Log("The number of berzerker tank enemies in the wave is: " + LevelInfo.berzerkerTankEnemies[GameAdvancement.currentWave - 1]);
+
         // Spawn the whole wave
         for(int counter = LevelInfo.numberOfEnemies[GameAdvancement.currentWave - 1]; counter > 0; counter = counter - 1)
         {
@@ -213,8 +230,17 @@ public class Level : MonoBehaviour
             if(enemySpawnNumber == 0)
             {
                 // Choose a new type of enemy that should be spawned
-                SetNextEnemyType(LevelInfo.normalEnemies[GameAdvancement.currentWave - 1], LevelInfo.fastEnemies[GameAdvancement.currentWave - 1], LevelInfo.superFastEnemies[GameAdvancement.currentWave - 1], LevelInfo.flyingEnemies[GameAdvancement.currentWave - 1], LevelInfo.tankEnemies[GameAdvancement.currentWave - 1], LevelInfo.slowEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerFlyingEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerTankEnemies[GameAdvancement.currentWave - 1]);
+                int spawnNumber = SetNextEnemyType(LevelInfo.normalEnemies[GameAdvancement.currentWave - 1], LevelInfo.fastEnemies[GameAdvancement.currentWave - 1], LevelInfo.superFastEnemies[GameAdvancement.currentWave - 1], LevelInfo.flyingEnemies[GameAdvancement.currentWave - 1], LevelInfo.tankEnemies[GameAdvancement.currentWave - 1], LevelInfo.slowEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerFlyingEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerTankEnemies[GameAdvancement.currentWave - 1]);
+                
+                // Set the enemy spawn number to the number returned by the set next enemy type method
+                enemySpawnNumber = spawnNumber;
+
+                Debug.Log("The enemy spawn number was set to: " + spawnNumber);
+
+                Debug.Log("The new enemy type was set to: " + enemyType);
             }
+
+            Debug.Log("The enemy spawn number is: " + enemySpawnNumber);
 
             // Check if currently a group of enemy should be spawned
             if(enemySpawnNumber > 0)
@@ -293,20 +319,98 @@ public class Level : MonoBehaviour
         }
     }
 
-    // Method that determines the next type of enemies that should be spawned
-    public void SetNextEnemyType(int CounterE1, int CounterE2, int CounterE3, int CounterE4, int CounterE5, int CounterE6, int CounterE7, int CounterE8, int CounterE9)
+    // The method that sets the number of categories not empty variable
+    private void SetNumberOfCategoriesNotEmpty(int CounterE1, int CounterE2, int CounterE3, int CounterE4, int CounterE5, int CounterE6, int CounterE7, int CounterE8, int CounterE9)
     {
+        // Initialize the number
+        int number = 0;
+
+        // Check if the first category is non empty
+        if(CounterE1 > 0)
+        {
+            // Increase the number by one
+            number = number + 1;
+        }
+
+        // Check if the second category is non empty
+        if(CounterE2 > 0)
+        {
+            // Increase the number by one
+            number = number + 1;
+        }
+
+        // Check if the third category is non empty
+        if(CounterE3 > 0)
+        {
+            // Increase the number by one
+            number = number + 1;
+        }
+
+        // Check if the fourth category is non empty
+        if(CounterE4 > 0)
+        {
+            // Increase the number by one
+            number = number + 1;
+        }
+
+        // Check if the fifth category is non empty
+        if(CounterE5 > 0)
+        {
+            // Increase the number by one
+            number = number + 1;
+        }
+
+        // Check if the sixth category is non empty
+        if(CounterE6 > 0)
+        {
+            // Increase the number by one
+            number = number + 1;
+        }
+
+        // Check if the seventh category is non empty
+        if(CounterE7 > 0)
+        {
+            // Increase the number by one
+            number = number + 1;
+        }
+
+        // Check if the eighth category is non empty
+        if(CounterE8 > 0)
+        {
+            // Increase the number by one
+            number = number + 1;
+        }
+
+        // Check if the ninth category is non empty
+        if(CounterE9 > 0)
+        {
+            // Increase the number by one
+            number = number + 1;
+        }
+
+        // Set the number of categories that is not empty
+        numberOfCategoriesNotEmpty = number;
+
+        Debug.Log("*****************The number of categories not empty is: " + number);
+    }
+
+    // Method that determines the next type of enemies that should be spawned
+    public int SetNextEnemyType(int CounterE1, int CounterE2, int CounterE3, int CounterE4, int CounterE5, int CounterE6, int CounterE7, int CounterE8, int CounterE9)
+    {
+        // Set the right number of categories not empty
+        SetNumberOfCategoriesNotEmpty(CounterE1, CounterE2, CounterE3, CounterE4, CounterE5, CounterE6, CounterE7, CounterE8, CounterE9);
+
         // Get a random number
         int newCategoryIndex = RandomNumber(0, numberOfCategoriesNotEmpty);
 
         // Get another random number and set the enemy spawn number to it
-        enemySpawnNumber = RandomNumber(1, 3) + (GameAdvancement.currentWave - 1);
+        int newEnemySpawnNumber = RandomNumber(1, 3) + (GameAdvancement.currentWave - 1);
 
         // Check that there are enough enemies in the wave
-        if(enemySpawnNumber > LevelInfo.numberOfUndefeatedEnemies)
+        if(newEnemySpawnNumber > LevelInfo.numberOfUndefeatedEnemies)
         {
             // Set the enemy spawn number to the number of undefeated enemies
-            enemySpawnNumber = LevelInfo.numberOfUndefeatedEnemies;
+            newEnemySpawnNumber = LevelInfo.numberOfUndefeatedEnemies;
         }
         
         // Get the right enemy type, and reduce the counter and number of enemies accordingly
@@ -318,15 +422,15 @@ public class Level : MonoBehaviour
                 enemyType = "Normal Enemy";
 
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
-                if(CounterE1 > enemySpawnNumber)
+                if(CounterE1 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE1 = CounterE1 - enemySpawnNumber;
+                    CounterE1 = CounterE1 - newEnemySpawnNumber;
 
                 } else {
 
                     // Set the enemy spawn number to the counter
-                    enemySpawnNumber = CounterE1;
+                    newEnemySpawnNumber = CounterE1;
 
                     // Set the counter to 0
                     CounterE1 = 0;
@@ -345,17 +449,18 @@ public class Level : MonoBehaviour
             {
                 // Set the enemy type correctly
                 enemyType = "Fast Enemy";
+                Debug.Log("The counter of the fast enemies is: " + CounterE2 + " and will be reduced by at most: " + newEnemySpawnNumber);
 
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
-                if(CounterE2 > enemySpawnNumber)
+                if(CounterE2 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE2 = CounterE2 - enemySpawnNumber;
+                    CounterE2 = CounterE2 - newEnemySpawnNumber;
 
                 } else {
 
                     // Set the enemy spawn number to the counter
-                    enemySpawnNumber = CounterE2;
+                    newEnemySpawnNumber = CounterE2;
 
                     // Set the counter to 0
                     CounterE2 = 0;
@@ -375,16 +480,18 @@ public class Level : MonoBehaviour
                 // Set the enemy type correctly
                 enemyType = "Super Fast Enemy";
 
+                Debug.Log("The counter of the super fast enemies is: " + CounterE3 + " and will be reduced by at most: " + newEnemySpawnNumber);
+
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
-                if(CounterE3 > enemySpawnNumber)
+                if(CounterE3 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE3 = CounterE3 - enemySpawnNumber;
+                    CounterE3 = CounterE3 - newEnemySpawnNumber;
 
                 } else {
 
                     // Set the enemy spawn number to the counter
-                    enemySpawnNumber = CounterE3;
+                    newEnemySpawnNumber = CounterE3;
 
                     // Set the counter to 0
                     CounterE3 = 0;
@@ -404,16 +511,18 @@ public class Level : MonoBehaviour
                 // Set the enemy type correctly
                 enemyType = "Flying Enemy";
 
+                Debug.Log("The counter of the flying enemies is: " + CounterE4 + " and will be reduced by at most: " + newEnemySpawnNumber);
+
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
-                if(CounterE4 > enemySpawnNumber)
+                if(CounterE4 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE4 = CounterE4 - enemySpawnNumber;
+                    CounterE4 = CounterE4 - newEnemySpawnNumber;
 
                 } else {
 
                     // Set the enemy spawn number to the counter
-                    enemySpawnNumber = CounterE4;
+                    newEnemySpawnNumber = CounterE4;
 
                     // Set the counter to 0
                     CounterE4 = 0;
@@ -433,16 +542,18 @@ public class Level : MonoBehaviour
                 // Set the enemy type correctly
                 enemyType = "Tank Enemy";
 
+                Debug.Log("The counter of the tank enemies is: " + CounterE5 + " and will be reduced by at most: " + newEnemySpawnNumber);
+
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
-                if(CounterE5 > enemySpawnNumber)
+                if(CounterE5 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE5 = CounterE5 - enemySpawnNumber;
+                    CounterE5 = CounterE5 - newEnemySpawnNumber;
 
                 } else {
 
                     // Set the enemy spawn number to the counter
-                    enemySpawnNumber = CounterE5;
+                    newEnemySpawnNumber = CounterE5;
 
                     // Set the counter to 0
                     CounterE5 = 0;
@@ -463,15 +574,15 @@ public class Level : MonoBehaviour
                 enemyType = "Slow Enemy";
 
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
-                if(CounterE6 > enemySpawnNumber)
+                if(CounterE6 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE6 = CounterE6 - enemySpawnNumber;
+                    CounterE6 = CounterE6 - newEnemySpawnNumber;
 
                 } else {
 
                     // Set the enemy spawn number to the counter
-                    enemySpawnNumber = CounterE6;
+                    newEnemySpawnNumber = CounterE6;
 
                     // Set the counter to 0
                     CounterE6 = 0;
@@ -492,15 +603,15 @@ public class Level : MonoBehaviour
                 enemyType = "Berzerker Enemy";
 
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
-                if(CounterE7 > enemySpawnNumber)
+                if(CounterE7 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE7 = CounterE7 - enemySpawnNumber;
+                    CounterE7 = CounterE7 - newEnemySpawnNumber;
 
                 } else {
 
                     // Set the enemy spawn number to the counter
-                    enemySpawnNumber = CounterE7;
+                    newEnemySpawnNumber = CounterE7;
 
                     // Set the counter to 0
                     CounterE7 = 0;
@@ -521,15 +632,15 @@ public class Level : MonoBehaviour
                 enemyType = "Berzerker Flying Enemy";
 
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
-                if(CounterE8 > enemySpawnNumber)
+                if(CounterE8 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE8 = CounterE8 - enemySpawnNumber;
+                    CounterE8 = CounterE8 - newEnemySpawnNumber;
 
                 } else {
 
                     // Set the enemy spawn number to the counter
-                    enemySpawnNumber = CounterE8;
+                    newEnemySpawnNumber = CounterE8;
 
                     // Set the counter to 0
                     CounterE8 = 0;
@@ -550,15 +661,15 @@ public class Level : MonoBehaviour
                 enemyType = "Berzerker Tank Enemy";
 
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
-                if(CounterE9 > enemySpawnNumber)
+                if(CounterE9 > newEnemySpawnNumber)
                 {
                     // Reduce the counter by the enemy spawn number
-                    CounterE9 = CounterE9 - enemySpawnNumber;
+                    CounterE9 = CounterE9 - newEnemySpawnNumber;
 
                 } else {
 
                     // Set the enemy spawn number to the counter
-                    enemySpawnNumber = CounterE9;
+                    newEnemySpawnNumber = CounterE9;
 
                     // Set the counter to 0
                     CounterE9 = 0;
@@ -680,6 +791,8 @@ public class Level : MonoBehaviour
                 weakness = "";
             }
         }
+
+        return newEnemySpawnNumber;
     }
 
     // // Method that attributes a resistance to the currently spawned enemies
@@ -766,7 +879,7 @@ public class Level : MonoBehaviour
             int enemiesWithoutCategory = numberOfEnemiesInTheWave;
 
             // A high number of enemies in the first wave should be normal enemies
-            int normalEnemies = RandomNumber(10, 20);
+            int normalEnemies = RandomNumber(10, numberOfEnemiesInTheWave);
             LevelInfo.normalEnemies[0] = normalEnemies;
 
             // Set the number of enemies without category correctly
