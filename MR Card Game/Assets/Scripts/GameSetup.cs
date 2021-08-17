@@ -244,14 +244,28 @@ public class GameSetup : MonoBehaviour
     // Method used to reset the game setup after a level was finished
     public static void ResetGameSetup()
     {
-        Debug.Log("The game setup is being reseted");
-        // Reset the max health points
-        GameAdvancement.castleMaxHP = getCastleHP;
+        // Check the number of waves, and set the castle health points accordingly
+        if(LevelInfo.numberOfWaves == 1)
+        {
+            // Set the max health points to 10
+            GameAdvancement.castleMaxHP = 10;
 
-        Debug.Log("The castle hp is: " + getCastleHP);
+        } else if(LevelInfo.numberOfWaves == 2)
+        {
+            // Set the max health points to 20
+            GameAdvancement.castleMaxHP = 20;
+
+        } else {
+
+            // Reset the max health points
+            GameAdvancement.castleMaxHP = getCastleHP;
+        }
+
+        // // Reset the max health points
+        // GameAdvancement.castleMaxHP = getCastleHP;
 
         // Set the castle current health points to their maximum
-        GameAdvancement.castlecurrentHP = getCastleHP;
+        GameAdvancement.castlecurrentHP = GameAdvancement.castleMaxHP;
 
         // Set the armor points to 0
         GameAdvancement.castleCurrentAP = 0;

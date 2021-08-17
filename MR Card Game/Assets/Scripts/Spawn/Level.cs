@@ -113,7 +113,7 @@ public class Level : MonoBehaviour
     void Update()
     {
         // Check if the health points of the castle reach 0 health points
-        if(GameAdvancement.castlecurrentHP >= 0)
+        if(GameAdvancement.castlecurrentHP <= 0)
         {
             ActivateDefeatScreen();
         }
