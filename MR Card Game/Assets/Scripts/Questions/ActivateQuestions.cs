@@ -1476,11 +1476,26 @@ public class ActivateQuestions : MonoBehaviour
         startMenu.SetActive(false);
     }
 
+    // The method used to access the information of if the game overlay is active
+    public bool GameOverlayActivated()
+    {
+        return gameOverlay.activeSelf == true;
+    }
+
     // Method that activates the view model menu and enables the user to open the first question
-    public void ActivateGame()
+    IEnumerator ActivateGame()
     {
         // After waiting, enable the view model menu
         gameOverlay.SetActive(true);
+
+        Debug.Log("The game overlay should have been enabled");
+
+        yield return new WaitUntil(GameOverlayActivated);
+
+        Debug.Log("Here, the game setup should be reset");
+
+        // Reset the game setup
+        GameSetup.ResetGameSetup();
     }
 
     private bool lastQuestionWasAnsweredCorrectly = false;
@@ -1536,12 +1551,22 @@ public class ActivateQuestions : MonoBehaviour
     [SerializeField]
     private GameObject background;
 
+    // Flag that states if this is the first import or not
+    private bool firstImport = true;
+
     // Method that imports all models, and sets them invisible. Is done at the begining of a round so that no wait time is needed while playing.
     public async void ImportAllModels()
     {
-        // Initialize the object importer
-        ObjImporter objImporter = new ObjImporter();
-        ServiceManager.RegisterService(objImporter);
+        // Check if this is the first time something is imported, and if it is needed to initialize the object importer
+        if(firstImport == true)
+        {
+            // Initialize the object importer
+            ObjImporter objImporter = new ObjImporter();
+            ServiceManager.RegisterService(objImporter);
+
+            // Set the flag that states that this is the first import to false
+            firstImport = false;
+        }
 
         // Get the array of models
         string[] models = Directory.GetFiles(Questions.pathToLevel, "Model*", SearchOption.TopDirectoryOnly);
@@ -1611,7 +1636,7 @@ public class ActivateQuestions : MonoBehaviour
         background.SetActive(false);
 
         // Activate the game menu, where wave and currency are displayed
-        ActivateGame();
+        StartCoroutine(ActivateGame());
     }
 
     // Method used to increase the number of questions that need to be answered

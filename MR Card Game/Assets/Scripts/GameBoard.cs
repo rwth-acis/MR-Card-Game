@@ -124,6 +124,13 @@ public class GameBoard : MonoBehaviour
 
             // Enable the start next wave button
             EnableStartNextWave();
+
+            // // Check if the wave is already ongoing
+            // if(LevelInfo.waveOngoing == true)
+            // {
+            //     // Un-pause the game
+            //     GameAdvancement.gamePaused = false;
+            // }
         }
     }
 
@@ -141,6 +148,13 @@ public class GameBoard : MonoBehaviour
 
             // Enable the start next wave button
             EnableStartNextWave();
+
+            // // Check if the wave is already ongoing
+            // if(LevelInfo.waveOngoing == true)
+            // {
+            //     // Un-pause the game
+            //     GameAdvancement.gamePaused = false;
+            // }
         }
     }
 
@@ -150,10 +164,12 @@ public class GameBoard : MonoBehaviour
         // Set the flag that the top left corner is not in view anymore
         Board.topLeftCornerVisible = false;
 
-        // Remove the game board
-        RemoveGameBoard();
-
-        // Disable the 
+        // Check if the wave is already ongoing
+        if(LevelInfo.waveOngoing == false)
+        {
+            // Remove the game board
+            RemoveGameBoard();
+        }
         
     }
 
@@ -163,8 +179,12 @@ public class GameBoard : MonoBehaviour
         // Set the flag that the bottom right corner is not in view anymore
         Board.bottomRightCornerVisible = false;
 
-        // Remove the game board
-        RemoveGameBoard();
+        // Check if the wave is already ongoing
+        if(LevelInfo.waveOngoing == false)
+        {
+            // Remove the game board
+            RemoveGameBoard();
+        }
     }
 
     // ---------------------------------------------------------------------------------------------------

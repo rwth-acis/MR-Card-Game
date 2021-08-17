@@ -121,7 +121,7 @@ public class SpellCard : MonoBehaviour
         // Check if the wave is not ongoing anymore
         if(LevelInfo.waveOngoing == false)
         {
-            Debug.Log("The wave was not ongoing anymore, so the canvas should be hided now");
+            // Debug.Log("The wave was not ongoing anymore, so the canvas should be hided now");
             // Check if the spell card was already drawn
             if(cardDrawn == true)
             {
@@ -141,6 +141,22 @@ public class SpellCard : MonoBehaviour
             }
 
         } else {
+
+            // // Check if the game is paused
+            // if(GameAdvancement.gamePaused == true)
+            // {
+            //     // Check if the card was already drawn
+            //     if(cardDrawn == false)
+            //     {
+            //         // Set the flag that the card is visible but not displayed
+            //         cardVisibleButNotDisplayed = true;
+
+            //     } else {
+
+            //         // Set the flag that the card was drawn but not displayed
+            //         cardDrawnButNotDisplayed = true;
+            //     }
+            // }
 
             // Check if the reveal spell card overlay is not displayed while the image target is in the camera field and the game is not paused
             if(cardVisibleButNotDisplayed == true && GameAdvancement.gamePaused == false)
@@ -401,10 +417,10 @@ public class SpellCard : MonoBehaviour
     }
 
     // Function that is used to test when all questions that were needed to be answered were answered correctly
-        private bool NoMoreQuestionsNeeded()
-        {
-            return Questions.numberOfQuestionsNeededToAnswer == 0;
-        }
+    private bool NoMoreQuestionsNeeded()
+    {
+        return Questions.numberOfQuestionsNeededToAnswer == 0;
+    }
 
     // The method that builds an archer tower over the image target
     IEnumerator DrawSpell()
@@ -498,7 +514,7 @@ public class SpellCard : MonoBehaviour
             // Display the play spell button
             DisplayPlaySpell();
 
-            Debug.Log("Trying to display the spell");
+            // Debug.Log("Trying to display the spell");
 
             // Pause the game
             GameAdvancement.gamePaused = true;
@@ -614,7 +630,7 @@ public class SpellCard : MonoBehaviour
             // Check if the wave is ongoing
             if(LevelInfo.waveOngoing == true && cardDrawn == true)
             {
-                Debug.Log("Entered the display spell if statement");
+                // Debug.Log("Entered the display spell if statement");
                 // Pause the game
                 GameAdvancement.gamePaused = true;
 
@@ -649,11 +665,11 @@ public class SpellCard : MonoBehaviour
         // Check that the wave is ongoing and the card was already drawn
         if(LevelInfo.waveOngoing == true && cardDrawn == true)
         {
-            Debug.Log("Currently, the wave is ongoing is: " + LevelInfo.waveOngoing + " and the card was drawn is: " + cardDrawn);
+            // Debug.Log("Currently, the wave is ongoing is: " + LevelInfo.waveOngoing + " and the card was drawn is: " + cardDrawn);
             // Enable the spell card canvas game object
             spellCardCanvas.SetActive(true);
 
-            Debug.Log("Spell card canvas should be active");
+            // Debug.Log("Spell card canvas should be active");
 
             // Enable the play spell button
             playSpellButton.gameObject.SetActive(true);
@@ -1003,7 +1019,7 @@ public class SpellCard : MonoBehaviour
                     
                 }
             }
-            Debug.Log("The enemies were not null");
+            // Debug.Log("The enemies were not null");
 
             // Kill this enemy by making it take more damage than the maximum number of health points that exist
             closestEnemy.GetComponent<Enemy>().TakeDamage(1000);

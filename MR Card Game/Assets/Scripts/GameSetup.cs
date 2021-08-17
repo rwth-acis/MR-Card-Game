@@ -93,13 +93,38 @@ static class Buildings
    
 public class GameSetup : MonoBehaviour
 {
+    // The instance of this class so that some variables can be accessed in a static way
+    public static GameSetup instance;
+
+    // The button, not interactable, on which the current wave is displayed
+    [SerializeField]
+    private GameObject gameOverlay;
+
+    // The method used to access the game overlay object as a static object
+    public static GameObject getGameOverlay
+    {
+        get { return instance.gameOverlay; }
+    }
+
     // The health points the castle has. Can be changed in the inspector.
     [SerializeField]
     private int castleHP;
 
+    // The method used to access the castle health points as a static object
+    public static int getCastleHP
+    {
+        get { return instance.castleHP; }
+    }
+
     // The currency the player should have at the beginning. Can be changed in the inspector.
     [SerializeField]
     private int beginingCurrency;
+
+    // The method used to access the begining currecy as a static object
+    public static int getBeginingCurrency
+    {
+        get { return instance.beginingCurrency; }
+    }
 
     // The button, not interactable, on which the current wave is displayed
     [SerializeField]
@@ -124,6 +149,8 @@ public class GameSetup : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Set the instance to this script
+        instance = this;
 
         // armorPoints.GetComponent<Renderer>().sortingLayerID = armorPoints.transform.parent.GetComponent<Renderer>().sortingLayerID;
 
@@ -133,15 +160,15 @@ public class GameSetup : MonoBehaviour
         // Initialize the array of image targets
         Buildings.imageTargetToBuilding = new GameObject[10];
 
-        // Set the castle max and current hp to the hp given in the inspector
-        GameAdvancement.castleMaxHP = castleHP;
-        GameAdvancement.castlecurrentHP = castleHP;
+        // // Set the castle max and current hp to the hp given in the inspector
+        // GameAdvancement.castleMaxHP = castleHP;
+        // GameAdvancement.castlecurrentHP = castleHP;
 
-        // Set the currency points to the amount the player should have in the begining
-        GameAdvancement.currencyPoints = beginingCurrency;
+        // // Set the currency points to the amount the player should have in the begining
+        // GameAdvancement.currencyPoints = beginingCurrency;
 
-        // Set the wave counter to wave 1
-        GameAdvancement.currentWave = 0;
+        // // Set the wave counter to wave 0
+        // GameAdvancement.currentWave = 0;
 
         GameAdvancement.waveDisplay = waveDisplay;
 
@@ -156,6 +183,9 @@ public class GameSetup : MonoBehaviour
 
         // Set the castle health counter
         GameAdvancement.castleHealthCounter = castleHealthCounter;
+
+        // Reset the game setup
+        ResetGameSetup();
 
         // Actualize the wave display
         ActualizeWaveDisplay();
@@ -198,5 +228,39 @@ public class GameSetup : MonoBehaviour
     {
         // Change the button display
         GameAdvancement.waveDisplay.GetComponentInChildren<TMP_Text>().text = "Wave: " + GameAdvancement.currentWave;
+    }
+
+    // Method used to reset the game setup after a level was finished
+    public static void ResetGameSetup()
+    {
+        Debug.Log("The game setup is being reseted");
+        // Reset the max health points
+        GameAdvancement.castleMaxHP = getCastleHP;
+
+        Debug.Log("The castle hp is: " + getCastleHP);
+
+        // Set the castle current health points to their maximum
+        GameAdvancement.castlecurrentHP = getCastleHP;
+
+        // Set the armor points to 0
+        GameAdvancement.castleCurrentAP = 0;
+
+        // Set the current currency points to the begining currency
+        GameAdvancement.currencyPoints = getBeginingCurrency;
+
+        // Set the wave counter to wave 0
+        GameAdvancement.currentWave = 0;
+
+        // Make sure the game is not paused
+        GameAdvancement.gamePaused = false;
+
+        // Make sure the time is not stopped
+        GameAdvancement.timeStopped = false;
+
+        // Make sure there is no global slow
+        GameAdvancement.globalSlow = 1;
+
+        // Make sure it is not raining
+        GameAdvancement.raining = false;
     }
 }
