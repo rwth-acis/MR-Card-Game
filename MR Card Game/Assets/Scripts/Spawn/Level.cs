@@ -112,6 +112,12 @@ public class Level : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Check if the health points of the castle reach 0 health points
+        if(GameAdvancement.castlecurrentHP >= 0)
+        {
+            ActivateDefeatScreen();
+        }
+
         // Check if a round was already won
         if(oneRoundAlreadyWon == true)
         {
@@ -1235,11 +1241,11 @@ public class Level : MonoBehaviour
 
     // The victory screen game object
     [SerializeField]
-    private TMP_Text enemiesDefeated;
+    private TMP_Text enemiesDefeatedVictory;
 
     // The victory screen game object
     [SerializeField]
-    private TMP_Text enemiesMissed;
+    private TMP_Text enemiesMissedVictory;
 
     // The victory screen game object
     [SerializeField]
@@ -1294,10 +1300,10 @@ public class Level : MonoBehaviour
         int number = CalculateNumberOfEnemies();
 
         // Write how many enemies were defeated in all waves
-        enemiesDefeated.text = "Number of enemies defeated: " + (number - LevelInfo.numberOfEnemiesThatReachedTheCastle);
+        enemiesDefeatedVictory.text = "Number of enemies defeated: " + (number - LevelInfo.numberOfEnemiesThatReachedTheCastle);
 
         // Write how many enemies were missed in all waves
-        enemiesMissed.text = "Number of enemies missed: " + LevelInfo.numberOfEnemiesThatReachedTheCastle;
+        enemiesMissedVictory.text = "Number of enemies missed: " + LevelInfo.numberOfEnemiesThatReachedTheCastle;
 
         // Set the flag that a level was already won
         oneRoundAlreadyWon = true;
@@ -1355,5 +1361,60 @@ public class Level : MonoBehaviour
 
         // Reduce the counter of normal enemies in the first wave by five
         LevelInfo.normalEnemies[0] = LevelInfo.normalEnemies[0] - 5;
+    }
+
+    // The victory screen game object
+    [SerializeField]
+    private GameObject defeatScreen;
+
+    // The victory screen game object
+    [SerializeField]
+    private TMP_Text enemiesDefeatedDefeat;
+
+    // The victory screen game object
+    [SerializeField]
+    private TMP_Text enemiesMissedDefeat;
+
+    // The method that activates the win screen
+    private void ActivateDefeatScreen()
+    {
+        // Disable all towers
+        GameObject[] towerArray = GameObject.FindGameObjectsWithTag ("Tower");
+ 
+        foreach(GameObject tower in towerArray)
+        {
+            // Check if the tower is active
+            if(tower.activeSelf == true)
+            {
+                // Release the tower object
+                ObjectPools.ReleaseTower(tower);
+            }
+        }
+
+        // Reset all spell cards so that they are not drawn
+         GameObject[] spellArray = GameObject.FindGameObjectsWithTag ("Spell Card");
+
+        foreach(GameObject spellCard in spellArray)
+        {
+            spellCard.GetComponent<SpellCard>().ResetSpellCard();
+        }
+
+        // Reset the spell card deck
+        SpellCard.ResetSpellCardDeck();
+
+        // Activate the victory screen
+        victoryScreen.SetActive(true);
+
+        // Get the number of enemies in all waves
+        int number = CalculateNumberOfEnemies();
+
+        // Write how many enemies were defeated in all waves
+        enemiesDefeatedDefeat.text = "Number of enemies defeated: " + (number - LevelInfo.numberOfEnemiesThatReachedTheCastle);
+
+        // Write how many enemies were missed in all waves
+        enemiesMissedDefeat.text = "Number of enemies missed: " + LevelInfo.numberOfEnemiesThatReachedTheCastle;
+
+        // Set the flag that a level was already won
+        oneRoundAlreadyWon = true;
     }
 }

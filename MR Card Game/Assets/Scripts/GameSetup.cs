@@ -203,15 +203,15 @@ public class GameSetup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Check if the game setup needs to be reset
-        if(GameAdvancement.needToReset == true)
-        {
-            // Reset the game setup
-            ResetGameSetup();
+        // // Check if the game setup needs to be reset
+        // if(GameAdvancement.needToReset == true)
+        // {
+        //     // Reset the game setup
+        //     ResetGameSetup();
 
-            // Set the flag to false
-            GameAdvancement.needToReset = false;
-        }
+        //     // Set the flag to false
+        //     GameAdvancement.needToReset = false;
+        // }
     }
 
     // Method used to actualize the current currency display of the player

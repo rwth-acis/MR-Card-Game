@@ -585,6 +585,7 @@ public class BrowsLevels : MonoBehaviour
     [SerializeField]
     public Button initializingButton;
 
+    // The method used to launch a level from the start level screen
     public void LaunchLevel()
     {
         // Enable the start level overlay
