@@ -266,10 +266,10 @@ public class SpellCard : MonoBehaviour
     }
 
     // Initialize random number generator
-    private readonly System.Random random = new System.Random();
+    private static readonly System.Random random = new System.Random();
 
     // Method that shuffles the card deck
-    private void ShuffleCardDeck(string[] array)
+    public static void ShuffleCardDeck(string[] array)
     {
         // Get the length of the question array
         int length = array.Length;
@@ -1430,5 +1430,37 @@ public class SpellCard : MonoBehaviour
                 enemy.GetComponent<Enemy>().TakeDamage(damage);
             }
         }
+    }
+
+    //---------------------------------------------------------------------------------------------------------------
+    // The spell card helper methods
+    //---------------------------------------------------------------------------------------------------------------
+    // The method used to make the damage in radius effect take place
+    public void ResetSpellCard()
+    {
+        // Reset the spell card so that it was not drawn and cannot be played
+        cardVisibleButNotDisplayed = false;
+        cardDrawnButNotDisplayed = false;
+        cardDrawn = false;
+        onGameBoard = false;
+
+        // Reset the spell type
+        spellType = "";
+
+        // Hide the play spell button
+        HideSpellCanvas();
+    }
+
+    // The method used to reset the spell card deck
+    public static void ResetSpellCardDeck()
+    {
+        // Reset the number of free draws
+        Cards.freeDraws = 0;
+
+        // Set the current card index to 0
+        Cards.currentCardIndex = 0;
+
+        // Shuffle the card deck
+        ShuffleCardDeck(Cards.cardDeck);
     }
 }

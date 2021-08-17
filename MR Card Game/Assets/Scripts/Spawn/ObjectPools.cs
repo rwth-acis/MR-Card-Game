@@ -206,7 +206,7 @@ public class ObjectPools : MonoBehaviour
     {
         string towerType = tower.GetComponent<Tower>().getTowerType;
 
-        // Get the correclt object pool index from the object pools class
+        // Get the correct object pool index from the object pools class
         int objectPoolIndex = GetTowerPoolIndex(towerType);
 
         // Release the enemy into the right object pool

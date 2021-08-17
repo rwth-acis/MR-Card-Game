@@ -101,52 +101,35 @@ public class Level : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Set the number of waves
-        SetNumberOfWaves();
-
-        // Set the current wave to wave 0
-        GameAdvancement.currentWave = 0;
-
-        // Initialize the arrays
-        LevelInfo.numberOfEnemies = new int[LevelInfo.numberOfWaves];
-        LevelInfo.normalEnemies = new int[LevelInfo.numberOfWaves];
-        LevelInfo.fastEnemies = new int[LevelInfo.numberOfWaves];
-        LevelInfo.superFastEnemies = new int[LevelInfo.numberOfWaves];
-        LevelInfo.flyingEnemies = new int[LevelInfo.numberOfWaves];
-        LevelInfo.tankEnemies = new int[LevelInfo.numberOfWaves];
-        LevelInfo.slowEnemies = new int[LevelInfo.numberOfWaves];
-        LevelInfo.berzerkerEnemies = new int[LevelInfo.numberOfWaves];
-        LevelInfo.berzerkerFlyingEnemies = new int[LevelInfo.numberOfWaves];
-        LevelInfo.berzerkerTankEnemies = new int[LevelInfo.numberOfWaves];
-
-        // Set the right additional number of enemies per wave
-        LevelInfo.numberOfAdditionalEnemiesPerWave = numberOfAdditionalEnemiesPerWave;
-
-        // Create level information given the number of question
-        CreateLevelInformation();
-
-        // Set the type of enemy to spawn to normal enemy
-        enemyType = "Normal Enemy";
-
-        // Set the number of enemies to spawn of that type to 5
-        enemySpawnNumber = 5;
-
-        // Reduce the counter of normal enemies in the first wave by five
-        LevelInfo.normalEnemies[0] = LevelInfo.normalEnemies[0] - 5;
-
-        // // Spawn the first level
-        // SpawnLevel(LevelInfo.normalEnemies[0], LevelInfo.fastEnemies[0], LevelInfo.superFastEnemies[0], LevelInfo.flyingEnemies[0], LevelInfo.tankEnemies[0], LevelInfo.slowEnemies[0], LevelInfo.berzerkerEnemies[0], LevelInfo.berzerkerFlyingEnemies[0], LevelInfo.berzerkerTankEnemies[0]);
-        // StartWave();
+        // Reset the level info
+        ResetLevelInfo();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Check if the current wave is smaller than the number of waves and if the number of undefeated enemies is 0
-        if(LevelInfo.numberOfUndefeatedEnemies == 0 && GameAdvancement.currentWave < LevelInfo.numberOfWaves)
+        // Check if a round was already won
+        if(oneRoundAlreadyWon == true)
         {
-            // Make the next wave setup
-            MakeNextWaveSetup();
+            // Reset the level info
+            ResetLevelInfo();
+
+            // Set the one round already won flag to false
+            oneRoundAlreadyWon = false;
+
+        } else {
+            // Check if the current wave is smaller than the number of waves and if the number of undefeated enemies is 0
+            if(LevelInfo.numberOfUndefeatedEnemies == 0)
+            {
+                if(GameAdvancement.currentWave < LevelInfo.numberOfWaves)
+                {
+                    // Make the next wave setup
+                    MakeNextWaveSetup();
+
+                } else {
+                    ActivateVictoryScreen();
+                }
+            }
         }
     }
 
@@ -208,7 +191,6 @@ public class Level : MonoBehaviour
     // The coroutine that spawns an opponent and waits for a time before the next spawn
     IEnumerator SpawnWave()
     {
-
         // Set the right number of categories not empty
         SetNumberOfCategoriesNotEmpty(LevelInfo.normalEnemies[GameAdvancement.currentWave - 1], LevelInfo.fastEnemies[GameAdvancement.currentWave - 1], LevelInfo.superFastEnemies[GameAdvancement.currentWave - 1], LevelInfo.flyingEnemies[GameAdvancement.currentWave - 1], LevelInfo.tankEnemies[GameAdvancement.currentWave - 1], LevelInfo.slowEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerFlyingEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerTankEnemies[GameAdvancement.currentWave - 1]);
         
@@ -1237,5 +1219,87 @@ public class Level : MonoBehaviour
 
         // Set the building as child of the image target
         building.transform.parent = Buildings.imageTargetToBuilding[index].transform;
+    }
+
+    // -------------------------------------------------------------------------------------------------------
+    // Level finished methods
+    // -------------------------------------------------------------------------------------------------------
+
+    // The victory screen game object
+    [SerializeField]
+    private GameObject victoryScreen;
+
+    // The flag that states that a round was won previously and the next level needs to be set up.
+    private bool oneRoundAlreadyWon = false;
+
+    // The method that activates the win screen
+    private void ActivateVictoryScreen()
+    {
+        // Disable all towers
+        GameObject[] towerArray = GameObject.FindGameObjectsWithTag ("Tower");
+ 
+        foreach(GameObject tower in towerArray)
+        {
+            // Check if the tower is active
+            if(tower.activeSelf == true)
+            {
+                // Release the tower object
+                ObjectPools.ReleaseTower(tower);
+            }
+        }
+
+        // Reset all spell cards so that they are not drawn
+         GameObject[] spellArray = GameObject.FindGameObjectsWithTag ("Spell Card");
+
+        foreach(GameObject spellCard in spellArray)
+        {
+            spellCard.GetComponent<SpellCard>().ResetSpellCard();
+        }
+
+        // Reset the spell card deck
+        SpellCard.ResetSpellCardDeck();
+
+        // Activate the victory screen
+        victoryScreen.SetActive(true);
+
+        // Set the flag that a level was already won
+        oneRoundAlreadyWon = true;
+    }
+
+    // The method used to reset the level info
+    private void ResetLevelInfo()
+    {
+        // Set the number of waves
+        SetNumberOfWaves();
+
+        // Set the current wave to wave 0
+        GameAdvancement.currentWave = 0;
+
+        // Initialize the arrays
+        LevelInfo.numberOfEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.normalEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.fastEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.superFastEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.flyingEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.tankEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.slowEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.berzerkerEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.berzerkerFlyingEnemies = new int[LevelInfo.numberOfWaves];
+        LevelInfo.berzerkerTankEnemies = new int[LevelInfo.numberOfWaves];
+
+        // Set the right additional number of enemies per wave
+        LevelInfo.numberOfAdditionalEnemiesPerWave = numberOfAdditionalEnemiesPerWave;
+
+        // Create level information given the number of question
+        CreateLevelInformation();
+
+        // Set the type of enemy to spawn to normal enemy
+        enemyType = "Normal Enemy";
+
+        // Set the number of enemies to spawn of that type to 5
+        enemySpawnNumber = 5;
+
+        // Reduce the counter of normal enemies in the first wave by five
+        LevelInfo.normalEnemies[0] = LevelInfo.normalEnemies[0] - 5;
     }
 }
