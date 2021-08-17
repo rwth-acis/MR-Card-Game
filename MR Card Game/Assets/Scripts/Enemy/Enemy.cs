@@ -228,6 +228,9 @@ public class Enemy : MonoBehaviour
             // Return the enemy to the object pool
             ReturnEnemyToObjectPool();
 
+            // Increase the number of enemies that reached the castle by one point
+            LevelInfo.numberOfEnemiesThatReachedTheCastle = LevelInfo.numberOfEnemiesThatReachedTheCastle + 1;
+
             // Reduce the health of the castle
             ReduceCastleHealth();
         }

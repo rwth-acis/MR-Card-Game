@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System;
 using static i5.Toolkit.Core.Examples.Spawners.SpawnEnemy;
 using UnityEngine.EventSystems;
+using TMPro;
 
 static class LevelInfo
 {
@@ -52,6 +53,9 @@ static class LevelInfo
 
     // The flag that states if the wave is ongoing
     public static bool waveOngoing = false;
+
+    // The number of enemies that reached and damaged the castle
+    public static int numberOfEnemiesThatReachedTheCastle = 0;
 }
 
 public class Level : MonoBehaviour
@@ -1229,6 +1233,18 @@ public class Level : MonoBehaviour
     [SerializeField]
     private GameObject victoryScreen;
 
+    // The victory screen game object
+    [SerializeField]
+    private TMP_Text enemiesDefeated;
+
+    // The victory screen game object
+    [SerializeField]
+    private TMP_Text enemiesMissed;
+
+    // The victory screen game object
+    [SerializeField]
+    private TMP_Text castleHealthCounter;
+
     // The flag that states that a round was won previously and the next level needs to be set up.
     private bool oneRoundAlreadyWon = false;
 
@@ -1262,8 +1278,46 @@ public class Level : MonoBehaviour
         // Activate the victory screen
         victoryScreen.SetActive(true);
 
+        // Check if the castle had any armor points
+        if(GameAdvancement.castleCurrentAP > 0)
+        {
+            // Write how many health points and armor points the castle had at the end
+            castleHealthCounter.text = "Castle health bar:  " + GameAdvancement.castlecurrentHP + " / " + GameAdvancement.castleMaxHP + " + " + GameAdvancement.castleCurrentAP + " armor points";
+        
+        } else {
+
+            // Write how many health points the castle had at the end
+            castleHealthCounter.text = "Castle health bar:  " + GameAdvancement.castlecurrentHP + " / " + GameAdvancement.castleMaxHP;
+        }
+
+        // Get the number of enemies in all waves
+        int number = CalculateNumberOfEnemies();
+
+        // Write how many enemies were defeated in all waves
+        enemiesDefeated.text = "Number of enemies defeated: " + (number - LevelInfo.numberOfEnemiesThatReachedTheCastle);
+
+        // Write how many enemies were missed in all waves
+        enemiesMissed.text = "Number of enemies missed: " + LevelInfo.numberOfEnemiesThatReachedTheCastle;
+
         // Set the flag that a level was already won
         oneRoundAlreadyWon = true;
+    }
+
+    // The method used to get the total number of enemies defeated in all waves
+    private int CalculateNumberOfEnemies()
+    {
+        // Initialize the enemy counter variable
+        int counter = 0;
+
+        // Go over all waves
+        for(int index = 0; index < LevelInfo.numberOfWaves; index = index + 1)
+        {
+            // Add the number of enemies in that wave
+            counter = counter + LevelInfo.numberOfEnemies[index];
+        }
+
+        // Return the number of enemies in all waves
+        return counter;
     }
 
     // The method used to reset the level info
