@@ -148,7 +148,7 @@ public class Tower : MonoBehaviour
         get { return target; }
     }
 
-    // The list of coliders that enter the range of the tower
+    // The list of colliders that enter the range of the tower
     private List<Collider> colliders = new List<Collider>();
 
     // The method used to access the list of colliders
@@ -256,7 +256,7 @@ public class Tower : MonoBehaviour
         //     // Set the target as alive again
         //     target.GetComponent<Enemy>().isAlive = true;
 
-        //     Debug.Log("An enemy was reseted in the tower range of: " + this.gameObject.name);
+        //     Debug.Log("An enemy was reset in the tower range of: " + this.gameObject.name);
         // }
 
         // // If the Target isn't null and dead, remove it from the colliders list
@@ -430,26 +430,26 @@ public class Tower : MonoBehaviour
         // Check if the lightning strike should jump
         if(numberOfStrikes > 0)
         {
-            // Initialise the raycast hit
+            // Initialize the raycast hit
             RaycastHit hit;
 
-            // // Initialise the nearest enemy game object
+            // // Initialize the nearest enemy game object
             // GameObject nearestEnemy;
 
             // Calculate the radius of the effect
             // float radius = getEffectRange * targetEnemy.gameBoard.transform.localScale.x;
 
             // Check if there is another enemy in the range of the tower
-            if(GetEnemies().Count > 1)
+            if(GetEnemies().Count >= 1)
             {
-                // Initialise the nearest enemy
+                // Initialize the nearest enemy
                 Collider nearestEnemy = null;
 
                 // Initialize the shortest distance
                 float shortestDistance = getEffectRange * Board.greatestBoardDimension;
 
                 // Go through all other enemies, so skip the first index of the array
-                for(int counter = 1; counter < GetEnemies().Count; counter = counter + 1)
+                for(int counter = 0; counter < GetEnemies().Count; counter = counter + 1)
                 {
                     // Get the distance between the current target and the current candidate
                     float distance = Vector3.Distance(targetEnemy.transform.position, GetEnemies()[counter].GetComponent<Enemy>().transform.position);
@@ -460,7 +460,7 @@ public class Tower : MonoBehaviour
                         // Set this enemy as nearest enemy
                         nearestEnemy = GetEnemies()[counter];
 
-                        // Set the shortest distance to the distance between thoses two
+                        // Set the shortest distance to the distance between those two
                         shortestDistance = distance;
                     }
                 }
