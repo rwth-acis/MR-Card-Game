@@ -41,7 +41,7 @@ public class SpawnTrap : MonoBehaviour
     }
 
     // The method used to spawn a hole
-    public static void SpawnHole(GameObject parent)
+    public static Trap SpawnHole(GameObject parent)
     {
         // Get the right object pool index for the trap type
         int poolIndex = ObjectPools.GetTrapPoolIndex("Swamp");
@@ -65,10 +65,12 @@ public class SpawnTrap : MonoBehaviour
 
         // // Add the reference to this building to the Buildings class so that it can be accessed
         // AddBuildingReference(tower, parent);
+
+        return trap;
     }
 
     // The method used to spawn a swamp
-    public static void SpawnSwamp(GameObject parent)
+    public static Trap SpawnSwamp(GameObject parent)
     {
         // Get the right object pool index for the trap type
         int poolIndex = ObjectPools.GetTrapPoolIndex("Swamp");
@@ -92,5 +94,7 @@ public class SpawnTrap : MonoBehaviour
 
         // // Add the reference to this building to the Buildings class so that it can be accessed
         // AddBuildingReference(tower, parent);
+
+        return trap;
     }
 }

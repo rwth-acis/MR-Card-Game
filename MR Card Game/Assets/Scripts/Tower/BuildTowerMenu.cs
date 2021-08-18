@@ -735,7 +735,7 @@ namespace build
             // yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the archer tower or extract it from the object pool
-            SpawnTrap.SpawnHole(TowerImageTarget.currentImageTarget);
+            Trap trap = SpawnTrap.SpawnHole(TowerImageTarget.currentImageTarget);
 
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getHoleCost;
@@ -743,8 +743,11 @@ namespace build
             // Actualize the currency display
             GameSetup.ActualizeCurrencyDisplay();
 
-            // Set the flag that this image target was used to build a tower on it
-            TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+            // // Set the flag that this image target was used to build a tower on it
+            // TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+
+            // Ground the building
+            GroundBuilding(trap.gameObject, TowerImageTarget.currentImageTarget);
 
             // Unpause the game
             GameAdvancement.gamePaused = false;
@@ -763,7 +766,7 @@ namespace build
             // yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the archer tower or extract it from the object pool
-            SpawnTrap.SpawnSwamp(TowerImageTarget.currentImageTarget);
+            Trap trap = SpawnTrap.SpawnSwamp(TowerImageTarget.currentImageTarget);
 
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getSwampCost;
@@ -771,11 +774,36 @@ namespace build
             // Actualize the currency display
             GameSetup.ActualizeCurrencyDisplay();
 
-            // Set the flag that this image target was used to build a tower on it
-            TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+            // // Set the flag that this image target was used to build a tower on it
+            // TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+
+            // Ground the building
+            GroundBuilding(trap.gameObject, TowerImageTarget.currentImageTarget);
 
             // Unpause the game
             GameAdvancement.gamePaused = false;
+        }
+
+        // The method used to ground buildings
+        public void GroundBuilding(GameObject building, GameObject imageTarget)
+        {
+            // Set the position of the building to the position of the image target
+            building.transform.position = imageTarget.transform.position;
+
+            // Set the building as child of the buildings storage object that is a child of the game board
+            building.transform.parent = Board.buildingStorage.transform;
+
+            // Initialize the build position
+            Vector3 buildingPosition = building.transform.position;
+
+            // Set the building position at the same height as the castle (so as the game board)
+            buildingPosition = new Vector3(buildingPosition.x, Board.castle.transform.position.y, buildingPosition.z);
+
+            // Give this position to the building
+            building.transform.position = buildingPosition;
+
+            // // Make sure the tower is on the same height as the castle
+            // building.transform.position.y = Board.castle.transform.position.y;
         }
     }
 }

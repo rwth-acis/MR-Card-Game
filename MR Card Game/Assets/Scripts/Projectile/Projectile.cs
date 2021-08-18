@@ -244,7 +244,7 @@ public class Projectile : MonoBehaviour
             case "Lightning Tower":
                 if(target.GetEnemyWeakness == "Lightning")
                 {
-                    if(GameAdvancement.raining == true)
+                    if(GameAdvancement.raining == true || target.isWet == true)
                     {
                         additionalDamageMultiplier = 2;
                     } else {
@@ -259,11 +259,9 @@ public class Projectile : MonoBehaviour
                         additionalDamageMultiplier = -1;
                     }
                 } else {
-                    if(GameAdvancement.raining == true)
+                    if(GameAdvancement.raining == true || target.isWet == true)
                     {
                         additionalDamageMultiplier = 1;
-                    } else {
-                        additionalDamageMultiplier = 0;
                     }
                 }
             break;

@@ -107,6 +107,11 @@ public class Enemy : MonoBehaviour
     // The personal slow factor of the enemy
     public float personalSlowFactor = 1;
 
+    public int numberOfTrapsIn = 0;
+
+    // The flag that states if an enemy is wet or not
+    public bool isWet = false;
+
     // // Method used to get the weakness of the enemy
     // public bool isAlive
     // {
