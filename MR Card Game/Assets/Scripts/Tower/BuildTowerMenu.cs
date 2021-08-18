@@ -330,20 +330,20 @@ namespace build
             }
         }
 
-        // Method used to close the build tower menu
-        public void CloseBuildTowerMenu()
+        // Method used to close the build menu
+        public void CloseBuildMenu()
         {
             // Pause the game
             GameAdvancement.gamePaused = false;
 
-            // Set the canvas as active
-            buildTowerCanvas.SetActive(false);
-
-            // Set the build tower menu as active
+            // Make sure the build tower menu is inactive
             buildTowerWindow.SetActive(false);
 
             // Make sure the build trap menu is inactive
             buildTrapWindow.SetActive(false);
+
+            // Set the canvas as inactive
+            buildTowerCanvas.SetActive(false);
         }
 
         // The method that opens the build tower menu
@@ -594,7 +594,7 @@ namespace build
             // yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the archer tower or extract it from the object pool
-            SpawnArcherTower(TowerImageTarget.currentImageTarget);
+            GameObject tower = SpawnArcherTower(TowerImageTarget.currentImageTarget);
 
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getArcherTowerCost;
@@ -602,10 +602,13 @@ namespace build
             // Actualize the currency display
             GameSetup.ActualizeCurrencyDisplay();
 
-            // Set the flag that this image target was used to build a tower on it
-            TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+            // // Set the flag that this image target was used to build a tower on it
+            // TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
 
-            // Unpause the game
+            // Ground the building
+            GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
+
+            // Un-pause the game
             GameAdvancement.gamePaused = false;
         }
 
@@ -623,7 +626,7 @@ namespace build
             // yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the fire tower or extract it from the object pool
-            SpawnFireTower(TowerImageTarget.currentImageTarget);
+            GameObject tower = SpawnFireTower(TowerImageTarget.currentImageTarget);
 
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getFireTowerCost;
@@ -631,10 +634,13 @@ namespace build
             // Actualize the currency display
             GameSetup.ActualizeCurrencyDisplay();
 
-            // Set the flag that this image target was used to build a tower on it
-            TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+            // // Set the flag that this image target was used to build a tower on it
+            // TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+
+            // Ground the building
+            GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
             
-            // Unpause the game
+            // Un-pause the game
             GameAdvancement.gamePaused = false;
         }
 
@@ -651,7 +657,7 @@ namespace build
             // yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the earth tower or extract it from the object pool
-            SpawnEarthTower(TowerImageTarget.currentImageTarget);
+            GameObject tower = SpawnEarthTower(TowerImageTarget.currentImageTarget);
 
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getEarthTowerCost;
@@ -659,10 +665,13 @@ namespace build
             // Actualize the currency display
             GameSetup.ActualizeCurrencyDisplay();
 
-            // Set the flag that this image target was used to build a tower on it
-            TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+            // // Set the flag that this image target was used to build a tower on it
+            // TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
 
-            // Unpause the game
+            // Ground the building
+            GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
+
+            // Un-pause the game
             GameAdvancement.gamePaused = false;
         }
 
@@ -679,7 +688,7 @@ namespace build
             // yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the lightning tower or extract it from the object pool
-            SpawnLightningTower(TowerImageTarget.currentImageTarget);
+            GameObject tower = SpawnLightningTower(TowerImageTarget.currentImageTarget);
 
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getLightningTowerCost;
@@ -687,10 +696,13 @@ namespace build
             // Actualize the currency display
             GameSetup.ActualizeCurrencyDisplay();
 
-            // Set the flag that this image target was used to build a tower on it
-            TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+            // // Set the flag that this image target was used to build a tower on it
+            // TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
 
-            // Unpause the game
+            // Ground the building
+            GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
+
+            // Un-pause the game
             GameAdvancement.gamePaused = false;
         }
 
@@ -707,7 +719,7 @@ namespace build
             // yield return new WaitUntil(GameOverlayEnabled);
 
             // Spawn the wind tower or extract it from the object pool
-            SpawnWindTower(TowerImageTarget.currentImageTarget);
+            GameObject tower = SpawnWindTower(TowerImageTarget.currentImageTarget);
 
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getWindTowerCost;
@@ -715,10 +727,13 @@ namespace build
             // Actualize the currency display
             GameSetup.ActualizeCurrencyDisplay();
 
-            // Set the flag that this image target was used to build a tower on it
-            TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+            // // Set the flag that this image target was used to build a tower on it
+            // TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
 
-            // Unpause the game
+            // Ground the building
+            GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
+
+            // Un-pause the game
             GameAdvancement.gamePaused = false;
         }
 
@@ -749,7 +764,7 @@ namespace build
             // Ground the building
             GroundBuilding(trap.gameObject, TowerImageTarget.currentImageTarget);
 
-            // Unpause the game
+            // Un-pause the game
             GameAdvancement.gamePaused = false;
         }
 
@@ -780,7 +795,7 @@ namespace build
             // Ground the building
             GroundBuilding(trap.gameObject, TowerImageTarget.currentImageTarget);
 
-            // Unpause the game
+            // Un-pause the game
             GameAdvancement.gamePaused = false;
         }
 
@@ -801,6 +816,9 @@ namespace build
 
             // Give this position to the building
             building.transform.position = buildingPosition;
+
+            // // Scale the trap down
+            // building.transform.localScale = new Vector3(1, 1, 1);
 
             // // Make sure the tower is on the same height as the castle
             // building.transform.position.y = Board.castle.transform.position.y;

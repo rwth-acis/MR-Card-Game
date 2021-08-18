@@ -25,7 +25,7 @@ public class UpgradeTower : MonoBehaviour
     // Upgrading towers
     //--------------------------------------------------------------------------------------
     
-    // Define the updrage tower menu
+    // Define the upgrade tower menu
     [SerializeField]
     private GameObject upgradeTowerMenu;
 

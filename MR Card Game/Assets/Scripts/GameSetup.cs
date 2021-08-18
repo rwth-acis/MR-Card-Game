@@ -54,45 +54,45 @@ static class GameAdvancement
     // public static bool currentlyBuildingOrUpgrading = false;
 }
 
-// The class of the castle game object
-static class Buildings
-{
-    // The number of buildings built in this round
-    public static int numberOfBuildings;
+// // The class of the castle game object
+// static class Buildings
+// {
+//     // The number of buildings built in this round
+//     public static int numberOfBuildings;
 
-    // The array that binds the image target to the building
-    public static GameObject[] imageTargetToBuilding;
+//     // The array that binds the image target to the building
+//     public static GameObject[] imageTargetToBuilding;
 
-    // Define the first building
-    public static GameObject firstBuilding;
+//     // Define the first building
+//     public static GameObject firstBuilding;
 
-    // Define the second building
-    public static GameObject secondBuilding;
+//     // Define the second building
+//     public static GameObject secondBuilding;
     
-    // Define the third building
-    public static GameObject thirdBuilding;
+//     // Define the third building
+//     public static GameObject thirdBuilding;
     
-    // Define the fourth building
-    public static GameObject fourthBuilding;
+//     // Define the fourth building
+//     public static GameObject fourthBuilding;
     
-    // Define the fifth building
-    public static GameObject fifthBuilding;
+//     // Define the fifth building
+//     public static GameObject fifthBuilding;
     
-    // Define the sixth building
-    public static GameObject sixthBuilding;
+//     // Define the sixth building
+//     public static GameObject sixthBuilding;
     
-    // Define the seventh building
-    public static GameObject seventhBuilding;
+//     // Define the seventh building
+//     public static GameObject seventhBuilding;
     
-    // Define the eighth building
-    public static GameObject eighthBuilding;
+//     // Define the eighth building
+//     public static GameObject eighthBuilding;
     
-    // Define the ninth building
-    public static GameObject ninthBuilding;
+//     // Define the ninth building
+//     public static GameObject ninthBuilding;
     
-    // Define the tenth building
-    public static GameObject tenthBuilding;
-}
+//     // Define the tenth building
+//     public static GameObject tenthBuilding;
+// }
    
 public class GameSetup : MonoBehaviour
 {
@@ -157,11 +157,11 @@ public class GameSetup : MonoBehaviour
 
         // armorPoints.GetComponent<Renderer>().sortingLayerID = armorPoints.transform.parent.GetComponent<Renderer>().sortingLayerID;
 
-        // Set the number of buildings built in this round to zero
-        Buildings.numberOfBuildings = 0;
+        // // Set the number of buildings built in this round to zero
+        // Buildings.numberOfBuildings = 0;
 
-        // Initialize the array of image targets
-        Buildings.imageTargetToBuilding = new GameObject[10];
+        // // Initialize the array of image targets
+        // Buildings.imageTargetToBuilding = new GameObject[10];
 
         // // Set the castle max and current hp to the hp given in the inspector
         // GameAdvancement.castleMaxHP = castleHP;

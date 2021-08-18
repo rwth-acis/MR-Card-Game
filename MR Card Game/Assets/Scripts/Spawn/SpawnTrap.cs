@@ -18,14 +18,34 @@ public class SpawnTrap : MonoBehaviour
         get { return instance.hole; }
     }
 
-    // The prefab for the hole
+    // The hole size
+    [SerializeField]
+    private float holeSize;
+
+    // The method used to access to the hole size in a static way
+    public static float getHoleSize
+    {
+        get { return instance.holeSize; }
+    }
+
+    // The prefab for the swamp
     [SerializeField]
     private Trap swamp;
 
-    // The method used to access to the hole prefab as a static object
+    // The method used to access to the swamp prefab as a static object
     public static Trap getSwamp
     {
         get { return instance.swamp; }
+    }
+
+    // The swamp size
+    [SerializeField]
+    private float swampSize;
+
+    // The method used to access to the swamp size in a static way
+    public static float getSwampSize
+    {
+        get { return instance.swampSize; }
     }
 
     // Start is called before the first frame update
@@ -53,7 +73,7 @@ public class SpawnTrap : MonoBehaviour
         trap.gameObject.SetActive(true);
 
         // Scale the trap down
-        trap.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * (float)0.2;
+        trap.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * getHoleSize;
 
         // Set them as children of the parent that was passed
         trap.gameObject.transform.parent = parent.transform;
@@ -82,7 +102,10 @@ public class SpawnTrap : MonoBehaviour
         trap.gameObject.SetActive(true);
 
         // Scale the trap down
-        trap.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * (float)0.2;
+        trap.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * getSwampSize;
+
+        // // Scale the trap down
+        // trap.transform.localScale = new Vector3(1, 1, 1);
 
         // Set them as children of the parent that was passed
         trap.gameObject.transform.parent = parent.transform;

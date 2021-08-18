@@ -176,15 +176,15 @@ public class Level : MonoBehaviour
         // Set the number of undefeated enemies to the number of enemies in the wave
         LevelInfo.numberOfUndefeatedEnemies = LevelInfo.numberOfEnemies[GameAdvancement.currentWave];
 
-        // Unground all the buildings now that the wave is finished
-        UngroundAllBuildings();
+        // // Unground all the buildings now that the wave is finished
+        // UngroundAllBuildings();
     }
 
     // The method that starts a wave
     public void StartWave()
     {
-        // Ground all buildings when the wave begins
-        GroundAllBuildings();
+        // // Ground all buildings when the wave begins
+        // GroundAllBuildings();
 
         // Increase the current wave number
         GameAdvancement.currentWave = GameAdvancement.currentWave + 1;
@@ -1085,166 +1085,166 @@ public class Level : MonoBehaviour
     // Grounding and ungrounding towers
     //---------------------------------------------------------------------------------------------------------------------------------
 
-    // Method that grounds the buildings on the game board when the wave starts
-    public void GroundAllBuildings()
-    {
-        // Ground the first building if it exists
-        if(Buildings.numberOfBuildings > 0)
-        {
-            // Ground the first building
-            GroundBuilding(Buildings.firstBuilding, 0);
+    // // Method that grounds the buildings on the game board when the wave starts
+    // public void GroundAllBuildings()
+    // {
+    //     // Ground the first building if it exists
+    //     if(Buildings.numberOfBuildings > 0)
+    //     {
+    //         // Ground the first building
+    //         GroundBuilding(Buildings.firstBuilding, 0);
 
-            // Ground the second building if it exists
-            if(Buildings.numberOfBuildings > 1)
-            {
-                GroundBuilding(Buildings.secondBuilding, 1);
+    //         // Ground the second building if it exists
+    //         if(Buildings.numberOfBuildings > 1)
+    //         {
+    //             GroundBuilding(Buildings.secondBuilding, 1);
 
-                // Ground the third building if it exists
-                if(Buildings.numberOfBuildings > 2)
-                {
-                    GroundBuilding(Buildings.thirdBuilding, 2);
+    //             // Ground the third building if it exists
+    //             if(Buildings.numberOfBuildings > 2)
+    //             {
+    //                 GroundBuilding(Buildings.thirdBuilding, 2);
 
-                    // Ground the fourth building if it exists
-                    if(Buildings.numberOfBuildings > 3)
-                    {
-                        GroundBuilding(Buildings.fourthBuilding, 3);
+    //                 // Ground the fourth building if it exists
+    //                 if(Buildings.numberOfBuildings > 3)
+    //                 {
+    //                     GroundBuilding(Buildings.fourthBuilding, 3);
 
-                        // Ground the fifth building if it exists
-                        if(Buildings.numberOfBuildings > 4)
-                        {
-                            GroundBuilding(Buildings.fifthBuilding, 4);
+    //                     // Ground the fifth building if it exists
+    //                     if(Buildings.numberOfBuildings > 4)
+    //                     {
+    //                         GroundBuilding(Buildings.fifthBuilding, 4);
 
-                            // Ground the sixth building if it exists
-                            if(Buildings.numberOfBuildings > 5)
-                            {
-                                GroundBuilding(Buildings.sixthBuilding, 5);
+    //                         // Ground the sixth building if it exists
+    //                         if(Buildings.numberOfBuildings > 5)
+    //                         {
+    //                             GroundBuilding(Buildings.sixthBuilding, 5);
 
-                                // Ground the seventh building if it exists
-                                if(Buildings.numberOfBuildings > 6)
-                                {
-                                    GroundBuilding(Buildings.seventhBuilding, 6);
+    //                             // Ground the seventh building if it exists
+    //                             if(Buildings.numberOfBuildings > 6)
+    //                             {
+    //                                 GroundBuilding(Buildings.seventhBuilding, 6);
 
-                                    // Ground the eighth building if it exists
-                                    if(Buildings.numberOfBuildings > 7)
-                                    {
-                                        GroundBuilding(Buildings.eighthBuilding, 7);
+    //                                 // Ground the eighth building if it exists
+    //                                 if(Buildings.numberOfBuildings > 7)
+    //                                 {
+    //                                     GroundBuilding(Buildings.eighthBuilding, 7);
 
-                                        // Ground the ninth building if it exists
-                                        if(Buildings.numberOfBuildings > 8)
-                                        {
-                                            GroundBuilding(Buildings.ninthBuilding, 8);
+    //                                     // Ground the ninth building if it exists
+    //                                     if(Buildings.numberOfBuildings > 8)
+    //                                     {
+    //                                         GroundBuilding(Buildings.ninthBuilding, 8);
 
-                                            // Ground the tenth building if it exists
-                                            if(Buildings.numberOfBuildings > 9)
-                                            {
-                                                GroundBuilding(Buildings.tenthBuilding, 9);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    //                                         // Ground the tenth building if it exists
+    //                                         if(Buildings.numberOfBuildings > 9)
+    //                                         {
+    //                                             GroundBuilding(Buildings.tenthBuilding, 9);
+    //                                         }
+    //                                     }
+    //                                 }
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
     private float additionalOffset = (float)1.5;
 
-    // The method used to ground buildings
-    public void GroundBuilding(GameObject building, int index)
-    {
-        // Set the position of the building to the position of the image target
-        building.transform.position = Buildings.imageTargetToBuilding[index].transform.position;
+    // // The method used to ground buildings
+    // public void GroundBuilding(GameObject building, int index)
+    // {
+    //     // Set the position of the building to the position of the image target
+    //     building.transform.position = Buildings.imageTargetToBuilding[index].transform.position;
 
-        // Set the building as child of the buildings storage object that is a child of the game board
-        building.transform.parent = Board.buildingStorage.transform;
+    //     // Set the building as child of the buildings storage object that is a child of the game board
+    //     building.transform.parent = Board.buildingStorage.transform;
 
-        Vector3 buildingPosition = building.transform.position;
+    //     Vector3 buildingPosition = building.transform.position;
 
-        buildingPosition = new Vector3(buildingPosition.x, Board.castle.transform.position.y, buildingPosition.z);
+    //     buildingPosition = new Vector3(buildingPosition.x, Board.castle.transform.position.y, buildingPosition.z);
 
-        building.transform.position = buildingPosition;
+    //     building.transform.position = buildingPosition;
 
-        // // Make sure the tower is on the same height as the castle
-        // building.transform.position.y = Board.castle.transform.position.y;
-    }
+    //     // // Make sure the tower is on the same height as the castle
+    //     // building.transform.position.y = Board.castle.transform.position.y;
+    // }
 
-    // Method that un-grounds all the buildings on the game board when the wave starts
-    public void UngroundAllBuildings()
-    {
-        // Ground the first building if it exists
-        if(Buildings.numberOfBuildings > 0)
-        {
-            // Ground the first building
-            UngroundBuilding(Buildings.firstBuilding, 0);
+    // // Method that un-grounds all the buildings on the game board when the wave starts
+    // public void UngroundAllBuildings()
+    // {
+    //     // Ground the first building if it exists
+    //     if(Buildings.numberOfBuildings > 0)
+    //     {
+    //         // Ground the first building
+    //         UngroundBuilding(Buildings.firstBuilding, 0);
 
-            // Ground the second building if it exists
-            if(Buildings.numberOfBuildings > 1)
-            {
-                UngroundBuilding(Buildings.secondBuilding, 1);
+    //         // Ground the second building if it exists
+    //         if(Buildings.numberOfBuildings > 1)
+    //         {
+    //             UngroundBuilding(Buildings.secondBuilding, 1);
 
-                // Ground the third building if it exists
-                if(Buildings.numberOfBuildings > 2)
-                {
-                    UngroundBuilding(Buildings.thirdBuilding, 2);
+    //             // Ground the third building if it exists
+    //             if(Buildings.numberOfBuildings > 2)
+    //             {
+    //                 UngroundBuilding(Buildings.thirdBuilding, 2);
 
-                    // Ground the fourth building if it exists
-                    if(Buildings.numberOfBuildings > 3)
-                    {
-                        UngroundBuilding(Buildings.fourthBuilding, 3);
+    //                 // Ground the fourth building if it exists
+    //                 if(Buildings.numberOfBuildings > 3)
+    //                 {
+    //                     UngroundBuilding(Buildings.fourthBuilding, 3);
 
-                        // Ground the fifth building if it exists
-                        if(Buildings.numberOfBuildings > 4)
-                        {
-                            UngroundBuilding(Buildings.fifthBuilding, 4);
+    //                     // Ground the fifth building if it exists
+    //                     if(Buildings.numberOfBuildings > 4)
+    //                     {
+    //                         UngroundBuilding(Buildings.fifthBuilding, 4);
 
-                            // Ground the sixth building if it exists
-                            if(Buildings.numberOfBuildings > 5)
-                            {
-                                UngroundBuilding(Buildings.sixthBuilding, 5);
+    //                         // Ground the sixth building if it exists
+    //                         if(Buildings.numberOfBuildings > 5)
+    //                         {
+    //                             UngroundBuilding(Buildings.sixthBuilding, 5);
 
-                                // Ground the seventh building if it exists
-                                if(Buildings.numberOfBuildings > 6)
-                                {
-                                    UngroundBuilding(Buildings.seventhBuilding, 6);
+    //                             // Ground the seventh building if it exists
+    //                             if(Buildings.numberOfBuildings > 6)
+    //                             {
+    //                                 UngroundBuilding(Buildings.seventhBuilding, 6);
 
-                                    // Ground the eighth building if it exists
-                                    if(Buildings.numberOfBuildings > 7)
-                                    {
-                                        UngroundBuilding(Buildings.eighthBuilding, 7);
+    //                                 // Ground the eighth building if it exists
+    //                                 if(Buildings.numberOfBuildings > 7)
+    //                                 {
+    //                                     UngroundBuilding(Buildings.eighthBuilding, 7);
 
-                                        // Ground the ninth building if it exists
-                                        if(Buildings.numberOfBuildings > 8)
-                                        {
-                                            UngroundBuilding(Buildings.ninthBuilding, 8);
+    //                                     // Ground the ninth building if it exists
+    //                                     if(Buildings.numberOfBuildings > 8)
+    //                                     {
+    //                                         UngroundBuilding(Buildings.ninthBuilding, 8);
 
-                                            // Ground the tenth building if it exists
-                                            if(Buildings.numberOfBuildings > 9)
-                                            {
-                                                UngroundBuilding(Buildings.tenthBuilding, 9);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    //                                         // Ground the tenth building if it exists
+    //                                         if(Buildings.numberOfBuildings > 9)
+    //                                         {
+    //                                             UngroundBuilding(Buildings.tenthBuilding, 9);
+    //                                         }
+    //                                     }
+    //                                 }
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 
-    // The method used to unground buildings
-    public void UngroundBuilding(GameObject building, int index)
-    {
-        // Reset the position of the building 
-        building.transform.position = new Vector3(0, 0, 0);
+    // // The method used to unground buildings
+    // public void UngroundBuilding(GameObject building, int index)
+    // {
+    //     // Reset the position of the building 
+    //     building.transform.position = new Vector3(0, 0, 0);
 
-        // Set the building as child of the image target
-        building.transform.parent = Buildings.imageTargetToBuilding[index].transform;
-    }
+    //     // Set the building as child of the image target
+    //     building.transform.parent = Buildings.imageTargetToBuilding[index].transform;
+    // }
 
     // -------------------------------------------------------------------------------------------------------
     // Level finished methods
