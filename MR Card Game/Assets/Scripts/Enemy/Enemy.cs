@@ -171,6 +171,9 @@ public class Enemy : MonoBehaviour
                 // Reset the current waypoint index so that enemies walk toward the first waypoint upon respawn
                 waypointIndex = 0;
 
+                // Increase the number of enemies defeated by one
+                LevelInfo.numberOfEnemiesDefeated = LevelInfo.numberOfEnemiesDefeated + 1;
+
                 // Make the enemy die
                 StartCoroutine(Die());
             }

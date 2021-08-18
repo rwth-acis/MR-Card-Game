@@ -252,7 +252,7 @@ public class BrowsLevels : MonoBehaviour
         // Case there are no directories to be displayed
         if(numberOfDirectories == 0)
         {
-            // If there are no directories, then display the level informations with name, description, etc. as well as a launch level button
+            // If there are no directories, then display the level information with name, description, etc. as well as a launch level button
             // Enable the level description menu
             levelDescriptionMenu.SetActive(true);
 
@@ -607,5 +607,8 @@ public class BrowsLevels : MonoBehaviour
 
         // // At the end disable the background of all menus
         // backGround.SetActive(false);
+
+        // Set the flag that a new level started so that all level information are reset
+        LevelInfo.newLevelStarted = true;
     }
 }

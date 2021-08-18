@@ -4,19 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-// List of spell cards:     Status:     Comments:           Tested:
-// - Meteor                 Done        animation done!     working
-// - Arrow rain             Done        animation done!     working
-// - Thunder strike         Done        animation done!     working
-// - Armor                  Done        display is there    working
-// - Heal                   Done                            working
-// - Obliteration           Done                            working
-// - Draw                   Done                            not working!
-// - Telport                Done                            working
-// - Space distortion       Done                            working
-// - Slow time              Done                            working
-// - stop time              Done                            working
-// - rain                   Done                            working but did not test double damage of lightning tower
+// List of spell cards:     Status:     Comments:               Tested:
+// - Meteor                 Done        animation done!         working
+// - Arrow rain             Done        animation done!         working
+// - Thunder strike         Done        animation done!         working
+// - Armor                  Done        display is there        working
+// - Heal                   Done                                working
+// - Obliteration           Done                                working
+// - Draw                   Done                                working
+// - Telport                Done                                working
+// - Space distortion       Done                                working
+// - Slow time              Done                                working
+// - stop time              Done                                working
+// - rain                   Done        double damage working   working
 
 public static class Cards
 {

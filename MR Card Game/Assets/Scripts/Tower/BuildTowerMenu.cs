@@ -517,6 +517,58 @@ namespace build
             StartCoroutine(BuildWindTower());
         }
 
+        // The method that activates when the player wants to build a hole by pressing on the archer tower button in the build menu
+        public void InitiateHoleBuild()
+        {
+            // Disable the game overlay
+            DeactivateGameOverlay();
+
+            // Enable the answer question menu
+            answerQuestions.SetActive(true);
+
+            // Set the number of questions that are needed to answer to 1
+            ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
+
+            // Close the menu
+            // Disable the build canvas
+            getBuildTowerCanvas.SetActive(false);
+
+            // Make sure the build trap menu as inactive
+            getBuildTrapWindow.SetActive(false);
+
+            // Make sure the build tower menu is inactive
+            getBuildTowerWindow.SetActive(false);
+
+            // Start the routine that waits for the questions to be answered
+            StartCoroutine(BuildHole());
+        }
+
+        // The method that activates when the player wants to build a swamp by pressing on the swamp button in the build menu
+        public void InitiateSwampBuild()
+        {
+            // Disable the game overlay
+            DeactivateGameOverlay();
+
+            // Enable the answer question menu
+            answerQuestions.SetActive(true);
+
+            // Set the number of questions that are needed to answer to 1
+            ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
+
+            // Close the menu
+            // Disable the build canvas
+            getBuildTowerCanvas.SetActive(false);
+
+            // Make sure the build trap menu as inactive
+            getBuildTrapWindow.SetActive(false);
+
+            // Make sure the build tower menu is inactive
+            getBuildTowerWindow.SetActive(false);
+
+            // Start the routine that waits for the questions to be answered
+            StartCoroutine(BuildSwamp());
+        }
+
         // Function that is used to test when all questions that were needed to be answered were answered correctly
         private bool NoMoreQuestionsNeeded()
         {
@@ -659,6 +711,62 @@ namespace build
 
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getWindTowerCost;
+
+            // Actualize the currency display
+            GameSetup.ActualizeCurrencyDisplay();
+
+            // Set the flag that this image target was used to build a tower on it
+            TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+
+            // Unpause the game
+            GameAdvancement.gamePaused = false;
+        }
+
+        // The method that builds a hole over the image target
+        IEnumerator BuildHole()
+        {
+            // Wait until the number of questions that need to be answered is 0
+            yield return new WaitUntil(NoMoreQuestionsNeeded);
+
+            // Enable the game overlay
+            ActivateGameOverlay();
+
+            // // Wait until the game overlay is activated
+            // yield return new WaitUntil(GameOverlayEnabled);
+
+            // Spawn the archer tower or extract it from the object pool
+            SpawnTrap.SpawnHole(TowerImageTarget.currentImageTarget);
+
+            // Reduce the current currency by the cost of the tower
+            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getHoleCost;
+
+            // Actualize the currency display
+            GameSetup.ActualizeCurrencyDisplay();
+
+            // Set the flag that this image target was used to build a tower on it
+            TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
+
+            // Unpause the game
+            GameAdvancement.gamePaused = false;
+        }
+
+        // The method that builds a swamp over the image target
+        IEnumerator BuildSwamp()
+        {
+            // Wait until the number of questions that need to be answered is 0
+            yield return new WaitUntil(NoMoreQuestionsNeeded);
+
+            // Enable the game overlay
+            ActivateGameOverlay();
+
+            // // Wait until the game overlay is activated
+            // yield return new WaitUntil(GameOverlayEnabled);
+
+            // Spawn the archer tower or extract it from the object pool
+            SpawnTrap.SpawnSwamp(TowerImageTarget.currentImageTarget);
+
+            // Reduce the current currency by the cost of the tower
+            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getSwampCost;
 
             // Actualize the currency display
             GameSetup.ActualizeCurrencyDisplay();

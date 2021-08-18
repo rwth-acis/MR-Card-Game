@@ -42,8 +42,11 @@ public class ObjectPools : MonoBehaviour
         int poolId20 = ObjectPool<GameObject>.CreateNewPool(); // Pool for meteor impact
         int poolId21 = ObjectPool<GameObject>.CreateNewPool(); // Pool for lightning strike
 
+        int poolId22 = ObjectPool<Trap>.CreateNewPool(); // Pool for hole
+        int poolId23 = ObjectPool<Trap>.CreateNewPool(); // Pool for swamp
+
         // Store the pool ids so that they are not lost
-        EnemyPools.enemyPoolIds = new int[21];
+        EnemyPools.enemyPoolIds = new int[23];
         EnemyPools.enemyPoolIds[0] = poolId1;
         EnemyPools.enemyPoolIds[1] = poolId2;
         EnemyPools.enemyPoolIds[2] = poolId3;
@@ -69,6 +72,9 @@ public class ObjectPools : MonoBehaviour
         EnemyPools.enemyPoolIds[18] = poolId19;
         EnemyPools.enemyPoolIds[19] = poolId20;
         EnemyPools.enemyPoolIds[20] = poolId21;
+
+        EnemyPools.enemyPoolIds[21] = poolId22;
+        EnemyPools.enemyPoolIds[22] = poolId23;
 
         // Debug.Log("Pool index: " + poolId1);
         // Debug.Log("Pool index: " + poolId2);
@@ -243,17 +249,17 @@ public class ObjectPools : MonoBehaviour
         // Get the correctly object pool index from the object pools class
         int objectPoolIndex = GetProjectilePoolIndex(projectile.GetComponent<Projectile>().getProjectileType);
 
-        // Release the enemy into the right object pool
+        // Release the projectile into the right object pool
         ObjectPool<Projectile>.ReleaseResource(objectPoolIndex, projectile);
 
-        // Set the enemy as inactive
+        // Set the projectile as inactive
         projectile.gameObject.SetActive(false);
     }
 
-    // Method that returns the correct object pool index given the projectile type
+    // Method that returns the correct object pool index given the spell type
     public static int GetSpellEffectPoolIndex(string type)
     {
-        // Return the right projectile pool index given the projectile type
+        // Return the right spell effect pool index given the spell effect type
         switch(type)
         {
             case "Arrow Rain":
@@ -267,20 +273,51 @@ public class ObjectPools : MonoBehaviour
             break;
         }
 
-        // In case the name is incorrect return an arrow
+        // In case the name is incorrect return a thunder strike
         return EnemyPools.enemyPoolIds[20];
     }
 
-    // The method that releses the projectile game objects
+    // The method that releases the spell game objects
     public static void ReleaseSpellEffect(GameObject spellEffect, string type)
     {
         // Get the correctly object pool index from the object pools class
         int objectPoolIndex = GetSpellEffectPoolIndex(type);
 
-        // Release the enemy into the right object pool
+        // Release the spell effect into the right object pool
         ObjectPool<GameObject>.ReleaseResource(objectPoolIndex, spellEffect);
 
-        // Set the enemy as inactive
+        // Set the spell effect as inactive
         spellEffect.SetActive(false);
+    }
+
+     // Method that returns the correct object pool index given the trap type
+    public static int GetTrapPoolIndex(string type)
+    {
+        // Return the right trap pool index given the trap type
+        switch(type)
+        {
+            case "Hole":
+                return EnemyPools.enemyPoolIds[21];
+            break;
+            case "Swamp":
+                return EnemyPools.enemyPoolIds[22];
+            break;
+        }
+
+        // In case the name is incorrect return a hole
+        return EnemyPools.enemyPoolIds[21];
+    }
+
+    // The method that releases the trap game objects
+    public static void ReleaseTrap(Trap trap, string type)
+    {
+        // Get the correctly object pool index from the object pools class
+        int objectPoolIndex = GetSpellEffectPoolIndex(type);
+
+        // Release the trap into the right object pool
+        ObjectPool<Trap>.ReleaseResource(objectPoolIndex, trap);
+
+        // Set the trap as inactive
+        trap.gameObject.SetActive(false);
     }
 }

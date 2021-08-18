@@ -258,6 +258,13 @@ public class Projectile : MonoBehaviour
                     } else {
                         additionalDamageMultiplier = -1;
                     }
+                } else {
+                    if(GameAdvancement.raining == true)
+                    {
+                        additionalDamageMultiplier = 1;
+                    } else {
+                        additionalDamageMultiplier = 0;
+                    }
                 }
             break;
 

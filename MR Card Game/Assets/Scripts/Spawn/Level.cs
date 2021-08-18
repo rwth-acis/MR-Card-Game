@@ -56,6 +56,12 @@ static class LevelInfo
 
     // The number of enemies that reached and damaged the castle
     public static int numberOfEnemiesThatReachedTheCastle = 0;
+
+    // The number of enemies that reached and damaged the castle
+    public static int numberOfEnemiesDefeated = 0;
+
+    // The flag that states that a new level was started and the level information need to be reset
+    public static bool newLevelStarted = false;
 }
 
 public class Level : MonoBehaviour
@@ -113,19 +119,28 @@ public class Level : MonoBehaviour
     void Update()
     {
         // Check if the health points of the castle reach 0 health points
-        if(GameAdvancement.castlecurrentHP <= 0)
+        if(GameAdvancement.castlecurrentHP <= 0 && LevelInfo.newLevelStarted == false)
         {
             ActivateDefeatScreen();
         }
 
+        // Check if the new level started flag is true and the round already won flag false
+        if(LevelInfo.newLevelStarted == true && oneRoundAlreadyWon == false)
+        {
+            // Reset the new level started flag
+            LevelInfo.newLevelStarted = false;
+        }
+
         // Check if a round was already won
-        if(oneRoundAlreadyWon == true)
+        if(oneRoundAlreadyWon == true && LevelInfo.newLevelStarted == true)
         {
             // Reset the level info
             ResetLevelInfo();
 
             // Set the one round already won flag to false
             oneRoundAlreadyWon = false;
+
+            LevelInfo.newLevelStarted = false;
 
         } else {
             // Check if the current wave is smaller than the number of waves and if the number of undefeated enemies is 0
@@ -1156,7 +1171,7 @@ public class Level : MonoBehaviour
         // building.transform.position.y = Board.castle.transform.position.y;
     }
 
-    // Method that ungrounds all the buildings on the game board when the wave starts
+    // Method that un-grounds all the buildings on the game board when the wave starts
     public void UngroundAllBuildings()
     {
         // Ground the first building if it exists
@@ -1257,6 +1272,9 @@ public class Level : MonoBehaviour
     // The method that activates the win screen
     private void ActivateVictoryScreen()
     {
+        // Set the wave ongoing flag to false
+        LevelInfo.waveOngoing = false;
+        
         // Disable all towers
         GameObject[] towerArray = GameObject.FindGameObjectsWithTag ("Tower");
  
@@ -1300,7 +1318,7 @@ public class Level : MonoBehaviour
         int number = CalculateNumberOfEnemies();
 
         // Write how many enemies were defeated in all waves
-        enemiesDefeatedVictory.text = "Number of enemies defeated: " + (number - LevelInfo.numberOfEnemiesThatReachedTheCastle);
+        enemiesDefeatedVictory.text = "Number of enemies defeated: " + (LevelInfo.numberOfEnemiesDefeated);
 
         // Write how many enemies were missed in all waves
         enemiesMissedVictory.text = "Number of enemies missed: " + LevelInfo.numberOfEnemiesThatReachedTheCastle;
@@ -1361,6 +1379,14 @@ public class Level : MonoBehaviour
 
         // Reduce the counter of normal enemies in the first wave by five
         LevelInfo.normalEnemies[0] = LevelInfo.normalEnemies[0] - 5;
+
+        // Reset the number of enemies that reach the castle
+        LevelInfo.numberOfEnemiesThatReachedTheCastle = 0;
+
+        // Reset the number of enemies that were defeated
+        LevelInfo.numberOfEnemiesDefeated = 0;
+
+        // LevelInfo.needToReset
     }
 
     // The victory screen game object
@@ -1378,6 +1404,9 @@ public class Level : MonoBehaviour
     // The method that activates the win screen
     private void ActivateDefeatScreen()
     {
+        // Set the wave ongoing flag to false
+        LevelInfo.waveOngoing = false;
+
         // Disable all towers
         GameObject[] towerArray = GameObject.FindGameObjectsWithTag ("Tower");
  
@@ -1388,6 +1417,19 @@ public class Level : MonoBehaviour
             {
                 // Release the tower object
                 ObjectPools.ReleaseTower(tower);
+            }
+        }
+
+        // Disable all towers
+        GameObject[] enemyArray = GameObject.FindGameObjectsWithTag ("Enemy");
+ 
+        foreach(GameObject enemy in enemyArray)
+        {
+            // Check if the tower is active
+            if(enemy.activeSelf == true)
+            {
+                // Release the tower object
+                ObjectPools.ReleaseEnemy(enemy.GetComponent<Enemy>());
             }
         }
 
@@ -1403,18 +1445,21 @@ public class Level : MonoBehaviour
         SpellCard.ResetSpellCardDeck();
 
         // Activate the victory screen
-        victoryScreen.SetActive(true);
+        defeatScreen.SetActive(true);
 
         // Get the number of enemies in all waves
         int number = CalculateNumberOfEnemies();
 
         // Write how many enemies were defeated in all waves
-        enemiesDefeatedDefeat.text = "Number of enemies defeated: " + (number - LevelInfo.numberOfEnemiesThatReachedTheCastle);
+        enemiesDefeatedDefeat.text = "Number of enemies defeated: " + (LevelInfo.numberOfEnemiesDefeated);
 
         // Write how many enemies were missed in all waves
         enemiesMissedDefeat.text = "Number of enemies missed: " + LevelInfo.numberOfEnemiesThatReachedTheCastle;
 
         // Set the flag that a level was already won
         oneRoundAlreadyWon = true;
+
+        // Deactivate the game board
+        Board.gameBoard.SetActive(false);
     }
 }
