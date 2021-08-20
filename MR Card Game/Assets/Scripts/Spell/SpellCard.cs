@@ -55,6 +55,10 @@ public class SpellCard : MonoBehaviour
     [SerializeField]
     private Button playSpellButton;
 
+    // The spell image
+    [SerializeField]
+    private Image spellImage;
+
     // The boolean variable that states that the image target is in the camera field
     private bool cardVisibleButNotDisplayed = false;
 
@@ -353,6 +357,9 @@ public class SpellCard : MonoBehaviour
 
         // Disable the play spell button
         playSpellButton.gameObject.SetActive(false);
+
+        // Make sure the spell image is disabled
+        spellImage.gameObject.SetActive(false);
     }
 
     // The method that deactivates the canvas on which the reveal spell button is
@@ -444,6 +451,7 @@ public class SpellCard : MonoBehaviour
     // The method that reveals the spell card that was just drawn
     private void RevealSpell()
     {
+
         // Depending on the type of card that is next in the card deck, make the right overlay appear and set the spell type variable to the right type
         switch(Cards.cardDeck[Cards.currentCardIndex])
         {
@@ -508,6 +516,9 @@ public class SpellCard : MonoBehaviour
             break;
         }
 
+        // Display the spell image
+        DisplaySpellImage();
+
         // Check if the spell card is on the game board
         if(onGameBoard == true)
         {
@@ -531,72 +542,97 @@ public class SpellCard : MonoBehaviour
     private void MakeMeteorCardAppear()
     {
         //
+        SpellImages.DisplayMeteor(this.gameObject);
     }
 
     // Method used to make the arrow rain spell card appearance appear on the image target
     private void MakeArrowRainCardAppear()
     {
         //
+        SpellImages.DisplayMeteor(this.gameObject);
     }
 
     // Method used to make the thunder strike spell card appearance appear on the image target
     private void MakeThunderStrikeCardAppear()
     {
         //
+        SpellImages.DisplayMeteor(this.gameObject);
     }
 
     // Method used to make the armor spell card appearance appear on the image target
     private void MakeArmorCardAppear()
     {
         //
+        SpellImages.DisplayMeteor(this.gameObject);
     }
 
     // Method used to make the heal spell card appearance appear on the image target
     private void MakeHealCardAppear()
     {
         //
+        SpellImages.DisplayMeteor(this.gameObject);
     }
 
     // Method used to make the obliteration spell card appearance appear on the image target
     private void MakeObliterationCardAppear()
     {
         //
+        SpellImages.DisplayMeteor(this.gameObject);
     }
 
     // Method used to make the draw spell card appearance appear on the image target
     private void MakeDrawCardAppear()
     {
         //
+        SpellImages.DisplayMeteor(this.gameObject);
     }
 
     // Method used to make the teleport spell card appearance appear on the image target
     private void MakeTeleportCardAppear()
     {
         //
+        SpellImages.DisplayMeteor(this.gameObject);
     }
 
     // Method used to make the space distortion spell card appearance appear on the image target
     private void MakeSpaceDistortionCardAppear()
     {
         //
+        SpellImages.DisplayMeteor(this.gameObject);
     }
 
     // Method used to make the slow time spell card appearance appear on the image target
     private void MakeSlowTimeCardAppear()
     {
         //
+        SpellImages.DisplayMeteor(this.gameObject);
     }
 
     // Method used to make the stop time spell card appearance appear on the image target
     private void MakeStopTimeCardAppear()
     {
         //
+        SpellImages.DisplayMeteor(this.gameObject);
     }
 
     // Method used to make the rain spell card appearance appear on the image target
     private void MakeRainCardAppear()
     {
         //
+        SpellImages.DisplayMeteor(this.gameObject);
+    }
+
+    // The method that activates the canvas on which the reveal spell button is
+    private void DisplaySpellImage()
+    {
+        // Enable the spell card canvas
+        spellCardCanvas.SetActive(true);
+
+        // Enable the draw spell button
+        drawSpellButton.gameObject.SetActive(false);
+
+        // Make sure the spell image is disabled
+        spellImage.gameObject.SetActive(true);
     }
 
 

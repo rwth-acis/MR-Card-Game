@@ -647,7 +647,7 @@ public class ActivateQuestions : MonoBehaviour
     // Method that is executed when a user presses the "view question" button in the model view
     public void ActivateQuestion()
     {
-        numberOfQuestionsThatNeedToBeAnsweredDisplay.GetComponentInChildren<TMP_Text>().text = "42";
+        // numberOfQuestionsThatNeedToBeAnsweredDisplay.GetComponentInChildren<TMP_Text>().text = "42";
 
         // Get the current question path
         string questionPath = Questions.questionArray[Questions.currentQuestionIndex];
