@@ -14,19 +14,25 @@ public class Projectile : MonoBehaviour
     private Tower parent;
 
     // Method used to get the type of the tower
+    public Tower getParent2
+    {
+        get { return parent; }
+    }
+
+    // Method used to get the type of the tower
     public static Tower getParent
     {
         get { return instance.parent; }
     }
 
-    // The parent tower of the projectile
-    private string projectileType;
+    // // The parent tower of the projectile
+    // private string projectileType;
 
-    // Method used to get the type of the tower
-    public string getProjectileType
-    {
-        get { return instance.projectileType; }
-    }
+    // // Method used to get the type of the tower
+    // public string getProjectileType
+    // {
+    //     get { return instance.projectileType; }
+    // }
 
     // The last position of the target is saved so that the projectile can continue travelling after the enemy is dead
     private Vector3 lastPosition;
@@ -43,26 +49,26 @@ public class Projectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Initialie the instance
+        // Initialize the instance
         instance = this;
 
-        // Get the right type
-        switch(getParent.getTowerType)
-        {
-            case "Archer Tower":
-                projectileType = "Arrow";
-            break;
+        // // Get the right type
+        // switch(getParent.getTowerType)
+        // {
+        //     case "Archer Tower":
+        //         projectileType = "Arrow";
+        //     break;
 
-            case "Fire Tower":
-                projectileType = "Fire Ball";
-            break;
+        //     case "Fire Tower":
+        //         projectileType = "Fire Ball";
+        //     break;
 
-            case "Earth Tower":
-                projectileType = "Stone";
-            break;
-        }
+        //     case "Earth Tower":
+        //         projectileType = "Stone";
+        //     break;
+        // }
 
-        Debug.Log("Projectile type: " + projectileType + " with parent: " + parent.gameObject.name);
+        // Debug.Log("Projectile type: " + projectileType + " with parent: " + parent.gameObject.name);
     }
 
     // Update is called once per frame
@@ -122,7 +128,7 @@ public class Projectile : MonoBehaviour
                 }
 
                 // Release the projectile to the right object pool
-                ObjectPools.ReleaseProjectile(this);
+                ObjectPools.ReleaseProjectile(this, parent);
             }
 
         } else {
@@ -140,11 +146,11 @@ public class Projectile : MonoBehaviour
                     ProjectileThatCanHitMultipleEnemiesEffect();
 
                     // Release the projectile
-                    ObjectPools.ReleaseProjectile(this);
+                    ObjectPools.ReleaseProjectile(this, parent);
                 }
             } else {
                 // Case it is an arrow and needs to despawn
-                ObjectPools.ReleaseProjectile(this);
+                ObjectPools.ReleaseProjectile(this, parent);
             }
         }
     }
@@ -159,7 +165,7 @@ public class Projectile : MonoBehaviour
     // The method that produces the effect of an arrow arriving at destination
     private void ArrowEffect()
     {
-        Debug.Log("The enemy " + target.gameObject.name + " was in the range of " + getProjectileType + " and was hit with the arrow effect");
+        // Debug.Log("The enemy " + target.gameObject.name + " was in the range of " + getProjectileType + " and was hit with the arrow effect");
 
         // Initialize the damage variable
         int damage = 0;
@@ -183,7 +189,7 @@ public class Projectile : MonoBehaviour
         // For each enemy in the collider, calculate the damage they should take
         foreach(var targetEnemy in GetColliders())
         {
-            Debug.Log("The enemy " + targetEnemy.gameObject.name + " was in the range of " + getProjectileType + " and was hit with the projectile that can hit multiple enemies");
+            // Debug.Log("The enemy " + targetEnemy.gameObject.name + " was in the range of " + getProjectileType + " and was hit with the projectile that can hit multiple enemies");
 
             // Calculate the damage
             damage = CalculateDamage(parent.getDamage, parent.GetWeaknessMultiplier, parent.getTowerType, targetEnemy.GetComponent<Enemy>());
@@ -320,6 +326,6 @@ public class Projectile : MonoBehaviour
     public void ReturnProjectileToObjectPool()
     {
         // Call the release enemy of the object pool class
-        ObjectPools.ReleaseProjectile(this);
+        ObjectPools.ReleaseProjectile(this, parent);
     }
 }

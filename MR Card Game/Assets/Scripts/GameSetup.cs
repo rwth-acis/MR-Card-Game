@@ -50,6 +50,12 @@ static class GameAdvancement
     // The flag that states if the game setup needs to be reset or not
     public static bool needToReset = false;
 
+    // Define the number of buildings built
+    public static int numberOfBuildingsBuilt = 0;
+
+    // Define the maximum number of buildings
+    public static int maxNumberOfBuildings = 0;
+
     // // The global flag that states if the player is currently building or upgrading something
     // public static bool currentlyBuildingOrUpgrading = false;
 }
@@ -276,6 +282,12 @@ public class GameSetup : MonoBehaviour
         // Set the wave counter to wave 0
         GameAdvancement.currentWave = 0;
 
+        // Set the number of buildings built to 0
+        GameAdvancement.numberOfBuildingsBuilt = 0;
+
+        // Set the maximum number of buildings correctly
+        SetMaxNumberOfBuildings();
+
         // Make sure the game is not paused
         GameAdvancement.gamePaused = false;
 
@@ -296,5 +308,25 @@ public class GameSetup : MonoBehaviour
 
         // Actualize the castle health points
         ActualizeCastleHealthPoints();
+    }
+
+    // The method used to set the max number of buildings correctly
+    public static void SetMaxNumberOfBuildings()
+    {
+        // Check the number of waves
+        if(LevelInfo.numberOfWaves == 1)
+        {
+            // Set the maximum number of buildings to 3
+            GameAdvancement.maxNumberOfBuildings = 3;
+
+        } else if(LevelInfo.numberOfWaves == 2)
+        {
+            // Set the maximum number of buildings to 6
+            GameAdvancement.maxNumberOfBuildings = 6;
+
+        } else {
+            // Set the maximum number of buildings to 10
+            GameAdvancement.maxNumberOfBuildings = 10;
+        }
     }
 }

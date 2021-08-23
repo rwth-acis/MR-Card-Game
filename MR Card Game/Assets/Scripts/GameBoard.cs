@@ -36,7 +36,7 @@ static class Board
     // Define the camera so that UI elements on units can be oriented towards it
     public static Transform camera;
 
-    // The flag that statest if the game board is visible or not
+    // The flag that states if the game board is visible or not
     public static bool boardVisible;
 }
 

@@ -270,7 +270,7 @@ namespace build
             // Disable the tower buttons that cannot be bought, and enable the tower buttons that can be bought
 
             // Check if the player has enough coin to build an archer tower
-            if(GameAdvancement.currencyPoints >= getArcherTowerCost)
+            if(GameAdvancement.currencyPoints >= getArcherTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the archer tower
                 getBuildArcherTower.interactable = true;
@@ -282,7 +282,7 @@ namespace build
             }
 
             // Check if the player has enough coin to build a fire tower
-            if(GameAdvancement.currencyPoints >= getFireTowerCost)
+            if(GameAdvancement.currencyPoints >= getFireTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the fire tower
                 getBuildFireTower.interactable = true;
@@ -294,7 +294,7 @@ namespace build
             }
 
             // Check if the player has enough coin to build an earth tower
-            if(GameAdvancement.currencyPoints >= getEarthTowerCost)
+            if(GameAdvancement.currencyPoints >= getEarthTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the earth tower
                 getBuildEarthTower.interactable = true;
@@ -306,7 +306,7 @@ namespace build
             }
 
             // Check if the player has enough coin to build a lightning tower
-            if(GameAdvancement.currencyPoints >= getLightningTowerCost)
+            if(GameAdvancement.currencyPoints >= getLightningTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the lightning tower
                 getBuildLightningTower.interactable = true;
@@ -318,7 +318,7 @@ namespace build
             }
 
             // Check if the player has enough coin to build a wind tower
-            if(GameAdvancement.currencyPoints >= getWindTowerCost)
+            if(GameAdvancement.currencyPoints >= getWindTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the wind tower
                 getBuildWindTower.interactable = true;
@@ -364,7 +364,7 @@ namespace build
             // Disable the trap buttons that cannot be bought, and enable the trap buttons that can be bought
 
             // Check if the player has enough coin to build a hole
-            if(GameAdvancement.currencyPoints >= getHoleCost)
+            if(GameAdvancement.currencyPoints >= getHoleCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the hole button
                 getBuildHole.interactable = true;
@@ -376,7 +376,7 @@ namespace build
             }
 
             // Check if the player has enough coin to build a swamp
-            if(GameAdvancement.currencyPoints >= getSwampCost)
+            if(GameAdvancement.currencyPoints >= getSwampCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the swamp button
                 getBuildSwamp.interactable = true;
@@ -608,6 +608,9 @@ namespace build
             // Ground the building
             GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
 
+            // Increase the number of buildings built by one
+            GameAdvancement.numberOfBuildingsBuilt = GameAdvancement.numberOfBuildingsBuilt + 1;
+
             // Un-pause the game
             GameAdvancement.gamePaused = false;
         }
@@ -639,6 +642,9 @@ namespace build
 
             // Ground the building
             GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
+
+            // Increase the number of buildings built by one
+            GameAdvancement.numberOfBuildingsBuilt = GameAdvancement.numberOfBuildingsBuilt + 1;
             
             // Un-pause the game
             GameAdvancement.gamePaused = false;
@@ -671,6 +677,9 @@ namespace build
             // Ground the building
             GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
 
+            // Increase the number of buildings built by one
+            GameAdvancement.numberOfBuildingsBuilt = GameAdvancement.numberOfBuildingsBuilt + 1;
+
             // Un-pause the game
             GameAdvancement.gamePaused = false;
         }
@@ -701,6 +710,9 @@ namespace build
 
             // Ground the building
             GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
+
+            // Increase the number of buildings built by one
+            GameAdvancement.numberOfBuildingsBuilt = GameAdvancement.numberOfBuildingsBuilt + 1;
 
             // Un-pause the game
             GameAdvancement.gamePaused = false;
@@ -733,6 +745,9 @@ namespace build
             // Ground the building
             GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
 
+            // Increase the number of buildings built by one
+            GameAdvancement.numberOfBuildingsBuilt = GameAdvancement.numberOfBuildingsBuilt + 1;
+
             // Un-pause the game
             GameAdvancement.gamePaused = false;
         }
@@ -764,6 +779,9 @@ namespace build
             // Ground the building
             GroundBuilding(trap.gameObject, TowerImageTarget.currentImageTarget);
 
+            // Increase the number of buildings built by one
+            GameAdvancement.numberOfBuildingsBuilt = GameAdvancement.numberOfBuildingsBuilt + 1;
+
             // Un-pause the game
             GameAdvancement.gamePaused = false;
         }
@@ -794,6 +812,9 @@ namespace build
 
             // Ground the building
             GroundBuilding(trap.gameObject, TowerImageTarget.currentImageTarget);
+
+            // Increase the number of buildings built by one
+            GameAdvancement.numberOfBuildingsBuilt = GameAdvancement.numberOfBuildingsBuilt + 1;
 
             // Un-pause the game
             GameAdvancement.gamePaused = false;

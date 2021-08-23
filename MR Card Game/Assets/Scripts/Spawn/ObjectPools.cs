@@ -228,13 +228,13 @@ public class ObjectPools : MonoBehaviour
         // Return the right projectile pool index given the projectile type
         switch(type)
         {
-            case "Arrow":
+            case "Archer Tower":
                 return EnemyPools.enemyPoolIds[9];
             break;
-            case "Fire Ball":
+            case "Fire Tower":
                 return EnemyPools.enemyPoolIds[10];
             break;
-            case "Stone":
+            case "Earth Tower":
                 return EnemyPools.enemyPoolIds[11];
             break;
         }
@@ -244,10 +244,10 @@ public class ObjectPools : MonoBehaviour
     }
 
     // The method that releses the projectile game objects
-    public static void ReleaseProjectile(Projectile projectile)
+    public static void ReleaseProjectile(Projectile projectile, Tower parent)
     {
         // Get the correctly object pool index from the object pools class
-        int objectPoolIndex = GetProjectilePoolIndex(projectile.GetComponent<Projectile>().getProjectileType);
+        int objectPoolIndex = GetProjectilePoolIndex(parent.getTowerType);
 
         // Release the projectile into the right object pool
         ObjectPool<Projectile>.ReleaseResource(objectPoolIndex, projectile);
