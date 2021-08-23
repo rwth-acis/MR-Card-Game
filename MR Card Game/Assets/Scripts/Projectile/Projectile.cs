@@ -37,7 +37,7 @@ public class Projectile : MonoBehaviour
     // The last position of the target is saved so that the projectile can continue travelling after the enemy is dead
     private Vector3 lastPosition;
 
-    // The list of coliders that enter the range of the tower
+    // The list of colliders that enter the range of the tower
     public List<Collider> colliders = new List<Collider>();
 
     // The method used to access the list of colliders
@@ -99,7 +99,7 @@ public class Projectile : MonoBehaviour
         // Check that the target is not null
         if(target != null && target.isAlive == true)
         {
-            // Actualise the target last position
+            // Actualize the target last position
             lastPosition = target.transform.position;
 
             // If the target is not null and alive, move the projectile in the direction of the target
@@ -220,7 +220,7 @@ public class Projectile : MonoBehaviour
     // The method that calculates the damage a unit should take depending on the enemy, tower and tower attack type
     public static int CalculateDamage(int damage, float weaknessMultiplier, string towerType, Enemy target)
     {
-        // Initialize the additinal damage multiplier
+        // Initialize the additional damage multiplier
         int additionalDamageMultiplier = 0;
 
         switch(towerType)
