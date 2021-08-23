@@ -176,7 +176,7 @@ public class SpellCard : MonoBehaviour
             }
 
             // Check if the reveal spell card overlay is not displayed while the image target is in the camera field and the game is not paused
-            if(cardVisibleButNotDisplayed == true && GameAdvancement.gamePaused == false && Cards.drawnSpellsOnBoard == 0)
+            if(cardVisibleButNotDisplayed == true && GameAdvancement.gamePaused == false && Cards.drawnSpellsOnBoard <= 0)
             {
                 // Set the variable that states that the spell card is visible but the overlay not displayed to false
                 cardVisibleButNotDisplayed = false;
@@ -340,7 +340,7 @@ public class SpellCard : MonoBehaviour
     public void SpellCardEnteredCameraField()
     {
         // Check that the game is not paused
-        if(GameAdvancement.gamePaused == false && LevelInfo.waveOngoing == true && Cards.drawnSpellsOnBoard == 0 && cardDrawn == false)
+        if(GameAdvancement.gamePaused == false && LevelInfo.waveOngoing == true && Cards.drawnSpellsOnBoard <= 0 && cardDrawn == false)
         {
             // Display the reveal spell menu
             DisplayDrawSpell();
@@ -415,6 +415,9 @@ public class SpellCard : MonoBehaviour
 
             // Reduce the number of free draws by one
             Cards.freeDraws = Cards.freeDraws - 1;
+
+            // Set the spell type
+            spellType = Cards.cardDeck[Cards.currentCardIndex];
 
             // increase the current card index
             IncreaseCurrentCardIndex();
@@ -727,8 +730,8 @@ public class SpellCard : MonoBehaviour
             // Set the variable that states that the spell card is on the board to false
             onGameBoard = false;
 
-            // Check if the card was drawn
-            if(cardDrawn == true)
+            // Check if the card was drawn and the game paused
+            if(cardDrawn == true && GameAdvancement.gamePaused)
             {
                 // Decrease the number of drawn spells that are on the board by one
                 Cards.drawnSpellsOnBoard = Cards.drawnSpellsOnBoard - 1;

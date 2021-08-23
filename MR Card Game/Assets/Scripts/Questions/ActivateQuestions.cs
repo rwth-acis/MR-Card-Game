@@ -48,6 +48,24 @@ public class ActivateQuestions : MonoBehaviour
     public GameObject viewInputQuestion;
     public GameObject gameOverlay;
 
+    // The method used to access to the view model (so view activate question) menu as a static object
+    public static GameObject getViewModel
+    {
+        get { return instance.viewModel; }
+    }
+
+    // The method used to access to the view multiple choice question menu as a static object
+    public static GameObject getViewMultipleChoiceQuestion
+    {
+        get { return instance.viewMultipleChoiceQuestion; }
+    }
+
+    // The method used to access to the view input question menu as a static object
+    public static GameObject getViewInputQuestion
+    {
+        get { return instance.viewInputQuestion; }
+    }
+
     // The instance of this script
     public static ActivateQuestions instance;
 
@@ -1655,5 +1673,21 @@ public class ActivateQuestions : MonoBehaviour
     {
         // Change the number displayed to the global variables
         getNumberOfQuestionsThatNeedToBeAnsweredDisplay.GetComponentInChildren<TMP_Text>().text = Questions.numberOfQuestionsNeededToAnswer.ToString();
+    }
+
+    // Method that resets the question menu windows
+    public static void ResetQuestionMenuWindows()
+    {
+        // Disable the view input question menu
+        getViewInputQuestion.SetActive(false);
+
+        // Disable the view multiple choice question menu
+        getViewMultipleChoiceQuestion.SetActive(false);
+
+        // Disable the view model (view activate question) menu
+        getViewModel.SetActive(false);
+
+        // Reset the number of questions needed to be answered
+        Questions.numberOfQuestionsNeededToAnswer = 0;
     }
 }

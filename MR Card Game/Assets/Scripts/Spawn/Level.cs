@@ -1311,6 +1311,9 @@ public class Level : MonoBehaviour
             spellCard.GetComponent<SpellCard>().ResetSpellCard();
         }
 
+        // Reset the activate question class to disable the question menus and reset the number of questions that need to be answered
+        ActivateQuestions.ResetQuestionMenuWindows();
+
         // Reset the spell card deck
         SpellCard.ResetSpellCardDeck();
 
@@ -1455,6 +1458,9 @@ public class Level : MonoBehaviour
         {
             spellCard.GetComponent<SpellCard>().ResetSpellCard();
         }
+
+        // Reset the activate question class to disable the question menus and reset the number of questions that need to be answered
+        ActivateQuestions.ResetQuestionMenuWindows();
 
         // Reset the spell card deck
         SpellCard.ResetSpellCardDeck();

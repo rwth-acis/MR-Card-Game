@@ -96,6 +96,7 @@ public class Projectile : MonoBehaviour
     // Method that makes a projectile move to a target
     private void MoveToTarget()
     {
+        Debug.Log("In move to target: target is null: " + (target == null) + " and target is alive: " + target.isAlive);
         // Check that the target is not null
         if(target != null && target.isAlive == true)
         {
@@ -189,20 +190,30 @@ public class Projectile : MonoBehaviour
         // For each enemy in the collider, calculate the damage they should take
         foreach(var targetEnemy in GetColliders())
         {
+            Debug.Log("Currently, the target enemy is null is: " + (targetEnemy == null));
             // Debug.Log("The enemy " + targetEnemy.gameObject.name + " was in the range of " + getProjectileType + " and was hit with the projectile that can hit multiple enemies");
-
-            // Calculate the damage
-            damage = CalculateDamage(parent.getDamage, parent.GetWeaknessMultiplier, parent.getTowerType, targetEnemy.GetComponent<Enemy>());
-
-            // Check if the enemy will die from this attack
-            if(damage >= targetEnemy.GetComponent<Enemy>().GetCurrentHP)
+            if(targetEnemy != null)
             {
-                // Add the target enemy to the list of dead enemies
-                listOfDead.Add(targetEnemy);
-            }
+                // Calculate the damage
+                damage = CalculateDamage(parent.getDamage, parent.GetWeaknessMultiplier, parent.getTowerType, targetEnemy.GetComponent<Enemy>());
 
-            // Make the enemy take damage
-            targetEnemy.GetComponent<Enemy>().TakeDamage(damage);
+                // Check that the damage is not null
+                if(damage != 0)
+                {
+                    // Check if the enemy will die from this attack
+                    if(targetEnemy != null && damage >= targetEnemy.GetComponent<Enemy>().GetCurrentHP)
+                    {
+                        // Add the target enemy to the list of dead enemies
+                        listOfDead.Add(targetEnemy);
+                    }
+
+                    if(targetEnemy != null)
+                    {
+                        // Make the enemy take damage
+                        targetEnemy.GetComponent<Enemy>().TakeDamage(damage);
+                    }
+                }
+            }
         }
 
         // Check that the list of dead enemies is not empty
@@ -220,81 +231,90 @@ public class Projectile : MonoBehaviour
     // The method that calculates the damage a unit should take depending on the enemy, tower and tower attack type
     public static int CalculateDamage(int damage, float weaknessMultiplier, string towerType, Enemy target)
     {
+
+        Debug.Log("The enemy for which damage is calculated is: " + (target == null));
         // Initialize the additional damage multiplier
         int additionalDamageMultiplier = 0;
 
-        switch(towerType)
+        if(target != null)
         {
-            case "Archer Tower":
+            switch(towerType)
+            {
+                case "Archer Tower":
 
-                if(target.GetEnemyWeakness == "Piercing")
-                {
-                    additionalDamageMultiplier = 1;
-                } else if(target.GetEnemyResistance == "Piercing")
-                {
-                    additionalDamageMultiplier = -1;
-                }
-
-            break;
-            
-            case "Fire Tower":
-                if(target.GetEnemyWeakness == "Fire")
-                {
-                    additionalDamageMultiplier = 1;
-                } else if(target.GetEnemyResistance == "Fire")
-                {
-                    additionalDamageMultiplier = -1;
-                }
-            break;
-
-            case "Lightning Tower":
-                if(target.GetEnemyWeakness == "Lightning")
-                {
-                    if(GameAdvancement.raining == true || target.isWet == true)
+                    if(target.GetEnemyWeakness == "Piercing")
                     {
-                        additionalDamageMultiplier = 2;
-                    } else {
                         additionalDamageMultiplier = 1;
-                    }
-                } else if(target.GetEnemyResistance == "Lightning")
-                {
-                    if(GameAdvancement.raining == true)
+                    } else if(target.GetEnemyResistance == "Piercing")
                     {
-                        additionalDamageMultiplier = 0;
-                    } else {
                         additionalDamageMultiplier = -1;
                     }
-                } else {
-                    if(GameAdvancement.raining == true || target.isWet == true)
+
+                break;
+                
+                case "Fire Tower":
+                    if(target.GetEnemyWeakness == "Fire")
                     {
                         additionalDamageMultiplier = 1;
+                    } else if(target.GetEnemyResistance == "Fire")
+                    {
+                        additionalDamageMultiplier = -1;
                     }
-                }
-            break;
+                break;
 
-            case "Earth Tower":
-                if(target.GetEnemyWeakness == "Earth")
-                {
-                    additionalDamageMultiplier = 1;
-                } else if(target.GetEnemyResistance == "Earth")
-                {
-                    additionalDamageMultiplier = -1;
-                }
-            break;
+                case "Lightning Tower":
+                    if(target.GetEnemyWeakness == "Lightning")
+                    {
+                        if(GameAdvancement.raining == true || target.isWet == true)
+                        {
+                            additionalDamageMultiplier = 2;
+                        } else {
+                            additionalDamageMultiplier = 1;
+                        }
+                    } else if(target.GetEnemyResistance == "Lightning")
+                    {
+                        if(GameAdvancement.raining == true)
+                        {
+                            additionalDamageMultiplier = 0;
+                        } else {
+                            additionalDamageMultiplier = -1;
+                        }
+                    } else {
+                        if(GameAdvancement.raining == true || target.isWet == true)
+                        {
+                            additionalDamageMultiplier = 1;
+                        }
+                    }
+                break;
 
-            case "Wind Tower":
-                if(target.GetEnemyWeakness == "Wind")
-                {
-                    additionalDamageMultiplier = 1;
-                } else if(target.GetEnemyResistance == "Wind")
-                {
-                    additionalDamageMultiplier = -1;
-                }
-            break;
+                case "Earth Tower":
+                    if(target.GetEnemyWeakness == "Earth")
+                    {
+                        additionalDamageMultiplier = 1;
+                    } else if(target.GetEnemyResistance == "Earth")
+                    {
+                        additionalDamageMultiplier = -1;
+                    }
+                break;
+
+                case "Wind Tower":
+                    if(target.GetEnemyWeakness == "Wind")
+                    {
+                        additionalDamageMultiplier = 1;
+                    } else if(target.GetEnemyResistance == "Wind")
+                    {
+                        additionalDamageMultiplier = -1;
+                    }
+                break;
+            }
+
+            // Return the damage with a bonus, a malus or flat depending on if a weakness or resistance was found
+            return (int) (damage + additionalDamageMultiplier * damage * weaknessMultiplier);
+
+        } else {
+
+            return 0;
         }
-
-        // Return the damage with a bonus, a malus or flat depending on if a weakness or resistance was found
-        return (int) (damage + additionalDamageMultiplier * damage * weaknessMultiplier);
     }
 
     // Method used to reinitialize the colliders list
@@ -322,7 +342,7 @@ public class Projectile : MonoBehaviour
         colliders.Remove(other);
     }
 
-    // Method used to return the enemy to the right object pool uppon death
+    // Method used to return the enemy to the right object pool upon death
     public void ReturnProjectileToObjectPool()
     {
         // Call the release enemy of the object pool class

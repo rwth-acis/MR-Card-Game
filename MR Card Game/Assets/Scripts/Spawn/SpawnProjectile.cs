@@ -91,23 +91,23 @@ namespace i5.Toolkit.Core.Examples.Spawners
         public static Projectile SpawnProjectileForTower(string type, Projectile projectile, GameObject parent, float size)
         {
             // Initialize the pool index for the object pool of the projectile
-            int poolId = ObjectPools.GetProjectilePoolIndex("Arrow");
+            int poolId = ObjectPools.GetProjectilePoolIndex(type);
 
-            // Depending on the type of the tower, find the right projectile pool index
-            switch(type)
-            {
-                case "Archer Tower":
-                    poolId = ObjectPools.GetProjectilePoolIndex("Arrow");
-                break;
+            // // Depending on the type of the tower, find the right projectile pool index
+            // switch(type)
+            // {
+            //     case "Archer Tower":
+            //         poolId = ObjectPools.GetProjectilePoolIndex("Arrow");
+            //     break;
 
-                case "Fire Tower":
-                    poolId = ObjectPools.GetProjectilePoolIndex("Fire Ball");
-                break;
+            //     case "Fire Tower":
+            //         poolId = ObjectPools.GetProjectilePoolIndex("Fire Ball");
+            //     break;
 
-                case "Earth Tower":
-                    poolId = ObjectPools.GetProjectilePoolIndex("Stone");
-                break;
-            }
+            //     case "Earth Tower":
+            //         poolId = ObjectPools.GetProjectilePoolIndex("Stone");
+            //     break;
+            // }
 
             // Get a new projectile from the object pool of the projectile type
             Projectile projectileObject = ObjectPool<Projectile>.RequestResource(poolId, () => {return Instantiate(projectile);});
