@@ -435,6 +435,9 @@ public class SpellCard : MonoBehaviour
         // Wait until the number of questions that need to be answered is 0
         yield return new WaitUntil(NoMoreQuestionsNeeded);
 
+        // Set the spell type
+        spellType = Cards.cardDeck[Cards.currentCardIndex];
+
         // Increase the current card index
         IncreaseCurrentCardIndex();
 
@@ -451,70 +454,72 @@ public class SpellCard : MonoBehaviour
     // The method that reveals the spell card that was just drawn
     private void RevealSpell()
     {
+        // // Depending on the type of card that is next in the card deck, make the right overlay appear and set the spell type variable to the right type
+        // switch(Cards.cardDeck[Cards.currentCardIndex])
+        // {
+        //     case "Meteor":
+        //         MakeMeteorCardAppear();
+        //         spellType = "meteor";
+        //     break;
 
-        // Depending on the type of card that is next in the card deck, make the right overlay appear and set the spell type variable to the right type
-        switch(Cards.cardDeck[Cards.currentCardIndex])
-        {
-            case "Meteor":
-                MakeMeteorCardAppear();
-                spellType = "meteor";
-            break;
+        //     case "Arrow rain":
+        //         MakeArrowRainCardAppear();
+        //         spellType = "arrow rain";
+        //     break;
 
-            case "Arrow rain":
-                MakeArrowRainCardAppear();
-                spellType = "arrow rain";
-            break;
+        //     case "Thunder strike":
+        //         MakeThunderStrikeCardAppear();
+        //         spellType = "thunder strike";
+        //     break;
 
-            case "Thunder strike":
-                MakeThunderStrikeCardAppear();
-                spellType = "thunder strike";
-            break;
+        //     case "Armor":
+        //         MakeArmorCardAppear();
+        //         spellType = "armor";
+        //     break;
 
-            case "Armor":
-                MakeArmorCardAppear();
-                spellType = "armor";
-            break;
+        //     case "Heal":
+        //         MakeHealCardAppear();
+        //         spellType = "heal";
+        //     break;
 
-            case "Heal":
-                MakeHealCardAppear();
-                spellType = "heal";
-            break;
+        //     case "Obliteration":
+        //         MakeObliterationCardAppear();
+        //         spellType = "obliteration";
+        //     break;
 
-            case "Obliteration":
-                MakeObliterationCardAppear();
-                spellType = "obliteration";
-            break;
+        //     case "Draw":
+        //         MakeDrawCardAppear();
+        //         spellType = "draw";
+        //     break;
 
-            case "Draw":
-                MakeDrawCardAppear();
-                spellType = "draw";
-            break;
+        //     case "Teleport":
+        //         MakeTeleportCardAppear();
+        //         spellType = "teleport";
+        //     break;
 
-            case "Teleport":
-                MakeTeleportCardAppear();
-                spellType = "teleport";
-            break;
+        //     case "Space distortion":
+        //         MakeSpaceDistortionCardAppear();
+        //         spellType = "space distortion";
+        //     break;
 
-            case "Space distortion":
-                MakeSpaceDistortionCardAppear();
-                spellType = "space distortion";
-            break;
+        //     case "Slow time":
+        //         MakeSlowTimeCardAppear();
+        //         spellType = "slow time";
+        //     break;
 
-            case "Slow time":
-                MakeSlowTimeCardAppear();
-                spellType = "slow time";
-            break;
+        //     case "Stop time":
+        //         MakeStopTimeCardAppear();
+        //         spellType = "stop time";
+        //     break;
 
-            case "Stop time":
-                MakeStopTimeCardAppear();
-                spellType = "stop time";
-            break;
+        //     case "Rain":
+        //         MakeRainCardAppear();
+        //         spellType = "rain";
+        //     break;
+        // }
 
-            case "Rain":
-                MakeRainCardAppear();
-                spellType = "rain";
-            break;
-        }
+        // Set the right sprite to the image target image component
+        SpellImages.DisplaySpell(this.gameObject, spellType);
 
         // Display the spell image
         DisplaySpellImage();
@@ -549,77 +554,77 @@ public class SpellCard : MonoBehaviour
     private void MakeArrowRainCardAppear()
     {
         //
-        SpellImages.DisplayMeteor(this.gameObject);
+        SpellImages.DisplayArrowRain(this.gameObject);
     }
 
     // Method used to make the thunder strike spell card appearance appear on the image target
     private void MakeThunderStrikeCardAppear()
     {
         //
-        SpellImages.DisplayMeteor(this.gameObject);
+        SpellImages.DisplayThunderStrike(this.gameObject);
     }
 
     // Method used to make the armor spell card appearance appear on the image target
     private void MakeArmorCardAppear()
     {
         //
-        SpellImages.DisplayMeteor(this.gameObject);
+        SpellImages.DisplayArmor(this.gameObject);
     }
 
     // Method used to make the heal spell card appearance appear on the image target
     private void MakeHealCardAppear()
     {
         //
-        SpellImages.DisplayMeteor(this.gameObject);
+        SpellImages.DisplayHeal(this.gameObject);
     }
 
     // Method used to make the obliteration spell card appearance appear on the image target
     private void MakeObliterationCardAppear()
     {
         //
-        SpellImages.DisplayMeteor(this.gameObject);
+        SpellImages.DisplayObliteration(this.gameObject);
     }
 
     // Method used to make the draw spell card appearance appear on the image target
     private void MakeDrawCardAppear()
     {
         //
-        SpellImages.DisplayMeteor(this.gameObject);
+        SpellImages.DisplayDraw(this.gameObject);
     }
 
     // Method used to make the teleport spell card appearance appear on the image target
     private void MakeTeleportCardAppear()
     {
         //
-        SpellImages.DisplayMeteor(this.gameObject);
+        SpellImages.DisplayTeleport(this.gameObject);
     }
 
     // Method used to make the space distortion spell card appearance appear on the image target
     private void MakeSpaceDistortionCardAppear()
     {
         //
-        SpellImages.DisplayMeteor(this.gameObject);
+        SpellImages.DisplaySpaceDistortion(this.gameObject);
     }
 
     // Method used to make the slow time spell card appearance appear on the image target
     private void MakeSlowTimeCardAppear()
     {
         //
-        SpellImages.DisplayMeteor(this.gameObject);
+        SpellImages.DisplaySlowTime(this.gameObject);
     }
 
     // Method used to make the stop time spell card appearance appear on the image target
     private void MakeStopTimeCardAppear()
     {
         //
-        SpellImages.DisplayMeteor(this.gameObject);
+        SpellImages.DisplayStopTime(this.gameObject);
     }
 
     // Method used to make the rain spell card appearance appear on the image target
     private void MakeRainCardAppear()
     {
         //
-        SpellImages.DisplayMeteor(this.gameObject);
+        SpellImages.DisplayRain(this.gameObject);
     }
 
     // The method that activates the canvas on which the reveal spell button is
@@ -725,7 +730,7 @@ public class SpellCard : MonoBehaviour
         GameAdvancement.gamePaused = false;
 
         // Depending on the type of card that is next in the card deck, make the right overlay appear and set the spell type variable to the right type
-        switch(Cards.cardDeck[Cards.currentCardIndex])
+        switch(spellType)
         {
             case "Meteor":
                 PlayMeteor(this.gameObject);
