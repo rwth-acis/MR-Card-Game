@@ -1275,9 +1275,10 @@ public class Level : MonoBehaviour
         // Set the wave ongoing flag to false
         LevelInfo.waveOngoing = false;
         
-        // Disable all towers
+        // Get the array of all tower objects
         GameObject[] towerArray = GameObject.FindGameObjectsWithTag ("Tower");
  
+        // Disable all towers
         foreach(GameObject tower in towerArray)
         {
             // Check if the tower is active
@@ -1285,6 +1286,20 @@ public class Level : MonoBehaviour
             {
                 // Release the tower object
                 ObjectPools.ReleaseTower(tower);
+            }
+        }
+
+        // Get the array of all trap objects
+        GameObject[] trapArray = GameObject.FindGameObjectsWithTag ("Trap");
+ 
+        // Disable all traps
+        foreach(GameObject trap in trapArray)
+        {
+            // Check if the trap is active
+            if(trap.activeSelf == true)
+            {
+                // Release the trap object
+                ObjectPools.ReleaseTrap(trap.GetComponent<Trap>());
             }
         }
 

@@ -173,6 +173,9 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // // Set them as children of the game board
             // enemy.transform.parent = Waypoints.enemySpawn.transform;
 
+            // Remove the enemy slow
+            enemy.personalSlowFactor = 1;
+
             // Set the position of the child to the position of the parent object
             enemy.transform.position = Waypoints.enemySpawn.transform.position + new Vector3(0, enemy.GetFlightHeight, 0);
 

@@ -72,11 +72,11 @@ public class SpawnTrap : MonoBehaviour
         // Set the trap as active
         trap.gameObject.SetActive(true);
 
-        // Scale the trap down
-        trap.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * getHoleSize;
-
         // Set them as children of the parent that was passed
         trap.gameObject.transform.parent = parent.transform;
+
+        // Scale the trap down
+        trap.transform.localScale = new Vector3(Board.greatestBoardDimension * getHoleSize, 1, Board.greatestBoardDimension * getHoleSize);
 
         // Vector3 newPosition =  new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
 
@@ -101,14 +101,14 @@ public class SpawnTrap : MonoBehaviour
         // Set the trap as active
         trap.gameObject.SetActive(true);
 
-        // Scale the trap down
-        trap.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * getSwampSize;
-
         // // Scale the trap down
         // trap.transform.localScale = new Vector3(1, 1, 1);
 
         // Set them as children of the parent that was passed
         trap.gameObject.transform.parent = parent.transform;
+
+        // Scale the trap down
+        trap.transform.localScale = new Vector3(Board.greatestBoardDimension * getSwampSize, Board.greatestBoardDimension * 1, Board.greatestBoardDimension * getSwampSize);
 
         // Vector3 newPosition =  new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
 

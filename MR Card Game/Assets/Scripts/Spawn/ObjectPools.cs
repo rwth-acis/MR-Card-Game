@@ -309,15 +309,15 @@ public class ObjectPools : MonoBehaviour
     }
 
     // The method that releases the trap game objects
-    public static void ReleaseTrap(Trap trap, string type)
+    public static void ReleaseTrap(Trap trap)
     {
-        // Get the correctly object pool index from the object pools class
-        int objectPoolIndex = GetSpellEffectPoolIndex(type);
+        // // Get the correctly object pool index from the object pools class
+        // int objectPoolIndex = GetSpellEffectPoolIndex(trap.getTrapType);
 
-        // Release the trap into the right object pool
-        ObjectPool<Trap>.ReleaseResource(objectPoolIndex, trap);
+        // // Release the trap into the right object pool
+        // ObjectPool<Trap>.ReleaseResource(objectPoolIndex, trap);
 
-        // Set the trap as inactive
-        trap.gameObject.SetActive(false);
+        // // Set the trap as inactive
+        // trap.gameObject.SetActive(false);
     }
 }

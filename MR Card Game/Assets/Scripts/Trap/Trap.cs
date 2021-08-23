@@ -8,6 +8,12 @@ public class Trap : MonoBehaviour
     [SerializeField]
     private string trapType;
 
+    // Method used to get the type of the trap
+    public string getTrapType
+    {
+        get { return trapType; }
+    }
+
     // The hole slow factor
     [SerializeField]
     private float slowFactor;
