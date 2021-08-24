@@ -40,6 +40,8 @@ public class AddLevel : MonoBehaviour
     private GameObject mainMenu;
     [SerializeField]
     private GameObject addLevelMenu;
+    [SerializeField]
+    private GameObject levelDescriptionMenu;
 
     // Define the page x / y text of the brows directories menu
     [SerializeField]
@@ -57,9 +59,11 @@ public class AddLevel : MonoBehaviour
     [SerializeField]
     private Button directory5;
 
-    // Define the create directory button
+    // Define the create and select directory button
     [SerializeField]
-    private Button createDirectory;
+    private Button createDirectoryButton;
+    [SerializeField]
+    private Button selectDirectory;
 
     // Define the previous an next buttons
     [SerializeField]
@@ -73,8 +77,22 @@ public class AddLevel : MonoBehaviour
 
     // The sprites of the return one level up button
     [SerializeField]
-    private Sprite[] switchSprites;
-    private Image switchImage;
+    private Sprite[] spriteSwitch;
+    private Image imageSwitch;
+
+    // The two text fields of the level description menu
+    public TMP_Text levelHeading;
+    public TMP_Text levelDescription;
+
+    // The log, which will become the Description.json file
+    [Serializable]
+    public class Log
+    {
+        public int numberOfQuestions; // The number of already existing questions in the folder so that the new ones can be renamed
+        public int numberOfModels; // The number of already existing model files in the folder so that the new ones can be renamed
+        public string heading; // Heading of the description, name that users can give
+        public string description; // The description text of the content / concepts that are needed for solving the exercises
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -228,115 +246,150 @@ public class AddLevel : MonoBehaviour
         }
 
         // Enable / disable the return button
-        switchImage = returnOneUp.image;
+        imageSwitch = returnOneUp.image;
         if(currentPath != rootDirectoryPath)
         {
             //returnButtonOn.interactable = true;
             returnOneUp.interactable = true;
-            switchImage.sprite = switchSprites[1];
+            imageSwitch.sprite = spriteSwitch[1];
         } else {
             //returnButtonOff.interactable = false;
             returnOneUp.interactable = false;
-            switchImage.sprite = switchSprites[0];
+            imageSwitch.sprite = spriteSwitch[0];
+        }
+
+        // Enable / Disable select directory button, the select directory button is not enabled in the root directory and in directories containing directories
+        TMP_Text textSelectDirectory = selectDirectory.GetComponentInChildren<TMP_Text>();
+        if(currentPath != rootDirectoryPath || numberOfDirectories == 0)
+        {
+            // Make the select directory button interactable and make it blue
+            selectDirectory.interactable = true;
+            textSelectDirectory.GetComponent<TMP_Text>().colorGradient = enabledTextGradient;
+
+        } else {
+
+            // Make sure the select directory button is not interactable and make it grey
+            selectDirectory.interactable = false;
+            textSelectDirectory.GetComponent<TMP_Text>().colorGradient = disabledTextGradient;
         }
     }
 
     // Method that creates the buttons depending of the directory we are currently in
     public void RenameButtons(string path)
     {
-        // Value at the begining of the for loop
-        int initialIndex = (currentPage - 1) * 5;
-        // counter for the assigning of a button
-        int currentDirectoryNumber = 1;
-        // Value for the end of the for loop (for the renaming loop)
-        int lastIndex = 0;
-        if(numberOfDirectories <= (currentPage) * 5)
+        // Check if there are no new directories and a description file (== level inside)
+        if(numberOfDirectories == 0 && File.Exists(currentPath + "Description.json"))
         {
-            lastIndex = numberOfDirectories - 1;
+            // Enable the level description menu
+            levelDescriptionMenu.SetActive(true);
+
+            // Set the level description and heading correctly
+            SetUpLevelDescription();
+
+            // Disable the add level menu
+            addLevelMenu.SetActive(false);
+
+        // Case there is at least one directory, then display the numbers 5*x + 1 to 5*x + 5 (x is number of the page)
         } else {
-            lastIndex = currentPage * 5 - 1;
-        }
-        // Last index that would correspond to the fifth directory if the array was full enough (for the deleting names loop)
-        int lastEmptyIndex = (currentPage) * 5 - 1;
 
-        // Initialize the disable directory variable
-        bool enableDirectory = true;
+            // First rename the buttons that should have button names, check that they are enabled
+            // for that initialize the range of the for loop
 
-        // Go through the directories of the first page
-        for(int currentIndex = initialIndex; currentIndex <= lastIndex; currentIndex = currentIndex + 1)
-        {
-            // Get the directory path
-            string dir = directoriesArray[currentIndex];
+            // Value at the begining of the for loop
+            int initialIndex = (currentPage - 1) * 5;
 
-            // Check if there are files in the directory
-            if (Directory.GetFiles(dir).Length > 0)
+            // counter for the assigning of a button
+            int currentDirectoryNumber = 1;
+
+            // Last index that would correspond to the fifth directory if the array was full enough (for the deleting names loop)
+            int lastEmptyIndex = (currentPage) * 5 - 1;
+
+            // Check that the number of directories is unequal to 0
+            if(numberOfDirectories != 0)
             {
-                // Set enable directory to false
-                enableDirectory = false;
-                
-            } else {
-
-                // Set enable directory to true
-                enableDirectory = true;
-            }
-
-            // Get the name
-            string lastFolderName = Path.GetFileName(dir);
-
-            // Print the directory name on the right button
-            switch (currentDirectoryNumber)
-            {
-                case 1:
-                    directory1.GetComponentInChildren<TMP_Text>().text = lastFolderName;
-                    directory1.interactable = enableDirectory;
-                break;
-                case 2:
-                    directory2.GetComponentInChildren<TMP_Text>().text = lastFolderName;
-                    directory2.interactable = enableDirectory;
-                break;
-                case 3:
-                    directory3.GetComponentInChildren<TMP_Text>().text = lastFolderName;
-                    directory3.interactable = enableDirectory;
-                break;
-                case 4:
-                    directory4.GetComponentInChildren<TMP_Text>().text = lastFolderName;
-                    directory4.interactable = enableDirectory;
-                break;
-                case 5:
-                    directory5.GetComponentInChildren<TMP_Text>().text = lastFolderName;
-                    directory5.interactable = enableDirectory;
-                break;
-            }
-            currentDirectoryNumber = currentDirectoryNumber + 1;
-        }
-
-        // If there are no more directory, make sure the rest of the buttons are empty and not interactable
-        if(currentDirectoryNumber != 5)
-        {
-            for(int counter = numberOfDirectories; counter <= lastEmptyIndex; counter = counter + 1)
-            {
-                switch (currentDirectoryNumber)
+                // Value for the end of the for loop (for the renaming loop)
+                int lastIndex = 0;
+                if(numberOfDirectories <= (currentPage) * 5)
                 {
-                    case 2:
-                        directory2.GetComponentInChildren<TMP_Text>().text = "";
-                        directory2.interactable = false;
-                    break;
-                    case 3:
-                        directory3.GetComponentInChildren<TMP_Text>().text = "";
-                        directory3.interactable = false;
-                    break;
-                    case 4:
-                        directory4.GetComponentInChildren<TMP_Text>().text = "";
-                        directory4.interactable = false;
-                    break;
-                    case 5:
-                        directory5.GetComponentInChildren<TMP_Text>().text = "";
-                        directory5.interactable = false;
-                    break;
+                    lastIndex = numberOfDirectories - 1;
+                } else {
+                    lastIndex = currentPage * 5 - 1;
                 }
-                currentDirectoryNumber = currentDirectoryNumber + 1;
+
+                for(int currentIndex = initialIndex; currentIndex <= lastIndex; currentIndex = currentIndex + 1)
+                {
+                    // Get the directory path
+                    string dir = directoriesArray[currentIndex];
+
+                    // Get the name
+                    string lastFolderName = Path.GetFileName(dir);
+
+                    // Print the directory name on the right button
+                    switch (currentDirectoryNumber)
+                    {
+                        case 1:
+                            directory1.GetComponentInChildren<TMP_Text>().text = lastFolderName;
+                            directory1.interactable = true;
+                        break;
+
+                        case 2:
+                            directory2.GetComponentInChildren<TMP_Text>().text = lastFolderName;
+                            directory2.interactable = true;
+                        break;
+
+                        case 3:
+                            directory3.GetComponentInChildren<TMP_Text>().text = lastFolderName;
+                            directory3.interactable = true;
+                        break;
+
+                        case 4:
+                            directory4.GetComponentInChildren<TMP_Text>().text = lastFolderName;
+                            directory4.interactable = true;
+                        break;
+
+                        case 5:
+                            directory5.GetComponentInChildren<TMP_Text>().text = lastFolderName;
+                            directory5.interactable = true;
+                        break;
+                    }
+
+                    // Increase the current directory number by one
+                    currentDirectoryNumber = currentDirectoryNumber + 1;
+                }
             }
-            // }
+
+            // If there are no more directory, make sure the rest of the buttons are empty and not interactable
+            if(currentDirectoryNumber != 5)
+            {
+                for(int counter = numberOfDirectories; counter <= lastEmptyIndex; counter = counter + 1)
+                {
+                    switch (currentDirectoryNumber)
+                    {
+                        case 1:
+                            directory1.GetComponentInChildren<TMP_Text>().text = "";
+                            directory1.interactable = false;
+                        break;
+
+                        case 2:
+                            directory2.GetComponentInChildren<TMP_Text>().text = "";
+                            directory2.interactable = false;
+                        break;
+                        case 3:
+                            directory3.GetComponentInChildren<TMP_Text>().text = "";
+                            directory3.interactable = false;
+                        break;
+                        case 4:
+                            directory4.GetComponentInChildren<TMP_Text>().text = "";
+                            directory4.interactable = false;
+                        break;
+                        case 5:
+                            directory5.GetComponentInChildren<TMP_Text>().text = "";
+                            directory5.interactable = false;
+                        break;
+                    }
+                    currentDirectoryNumber = currentDirectoryNumber + 1;
+                }
+            }
         }
     }
 
@@ -478,7 +531,23 @@ public class AddLevel : MonoBehaviour
         // Actualize the page heading
         currentPage = 1;
         double value = (double)numberOfDirectories/(double)5;
-        numberOfPages = System.Convert.ToInt32(System.Math.Ceiling(value));
+
+        // Get the number of pages
+        int pageNumber = System.Convert.ToInt32(System.Math.Ceiling(value));
+
+        // Check if the number of pages is 0
+        if(pageNumber == 0)
+        {
+            // If yes, set it to 1
+            numberOfPages = 1;
+
+        } else {
+
+            // If no, set the number of pages correctly
+            numberOfPages = pageNumber;
+        }
+
+        // Change the current page text
         currentPageText.text = "Page " + currentPage + "/" + numberOfPages;
     }
 
@@ -514,13 +583,107 @@ public class AddLevel : MonoBehaviour
     }
 
     //-----------------------------------------------------------------------------------------------------------
+    // Displaying the level description window of the add level menu
+    //-----------------------------------------------------------------------------------------------------------
+
+    // Method that does the level description setup
+    public void SetUpLevelDescription()
+    {
+        // First access the description file
+        string json = File.ReadAllText(currentPath + "Description.json");
+        Log descriptionObject = JsonUtility.FromJson<Log>(json);
+
+        // Check if the level heading is blank
+        if(descriptionObject.heading == "")
+        {
+            // Give the level the name of the folder that it contains
+            levelHeading.text = Path.GetFileName(Path.GetDirectoryName(currentPath));
+
+            // NOT WORKING TODO!!!!
+
+        } else {
+
+            // Set the title to the heading of the description object
+            levelHeading.text = descriptionObject.heading;
+        }
+
+        // Check if the level description is blank
+        if(descriptionObject.description == "")
+        {
+            // State that the level creator did not give a description
+            levelDescription.text = "The creator of theses questions did not give a description for this level.";
+
+        } else {
+
+            // Set the description to the description of the description object
+            levelDescription.text = descriptionObject.description;
+        }
+    }
+
+    // Method used to exit the level description and return to the brows directories
+    public void LeaveLevelDescription()
+    {
+        // Enable the brows directories menu
+        addLevelMenu.SetActive(true);
+
+        // Disable the level description
+        levelDescriptionMenu.SetActive(false);
+
+        // Set the current path to one layer up
+        currentPath = Path.GetFullPath(Path.Combine(currentPath, @"..\"));
+
+        // Then we can actualize everything
+        ActualizeGlobals();
+        DisableOrEnableButtons();
+        RenameButtons(currentPath);
+    }
+
+    // Method used to delete a level by pressing the delete button in the level description window
+    public void DeleteLevel()
+    {
+        // Get the array of all files in the current path directory
+        string[] filePaths = Directory.GetFiles(currentPath);
+
+        // Go through all files in the directory
+        foreach (string filePath in filePaths)
+        {
+            // Delete file
+            File.Delete(filePath); 
+        }
+        
+        // Leave the level description
+        LeaveLevelDescription();
+    }
+
+    //-----------------------------------------------------------------------------------------------------------
     // Creating directories
     //-----------------------------------------------------------------------------------------------------------
 
     // Define the input field, the error text and window so that they can get disabled / enabled when needed
-    public TMP_InputField mainInputField; // The input field to create directories
-    public TextMeshProUGUI errorText;
-    public GameObject createDirectoryWindow;
+    [SerializeField]
+    private TMP_InputField mainInputField; // The input field to create directories
+
+    [SerializeField]
+    private TextMeshProUGUI errorText;
+
+    [SerializeField]
+    private GameObject createDirectoryWindow;
+
+    // Method used to open the create directory menu
+    public void OpenCreateDirectory()
+    {
+        Debug.Log("The create directory button was clicked!");
+
+        // Disable the add level menu
+        addLevelMenu.SetActive(false);
+
+        Debug.Log("The status of the add level menu is: " + addLevelMenu.activeSelf);
+
+        // Enable the create directory menu
+        createDirectoryWindow.SetActive(true);
+
+        Debug.Log("The status of the create directory menu is: " + createDirectoryWindow.activeSelf);
+    }
 
     // Method used to create a directory
     public void AddDirectory(TMP_InputField input)
@@ -539,8 +702,11 @@ public class AddLevel : MonoBehaviour
                 // Create directory
                 Directory.CreateDirectory(newPath);
 
-                // Disable the window and enable the menu
+                // Disable the window
                 createDirectoryWindow.SetActive(false);
+
+                // Enable the menu
+                addLevelMenu.SetActive(true);
 
                 // Save the page you were on
                 int oldPageNumber = currentPage;
@@ -557,8 +723,67 @@ public class AddLevel : MonoBehaviour
                 errorText.gameObject.SetActive(true);
 
             }
+
             // Reset the text after you used it
             mainInputField.text = "";
 		}
+    }
+
+    // Method used to exit the level description and return to the brows directories
+    public void LeaveCreateDirectory()
+    {
+        // Enable the brows directories menu
+        addLevelMenu.SetActive(true);
+
+        // Disable the level description
+        createDirectoryWindow.SetActive(false);
+
+        // // Set the current path to one layer up
+        // currentPath = Path.GetFullPath(Path.Combine(currentPath, @"..\"));
+
+        // Then we can actualize everything
+        ActualizeGlobals();
+        DisableOrEnableButtons();
+        RenameButtons(currentPath);
+    }
+
+    //-----------------------------------------------------------------------------------------------------------
+    // Adding level
+    //-----------------------------------------------------------------------------------------------------------
+
+    // Define the input field, the error text and menu of the enter code to add level menu
+    [SerializeField]
+    private TMP_InputField inputFieldEnterCode; // The input field to add a level
+
+    [SerializeField]
+    private TextMeshProUGUI errorTextCodeNotValid; // The error message text object
+
+    [SerializeField]
+    private GameObject enterCodeMenu; // The menu object
+
+    // The method used to leave the enter code menu when pressing the cancel button
+    public void OpenEnterCodeMenu()
+    {
+        // Enable the enter code menu
+        enterCodeMenu.SetActive(true);
+
+        // Disable the add level menu
+        addLevelMenu.SetActive(false);
+    }
+
+    // The method used to leave the enter code menu when pressing the cancel button
+    public void LeaveEnterCodeMenu()
+    {
+        // Reset the text field
+        inputFieldEnterCode.text = "";
+
+        // Disable the error message
+        errorTextCodeNotValid.gameObject.SetActive(false);
+
+        // Disable the enter code menu
+        enterCodeMenu.SetActive(false);
+
+        // Enable the add level menu
+        addLevelMenu.SetActive(true);
     }
 }
