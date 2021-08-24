@@ -50,49 +50,43 @@ public class UpgradeTower : MonoBehaviour
         // Initialize the tower prefab
         Tower towerprefab = archerTowerPrefab;
 
-        // Get the right prefab for this tower
+        // Get the right prefab for this tower and refund a part of the price
         switch(TowerEnhancer.currentlyEnhancedTower.getTowerType)
         {
             case "Archer Tower":
                 towerprefab = archerTowerPrefab;
+                GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.getArcherTowerCost;
             break;
 
             case "Fire Tower":
                 towerprefab = fireTowerPrefab;
+                GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.getFireTowerCost;
             break;
 
             case "Earth Tower":
                 towerprefab = earthTowerPrefab;
+                GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.getEarthTowerCost;
             break;
 
             case "Lightning Tower":
                 towerprefab = lightningTowerPrefab;
+                GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.getLightningTowerCost;
             break;
 
             case "Wind Tower":
                 towerprefab = windTowerPrefab;
+                GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.getWindTowerCost;
             break;
         }
 
         // Reset the tower statistics
-        // TowerEnhancer.currentlyEnhancedTower.level = 1;
-        // TowerEnhancer.currentlyEnhancedTower.cost = towerprefab.cost;
-        // TowerEnhancer.currentlyEnhancedTower.attackRange = towerprefab.attackRange;
-        // TowerEnhancer.currentlyEnhancedTower.damage = towerprefab.damage;
-        // TowerEnhancer.currentlyEnhancedTower.attackCooldown = towerprefab.attackCooldown;
-        // TowerEnhancer.currentlyEnhancedTower.projectileSpeed = towerprefab.projectileSpeed;
-        // TowerEnhancer.currentlyEnhancedTower.effectRange = towerprefab.effectRange;
-        // TowerEnhancer.currentlyEnhancedTower.numberOfEffect = towerprefab.numberOfEffect;
-        // TowerEnhancer.currentlyEnhancedTower.weaknessMultiplier = towerprefab.weaknessMultiplier;
-
         TowerEnhancer.currentlyEnhancedTower.ResetTowerStatistics(towerprefab);
-
 
         // Release the tower
         ObjectPools.ReleaseTower(TowerEnhancer.currentlyEnhancedTower.transform.parent.gameObject);
 
-        // // Un-pause the game
-        // GameAdvancement.gamePaused = false;
+        // Actualize the currency display
+        GameSetup.ActualizeCurrencyDisplay();
     }
 
     // Define the delete trap menu
@@ -113,6 +107,19 @@ public class UpgradeTower : MonoBehaviour
 
         // Release the trap
         ObjectPools.ReleaseTrap(TrapDeleter.currentlyOpenedTrapWindow);
+
+        // Check the type of the trap and refund the correct amount of currency
+        if(TrapDeleter.currentlyOpenedTrapWindow.getTrapType == "Hole")
+        {
+            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.getHoleCost;
+
+        } else {
+
+            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.getSwampCost;
+        }
+
+        // Actualize the currency display
+        GameSetup.ActualizeCurrencyDisplay();
     }
 
     // Method used to open the delete trap menu
