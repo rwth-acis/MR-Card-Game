@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// The class where the trap that opened the delete trap menu is saved
+public static class TrapDeleter
+{
+    public static Trap currentlyOpenedTrapWindow;
+}
+
 public class Trap : MonoBehaviour
 {
     // The trap type
@@ -71,6 +77,21 @@ public class Trap : MonoBehaviour
                 // Remove the enemy wetness
                 other.GetComponent<Enemy>().isWet = false;
             }
+        }
+    }
+
+    // The method activated when clicking on the hidden button on towers to upgrade them
+    public void TryOpeningDeleteTrapMenu()
+    {
+        // Debug.Log("Upgrade tower button was pressed!");
+        // Debug.Log("The number of questions that need to be answered is: " + Questions.numberOfQuestionsNeededToAnswer);
+        // Debug.Log("The value of the game paused variable is: " + GameAdvancement.gamePaused);
+
+        // Check that nothing is beeing build or upgraded
+        if(GameAdvancement.gamePaused == false)
+        {
+            // Open the upgrade tower menu with the method of another script
+            UpgradeTower.OpenDeleteTrapMenu(this);
         }
     }
 }

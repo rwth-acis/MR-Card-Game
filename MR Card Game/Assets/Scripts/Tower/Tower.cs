@@ -133,7 +133,7 @@ public class Tower : MonoBehaviour
     private float weaknessMultiplier;
 
     // The variable used to access the value of the weakness multiplier of projectiles from the projectile class
-    public float GetWeaknessMultiplier
+    public float getWeaknessMultiplier
     {
         get { return weaknessMultiplier; }
     }
@@ -422,7 +422,7 @@ public class Tower : MonoBehaviour
         // enemiesList = 
 
         // Calculate the damage
-        int damage = Projectile.CalculateDamage(getDamage, GetWeaknessMultiplier, getTowerType, targetEnemy);
+        int damage = Projectile.CalculateDamage(getDamage, getWeaknessMultiplier, getTowerType, targetEnemy);
 
         // Make the enemy take damage
         targetEnemy.TakeDamage(damage);
@@ -497,7 +497,7 @@ public class Tower : MonoBehaviour
         // Get the enemy component of the target collinder
         Enemy targetEnemy = target.GetComponent<Enemy>();
         // Calculate the damage
-        int damage = Projectile.CalculateDamage(getDamage, GetWeaknessMultiplier, getTowerType, targetEnemy);
+        int damage = Projectile.CalculateDamage(getDamage, getWeaknessMultiplier, getTowerType, targetEnemy);
 
         // Make the enemy take damage
         targetEnemy.TakeDamage(damage);
@@ -613,5 +613,19 @@ public class Tower : MonoBehaviour
     {
         // Set the radius of the sphere collider on the tower range component with the tower script to the attack range
         this.gameObject.transform.localScale = new Vector3(getAttackRange, getAttackRange, getAttackRange);
+    }
+
+    public void ResetTowerStatistics(Tower towerprefab)
+    {
+        Debug.Log("The tower statistics were reset");
+        level = 1;
+        cost = towerprefab.getCost;
+        attackRange = towerprefab.getAttackRange;
+        damage = towerprefab.getDamage;
+        attackCooldown = towerprefab.getAttackCooldown;
+        projectileSpeed = towerprefab.getProjectileSpeed;
+        effectRange = towerprefab.getEffectRange;
+        numberOfEffect = towerprefab.getNumberOfEffect;
+        weaknessMultiplier = towerprefab.getWeaknessMultiplier;
     }
 }

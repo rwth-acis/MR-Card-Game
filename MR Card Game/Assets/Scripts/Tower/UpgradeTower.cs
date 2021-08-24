@@ -9,6 +9,21 @@ public class UpgradeTower : MonoBehaviour
     // The instance of this script
     public static UpgradeTower instance;
 
+    [SerializeField]
+    private Tower archerTowerPrefab;
+
+    [SerializeField]
+    private Tower fireTowerPrefab;
+
+    [SerializeField]
+    private Tower earthTowerPrefab;
+
+    [SerializeField]
+    private Tower lightningTowerPrefab;
+
+    [SerializeField]
+    private Tower windTowerPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +34,108 @@ public class UpgradeTower : MonoBehaviour
     void Update()
     {
         
+    }
+
+    //--------------------------------------------------------------------------------------
+    // Deleting towers
+    //--------------------------------------------------------------------------------------
+
+    // Method used to delete towers
+    public void DeleteTower()
+    {
+        // // Close the upgrade tower menu
+        // upgradeTowerMenu.SetActive(false);
+        CloseUpgradeTowerMenu();
+
+        // Initialize the tower prefab
+        Tower towerprefab = archerTowerPrefab;
+
+        // Get the right prefab for this tower
+        switch(TowerEnhancer.currentlyEnhancedTower.getTowerType)
+        {
+            case "Archer Tower":
+                towerprefab = archerTowerPrefab;
+            break;
+
+            case "Fire Tower":
+                towerprefab = fireTowerPrefab;
+            break;
+
+            case "Earth Tower":
+                towerprefab = earthTowerPrefab;
+            break;
+
+            case "Lightning Tower":
+                towerprefab = lightningTowerPrefab;
+            break;
+
+            case "Wind Tower":
+                towerprefab = windTowerPrefab;
+            break;
+        }
+
+        // Reset the tower statistics
+        // TowerEnhancer.currentlyEnhancedTower.level = 1;
+        // TowerEnhancer.currentlyEnhancedTower.cost = towerprefab.cost;
+        // TowerEnhancer.currentlyEnhancedTower.attackRange = towerprefab.attackRange;
+        // TowerEnhancer.currentlyEnhancedTower.damage = towerprefab.damage;
+        // TowerEnhancer.currentlyEnhancedTower.attackCooldown = towerprefab.attackCooldown;
+        // TowerEnhancer.currentlyEnhancedTower.projectileSpeed = towerprefab.projectileSpeed;
+        // TowerEnhancer.currentlyEnhancedTower.effectRange = towerprefab.effectRange;
+        // TowerEnhancer.currentlyEnhancedTower.numberOfEffect = towerprefab.numberOfEffect;
+        // TowerEnhancer.currentlyEnhancedTower.weaknessMultiplier = towerprefab.weaknessMultiplier;
+
+        TowerEnhancer.currentlyEnhancedTower.ResetTowerStatistics(towerprefab);
+
+
+        // Release the tower
+        ObjectPools.ReleaseTower(TowerEnhancer.currentlyEnhancedTower.transform.parent.gameObject);
+
+        // // Un-pause the game
+        // GameAdvancement.gamePaused = false;
+    }
+
+    // Define the delete trap menu
+    [SerializeField]
+    private GameObject deleteTrapMenu;
+
+    // The method used to access to the delete trap menu as a static object
+    public static GameObject getDeleteTrapMenu
+    {
+        get { return instance.deleteTrapMenu; }
+    }
+
+    // Method used to delete traps
+    public void DeleteTrap()
+    {
+        // Close the upgrade tower menu
+        CloseDeleteTrapMenu();
+
+        // Release the trap
+        ObjectPools.ReleaseTrap(TrapDeleter.currentlyOpenedTrapWindow);
+    }
+
+    // Method used to open the delete trap menu
+    public static void OpenDeleteTrapMenu(Trap trap)
+    {
+        // Set the right game object as the one that opened the menu
+        TrapDeleter.currentlyOpenedTrapWindow = trap;
+
+        // Set the upgrade tower menu as active
+        getDeleteTrapMenu.SetActive(true);
+
+        // Pause the game
+        GameAdvancement.gamePaused = true;
+    }
+
+    // Method used to close the delete trap menu
+    public void CloseDeleteTrapMenu()
+    {
+        // Set the upgrade tower menu as inactive
+        deleteTrapMenu.SetActive(false);
+
+        // Un-pause the game
+        GameAdvancement.gamePaused = false;
     }
 
     //--------------------------------------------------------------------------------------

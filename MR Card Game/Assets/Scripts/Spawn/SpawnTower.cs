@@ -87,11 +87,11 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Set the tower as active
             tower.gameObject.SetActive(true);
 
-            // Scale the tower down
-            tower.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * (float)0.2;
-
             // Set them as children of the parent that was passed
             tower.transform.parent = parent.transform;
+
+            // Scale the tower down
+            tower.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * (float)0.2;
 
             // Vector3 newPosition =  new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
 
@@ -117,11 +117,11 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Set the tower as active
             tower.gameObject.SetActive(true);
 
-             // Scale the tower down
-            tower.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * (float)0.2;
-
             // Set them as children of the parent that was passed
             tower.transform.parent = parent.transform;
+
+             // Scale the tower down
+            tower.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * (float)0.2;
 
             // Reset the position of the tower and add the necessary overhead so that the tower is over the ground
             tower.transform.localPosition = new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
@@ -145,11 +145,11 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Set the tower as active
             tower.gameObject.SetActive(true);
 
-             // Scale the tower down
-            tower.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * (float)0.2;
-
             // Set them as children of the parent that was passed
             tower.transform.parent = parent.transform;
+
+             // Scale the tower down
+            tower.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * (float)0.2;
 
             // Reset the position of the tower and add the necessary overhead so that the tower is over the ground
             tower.transform.localPosition = new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
@@ -173,11 +173,11 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Set the tower as active
             tower.gameObject.SetActive(true);
 
-             // Scale the tower down
-            tower.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * (float)0.2;
-
             // Set them as children of the parent that was passed
             tower.transform.parent = parent.transform;
+
+             // Scale the tower down
+            tower.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * (float)0.2;
 
             // Reset the position of the tower and add the necessary overhead so that the tower is over the ground
             tower.transform.localPosition = new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
@@ -201,11 +201,11 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Set the tower as active
             tower.gameObject.SetActive(true);
 
-             // Scale the tower down
-            tower.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * (float)0.2;
-
             // Set them as children of the parent that was passed
             tower.transform.parent = parent.transform;
+
+             // Scale the tower down
+            tower.transform.localScale = new Vector3(Board.greatestBoardDimension, Board.greatestBoardDimension, Board.greatestBoardDimension) * (float)0.2;
 
             // Reset the position of the tower and add the necessary overhead so that the tower is over the ground
             tower.transform.localPosition = new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);

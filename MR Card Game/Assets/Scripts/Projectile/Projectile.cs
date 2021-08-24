@@ -172,7 +172,7 @@ public class Projectile : MonoBehaviour
         int damage = 0;
 
         // Calculate the damage
-        damage = CalculateDamage(parent.getDamage, parent.GetWeaknessMultiplier, parent.getTowerType, target.GetComponent<Enemy>());
+        damage = CalculateDamage(parent.getDamage, parent.getWeaknessMultiplier, parent.getTowerType, target.GetComponent<Enemy>());
 
         // Make the enemy take damage
         target.TakeDamage(damage);
@@ -195,7 +195,7 @@ public class Projectile : MonoBehaviour
             if(targetEnemy != null)
             {
                 // Calculate the damage
-                damage = CalculateDamage(parent.getDamage, parent.GetWeaknessMultiplier, parent.getTowerType, targetEnemy.GetComponent<Enemy>());
+                damage = CalculateDamage(parent.getDamage, parent.getWeaknessMultiplier, parent.getTowerType, targetEnemy.GetComponent<Enemy>());
 
                 // Check that the damage is not null
                 if(damage != 0)
