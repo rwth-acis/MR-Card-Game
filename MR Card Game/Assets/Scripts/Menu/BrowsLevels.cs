@@ -250,7 +250,7 @@ public class BrowsLevels : MonoBehaviour
     {
 
         // Case there are no directories to be displayed
-        if(numberOfDirectories == 0)
+        if(numberOfDirectories == 0 && File.Exists(currentPath + "Description.json"))
         {
             // If there are no directories, then display the level information with name, description, etc. as well as a launch level button
             // Enable the level description menu
@@ -270,52 +270,65 @@ public class BrowsLevels : MonoBehaviour
 
             // Value at the begining of the for loop
             int initialIndex = (currentPage - 1) * 5;
+
             // counter for the assigning of a button
             int currentDirectoryNumber = 1;
-            // Value for the end of the for loop (for the renaming loop)
-            int lastIndex = 0;
-            if(numberOfDirectories <= (currentPage) * 5)
-            {
-                lastIndex = numberOfDirectories - 1;
-            } else {
-                lastIndex = currentPage * 5 - 1;
-            }
+
             // Last index that would correspond to the fifth directory if the array was full enough (for the deleting names loop)
             int lastEmptyIndex = (currentPage) * 5 - 1;
 
-            for(int currentIndex = initialIndex; currentIndex <= lastIndex; currentIndex = currentIndex + 1)
+            // Check that the number of directories is unequal to 0
+            if(numberOfDirectories != 0)
             {
-                // Get the directory path
-                string dir = directoriesArray[currentIndex];
-
-                // Get the name
-                string lastFolderName = Path.GetFileName(dir);
-
-                // Print the directory name on the right button
-                switch (currentDirectoryNumber)
+                // Value for the end of the for loop (for the renaming loop)
+                int lastIndex = 0;
+                if(numberOfDirectories <= (currentPage) * 5)
                 {
-                    case 1:
-                        directory1.GetComponentInChildren<TMP_Text>().text = lastFolderName;
-                        directory1.interactable = true;
-                    break;
-                    case 2:
-                        directory2.GetComponentInChildren<TMP_Text>().text = lastFolderName;
-                        directory2.interactable = true;
-                    break;
-                    case 3:
-                        directory3.GetComponentInChildren<TMP_Text>().text = lastFolderName;
-                        directory3.interactable = true;
-                    break;
-                    case 4:
-                        directory4.GetComponentInChildren<TMP_Text>().text = lastFolderName;
-                        directory4.interactable = true;
-                    break;
-                    case 5:
-                        directory5.GetComponentInChildren<TMP_Text>().text = lastFolderName;
-                        directory5.interactable = true;
-                    break;
+                    lastIndex = numberOfDirectories - 1;
+                } else {
+                    lastIndex = currentPage * 5 - 1;
                 }
-                currentDirectoryNumber = currentDirectoryNumber + 1;
+
+                for(int currentIndex = initialIndex; currentIndex <= lastIndex; currentIndex = currentIndex + 1)
+                {
+                    // Get the directory path
+                    string dir = directoriesArray[currentIndex];
+
+                    // Get the name
+                    string lastFolderName = Path.GetFileName(dir);
+
+                    // Print the directory name on the right button
+                    switch (currentDirectoryNumber)
+                    {
+                        case 1:
+                            directory1.GetComponentInChildren<TMP_Text>().text = lastFolderName;
+                            directory1.interactable = true;
+                        break;
+
+                        case 2:
+                            directory2.GetComponentInChildren<TMP_Text>().text = lastFolderName;
+                            directory2.interactable = true;
+                        break;
+
+                        case 3:
+                            directory3.GetComponentInChildren<TMP_Text>().text = lastFolderName;
+                            directory3.interactable = true;
+                        break;
+
+                        case 4:
+                            directory4.GetComponentInChildren<TMP_Text>().text = lastFolderName;
+                            directory4.interactable = true;
+                        break;
+
+                        case 5:
+                            directory5.GetComponentInChildren<TMP_Text>().text = lastFolderName;
+                            directory5.interactable = true;
+                        break;
+                    }
+
+                    // Increase the current directory number by one
+                    currentDirectoryNumber = currentDirectoryNumber + 1;
+                }
             }
 
             // If there are no more directory, make sure the rest of the buttons are empty and not interactable
@@ -325,23 +338,32 @@ public class BrowsLevels : MonoBehaviour
                 {
                     switch (currentDirectoryNumber)
                     {
+                        case 1:
+                            directory1.GetComponentInChildren<TMP_Text>().text = "";
+                            directory1.interactable = false;
+                        break;
+
                         case 2:
                             directory2.GetComponentInChildren<TMP_Text>().text = "";
                             directory2.interactable = false;
                         break;
+
                         case 3:
                             directory3.GetComponentInChildren<TMP_Text>().text = "";
                             directory3.interactable = false;
                         break;
+
                         case 4:
                             directory4.GetComponentInChildren<TMP_Text>().text = "";
                             directory4.interactable = false;
                         break;
+
                         case 5:
                             directory5.GetComponentInChildren<TMP_Text>().text = "";
                             directory5.interactable = false;
                         break;
                     }
+                    
                     currentDirectoryNumber = currentDirectoryNumber + 1;
                 }
             }
