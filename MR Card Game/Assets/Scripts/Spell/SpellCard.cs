@@ -396,6 +396,9 @@ public class SpellCard : MonoBehaviour
         // Check if the player has free draws
         if(Cards.freeDraws == 0)
         {
+            // Set the question requesting image target correctly
+            Questions.questionRequestingImageTarget = this.gameObject;
+
             // Disable the game overlay
             DeactivateGameOverlay();
 

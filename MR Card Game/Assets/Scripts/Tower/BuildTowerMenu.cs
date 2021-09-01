@@ -391,6 +391,9 @@ namespace build
         // The method that activates when the player wants to build an archer tower by pressing on the archer tower button in the build menu
         public void InitiateArcherTowerBuild()
         {
+            // Set the question requesting image target correctly
+            Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
+
             // Disable the game overlay
             DeactivateGameOverlay();
 
@@ -443,6 +446,9 @@ namespace build
         // The method that activates when the player wants to build an earth tower by pressing on the earth tower button in the build menu
         public void InitiateEarthTowerBuild()
         {
+            // Set the question requesting image target correctly
+            Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
+
             // Disable the game overlay
             DeactivateGameOverlay();
 
@@ -469,6 +475,9 @@ namespace build
         // The method that activates when the player wants to build a lightning tower by pressing on the lightning tower button in the build menu
         public void InitiateLightningTowerBuild()
         {
+            // Set the question requesting image target correctly
+            Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
+
             // Disable the game overlay
             DeactivateGameOverlay();
 
@@ -495,6 +504,9 @@ namespace build
         // The method that activates when the player wants to build a wind tower by pressing on the wind tower button in the build menu
         public void InitiateWindTowerBuild()
         {
+            // Set the question requesting image target correctly
+            Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
+
             // Disable the game overlay
             DeactivateGameOverlay();
 
@@ -520,6 +532,9 @@ namespace build
         // The method that activates when the player wants to build a hole by pressing on the archer tower button in the build menu
         public void InitiateHoleBuild()
         {
+            // Set the question requesting image target correctly
+            Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
+
             // Disable the game overlay
             DeactivateGameOverlay();
 
@@ -546,6 +561,9 @@ namespace build
         // The method that activates when the player wants to build a swamp by pressing on the swamp button in the build menu
         public void InitiateSwampBuild()
         {
+            // Set the question requesting image target correctly
+            Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
+            
             // Disable the game overlay
             DeactivateGameOverlay();
 

@@ -534,6 +534,9 @@ public class UpgradeTower : MonoBehaviour
     // Method called when the user clicks on the upgrade tower button
     public void InitiateTowerUpgrade()
     {
+        // Set the question requesting image target correctly
+        Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
+
         // Disable the game overlay
         DeactivateGameOverlay();
 

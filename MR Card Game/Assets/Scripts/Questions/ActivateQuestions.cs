@@ -37,6 +37,11 @@ static class Questions
 
     // The number of questions that need to be answered correctly before the action can take place
     public static int numberOfQuestionsNeededToAnswer;
+
+    // The image target that started the questions
+    public static GameObject questionRequestingImageTarget;
+
+    public static bool currentlyAnsweringQuestion;
 }
 
 public class ActivateQuestions : MonoBehaviour
@@ -200,6 +205,7 @@ public class ActivateQuestions : MonoBehaviour
     public class Model
     {
         public string modelName;
+        public string modelUrl;
         public int numberOfQuestionsUsedIn;
     }
 
@@ -217,6 +223,8 @@ public class ActivateQuestions : MonoBehaviour
     void Start()
     {
         instance = this;
+
+        Questions.currentlyAnsweringQuestion = false;
 
         Questions.numberOfQuestionsNeededToAnswer = 0;
         Questions.androidBoot = false;
@@ -247,7 +255,20 @@ public class ActivateQuestions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        // Check if the number of questions that need to be answered is greater than 0
+        if(Questions.numberOfQuestionsNeededToAnswer > 0 && Questions.currentlyAnsweringQuestion == false)
+        {
+            // Activate the models
+            ActivateViewModels();
+
+            // Set that the question is currently being answered
+            Questions.currentlyAnsweringQuestion = true;
+        }
+
+        if(Questions.numberOfQuestionsNeededToAnswer == 0)
+        {
+            RemoveAllModels();
+        }
     }
 
     // Method that import the .obj models of the current question and renders them on the image targets accordingly to their number
@@ -363,43 +384,17 @@ public class ActivateQuestions : MonoBehaviour
     // Method that delete and imports the model and displays them on the target images
     //-------------------------------------------------------------------------------------------------------------------------------------------
 
-    // The method that deletes all childs (models) of the image target
+    // The method that deletes all children (models) of the image target
     public void RemoveAllModels()
     {
-        Debug.Log("All models deleted");
-        // Destroy all children of the first target image
-        foreach(Transform child in imageTarget1.transform)
-        {
-            // Set the model as child of the save model object
-            child.parent = saveModelObject.transform;
-        }
+        // Get the array of all models
+        GameObject[] modelsArray = GameObject.FindGameObjectsWithTag("Model");
 
-        // Destroy all children of the second target image
-        foreach(Transform child in imageTarget2.transform)
+        // Go through the array
+        foreach(GameObject model in modelsArray)
         {
             // Set the model as child of the save model object
-            child.transform.parent = saveModelObject.transform;
-        }
-
-        // Destroy all children of the third target image
-        foreach(Transform child in imageTarget3.transform)
-        {
-            // Set the model as child of the save model object
-            child.transform.parent = saveModelObject.transform;
-        }
-
-        // Destroy all children of the fourth target image
-        foreach(Transform child in imageTarget4.transform)
-        {
-            // Set the model as child of the save model object
-            child.transform.parent = saveModelObject.transform;      
-        }
-
-        // Destroy all children of the fifth target image
-        foreach(Transform child in imageTarget5.transform)
-        {
-            // Set the model as child of the save model object
-            child.transform.parent = saveModelObject.transform;
+            model.transform.parent = saveModelObject.transform;
         }
     }
 
@@ -413,33 +408,37 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(0, model.modelName.Length - 4);
+        string modelName = "Model_" + model.modelName.Substring(0, model.modelName.Length - 4);
 
         Debug.Log("Searching for game object: " + modelName);
 
         // Find the model in the children of the save model object
         GameObject obj = saveModelObject.transform.Find(modelName).gameObject;
 
-        // Find the child object of the model
-        GameObject childGameObject = obj.transform.GetChild(0).gameObject;
+        Debug.Log("The model: " + obj.name + " was found.");
+
+        // // Find the child object of the model
+        // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
 
         // Access the box collider information of the child object
-        BoxCollider m_Collider = childGameObject.GetComponent<BoxCollider>();
+        BoxCollider m_Collider = obj.GetComponent<BoxCollider>();
 
         // Get the position of the target image
-        Vector3 position = imageTarget1.transform.position;
+        Vector3 position = Questions.questionRequestingImageTarget.transform.position;
 
         // Get the scale
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y/2 * scaleVector.x, 0);
+        position = position + new Vector3(0, m_Collider.size.y * scaleVector.x, 0);
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
 
         // Set the model as child of the marker
-        obj.transform.parent = imageTarget1.transform;
+        obj.transform.parent = Questions.questionRequestingImageTarget.transform;
+
+        Debug.Log("The model object " + obj.name + "was set as child of " + imageTarget2.name);
     }
 
     // Import the second model and bind it to the second image target
@@ -452,18 +451,20 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(0, model.modelName.Length - 4);
+        string modelName = "Model_" + model.modelName.Substring(0, model.modelName.Length - 4);
 
         Debug.Log("Searching for game object: " + modelName);
 
         // Find the model in the children of the save model object
         GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
 
-        // Find the child object of the model
-        GameObject childGameObject = obj.transform.GetChild(0).gameObject;
+        Debug.Log("The model: " + obj.name + " was found.");
+
+        // // Find the child object of the model
+        // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
 
         // Access the box collider information of the child object
-        BoxCollider m_Collider = childGameObject.GetComponent<BoxCollider>();
+        BoxCollider m_Collider = obj.GetComponent<BoxCollider>();
 
         // Get the position of the target image
         Vector3 position = imageTarget2.transform.position;
@@ -472,13 +473,15 @@ public class ActivateQuestions : MonoBehaviour
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y/2 * scaleVector.x, 0);
+        position = position + new Vector3(0, m_Collider.size.y * scaleVector.x, 0);
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
 
         // Set the model as child of the marker
         obj.transform.parent = imageTarget2.transform;
+
+        Debug.Log("The model object " + obj.name + "was set as child of " + imageTarget2.name);
     }
 
     // Import the third model and bind it to the third image target
@@ -491,18 +494,18 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(0, model.modelName.Length - 4);
+        string modelName = "Model_" + model.modelName.Substring(0, model.modelName.Length - 4);
 
         Debug.Log("Searching for game object: " + modelName);
 
         // Find the model in the children of the save model object
         GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
 
-        // Find the child object of the model
-        GameObject childGameObject = obj.transform.GetChild(0).gameObject;
+        // // Find the child object of the model
+        // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
 
         // Access the box collider information of the child object
-        BoxCollider m_Collider = childGameObject.GetComponent<BoxCollider>();
+        BoxCollider m_Collider = obj.GetComponent<BoxCollider>();
 
         // Get the position of the target image
         Vector3 position = imageTarget3.transform.position;
@@ -511,7 +514,7 @@ public class ActivateQuestions : MonoBehaviour
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y/2 * scaleVector.x, 0);
+        position = position + new Vector3(0, m_Collider.size.y * scaleVector.x, 0);
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -530,18 +533,18 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(0, model.modelName.Length - 4);
+        string modelName = "Model_" + model.modelName.Substring(0, model.modelName.Length - 4);
 
         Debug.Log("Searching for game object: " + modelName);
 
         // Find the model in the children of the save model object
         GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
 
-        // Find the child object of the model
-        GameObject childGameObject = obj.transform.GetChild(0).gameObject;
+        // // Find the child object of the model
+        // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
 
         // Access the box collider information of the child object
-        BoxCollider m_Collider = childGameObject.GetComponent<BoxCollider>();
+        BoxCollider m_Collider = obj.GetComponent<BoxCollider>();
 
         // Get the position of the target image
         Vector3 position = imageTarget4.transform.position;
@@ -550,7 +553,7 @@ public class ActivateQuestions : MonoBehaviour
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y/2 * scaleVector.x, 0);
+        position = position + new Vector3(0, m_Collider.size.y * scaleVector.x, 0);
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -569,18 +572,20 @@ public class ActivateQuestions : MonoBehaviour
         Model model = JsonUtility.FromJson<Model>(json);
 
         // Get the name of the imported model (delete the ending '.json')
-        string modelName = model.modelName.Substring(0, model.modelName.Length - 4);
+        string modelName = "Model_" + model.modelName.Substring(0, model.modelName.Length - 4);
 
         Debug.Log("Searching for game object: " + modelName);
 
         // Find the model in the children of the save model object
-        GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
+        GameObject obj = saveModelObject.transform.Find(modelName).gameObject;
 
-        // Find the child object of the model
-        GameObject childGameObject1 = obj.transform.GetChild(0).gameObject;
+        Debug.Log("The model: " + obj.name + " was found.");
+
+        // // Find the child object of the model
+        // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
 
         // Access the box collider information of the child object
-        BoxCollider m_Collider = childGameObject1.GetComponent<BoxCollider>();
+        BoxCollider m_Collider = obj.GetComponent<BoxCollider>();
 
         // Get the position of the target image
         Vector3 position = imageTarget5.transform.position;
@@ -589,7 +594,7 @@ public class ActivateQuestions : MonoBehaviour
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y/2 * scaleVector.x, 0);
+        position = position + new Vector3(0, m_Collider.size.y * scaleVector.x, 0);
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -607,7 +612,8 @@ public class ActivateQuestions : MonoBehaviour
     {
         // Get the child gamobject (there should always be one)
         // TODO check the number of children, and add one if needed
-        GameObject childGameObject1 = obj.transform.GetChild(0).gameObject;
+        // GameObject childGameObject1 = obj.transform.GetChild(0).gameObject;
+        GameObject childGameObject1 = obj.transform.gameObject;
 
         // Add a box collider to the child
         childGameObject1.AddComponent<BoxCollider>();
@@ -619,7 +625,7 @@ public class ActivateQuestions : MonoBehaviour
         float greatest = ReturnGreatestFloat(m_Collider.size.x, m_Collider.size.y, m_Collider.size.z);
         
         // Get the down scale factor you want
-        float scale = (float)0.2 / greatest;
+        float scale = (float)0.1 / greatest;
 
         // Down scale the model
         obj.transform.localScale = new Vector3(scale, scale, scale);
@@ -635,7 +641,7 @@ public class ActivateQuestions : MonoBehaviour
         obj.transform.parent = parent.transform;
     }
 
-    // Method that returns the greates number of the three floats given
+    // Method that returns the greatest number of the three floats given
     public float ReturnGreatestFloat(float size1, float size2, float size3)
     {
         // Initialize a size variable
@@ -685,7 +691,7 @@ public class ActivateQuestions : MonoBehaviour
             // The current question is an input question, open the right question UI
             viewInputQuestion.SetActive(true);
 
-            // Display the question informations in the right text objects
+            // Display the question information in the right text objects
             questionNameInput.text = question.name;
             questionTextInput.text = question.question;
 
@@ -892,7 +898,7 @@ public class ActivateQuestions : MonoBehaviour
             closeQuestionInput.gameObject.SetActive(true);
             confirmAnswerInput.gameObject.SetActive(false);
 
-            // Deactivate the input field (make it uninteractable)
+            // Deactivate the input field (make it un-interactable)
             answerFieldInput.interactable = false;
             
 
@@ -913,7 +919,7 @@ public class ActivateQuestions : MonoBehaviour
                 closeQuestionInput.gameObject.SetActive(true);
                 confirmAnswerInput.gameObject.SetActive(false);
 
-                // Deactivate the input field (make it uninteractable)
+                // Deactivate the input field (make it un-interactable)
                 answerFieldInput.interactable = false;
 
             } else {
@@ -939,7 +945,7 @@ public class ActivateQuestions : MonoBehaviour
         // Check if the question was answered correctly or not and give visual feedback
         DisplayFeedbackButton(feedbackInput, answeredCorrectly);
 
-        // If the question was answered correclty, reduce the number of questions that need to be answered by one
+        // If the question was answered correctly, reduce the number of questions that need to be answered by one
         if(answeredCorrectly == true)
         {
             lastQuestionWasAnsweredCorrectly = true;
@@ -969,7 +975,7 @@ public class ActivateQuestions : MonoBehaviour
 
             } else {
 
-                // One is writen with a capital, the other is written small, check if it is the same word
+                // One is written with a capital, the other is written small, check if it is the same word
                 if(firstCapital == false)
                 {
                     // Case it is the first word that is written small, add the capital letter and check the equality
@@ -1088,7 +1094,7 @@ public class ActivateQuestions : MonoBehaviour
                     currentButton.GetComponentInChildren<TMP_Text>().color = incorrectColor;
                 }
 
-                // Answer was incorrect, give the button a redish tint
+                // Answer was incorrect, give the button a reddish tint
                 currentButton.GetComponent<Image>().color = incorrectButtonColor;
             }
 
@@ -1103,7 +1109,7 @@ public class ActivateQuestions : MonoBehaviour
         closeQuestionMC.gameObject.SetActive(true);
         confirmAnswerMC.gameObject.SetActive(false);
 
-        // If the question was answered correclty, reduce the number of questions that need to be answered by one
+        // If the question was answered correctly, reduce the number of questions that need to be answered by one
         if(answeredCorrectly == true)
         {
             lastQuestionWasAnsweredCorrectly = true;
@@ -1246,7 +1252,7 @@ public class ActivateQuestions : MonoBehaviour
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
-    // Method that create the question array, shuffeling the questions in the level directory, and that changes question after the current question was answered
+    // Method that create the question array, shuffling the questions in the level directory, and that changes question after the current question was answered
     //-------------------------------------------------------------------------------------------------------------------------------------------
     
     // The path to the current level directory
@@ -1523,6 +1529,9 @@ public class ActivateQuestions : MonoBehaviour
     // Method that closes the current question, and changes the current question index
     public void GoToNextQuestion()
     {
+        // Set the flag that the user finished answering the last question
+        Questions.currentlyAnsweringQuestion = false;
+
         // Check if the last question was answered correctly
         if(lastQuestionWasAnsweredCorrectly == true)
         {
@@ -1597,42 +1606,23 @@ public class ActivateQuestions : MonoBehaviour
         // Import all models
         foreach(string model in models)
         {
-            // // Access the model gameobject
-            // string json = File.ReadAllText(model);
-
-            // // Extract the gameobject
-            // Model modelObject = JsonUtility.FromJson<Model>(json);
-
-            // // Import the first model
-            // string url = urlBegin + modelObject.modelName;
-            // GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
-
-            // // Initialize the model (resize it correctly) and set it as the child of the same model object
-            // InitializeModel(obj, saveModelObject);
-
-            // // When the model finished loading, increase the loaded model counter
-            // Questions.numberOfModelsLoaded = Questions.numberOfModelsLoaded + 1;
-
-            // Debug.Log("The current number of models that are loaded is: " + Questions.numberOfModelsLoaded);
-            // Debug.Log("Currently we have: " + Questions.numberOfModelsLoaded + " >= "  + Questions.numberOfModels);
-
-            // ------------------------------------------
-            // Under here from local disc, over from url
-            // ------------------------------------------
-            
             // Access the model gameobject
             string json = File.ReadAllText(model);
 
             // Extract the gameobject
             Model modelObject = JsonUtility.FromJson<Model>(json);
 
-            // From the model name and the current path, get the path to the real model object
-            string modelPath = Path.Combine(Questions.pathToLevel, modelObject.modelName);
-
-            Debug.Log("Trying to import: " + modelPath);
-
             // Import the first model
-            GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(modelPath);
+            string url = modelObject.modelUrl;
+            GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
+
+            // Rename the object in the model object name
+            obj.name = "Model_" + modelObject.modelName.Substring(0, modelObject.modelName.Length-4);
+
+            // Add the model tag
+            obj.tag = "Model";
+
+            Debug.Log("Model renamed in: " + "Model_" + modelObject.modelName.Substring(0, modelObject.modelName.Length-4));
 
             // Initialize the model (resize it correctly) and set it as the child of the same model object
             InitializeModel(obj, saveModelObject);
@@ -1642,6 +1632,33 @@ public class ActivateQuestions : MonoBehaviour
 
             Debug.Log("The current number of models that are loaded is: " + Questions.numberOfModelsLoaded);
             Debug.Log("Currently we have: " + Questions.numberOfModelsLoaded + " >= "  + Questions.numberOfModels);
+
+            // ------------------------------------------
+            // Under here from local disc, over from url
+            // ------------------------------------------
+            
+            // // Access the model gameobject
+            // string json = File.ReadAllText(model);
+
+            // // Extract the gameobject
+            // Model modelObject = JsonUtility.FromJson<Model>(json);
+
+            // // From the model name and the current path, get the path to the real model object
+            // string modelPath = Path.Combine(Questions.pathToLevel, modelObject.modelName);
+
+            // Debug.Log("Trying to import: " + modelPath);
+
+            // // Import the first model
+            // GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(modelPath);
+
+            // // Initialize the model (resize it correctly) and set it as the child of the same model object
+            // InitializeModel(obj, saveModelObject);
+
+            // // When the model finished loading, increase the loaded model counter
+            // Questions.numberOfModelsLoaded = Questions.numberOfModelsLoaded + 1;
+
+            // Debug.Log("The current number of models that are loaded is: " + Questions.numberOfModelsLoaded);
+            // Debug.Log("Currently we have: " + Questions.numberOfModelsLoaded + " >= "  + Questions.numberOfModels);
         }
         
         Debug.Log("The number of models is: " + Questions.numberOfModels);

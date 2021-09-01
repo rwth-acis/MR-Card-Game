@@ -96,7 +96,7 @@ public class Projectile : MonoBehaviour
     // Method that makes a projectile move to a target
     private void MoveToTarget()
     {
-        Debug.Log("In move to target: target is null: " + (target == null) + " and target is alive: " + target.isAlive);
+        // Debug.Log("In move to target: target is null: " + (target == null) + " and target is alive: " + target.isAlive);
         // Check that the target is not null
         if(target != null && target.isAlive == true)
         {
