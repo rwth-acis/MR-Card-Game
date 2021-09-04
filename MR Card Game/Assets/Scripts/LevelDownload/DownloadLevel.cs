@@ -12,6 +12,7 @@ static class Download
     // The flag that states if an upload is a success or not
     public static bool successful;
 
+    // The number of files that are needed to be downloaded in the level
     public static int numberOfFilesToDownload;
 }
 
