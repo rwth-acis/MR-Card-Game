@@ -509,6 +509,15 @@ public class BrowsLevels : MonoBehaviour
         currentPage = 1;
         double value = (double)numberOfDirectories/(double)5;
         numberOfPages = System.Convert.ToInt32(System.Math.Ceiling(value));
+
+        // Check if the number of pages is 0
+        if(numberOfPages == 0)
+        {
+            // If yes, set it to 1
+            numberOfPages = 1;
+        }
+
+        // Change the current page text
         currentPageText.text = "Page " + currentPage + "/" + numberOfPages;
     }
 
