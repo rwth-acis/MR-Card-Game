@@ -32,9 +32,6 @@ static class Questions
     // The path to the local folder on the device
     public static string pathToLevel;
 
-    // If it is for android or not, to switch easily between editor and device testing
-    public static bool androidBoot;
-
     // The number of questions that need to be answered correctly before the action can take place
     public static int numberOfQuestionsNeededToAnswer;
 
@@ -227,7 +224,6 @@ public class ActivateQuestions : MonoBehaviour
         Questions.currentlyAnsweringQuestion = false;
 
         Questions.numberOfQuestionsNeededToAnswer = 0;
-        Questions.androidBoot = false;
 
         // Disable the question menus
         viewMultipleChoiceQuestion.SetActive(false);
@@ -239,17 +235,20 @@ public class ActivateQuestions : MonoBehaviour
         // The number of models that have finished to load
         Questions.numberOfModelsLoaded = 0;
 
-        // Check if it is editor testing or android boot
-        if(Questions.androidBoot == true)
-        {
-            // Android case
-            Questions.pathToLevel = Application.persistentDataPath;
+        // // Check if it is editor testing or android boot
+        // if(Globals.androidBoot == true)
+        // {
+        //     // Android case
+        //     Questions.pathToLevel = Application.persistentDataPath;
 
-        } else {
+        // } else {
 
-            // Editor case
-            levelDirectoryPath = Questions.pathToLevel;
-        }
+        //     // Editor case
+        //     levelDirectoryPath = Questions.pathToLevel;
+        // }
+
+        // Since the path to level is set in browse level, it is the same in android and not android boot
+        levelDirectoryPath = Questions.pathToLevel;
     }
 
     // Update is called once per frame
@@ -402,7 +401,8 @@ public class ActivateQuestions : MonoBehaviour
     public async void AddModelOverTargetImage1(string name, string pathToQuestion)
     {
         // Access the model gameobject
-        string json = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
+        string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
+        string json = path;
 
         // Extract the gameobject
         Model model = JsonUtility.FromJson<Model>(json);
@@ -445,7 +445,8 @@ public class ActivateQuestions : MonoBehaviour
     public async void AddModelOverTargetImage2(string name, string pathToQuestion)
     {
         // Access the model gameobject
-        string json = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
+        string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
+        string json = path;;
 
         // Extract the gameobject
         Model model = JsonUtility.FromJson<Model>(json);
@@ -488,7 +489,8 @@ public class ActivateQuestions : MonoBehaviour
     public async void AddModelOverTargetImage3(string name, string pathToQuestion)
     {
         // Access the model gameobject
-        string json = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
+        string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
+        string json = path;;
 
         // Extract the gameobject
         Model model = JsonUtility.FromJson<Model>(json);
@@ -527,7 +529,8 @@ public class ActivateQuestions : MonoBehaviour
     public async void AddModelOverTargetImage4(string name, string pathToQuestion)
     {
         // Access the model gameobject
-        string json = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
+        string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
+        string json = path;;
 
         // Extract the gameobject
         Model model = JsonUtility.FromJson<Model>(json);
@@ -566,7 +569,8 @@ public class ActivateQuestions : MonoBehaviour
     public async void AddModelOverTargetImage5(string name, string pathToQuestion)
     {
         // Access the model gameobject
-        string json = File.ReadAllText(Path.GetDirectoryName(pathToQuestion) + @"\" + name);
+        string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
+        string json = path;;
 
         // Extract the gameobject
         Model model = JsonUtility.FromJson<Model>(json);

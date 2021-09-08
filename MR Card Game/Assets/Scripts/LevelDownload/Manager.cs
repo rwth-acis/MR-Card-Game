@@ -17,7 +17,7 @@ public class Manager : MonoBehaviour
 
     // Define the backendAddress
     [SerializeField]
-    private string backendAddress = "http://127.0.0.1";
+    private string backendAddress = "http://192.168.1.39";
 
     public static string getBackendAddress
     {

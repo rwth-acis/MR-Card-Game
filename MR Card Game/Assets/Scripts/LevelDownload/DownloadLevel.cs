@@ -203,9 +203,23 @@ public class DownloadLevel : MonoBehaviour
         Download.numberOfFilesToDownload = Download.numberOfFilesToDownload - 1;
     }
 
+    IEnumerator SendPingCoroutine()
+    {
+        UnityWebRequest uwr = UnityWebRequest.Get(Manager.BackendAPIBaseURL + "write");
+
+        // Wait for the response to come
+        yield return uwr.SendWebRequest();
+    }
+
     //----------------------------------------------------------------------------------------------------
     // The methods that interact with the server
     //----------------------------------------------------------------------------------------------------
+
+    // Method that sends a ping at the server
+    public void SendPing()
+    {
+        StartCoroutine(SendPingCoroutine());
+    }
 
     // Method used to try downloading a level
     public void TryDownloadingLevel()
@@ -258,6 +272,15 @@ public class DownloadLevel : MonoBehaviour
         {
             // Delete everything TODO
             Debug.Log("The download was unsuccessful");
+
+            System.IO.DirectoryInfo directory = new DirectoryInfo(Globals.currentPath);
+
+            // Go through all files in the current path
+            foreach (FileInfo file in directory.GetFiles())
+            {
+                // Delete the file
+                file.Delete(); 
+            }
         }
 
         // Return the successful flag
@@ -287,27 +310,39 @@ public class DownloadLevel : MonoBehaviour
     // Method used to extract an array out of the string passed by the get request
     public string[] GetTheArray(string data)
     {
-        // Extract the LevelDirectories object
-        LevelDirectories levelDirectories = JsonUtility.FromJson<LevelDirectories>(data);
-
-        // Initialize an array of the same length as the array
-        string[] levelNames = new string[levelDirectories.array.Length];
-
-        // Initialize the current index
-        int index = 0;
-
-        // Extract the directory names (currently complete paths)
-        foreach(string level in levelDirectories.array)
+        // Check if there are no levels
+        if(data != "null")
         {
-            // Get the name of the file and save it in the level names array
-            levelNames[index] = Path.GetFileName(levelDirectories.array[index]);
+            // Extract the LevelDirectories object
+            LevelDirectories levelDirectories = JsonUtility.FromJson<LevelDirectories>(data);
 
-            // Increase the index by one
-            index = index + 1;
+            // Initialize an array of the same length as the array
+            string[] levelNames = new string[levelDirectories.array.Length];
+
+            // Initialize the current index
+            int index = 0;
+
+            // Extract the directory names (currently complete paths)
+            foreach(string level in levelDirectories.array)
+            {
+                // Get the name of the file and save it in the level names array
+                levelNames[index] = Path.GetFileName(levelDirectories.array[index]);
+
+                // Increase the index by one
+                index = index + 1;
+            }
+
+            // Return the level names array
+            return levelNames;
+
+        } else {
+
+            string[] levelNames = new string[1];
+            levelNames[0] = "";
+
+            // Return the level names array
+            return levelNames;
         }
-
-        // Return the level names array
-        return levelNames;
     }
 
     // Method that checks if a string is contained in an array of strings

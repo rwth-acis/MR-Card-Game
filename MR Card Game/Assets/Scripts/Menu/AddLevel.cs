@@ -15,6 +15,9 @@ static class Globals
     public static string currentPath;
 
     public static bool resetAddLevelMenu;
+
+    // The flag that states if this is an android boot or not
+    public static bool androidBoot;
 }
 
 public class AddLevel : MonoBehaviour
@@ -104,9 +107,21 @@ public class AddLevel : MonoBehaviour
     {
         Globals.resetAddLevelMenu = false;
 
+        // Set androidBoot to true or false
+        Globals.androidBoot = true;
+
+        // Check if it is an android boot
+        if(Globals.androidBoot == true)
+        {
+            rootDirectoryPath = Application.persistentDataPath;
+            
+        } else {
+            // First I initialize the Global paths
+            string scriptPath = GetCurrentFilePath();
+            rootDirectoryPath = GetPathToRootDirectory(scriptPath);
+        }
+
         // First I initialize the Global paths
-        string scriptPath = GetCurrentFilePath();
-        rootDirectoryPath = GetPathToRootDirectory(scriptPath);
         Globals.currentPath = rootDirectoryPath;
         depth = 1;
 
@@ -123,8 +138,13 @@ public class AddLevel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Check if the menu should be reset
         if(Globals.resetAddLevelMenu == true)
         {
+            // Set the reset flag to false
+            Globals.resetAddLevelMenu = false;
+
+            // Reset the menu
             Back();
         }
     }
@@ -429,7 +449,11 @@ public class AddLevel : MonoBehaviour
     public void ReturnOneUp()
     {
         // First we need to actualize the current path
-        Globals.currentPath = Path.GetFullPath(Path.Combine(Globals.currentPath, @"..\"));
+        // Globals.currentPath = Path.GetFullPath(Path.Combine(Globals.currentPath, @"..\"));
+
+        System.IO.DirectoryInfo parentDirectory = Directory.GetParent(Globals.currentPath);
+
+        Globals.currentPath = parentDirectory.FullName;
         
         // Then we can actualize everything
         ActualizeGlobals();
@@ -466,7 +490,7 @@ public class AddLevel : MonoBehaviour
             string directory = button.GetComponentInChildren<TMP_Text>().text;
 
             // Actualize the path
-            Globals.currentPath = Globals.currentPath + directory + @"\";
+            Globals.currentPath = Path.Combine(Globals.currentPath, directory);
 
             // Actualize the other globals (directories array, number, page number, etc)
             ActualizeGlobals();
@@ -710,7 +734,7 @@ public class AddLevel : MonoBehaviour
             string directoryName = mainInputField.text;
 
             // Create new path that will exist after the directory has been created
-            string newPath = Globals.currentPath + directoryName + @"\";
+            string newPath = Globals.currentPath + "/" + directoryName + "/";
 
             // Create the new directory if it does not already exist
             if (!Directory.Exists(newPath))

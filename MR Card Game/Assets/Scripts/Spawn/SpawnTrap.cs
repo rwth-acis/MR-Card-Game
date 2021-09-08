@@ -76,7 +76,7 @@ public class SpawnTrap : MonoBehaviour
         trap.gameObject.transform.parent = parent.transform;
 
         // Scale the trap down
-        trap.transform.localScale = new Vector3(Board.greatestBoardDimension * getHoleSize, 1, Board.greatestBoardDimension * getHoleSize);
+        trap.transform.localScale = new Vector3(Board.greatestBoardDimension * getHoleSize, Board.greatestBoardDimension * 1, Board.greatestBoardDimension * getHoleSize);
 
         // Vector3 newPosition =  new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
 

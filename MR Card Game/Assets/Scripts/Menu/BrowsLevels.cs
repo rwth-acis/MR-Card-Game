@@ -35,6 +35,8 @@ public class BrowsLevels : MonoBehaviour
     // The flag that must be risen if a user want to click on a directory, to ensure the user doesn't go more than one directory per click
     private bool flagVariable = true;
 
+    private bool androidBoot = true;
+
     // Here menus and buttons are defined
     public GameObject mainMenu;
     public GameObject browsDirectoriesMenu;
@@ -83,9 +85,18 @@ public class BrowsLevels : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // First I initialize the Global paths
-        string scriptPath = GetCurrentFilePath();
-        rootDirectoryPath = GetPathToRootDirectory(scriptPath);
+        // Check if it is an android boot
+        if(androidBoot == true)
+        {
+            rootDirectoryPath = Application.persistentDataPath;
+
+        } else {
+
+            // First I initialize the Global paths
+            string scriptPath = GetCurrentFilePath();
+            rootDirectoryPath = GetPathToRootDirectory(scriptPath);
+        }
+
         currentPath = rootDirectoryPath;
         depth = 1;
 
@@ -110,7 +121,6 @@ public class BrowsLevels : MonoBehaviour
     {
         string scriptPath = GetCurrentFileName();
         return scriptPath;
-        
     }
 
     // Method that returns you the path to the root directory of the directory structure saved in the back end
@@ -256,7 +266,7 @@ public class BrowsLevels : MonoBehaviour
             // Enable the level description menu
             levelDescriptionMenu.SetActive(true);
 
-            // Set the level description and heading correclty
+            // Set the level description and heading correctly
             SetUpLevelDescription();
 
             // Disable the brows directories menu
@@ -389,8 +399,12 @@ public class BrowsLevels : MonoBehaviour
     // Method that is activated when pressing the return arrow (get to the parent directory)
     public void ReturnOneUp()
     {
-        // First we need to actualize the current path
-        currentPath = Path.GetFullPath(Path.Combine(currentPath, @"..\"));
+        // // First we need to actualize the current path
+        // currentPath = Path.GetFullPath(Path.Combine(currentPath, @"..\"));
+
+        System.IO.DirectoryInfo parentDirectory = Directory.GetParent(Globals.currentPath);
+
+        Globals.currentPath = parentDirectory.FullName;
         
         // Then we can actualize everything
         ActualizeGlobals();
@@ -413,6 +427,7 @@ public class BrowsLevels : MonoBehaviour
     // Method used to navigate in directories, when clicking on one visible directory
     public void NavigateDirectories()
     {
+        Debug.Log("the current path is: " + currentPath);
         // get the name of the button that was pressed and the button
         string name = EventSystem.current.currentSelectedGameObject.name;
         Button button = GameObject.Find(name).GetComponent<Button>();
@@ -427,7 +442,7 @@ public class BrowsLevels : MonoBehaviour
             string directory = button.GetComponentInChildren<TMP_Text>().text;
 
             // Actualize the path
-            currentPath = currentPath + directory + @"\";
+            currentPath = Path.Combine(currentPath, directory);
 
             // Actualize the other globals (directories array, number, page number, etc)
             ActualizeGlobals();
@@ -570,12 +585,17 @@ public class BrowsLevels : MonoBehaviour
         RenameButtons(currentPath);
     }
 
+    [SerializeField]
+    private Button feedbackButton;
+
     // Method that does the level description setup
     public void SetUpLevelDescription()
     {
         // First access the description file
         string json = File.ReadAllText(currentPath + "Description.json");
         Log descriptionObject = JsonUtility.FromJson<Log>(json);
+
+        feedbackButton.GetComponentInChildren<TMP_Text>().text = json;
 
         // Check if the level heading is blank
         if(descriptionObject.heading == "")
