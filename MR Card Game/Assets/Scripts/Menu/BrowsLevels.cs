@@ -144,7 +144,7 @@ public class BrowsLevels : MonoBehaviour
         string[] files = Directory.GetFiles(currentPath, "Question*");
 
         // Check if the description file exists
-        if (File.Exists(currentPath + "Description.json")) 
+        if (File.Exists(Path.Combine(currentPath, "Description.json"))) 
         {
 
             // Case it exists
@@ -260,17 +260,17 @@ public class BrowsLevels : MonoBehaviour
     {
 
         // Case there are no directories to be displayed
-        if(numberOfDirectories == 0 && File.Exists(currentPath + "Description.json"))
+        if(numberOfDirectories == 0 && File.Exists(Path.Combine(currentPath, "Description.json")))
         {
             // If there are no directories, then display the level information with name, description, etc. as well as a launch level button
             // Enable the level description menu
             levelDescriptionMenu.SetActive(true);
 
-            // Set the level description and heading correctly
-            SetUpLevelDescription();
-
             // Disable the brows directories menu
             browsDirectoriesMenu.SetActive(false);
+
+            // Set the level description and heading correctly
+            SetUpLevelDescription();
 
         // Case there is at least one directory, then display the numbers 5*x + 1 to 5*x + 5 (x is number of the page)
         } else {
@@ -591,11 +591,12 @@ public class BrowsLevels : MonoBehaviour
     // Method that does the level description setup
     public void SetUpLevelDescription()
     {
+        Debug.Log("Accessing the file: " + Path.Combine(currentPath, "Description.json"));
         // First access the description file
-        string json = File.ReadAllText(currentPath + "Description.json");
+        string json = File.ReadAllText(Path.Combine(currentPath, "Description.json"));
         Log descriptionObject = JsonUtility.FromJson<Log>(json);
 
-        feedbackButton.GetComponentInChildren<TMP_Text>().text = json;
+        // feedbackButton.GetComponentInChildren<TMP_Text>().text = json;
 
         // Check if the level heading is blank
         if(descriptionObject.heading == "")

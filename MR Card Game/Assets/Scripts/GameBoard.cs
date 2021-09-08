@@ -38,6 +38,8 @@ static class Board
 
     // The flag that states if the game board is visible or not
     public static bool boardVisible;
+
+    public static bool singleImageTarget = true;
 }
 
 public class GameBoard : MonoBehaviour
@@ -116,6 +118,15 @@ public class GameBoard : MonoBehaviour
         // Set the flag that the top left corner is in view
         Board.topLeftCornerVisible = true;
 
+        if(Board.singleImageTarget == true)
+        {
+            // If the other corner is visible, then display the game board
+            DisplayGameBoard();
+
+            // Enable the start next wave button
+            EnableStartNextWave();
+        }
+
         // Check if the other corner is visible
         if(Board.bottomRightCornerVisible == true)
         {
@@ -180,7 +191,7 @@ public class GameBoard : MonoBehaviour
         Board.bottomRightCornerVisible = false;
 
         // Check if the wave is already ongoing
-        if(LevelInfo.waveOngoing == false)
+        if(LevelInfo.waveOngoing == false && Board.singleImageTarget == false)
         {
             // Remove the game board
             RemoveGameBoard();
@@ -199,160 +210,254 @@ public class GameBoard : MonoBehaviour
 
         // Set the flag that states that the game board is visible to true
         Board.boardVisible = true;
-        
-        // Get the positions and rotations of the two corners
-        Vector3 positionTopLeftCorner = topLeftCorner.transform.position;
-        Vector3 positionBottomRightCorner = bottomRightCorner.transform.position;
-        Vector3 rotationVectorTopLeftCorner = topLeftCorner.transform.rotation.eulerAngles;
-        Vector3 rotationVectorBottomRightCorner = bottomRightCorner.transform.rotation.eulerAngles;
-
-        // Get the end rotation. This is important in case that one or two corners are in the wrong direction
-        float boardAngle = GetTheEndRotation(rotationVectorTopLeftCorner.y, rotationVectorBottomRightCorner.y, positionTopLeftCorner.x, positionBottomRightCorner.x, positionTopLeftCorner.z, positionBottomRightCorner.z);
-        
-        // Set the board angle in the Board class
-        Board.boardAngle = boardAngle;
-
-        // Get the rotation vector
-        Vector3 rotationVectorBoard = new Vector3(0, boardAngle, 0);
-
-        // Set the rotation of the board
-        gameBoard.transform.rotation = Quaternion.Euler(rotationVectorBoard);
 
         // Set the game board as child of the top left corner
         gameBoard.transform.parent = topLeftCorner.transform;
 
-        // Resize the board using the angle
+        // Set the game board rotation correctly
+        SetBoardRotationCorrectly();
 
-        // Initialize the position vector
-        Vector3 position = positionTopLeftCorner;
+        SetBoardPositionCorrectly();
 
-        // Initialize the x and z variables of the differences in position of the two corners
-        float xDifferenceTargetImages = 0;
-        float zDifferenceTargetImages = 0;
+        SetBoardScalingCorrectly();
+        
+        // // Get the positions and rotations of the two corners
+        // Vector3 positionTopLeftCorner = topLeftCorner.transform.position;
+        // Vector3 positionBottomRightCorner = bottomRightCorner.transform.position;
+        // Vector3 rotationVectorTopLeftCorner = topLeftCorner.transform.rotation.eulerAngles;
+        // Vector3 rotationVectorBottomRightCorner = bottomRightCorner.transform.rotation.eulerAngles;
 
-        // Find the distance in x difference between the corners and set the position of the board in the middle of the two corners
-        if(positionTopLeftCorner.x >= positionBottomRightCorner.x)
-        {
-            // Case the top left corner has a greater x position than the bottom left corner
-            xDifferenceTargetImages = positionTopLeftCorner.x - positionBottomRightCorner.x;
+        // // Get the end rotation. This is important in case that one or two corners are in the wrong direction
+        // float boardAngle = GetTheEndRotation(rotationVectorTopLeftCorner.y, rotationVectorBottomRightCorner.y, positionTopLeftCorner.x, positionBottomRightCorner.x, positionTopLeftCorner.z, positionBottomRightCorner.z);
+        
+        // // Set the board angle in the Board class
+        // Board.boardAngle = boardAngle;
 
-            // Set the x position to the center of the diagonal of the two markers
-            position.x = position.x - xDifferenceTargetImages / 2;
+        // // Get the rotation vector
+        // Vector3 rotationVectorBoard = new Vector3(0, boardAngle, 0);
 
-        } else {
+        // // Set the rotation of the board
+        // gameBoard.transform.rotation = Quaternion.Euler(rotationVectorBoard);
 
-            // Case the top left corner has a smaller x position than the bottom left corner
-            xDifferenceTargetImages = positionBottomRightCorner.x - positionTopLeftCorner.x;
+        // // Set the game board as child of the top left corner
+        // gameBoard.transform.parent = topLeftCorner.transform;
 
-            // Set the x position to the center of the diagonal of the two markers
-            position.x = position.x + xDifferenceTargetImages / 2;
-        }
+        // // Resize the board using the angle
 
-        // Find the distance in z difference between the corners and set the position of the board in the middle of the two corners
-        if(positionTopLeftCorner.z >= positionBottomRightCorner.z)
-        {
-            // Case the top left corner has a greater z position than the bottom left corner
-            zDifferenceTargetImages = positionTopLeftCorner.z - positionBottomRightCorner.z;
+        // // Initialize the position vector
+        // Vector3 position = positionTopLeftCorner;
 
-            // Set the z position to the center of the diagonal of the two markers
-            position.z = position.z - zDifferenceTargetImages / 2;
+        // // Initialize the x and z variables of the differences in position of the two corners
+        // float xDifferenceTargetImages = 0;
+        // float zDifferenceTargetImages = 0;
 
-        } else {
+        // // Find the distance in x difference between the corners and set the position of the board in the middle of the two corners
+        // if(positionTopLeftCorner.x >= positionBottomRightCorner.x)
+        // {
+        //     // Case the top left corner has a greater x position than the bottom left corner
+        //     xDifferenceTargetImages = positionTopLeftCorner.x - positionBottomRightCorner.x;
 
-            // Case the top left corner has a smaller z position than the bottom left corner
-            zDifferenceTargetImages = positionBottomRightCorner.z - positionTopLeftCorner.z;
+        //     // Set the x position to the center of the diagonal of the two markers
+        //     position.x = position.x - xDifferenceTargetImages / 2;
 
-            // Set the z position to the center of the diagonal of the two markers
-            position.z = position.z + zDifferenceTargetImages / 2;
-        }
+        // } else {
 
-        // Set the y position to the maximum value of the y position of the two corners
-        if(positionTopLeftCorner.y < positionBottomRightCorner.y)
-        {
-            position.y = positionBottomRightCorner.y - positionTopLeftCorner.y;
+        //     // Case the top left corner has a smaller x position than the bottom left corner
+        //     xDifferenceTargetImages = positionBottomRightCorner.x - positionTopLeftCorner.x;
 
-        }
-        //  else {
-
-        //     position.y = positionBottomRightCorner.y;
+        //     // Set the x position to the center of the diagonal of the two markers
+        //     position.x = position.x + xDifferenceTargetImages / 2;
         // }
 
-        // Set the board height variable correctly
-        Board.boardHeight = position.y;
+        // // Find the distance in z difference between the corners and set the position of the board in the middle of the two corners
+        // if(positionTopLeftCorner.z >= positionBottomRightCorner.z)
+        // {
+        //     // Case the top left corner has a greater z position than the bottom left corner
+        //     zDifferenceTargetImages = positionTopLeftCorner.z - positionBottomRightCorner.z;
 
-        // Create the right position vectors in the 0-y-plane
-        Vector3 firstPointLine1 = new Vector3(positionTopLeftCorner.x, 0, positionTopLeftCorner.z);
-        Vector3 firstPointLine2 = new Vector3(positionBottomRightCorner.x, 0, positionBottomRightCorner.z);
+        //     // Set the z position to the center of the diagonal of the two markers
+        //     position.z = position.z - zDifferenceTargetImages / 2;
 
-        // The direction vectors going out the of the position vectors
-        Vector3 secondPointLine1 = CreateNewLine1Vector(boardAngle);
-        Vector3 secondPointLine2 = CreateNewLine2Vector(boardAngle);
+        // } else {
 
-        // Initialize the intersection vector
-        Vector3 intersection = new Vector3(0, 0, 0);
+        //     // Case the top left corner has a smaller z position than the bottom left corner
+        //     zDifferenceTargetImages = positionBottomRightCorner.z - positionTopLeftCorner.z;
 
-        if(Math3d.LineLineIntersection(out intersection, firstPointLine1, secondPointLine1, firstPointLine2, secondPointLine2))
+        //     // Set the z position to the center of the diagonal of the two markers
+        //     position.z = position.z + zDifferenceTargetImages / 2;
+        // }
+
+        // // Set the y position to the maximum value of the y position of the two corners
+        // if(positionTopLeftCorner.y < positionBottomRightCorner.y)
+        // {
+        //     position.y = positionBottomRightCorner.y - positionTopLeftCorner.y;
+
+        // }
+        // //  else {
+
+        // //     position.y = positionBottomRightCorner.y;
+        // // }
+
+        // // Set the board height variable correctly
+        // Board.boardHeight = position.y;
+
+        // // Create the right position vectors in the 0-y-plane
+        // Vector3 firstPointLine1 = new Vector3(positionTopLeftCorner.x, 0, positionTopLeftCorner.z);
+        // Vector3 firstPointLine2 = new Vector3(positionBottomRightCorner.x, 0, positionBottomRightCorner.z);
+
+        // // The direction vectors going out the of the position vectors
+        // Vector3 secondPointLine1 = CreateNewLine1Vector(boardAngle);
+        // Vector3 secondPointLine2 = CreateNewLine2Vector(boardAngle);
+
+        // // Initialize the intersection vector
+        // Vector3 intersection = new Vector3(0, 0, 0);
+
+        // if(Math3d.LineLineIntersection(out intersection, firstPointLine1, secondPointLine1, firstPointLine2, secondPointLine2))
+        // {
+        //     // Initialize the x and z difference
+        //     float xDiffTopLeft = 0;
+        //     float zDiffBottomRight = 0;
+
+        //     // Get the right x difference between the top left corner and the intersection
+        //     if(positionTopLeftCorner.x >= intersection.x)
+        //     {
+        //         xDiffTopLeft = positionTopLeftCorner.x - intersection.x;
+
+        //     } else {
+
+        //         xDiffTopLeft = intersection.x - positionTopLeftCorner.x;
+        //     }
+
+        //     // Get the right z difference between the bottom right corner and the intersection
+        //     if(positionBottomRightCorner.z >= intersection.z)
+        //     {
+        //         zDiffBottomRight = positionBottomRightCorner.z - intersection.z;
+
+        //     } else {
+
+        //         zDiffBottomRight = intersection.z - positionBottomRightCorner.z;
+        //     }
+
+        //     // Depending on the anle, resize the board correctly
+        //     Vector3 correctScale = GetTheCorrectScaleFormAngle(boardAngle, xDiffTopLeft, zDiffBottomRight, intersection.x, intersection.z);
+
+        //     // Since the ratio should be 1:1 get the smalles scale and scale the plane accordingly
+        //     if(correctScale.x < correctScale.z)
+        //     {
+        //         // Case the z scale is too big, scale it down
+        //         correctScale.z = correctScale.x;
+
+        //     } else {
+
+        //         // Case the x scale is too big, scale it down
+        //         correctScale.x = correctScale.z;
+        //     }
+
+        //     // Set the y scale to the x scale so that the height of things is correct
+        //     correctScale.y = correctScale.x;
+
+        //     Board.greatestBoardDimension = correctScale.x / 10;
+
+        //     // Scale the board correctly, a plane is 10 units big so divide the scale by 10
+        //     gameBoard.transform.localScale = (correctScale / 10);
+
+        //     // // Make sure the mesh renderer is enabled, or the game board could disapear // This was necessary before I change the board model
+        //     // gameBoard.GetComponent<Renderer>().enabled = true;
+
+        //     // Set the position of the game board between the two corner markers and set it a bit higher so that it is not covered by the target images
+        //     gameBoard.transform.position = position + new Vector3(0, (float)0.002 + Board.greatestBoardDimension * (float)1, 0);
+
+        //     Debug.Log("The board height is: " + Board.boardHeight);
+
+        //     SetRotationCorrectly();
+
+        // } else {
+
+        //     // If there was no intersection, print it in the log
+        //     Debug.Log("There was no intersection");
+        // }
+    }
+
+    public void SetBoardScalingCorrectly()
+    {
+        if(Board.singleImageTarget == false)
         {
-            // Initialize the x and z difference
-            float xDiffTopLeft = 0;
-            float zDiffBottomRight = 0;
+            float distance = 0.5f * Vector3.Distance(topLeftCorner.transform.position, bottomRightCorner.transform.position);
 
-            // Get the right x difference between the top left corner and the intersection
-            if(positionTopLeftCorner.x >= intersection.x)
-            {
-                xDiffTopLeft = positionTopLeftCorner.x - intersection.x;
-
-            } else {
-
-                xDiffTopLeft = intersection.x - positionTopLeftCorner.x;
-            }
-
-            // Get the right z difference between the bottom right corner and the intersection
-            if(positionBottomRightCorner.z >= intersection.z)
-            {
-                zDiffBottomRight = positionBottomRightCorner.z - intersection.z;
-
-            } else {
-
-                zDiffBottomRight = intersection.z - positionBottomRightCorner.z;
-            }
-
-            // Depending on the anle, resize the board correctly
-            Vector3 correctScale = GetTheCorrectScaleFormAngle(boardAngle, xDiffTopLeft, zDiffBottomRight, intersection.x, intersection.z);
-
-            // Since the ratio should be 1:1 get the smalles scale and scale the plane accordingly
-            if(correctScale.x < correctScale.z)
-            {
-                // Case the z scale is too big, scale it down
-                correctScale.z = correctScale.x;
-
-            } else {
-
-                // Case the x scale is too big, scale it down
-                correctScale.x = correctScale.z;
-            }
-
-            // Set the y scale to the x scale so that the height of things is correct
-            correctScale.y = correctScale.x;
-
-            Board.greatestBoardDimension = correctScale.x / 10;
-
-            // Scale the board correctly, a plane is 10 units big so divide the scale by 10
-            gameBoard.transform.localScale = (correctScale / 10);
-
-            // // Make sure the mesh renderer is enabled, or the game board could disapear // This was necessary before I change the board model
-            // gameBoard.GetComponent<Renderer>().enabled = true;
-
-            // Set the position of the game board between the two corner markers and set it a bit higher so that it is not covered by the target images
-            gameBoard.transform.position = position + new Vector3(0, (float)0.002 + Board.greatestBoardDimension * (float)1, 0);
-
-            Debug.Log("The board height is: " + Board.boardHeight);
+            gameBoard.transform.localScale = new Vector3(distance * 0.1f, distance * 0.1f, distance * 0.1f);
 
         } else {
 
-            // If there was no intersection, print it in the log
-            Debug.Log("There was no intersection");
+            gameBoard.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
         }
+
+    }
+
+    // Set the rotation of the game board to the same rotation as the top left corner
+    public void SetBoardRotationCorrectly()
+    {
+        // Get the rotation of one of the image targets
+        Quaternion cornerRotation = topLeftCorner.transform.rotation;
+        Vector3 cornerEulerAngles = cornerRotation.eulerAngles;
+
+        // Get the rotation of the game board 
+        Quaternion boardRotation = gameBoard.transform.rotation;
+        Vector3 boardEulerAngles = boardRotation.eulerAngles;
+
+        // Set the x rotation of the game board to the rotation of the corner
+        boardEulerAngles = cornerEulerAngles;
+        boardRotation.eulerAngles = boardEulerAngles;
+
+        // Set the rotation of the game board correctly
+        gameBoard.transform.rotation = boardRotation;
+    }
+
+    public void SetBoardPositionCorrectly()
+    {
+
+        if(Board.singleImageTarget == false)
+        {
+            // Get the position of the two corners
+            Vector3 positionTopLeftCorner = topLeftCorner.transform.position;
+            Vector3 positionBottomRightCorner = bottomRightCorner.transform.position;
+
+            // Initialize the position of the game board
+            Vector3 positionBoard = new Vector3();
+
+            // Change the values to the middle of both corners
+            positionBoard.x = 0.5f *(positionTopLeftCorner.x + positionBottomRightCorner.x);
+            positionBoard.y = 0.5f *(positionTopLeftCorner.y + positionBottomRightCorner.y) + 0.9f * 0.1f;
+            positionBoard.z = 0.5f *(positionTopLeftCorner.z + positionBottomRightCorner.z);
+
+            // Set the position of the game board
+            gameBoard.transform.position = positionBoard;
+        } else {
+            // Get the position of the image target
+            Vector3 positionTopLeftCorner = topLeftCorner.transform.position;
+
+            positionTopLeftCorner = positionTopLeftCorner + gameBoard.transform.rotation * Vector3.up  * 0.04f;
+
+            // Set the position of the game board
+            gameBoard.transform.position = positionTopLeftCorner;
+        }
+    }
+
+    public void SetRotationCorrectly()
+    {
+        // Get the rotation of one of the image targets
+        Quaternion cornerRotation = topLeftCorner.transform.rotation;
+        Vector3 cornerEulerAngles = cornerRotation.eulerAngles;
+
+        // Get the rotation of the game board 
+        Quaternion boardRotation = gameBoard.transform.rotation;
+        Vector3 boardEulerAngles = boardRotation.eulerAngles;
+
+        // Set the x rotation of the game board to the rotation of the corner
+        boardEulerAngles.x = cornerEulerAngles.x;
+        boardRotation.eulerAngles = boardEulerAngles;
+
+        // Set the rotation of the game board correctly
+        gameBoard.transform.rotation = boardRotation;
     }
 
     // Helper method used to reduce or increase a rotation by 180

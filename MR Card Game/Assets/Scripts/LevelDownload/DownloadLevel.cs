@@ -196,8 +196,10 @@ public class DownloadLevel : MonoBehaviour
             // // Convert the byte array to string
             // string data = System.Text.Encoding.UTF8.GetString(uwr.downloadHandler.data);
 
+            string realFileName = fileName + ".json";
+
             // Save the string retrieved in a file of the right name
-            File.WriteAllText(Globals.currentPath + fileName + ".json", uwr.downloadHandler.text);
+            File.WriteAllText(Path.Combine(Globals.currentPath, realFileName), uwr.downloadHandler.text);
         }
 
         Download.numberOfFilesToDownload = Download.numberOfFilesToDownload - 1;
