@@ -108,7 +108,7 @@ public class AddLevel : MonoBehaviour
         Globals.resetAddLevelMenu = false;
 
         // Set androidBoot to true or false
-        Globals.androidBoot = false;
+        Globals.androidBoot = true;
 
         // Check if it is an android boot
         if(Globals.androidBoot == true)

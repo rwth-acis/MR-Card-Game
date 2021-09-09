@@ -35,7 +35,7 @@ public class BrowsLevels : MonoBehaviour
     // The flag that must be risen if a user want to click on a directory, to ensure the user doesn't go more than one directory per click
     private bool flagVariable = true;
 
-    private bool androidBoot = false;
+    private bool androidBoot = true;
 
     // Here menus and buttons are defined
     public GameObject mainMenu;
