@@ -273,8 +273,11 @@ public class Level : MonoBehaviour
                 // Set them as children of the game board
                 enemy.transform.parent = Waypoints.enemySpawn.transform;
 
+                // Rotate the enemies like the game board
+                enemy.transform.rotation = Board.gameBoard.transform.rotation;
+
                 // Set the position of the child to the position of the parent object
-                enemy.transform.position = Waypoints.enemySpawn.transform.position + new Vector3(0, enemy.GetFlightHeight, 0);
+                enemy.transform.position = (Waypoints.mapWaypoints[0].transform.position + enemy.transform.up * enemy.GetFlightHeight);;
             }
 
             // // Check that the stop time card is not taking effect
@@ -1419,8 +1422,32 @@ public class Level : MonoBehaviour
     [SerializeField]
     private TMP_Text enemiesMissedDefeat;
 
+    // The are you sure you want to return to the main menu window
+    [SerializeField]
+    private GameObject returnMainMenuWindow;
+
+    // Method used to open the return to main menu window when wanting to abandon the level
+    public void OpenReturnMainMenuScreen()
+    {
+        // Activate the window
+        returnMainMenuWindow.gameObject.SetActive(true);
+
+        // Pause the game
+        GameAdvancement.gamePaused = true;
+    }
+
+    // Method used to close (cancel) the return to main menu window
+    public void CloseReturnMainMenuScreen()
+    {
+        // Close the window
+        returnMainMenuWindow.gameObject.SetActive(false);
+
+        // Un-pause the game
+        GameAdvancement.gamePaused = false;
+    }
+
     // The method that activates the win screen
-    private void ActivateDefeatScreen()
+    public void ActivateDefeatScreen()
     {
         // Set the wave ongoing flag to false
         LevelInfo.waveOngoing = false;

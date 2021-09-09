@@ -59,7 +59,7 @@ public class Enemy : MonoBehaviour
     private float flying;
 
     // Initialize the flight height variable
-    private float flightHeight;
+    private float flightHeight = 0;
 
     // Method used to get the flight height of the enemy
     public float GetFlightHeight
@@ -111,6 +111,9 @@ public class Enemy : MonoBehaviour
 
     // The flag that states if an enemy is wet or not
     public bool isWet = false;
+
+    // The flag that states if the enemy need its position to be reset or not
+    public int firstLife = 0;
 
     // // Method used to get the weakness of the enemy
     // public bool isAlive
@@ -334,6 +337,14 @@ public class Enemy : MonoBehaviour
 
         // Set the health points to max hp
         currentHP = GetMaximumHP;
+
+        // if(firstLife > 1)
+        // {
+        //     flightHeight = flying * Board.greatestBoardDimension * (float)0.6  + (float)0.2 * size * Board.greatestBoardDimension;
+
+        //     // Set it to the position of the first waypoint on spawn
+        //     transform.position = (waypoints[waypointIndex].transform.position + this.transform.up * flightHeight);
+        // }
     }
 
     // The coroutine that spawns an oponent and waits for a time before the next spawn
