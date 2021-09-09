@@ -143,7 +143,7 @@ public class Enemy : MonoBehaviour
         transform.localScale = new Vector3((float)0.3 * size, (float)0.3 * size, (float)0.3 * size);
 
         // Set it to the position of the first waypoint on spawn
-        transform.position = (waypoints[waypointIndex].transform.position + new Vector3(0, GetFlightHeight, 0));
+        transform.position = (waypoints[waypointIndex].transform.position + this.transform.up * flightHeight);
 
         // When spawning, set the current health points to the maximum health points
         ReviveEnemy();
@@ -201,14 +201,20 @@ public class Enemy : MonoBehaviour
         // If the last waypoint was not reached, move the enemy
         if(waypointIndex <= waypoints.Length - 1)
         {
+            // Get the current goal that is the position of the next waypoint, added with a height
+            Vector3 currentGoal = waypoints[waypointIndex].transform.position + this.transform.up * flightHeight;
+
+            // // Move the enemy toward the next waypoint
+            // transform.position = Vector3.MoveTowards(transform.position, waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0), moveSpeed * GameAdvancement.globalSlow * personalSlowFactor * Time.deltaTime * gameBoard.transform.localScale.x);
+
             // Move the enemy toward the next waypoint
-            transform.position = Vector3.MoveTowards(transform.position, waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0), moveSpeed * GameAdvancement.globalSlow * personalSlowFactor * Time.deltaTime * gameBoard.transform.localScale.x);
+            transform.position = Vector3.MoveTowards(transform.position, currentGoal, moveSpeed * GameAdvancement.globalSlow * personalSlowFactor * Time.deltaTime * gameBoard.transform.localScale.x);
 
             // // Make the enemy face the direction it is moving
             // transform.LookAt(waypoints[waypointIndex].transform.position);
 
             // If the enemy reached the position of a waypoint, increase the waypoint index by one
-            if(transform.position == (waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0)))
+            if(transform.position == currentGoal)
             // if(transform.position.x == waypoints[waypointIndex].transform.position.x && transform.position.z == waypoints[waypointIndex].transform.position.z)
             {
                 // // Set the passed waypoint as last waypoint
@@ -219,10 +225,8 @@ public class Enemy : MonoBehaviour
 
                 if(waypointIndex <= waypoints.Length - 1)
                 {
-                    // Make the enemy face the direction it is moving
-                    transform.LookAt(waypoints[waypointIndex].transform.position);
-
-                    // Change the scaling of the enemy
+                    // // Make the enemy face the direction it is moving
+                    // transform.LookAt(waypoints[waypointIndex].transform.position + this.transform.up * flightHeight);
                 }
             }
         }

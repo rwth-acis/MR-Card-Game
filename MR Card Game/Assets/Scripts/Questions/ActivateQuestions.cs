@@ -402,7 +402,9 @@ public class ActivateQuestions : MonoBehaviour
     {
         // Access the model gameobject
         string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
-        string json = path;
+        string json = File.ReadAllText(path);
+
+        Debug.Log("Accessing the model in path: " + path);
 
         // Extract the gameobject
         Model model = JsonUtility.FromJson<Model>(json);
@@ -421,7 +423,7 @@ public class ActivateQuestions : MonoBehaviour
         // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
 
         // Access the box collider information of the child object
-        BoxCollider m_Collider = obj.GetComponent<BoxCollider>();
+        BoxCollider m_Collider = obj.GetComponentInChildren<BoxCollider>();
 
         // Get the position of the target image
         Vector3 position = Questions.questionRequestingImageTarget.transform.position;
@@ -430,7 +432,7 @@ public class ActivateQuestions : MonoBehaviour
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y * scaleVector.x, 0);
+        position = position + Questions.questionRequestingImageTarget.transform.up * m_Collider.size.y * scaleVector.x + imageTarget5.transform.forward * 0.05f + imageTarget5.transform.right * 0.05f;
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -446,7 +448,7 @@ public class ActivateQuestions : MonoBehaviour
     {
         // Access the model gameobject
         string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
-        string json = path;;
+        string json = File.ReadAllText(path);
 
         // Extract the gameobject
         Model model = JsonUtility.FromJson<Model>(json);
@@ -465,7 +467,7 @@ public class ActivateQuestions : MonoBehaviour
         // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
 
         // Access the box collider information of the child object
-        BoxCollider m_Collider = obj.GetComponent<BoxCollider>();
+        BoxCollider m_Collider = obj.GetComponentInChildren<BoxCollider>();
 
         // Get the position of the target image
         Vector3 position = imageTarget2.transform.position;
@@ -474,7 +476,7 @@ public class ActivateQuestions : MonoBehaviour
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y * scaleVector.x, 0);
+        position = position + imageTarget2.transform.up * m_Collider.size.y * scaleVector.x + imageTarget5.transform.forward * 0.05f - imageTarget5.transform.right * 0.05f;
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -490,7 +492,7 @@ public class ActivateQuestions : MonoBehaviour
     {
         // Access the model gameobject
         string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
-        string json = path;;
+        string json = File.ReadAllText(path);
 
         // Extract the gameobject
         Model model = JsonUtility.FromJson<Model>(json);
@@ -507,7 +509,7 @@ public class ActivateQuestions : MonoBehaviour
         // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
 
         // Access the box collider information of the child object
-        BoxCollider m_Collider = obj.GetComponent<BoxCollider>();
+        BoxCollider m_Collider = obj.GetComponentInChildren<BoxCollider>();
 
         // Get the position of the target image
         Vector3 position = imageTarget3.transform.position;
@@ -516,7 +518,7 @@ public class ActivateQuestions : MonoBehaviour
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y * scaleVector.x, 0);
+        position = position + imageTarget3.transform.up * m_Collider.size.y * scaleVector.x + imageTarget5.transform.forward * 0.05f - imageTarget5.transform.right * 0.05f;
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -530,7 +532,7 @@ public class ActivateQuestions : MonoBehaviour
     {
         // Access the model gameobject
         string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
-        string json = path;;
+        string json = File.ReadAllText(path);
 
         // Extract the gameobject
         Model model = JsonUtility.FromJson<Model>(json);
@@ -547,7 +549,7 @@ public class ActivateQuestions : MonoBehaviour
         // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
 
         // Access the box collider information of the child object
-        BoxCollider m_Collider = obj.GetComponent<BoxCollider>();
+        BoxCollider m_Collider = obj.GetComponentInChildren<BoxCollider>();
 
         // Get the position of the target image
         Vector3 position = imageTarget4.transform.position;
@@ -556,7 +558,7 @@ public class ActivateQuestions : MonoBehaviour
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y * scaleVector.x, 0);
+        position = position + imageTarget4.transform.up * m_Collider.size.y * scaleVector.x + imageTarget5.transform.forward * 0.05f - imageTarget5.transform.right * 0.05f;
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -570,7 +572,7 @@ public class ActivateQuestions : MonoBehaviour
     {
         // Access the model gameobject
         string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
-        string json = path;;
+        string json = File.ReadAllText(path);
 
         // Extract the gameobject
         Model model = JsonUtility.FromJson<Model>(json);
@@ -589,7 +591,7 @@ public class ActivateQuestions : MonoBehaviour
         // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
 
         // Access the box collider information of the child object
-        BoxCollider m_Collider = obj.GetComponent<BoxCollider>();
+        BoxCollider m_Collider = obj.GetComponentInChildren<BoxCollider>();
 
         // Get the position of the target image
         Vector3 position = imageTarget5.transform.position;
@@ -598,7 +600,7 @@ public class ActivateQuestions : MonoBehaviour
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + new Vector3(0, m_Collider.size.y * scaleVector.x, 0);
+        position = position +  imageTarget5.transform.up * m_Collider.size.y * scaleVector.x + imageTarget5.transform.forward * 0.05f - imageTarget5.transform.right * 0.05f;
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -616,8 +618,8 @@ public class ActivateQuestions : MonoBehaviour
     {
         // Get the child gamobject (there should always be one)
         // TODO check the number of children, and add one if needed
-        // GameObject childGameObject1 = obj.transform.GetChild(0).gameObject;
-        GameObject childGameObject1 = obj.transform.gameObject;
+        GameObject childGameObject1 = obj.transform.GetChild(0).gameObject;
+        // GameObject childGameObject1 = obj.transform.gameObject;
 
         // Add a box collider to the child
         childGameObject1.AddComponent<BoxCollider>();

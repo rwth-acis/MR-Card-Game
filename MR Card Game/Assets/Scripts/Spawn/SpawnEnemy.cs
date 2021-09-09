@@ -176,8 +176,14 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Remove the enemy slow
             enemy.personalSlowFactor = 1;
 
+            // Rotate the enemies like the game board
+            enemy.transform.rotation = Board.gameBoard.transform.rotation;
+
+            // // Set the position of the child to the position of the parent object
+            // enemy.transform.position = Waypoints.enemySpawn.transform.position + enemy.transform.up * enemy.GetFlightHeight;
+
             // Set the position of the child to the position of the parent object
-            enemy.transform.position = Waypoints.enemySpawn.transform.position + new Vector3(0, enemy.GetFlightHeight, 0);
+            enemy.transform.position = Waypoints.enemySpawn.transform.position  + enemy.transform.up * enemy.GetFlightHeight;
 
             // Set the health points to max and make it alive again
             enemy.ReviveEnemy();

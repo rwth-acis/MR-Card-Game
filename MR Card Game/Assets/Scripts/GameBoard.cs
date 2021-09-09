@@ -389,6 +389,8 @@ public class GameBoard : MonoBehaviour
         } else {
 
             gameBoard.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+
+            Board.greatestBoardDimension = 0.05f;
         }
 
     }
@@ -412,6 +414,7 @@ public class GameBoard : MonoBehaviour
         gameBoard.transform.rotation = boardRotation;
     }
 
+    // Method used to ste the position of the game board correctly
     public void SetBoardPositionCorrectly()
     {
 
@@ -435,7 +438,7 @@ public class GameBoard : MonoBehaviour
             // Get the position of the image target
             Vector3 positionTopLeftCorner = topLeftCorner.transform.position;
 
-            positionTopLeftCorner = positionTopLeftCorner + gameBoard.transform.rotation * Vector3.up  * 0.04f;
+            positionTopLeftCorner = positionTopLeftCorner;
 
             // Set the position of the game board
             gameBoard.transform.position = positionTopLeftCorner;

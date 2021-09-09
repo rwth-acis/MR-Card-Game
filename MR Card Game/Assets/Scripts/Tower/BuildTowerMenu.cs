@@ -847,23 +847,17 @@ namespace build
             // Set the building as child of the buildings storage object that is a child of the game board
             building.transform.parent = Board.buildingStorage.transform;
 
-            // Initialize the build position
-            Vector3 buildingPosition = building.transform.position;
+            // Set the rotation of the tower to the same as the rotation of the game board
+             building.transform.rotation = Board.gameBoard.transform.rotation;
 
-            // // Set the building position at the same height as the castle (so as the game board)
-            // buildingPosition = new Vector3(buildingPosition.x, Board.castle.transform.position.y, buildingPosition.z);
+            // // Initialize the build position
+            // Vector3 buildingPosition = building.transform.position;
 
-            // Set the building position at the same height as the first waypoint (on the ground of the game board)
-            buildingPosition = new Vector3(buildingPosition.x, Waypoints.mapWaypoints[0].position.y, buildingPosition.z);
+            // // Set the building position at the same height as the first waypoint (on the ground of the game board)
+            // buildingPosition = new Vector3(buildingPosition.x, Waypoints.mapWaypoints[0].position.y, buildingPosition.z);
 
-            // Give this position to the building
-            building.transform.position = buildingPosition;
-
-            // // Scale the trap down
-            // building.transform.localScale = new Vector3(1, 1, 1);
-
-            // // Make sure the tower is on the same height as the castle
-            // building.transform.position.y = Board.castle.transform.position.y;
+            // // Give this position to the building
+            // building.transform.position = buildingPosition;
         }
     }
 }
