@@ -29,6 +29,8 @@ public class BuildTower : MonoBehaviour
     // The flag that states if the build building image target is on the game board or not
     public bool onBoard = false;
 
+    public bool visible = false;
+
     // Define the individual canvas for the build tower button
     [SerializeField]
     private GameObject buildUI;
@@ -51,7 +53,7 @@ public class BuildTower : MonoBehaviour
         this.GetComponent<BoxCollider>().enabled = true;
 
         // Check if the image target just entered the game board or left it
-        if(onBoard == true && GameAdvancement.gamePaused == false && CheckDistanceToTowers() == true)
+        if(onBoard == true && GameAdvancement.gamePaused == false && CheckDistanceToTowers() == true && visible == true)
         {
             // Make the ui button appear that should be clickable to construct a tower
             buildUI.SetActive(true);
@@ -65,7 +67,7 @@ public class BuildTower : MonoBehaviour
             // // Set the flag to false
             // makeBuildAppear = false;
 
-        } else if(onBoard == false || CheckDistanceToTowers() == false)
+        } else if(onBoard == false || CheckDistanceToTowers() == false || visible == false)
         {
             // Make the ui button disappear
             buildUI.SetActive(false);
@@ -85,6 +87,18 @@ public class BuildTower : MonoBehaviour
 
             // }
         }
+    }
+
+    // Methods activated when the image target enters the field
+    public void ImageTargetVisible()
+    {
+        visible = true;
+    }
+
+    // Methods activated when the image target leaves the field
+    public void ImageTargetLost()
+    {
+        visible = false;
     }
 
     // The method that adds entering enemies to the collider list
@@ -173,6 +187,9 @@ public class BuildTower : MonoBehaviour
 
         // Use the open build tower menu of the build tower menu script
         OpenBuildTowerMenu();
+
+        // Save the position of the building in the build position vector
+        TowerEnhancer.buildPosition = gameObject.transform.position;
     }
 
     // The method used to begin to build a tower on an image target when pressing on the build tower button
@@ -183,5 +200,8 @@ public class BuildTower : MonoBehaviour
 
         // Use the open build trap menu of the build tower menu script
         OpenBuildTrapMenu();
+
+        // Save the position of the building in the build position vector
+        TowerEnhancer.buildPosition = gameObject.transform.position;
     }
 }

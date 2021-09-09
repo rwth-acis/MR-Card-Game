@@ -11,6 +11,9 @@ using static i5.Toolkit.Core.Examples.Spawners.SpawnProjectile;
 public static class TowerEnhancer
 {
     public static Tower currentlyEnhancedTower;
+
+    // The position where the tower / trap building was initialized
+    public static Vector3 buildPosition;
 }
 
 

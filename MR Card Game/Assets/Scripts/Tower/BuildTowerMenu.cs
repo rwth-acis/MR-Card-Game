@@ -842,7 +842,7 @@ namespace build
         public void GroundBuilding(GameObject building, GameObject imageTarget)
         {
             // Set the position of the building to the position of the image target
-            building.transform.position = imageTarget.transform.position;
+            building.transform.position = TowerEnhancer.buildPosition;
 
             // Set the building as child of the buildings storage object that is a child of the game board
             building.transform.parent = Board.buildingStorage.transform;

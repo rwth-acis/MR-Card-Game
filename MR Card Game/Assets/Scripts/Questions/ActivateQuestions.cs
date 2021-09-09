@@ -149,6 +149,13 @@ public class ActivateQuestions : MonoBehaviour
     public GameObject imageTarget4;
     public GameObject imageTarget5;
 
+    // Define the target image objects
+    public bool imageTarget1Visible;
+    public bool imageTarget2Visible;
+    public bool imageTarget3Visible;
+    public bool imageTarget4Visible;
+    public bool imageTarget5Visible;
+
     // The begin of the url to the .obj object downloaded in the created examples
     public string urlBegin;
 
@@ -677,8 +684,6 @@ public class ActivateQuestions : MonoBehaviour
     // Method that is executed when a user presses the "view question" button in the model view
     public void ActivateQuestion()
     {
-        // numberOfQuestionsThatNeedToBeAnsweredDisplay.GetComponentInChildren<TMP_Text>().text = "42";
-
         // Get the current question path
         string questionPath = Questions.questionArray[Questions.currentQuestionIndex];
 
@@ -1712,5 +1717,61 @@ public class ActivateQuestions : MonoBehaviour
 
         // Reset the number of questions needed to be answered
         Questions.numberOfQuestionsNeededToAnswer = 0;
+    }
+
+    //------------------------------------------------------------------------------------------------------------------
+    // Helper functions that set the flags of if an image target is visible or not
+    //------------------------------------------------------------------------------------------------------------------
+
+    // public void ImageTarget1BecameVisible()
+    // {
+    //     // Need to check if it is the right image target
+    //     imageTarget1Visible = true;
+    // }
+
+    public void imageTarget2BecameVisible()
+    {
+        imageTarget2Visible = true;
+    }
+
+    public void ImageTarget3BecameVisible()
+    {
+        imageTarget3Visible = true;
+    }
+
+    public void ImageTarget4BecameVisible()
+    {
+        imageTarget4Visible = true;
+    }
+
+    public void ImageTarget5BecameVisible()
+    {
+        imageTarget5Visible = true;
+    }
+
+    // //
+    // public void ImageTarget1Lost()
+    // {
+    //     imageTarget1Visible = false;
+    // }
+
+    public void ImageTarget2Lost()
+    {
+        imageTarget2Visible = false;
+    }
+
+    public void ImageTarget3Lost()
+    {
+        imageTarget3Visible = false;
+    }
+
+    public void ImageTarget4Lost()
+    {
+        imageTarget4Visible = false;
+    }
+
+    public void ImageTarget5Lost()
+    {
+        imageTarget5Visible = false;
     }
 }
