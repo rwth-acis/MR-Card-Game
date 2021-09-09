@@ -176,7 +176,7 @@ public class SpellCard : MonoBehaviour
             }
 
             // Check if the reveal spell card overlay is not displayed while the image target is in the camera field and the game is not paused
-            if(cardVisibleButNotDisplayed == true && GameAdvancement.gamePaused == false && Cards.drawnSpellsOnBoard <= 0)
+            if(cardVisibleButNotDisplayed == true && GameAdvancement.gamePaused == false && Cards.drawnSpellsOnBoard <= 0 && Questions.numberOfQuestionsNeededToAnswer == 0)
             {
                 // Set the variable that states that the spell card is visible but the overlay not displayed to false
                 cardVisibleButNotDisplayed = false;
@@ -340,7 +340,7 @@ public class SpellCard : MonoBehaviour
     public void SpellCardEnteredCameraField()
     {
         // Check that the game is not paused
-        if(GameAdvancement.gamePaused == false && LevelInfo.waveOngoing == true && Cards.drawnSpellsOnBoard <= 0 && cardDrawn == false)
+        if(GameAdvancement.gamePaused == false && LevelInfo.waveOngoing == true && Cards.drawnSpellsOnBoard <= 0 && cardDrawn == false && Questions.numberOfQuestionsNeededToAnswer == 0)
         {
             // Display the reveal spell menu
             DisplayDrawSpell();
