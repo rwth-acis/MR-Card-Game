@@ -848,7 +848,16 @@ namespace build
             building.transform.parent = Board.buildingStorage.transform;
 
             // Set the rotation of the tower to the same as the rotation of the game board
-             building.transform.rotation = Board.gameBoard.transform.rotation;
+            building.transform.rotation = Board.gameBoard.transform.rotation;
+
+            // Make sure the y position of the tower is at 0.1
+
+            Vector3 newPosition = building.transform.localPosition;
+
+            newPosition.y = 0.1f;
+
+            building.transform.localPosition = newPosition;
+            
 
             // // Initialize the build position
             // Vector3 buildingPosition = building.transform.position;
