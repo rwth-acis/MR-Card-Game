@@ -18,13 +18,12 @@ static class Globals
 
     // The flag that states if this is an android boot or not
     public static bool androidBoot;
+
+    public static string rootDirectoryPath;
 }
 
 public class AddLevel : MonoBehaviour
 {
-    // The path to the root directory where all levels are saved locally
-    private string rootDirectoryPath;
-
     // The number of directories in the folder
     private int numberOfDirectories;
 
@@ -108,21 +107,21 @@ public class AddLevel : MonoBehaviour
         Globals.resetAddLevelMenu = false;
 
         // Set androidBoot to true or false
-        Globals.androidBoot = true;
+        Globals.androidBoot = false;
 
         // Check if it is an android boot
         if(Globals.androidBoot == true)
         {
-            rootDirectoryPath = Application.persistentDataPath;
+            Globals.rootDirectoryPath = Application.persistentDataPath;
             
         } else {
             // First I initialize the Global paths
             string scriptPath = GetCurrentFilePath();
-            rootDirectoryPath = GetPathToRootDirectory(scriptPath);
+            Globals.rootDirectoryPath = GetPathToRootDirectory(scriptPath);
         }
 
         // First I initialize the Global paths
-        Globals.currentPath = rootDirectoryPath;
+        Globals.currentPath = Globals.rootDirectoryPath;
         depth = 1;
 
         // Then I actualize in a function the directories, page numbers, heading
@@ -167,7 +166,7 @@ public class AddLevel : MonoBehaviour
     private string GetPathToRootDirectory(string scriptPath)
     {
         string rootPath = Path.GetFullPath(Path.Combine(scriptPath, @"..\..\..\..\..\"));
-        string rootDirectoryPath = Path.GetFullPath(Path.Combine(rootPath, @"Backend\"));
+        string rootDirectoryPath = Path.GetFullPath(Path.Combine(rootPath, @"Backend"));
         return rootDirectoryPath;
     }
 
@@ -281,9 +280,12 @@ public class AddLevel : MonoBehaviour
             textNext.GetComponent<TMP_Text>().colorGradient = disabledTextGradient;
         }
 
+        Debug.Log("The current path is: " + Globals.currentPath);
+        Debug.Log("The root directory path is: " + Globals.rootDirectoryPath);
+
         // Enable / disable the return button
         imageSwitch = returnOneUp.image;
-        if(Globals.currentPath != rootDirectoryPath)
+        if(Globals.currentPath != Globals.rootDirectoryPath)
         {
             //returnButtonOn.interactable = true;
             returnOneUp.interactable = true;
@@ -296,7 +298,7 @@ public class AddLevel : MonoBehaviour
 
         // Enable / Disable select directory button, the select directory button is not enabled in the root directory and in directories containing directories
         TMP_Text textSelectDirectory = selectDirectory.GetComponentInChildren<TMP_Text>();
-        if(Globals.currentPath != rootDirectoryPath || numberOfDirectories == 0)
+        if(Globals.currentPath != Globals.rootDirectoryPath || numberOfDirectories == 0)
         {
             // Make the select directory button interactable and make it blue
             selectDirectory.interactable = true;
@@ -314,7 +316,7 @@ public class AddLevel : MonoBehaviour
     public void RenameButtons(string path)
     {
         // Check if there are no new directories and a description file (== level inside)
-        if(numberOfDirectories == 0 && File.Exists(Globals.currentPath + "Description.json"))
+        if(numberOfDirectories == 0 && File.Exists(Path.Combine(Globals.currentPath, "Description.json")))
         {
             // Enable the level description menu
             levelDescriptionMenu.SetActive(true);
@@ -609,7 +611,7 @@ public class AddLevel : MonoBehaviour
     // Method that resets the brows directories menu
     public void resetAddLevelMenu()
     {
-        Globals.currentPath = rootDirectoryPath;
+        Globals.currentPath = Globals.rootDirectoryPath;
         depth = 1;
 
         // Then I actualize in a function the directories, page numbers, heading
@@ -630,7 +632,7 @@ public class AddLevel : MonoBehaviour
     public void SetUpLevelDescription()
     {
         // First access the description file
-        string json = File.ReadAllText(Globals.currentPath + "Description.json");
+        string json = File.ReadAllText(Path.Combine(Globals.currentPath, "Description.json"));
         Log descriptionObject = JsonUtility.FromJson<Log>(json);
 
         // Check if the level heading is blank
@@ -670,7 +672,8 @@ public class AddLevel : MonoBehaviour
         levelDescriptionMenu.SetActive(false);
 
         // Set the current path to one layer up
-        Globals.currentPath = Path.GetFullPath(Path.Combine(Globals.currentPath, @"..\"));
+        string currentPath= Path.GetFullPath(Path.Combine(Globals.currentPath, @"..\"));
+        Globals.currentPath = currentPath.Remove(currentPath.Length - 1, 1); 
 
         // Then we can actualize everything
         ActualizeGlobals();

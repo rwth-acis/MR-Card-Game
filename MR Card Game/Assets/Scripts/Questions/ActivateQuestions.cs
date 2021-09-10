@@ -439,7 +439,7 @@ public class ActivateQuestions : MonoBehaviour
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + Questions.questionRequestingImageTarget.transform.up * m_Collider.size.y * scaleVector.x + imageTarget5.transform.forward * 0.05f + imageTarget5.transform.right * 0.05f;
+        position = position + Questions.questionRequestingImageTarget.transform.up * m_Collider.size.y * scaleVector.x * 2;
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -483,7 +483,7 @@ public class ActivateQuestions : MonoBehaviour
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + imageTarget2.transform.up * m_Collider.size.y * scaleVector.x + imageTarget5.transform.forward * 0.05f - imageTarget5.transform.right * 0.05f;
+        position = position + imageTarget2.transform.up * m_Collider.size.y * scaleVector.x * 2;
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -525,7 +525,7 @@ public class ActivateQuestions : MonoBehaviour
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + imageTarget3.transform.up * m_Collider.size.y * scaleVector.x + imageTarget5.transform.forward * 0.05f - imageTarget5.transform.right * 0.05f;
+        position = position + imageTarget3.transform.up * m_Collider.size.y * scaleVector.x * 2;
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -565,7 +565,7 @@ public class ActivateQuestions : MonoBehaviour
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + imageTarget4.transform.up * m_Collider.size.y * scaleVector.x + imageTarget5.transform.forward * 0.05f - imageTarget5.transform.right * 0.05f;
+        position = position + imageTarget4.transform.up * m_Collider.size.y * scaleVector.x * 2;
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
@@ -607,7 +607,7 @@ public class ActivateQuestions : MonoBehaviour
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position +  imageTarget5.transform.up * m_Collider.size.y * scaleVector.x + imageTarget5.transform.forward * 0.05f - imageTarget5.transform.right * 0.05f;
+        position = position +  imageTarget5.transform.up * m_Collider.size.y * scaleVector.x * 2;
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
