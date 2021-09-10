@@ -735,6 +735,34 @@ public class SpellCard : MonoBehaviour
             // Un-pause the game
             GameAdvancement.gamePaused = false;
         }
+
+        // Check if no spell card is drawn
+        if(DrawnSpellCards() == 0)
+        {
+            // Unpause the game
+            GameAdvancement.gamePaused = false;
+        }
+    }
+
+    // Method used to check how many spell cards are currently drawn
+    public int DrawnSpellCards()
+    {
+        // Get all spell cards with tag
+        GameObject[] spellcards = GameObject.FindGameObjectsWithTag("Spell Card");
+
+        // Initialize the count
+        int count = 0;
+
+        foreach(GameObject card in spellcards)
+        {
+            if(card.GetComponent<SpellCard>().cardDrawn == true)
+            {
+                // Count one up
+                count = count + 1;
+            }
+        }
+
+        return count;
     }
 
     //---------------------------------------------------------------------------------------------------------------
@@ -805,8 +833,17 @@ public class SpellCard : MonoBehaviour
     // The method used to make the meteor spell card take effect
     private void PlayMeteor(GameObject spellCard)
     {
+        // Calculate the position
+        positionObject.transform.position = spellCard.transform.position;
+        positionObject.transform.parent = Board.gameBoard.transform;
+
+        // Make sure the position is on the game board
+        Vector3 newPosition = positionObject.transform.localPosition;
+        newPosition.y = 0.1f;
+        positionObject.transform.localPosition = newPosition;
+
         // Make the damage in radius take effect in the meteor radius and with the meteor damage
-        PlayDamageInRadiusSpell(spellCard, meteorRadius, meteorDamage);
+        PlayDamageInRadiusSpell(positionObject, meteorRadius, meteorDamage);
 
         // Make the meteor animation
         StartCoroutine(ActivateMeteorAnimation());
@@ -815,10 +852,10 @@ public class SpellCard : MonoBehaviour
     IEnumerator ActivateMeteorAnimation()
     {
         // Make the arrow rain prefab appear at the position of the image target
-        GameObject lightningStrike = SpawnSpellEffect.SpawnAMeteorImpact();
+        GameObject meteorImpact = SpawnSpellEffect.SpawnAMeteorImpact();
 
         // Set the position of the spell effect to the position of the image target
-        lightningStrike.transform.position = this.transform.position;
+        meteorImpact.transform.position = positionObject.transform.position;
 
         // Initialize the time waited variable
         float timeWaited = 0;
@@ -838,14 +875,26 @@ public class SpellCard : MonoBehaviour
         }
 
         // Release the arrow rain object
-        ObjectPools.ReleaseSpellEffect(lightningStrike, "Meteor Impact");
+        ObjectPools.ReleaseSpellEffect(meteorImpact, "Meteor Impact");
     }
+
+    [SerializeField]
+    private GameObject positionObject;
 
     // The method used to make the arrow rain spell card take effect
     private void PlayArrowRain(GameObject spellCard)
     {
+        // Calculate the position
+        positionObject.transform.position = spellCard.transform.position;
+        positionObject.transform.parent = Board.gameBoard.transform;
+
+        // Make sure the position is on the game board
+        Vector3 newPosition = positionObject.transform.localPosition;
+        newPosition.y = 0.1f;
+        positionObject.transform.localPosition = newPosition;
+
         // Make the damage in radius take effect in the meteor radius and with the meteor damage
-        PlayDamageInRadiusSpell(spellCard, arrowRainRadius, arrowRainDamage);
+        PlayDamageInRadiusSpell(positionObject, arrowRainRadius, arrowRainDamage);
 
         // Make the arrow rain animation
         StartCoroutine(ActivateArrowRainAnimation());
@@ -857,7 +906,7 @@ public class SpellCard : MonoBehaviour
         GameObject arrowRain = SpawnSpellEffect.SpawnAnArrowRain();
 
         // Set the position of the spell effect to the position of the image target
-        arrowRain.transform.position = this.transform.position;
+        arrowRain.transform.position = positionObject.transform.position;
 
         // Initialize the time waited variable
         float timeWaited = 0;

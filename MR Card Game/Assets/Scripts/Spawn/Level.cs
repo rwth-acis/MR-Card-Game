@@ -1374,6 +1374,10 @@ public class Level : MonoBehaviour
         // Set the current wave to wave 0
         GameAdvancement.currentWave = 0;
 
+        GameAdvancement.gamePaused = false;
+
+        LevelInfo.waveOngoing = false;
+
         // Initialize the arrays
         LevelInfo.numberOfEnemies = new int[LevelInfo.numberOfWaves];
         LevelInfo.normalEnemies = new int[LevelInfo.numberOfWaves];

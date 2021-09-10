@@ -40,6 +40,8 @@ static class Board
     public static bool boardVisible;
 
     public static bool singleImageTarget = true;
+
+    public static bool activateGameBoard;
 }
 
 public class GameBoard : MonoBehaviour
@@ -98,7 +100,11 @@ public class GameBoard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(Board.activateGameBoard == true)
+        {
+            Board.activateGameBoard = false;
+            Board.gameBoard.gameObject.SetActive(true);
+        }
     }
 
     // Method used to enable the start next wave button while the game board is in view
@@ -118,54 +124,13 @@ public class GameBoard : MonoBehaviour
         // Set the flag that the top left corner is in view
         Board.topLeftCornerVisible = true;
 
-        if(Board.singleImageTarget == true)
-        {
-            // If the other corner is visible, then display the game board
-            DisplayGameBoard();
+        // If the other corner is visible, then display the game board
+        DisplayGameBoard();
 
+        if(LevelInfo.waveOngoing == false)
+        {
             // Enable the start next wave button
             EnableStartNextWave();
-        }
-
-        // Check if the other corner is visible
-        if(Board.bottomRightCornerVisible == true)
-        {
-            // If the other corner is visible, then display the game board
-            DisplayGameBoard();
-
-            // Enable the start next wave button
-            EnableStartNextWave();
-
-            // // Check if the wave is already ongoing
-            // if(LevelInfo.waveOngoing == true)
-            // {
-            //     // Un-pause the game
-            //     GameAdvancement.gamePaused = false;
-            // }
-        }
-    }
-
-    // Method that is activated when the bottom right corner image target becomes visible
-    public void BottomRightBecameVisible()
-    {
-        // Set the flag that the bottom right corner is in view
-        Board.bottomRightCornerVisible = true;
-
-        // Check if the other corner is visible
-        if(Board.topLeftCornerVisible == true)
-        {
-            // If the other corner is visible, then display the game board
-            DisplayGameBoard();
-
-            // Enable the start next wave button
-            EnableStartNextWave();
-
-            // // Check if the wave is already ongoing
-            // if(LevelInfo.waveOngoing == true)
-            // {
-            //     // Un-pause the game
-            //     GameAdvancement.gamePaused = false;
-            // }
         }
     }
 
@@ -184,19 +149,21 @@ public class GameBoard : MonoBehaviour
         
     }
 
-    // Method that is activated when the bottom right corner image target leaves the camera field
-    public void BottomRightLeftCameraField()
-    {
-        // Set the flag that the bottom right corner is not in view anymore
-        Board.bottomRightCornerVisible = false;
+    // // Method that is activated when the bottom right corner image target leaves the camera field
+    // public void BottomRightLeftCameraField()
+    // {
+    //     // Set the flag that the bottom right corner is not in view anymore
+    //     Board.bottomRightCornerVisible = false;
 
-        // Check if the wave is already ongoing
-        if(LevelInfo.waveOngoing == false && Board.singleImageTarget == false)
-        {
-            // Remove the game board
-            RemoveGameBoard();
-        }
-    }
+    //     // Check if the wave is already ongoing
+    //     if(LevelInfo.waveOngoing == false && Board.singleImageTarget == false)
+    //     {
+    //         // Remove the game board
+    //         RemoveGameBoard();
+
+    //         Board.displayed = false;
+    //     }
+    // }
 
     // ---------------------------------------------------------------------------------------------------
     // Method used to display the game board
@@ -388,9 +355,9 @@ public class GameBoard : MonoBehaviour
 
         } else {
 
-            gameBoard.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+            gameBoard.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
 
-            Board.greatestBoardDimension = 0.05f;
+            Board.greatestBoardDimension = 0.03f;
         }
 
     }
@@ -438,10 +405,10 @@ public class GameBoard : MonoBehaviour
             // Get the position of the image target
             Vector3 positionTopLeftCorner = topLeftCorner.transform.position;
 
-            positionTopLeftCorner = positionTopLeftCorner;
+            // positionTopLeftCorner = positionTopLeftCorner;
 
             // Set the position of the game board
-            gameBoard.transform.position = positionTopLeftCorner;
+            gameBoard.transform.position = positionTopLeftCorner - topLeftCorner.transform.up * 0.04f;
         }
     }
 
