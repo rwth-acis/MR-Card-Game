@@ -186,11 +186,18 @@ public class SpellCard : MonoBehaviour
             }
 
             // Check if the reveal spell card overlay is not displayed while the image target is in the camera field and the game is not paused
-            if(cardDrawnButNotDisplayed == true && onGameBoard == true)
+            if(cardDrawnButNotDisplayed == true)
             {
                 // Set the variable that states that the spell card is visible but the overlay not displayed to false
                 cardDrawnButNotDisplayed = false;
 
+                // Display the reveal spell menu
+                DisplaySpellImage();
+            }
+
+            // Check if the reveal spell card overlay is not displayed while the image target is in the camera field and the game is not paused
+            if(cardDrawn == true && onGameBoard == true)
+            {
                 // Display the reveal spell menu
                 DisplayPlaySpell();
             }
@@ -339,16 +346,35 @@ public class SpellCard : MonoBehaviour
     // Method that is activated when the spell image target enters the camera field
     public void SpellCardEnteredCameraField()
     {
-        // Check that the game is not paused
-        if(GameAdvancement.gamePaused == false && LevelInfo.waveOngoing == true && Cards.drawnSpellsOnBoard <= 0 && cardDrawn == false && Questions.numberOfQuestionsNeededToAnswer == 0)
+        // Check if that card was already drawn
+        if(cardDrawn == true)
         {
-            // Display the reveal spell menu
-            DisplayDrawSpell();
+            if(onGameBoard == true)
+            {
+                Cards.drawnSpellsOnBoard = Cards.drawnSpellsOnBoard + 1;
+
+                DisplayPlaySpell();
+
+            } else {
+
+                // Display the drawn spell card
+                DisplaySpellImage();
+            }
 
         } else {
 
-            // Set the variable that the spell card is visible but the overlay not displayed to true
-            cardVisibleButNotDisplayed = true;
+            // Check that the game is not paused
+            if(GameAdvancement.gamePaused == false && LevelInfo.waveOngoing == true && Questions.numberOfQuestionsNeededToAnswer == 0)
+            {
+                Debug.Log("The card was not drawn before");
+                // Display the reveal spell menu
+                DisplayDrawSpell();
+
+            } else {
+
+                // Set the variable that the spell card is visible but the overlay not displayed to true
+                cardVisibleButNotDisplayed = true;
+            }
         }
     }
 
@@ -358,11 +384,22 @@ public class SpellCard : MonoBehaviour
         // Hide the reveal spell menu
         HideSpellCanvas();
 
+        cardVisibleButNotDisplayed = false;
+
         // Check if the card was drawn
         if(cardDrawn == false)
         {
             // Set the card visible but not displayed flag to false
             cardDrawnButNotDisplayed = false;
+
+        } else {
+
+            if(onGameBoard == true)
+            {
+                Cards.drawnSpellsOnBoard = Cards.drawnSpellsOnBoard - 1;
+            }
+
+            cardDrawnButNotDisplayed = true;
         }
 
         
@@ -483,70 +520,6 @@ public class SpellCard : MonoBehaviour
     // The method that reveals the spell card that was just drawn
     private void RevealSpell()
     {
-        // // Depending on the type of card that is next in the card deck, make the right overlay appear and set the spell type variable to the right type
-        // switch(Cards.cardDeck[Cards.currentCardIndex])
-        // {
-        //     case "Meteor":
-        //         MakeMeteorCardAppear();
-        //         spellType = "meteor";
-        //     break;
-
-        //     case "Arrow rain":
-        //         MakeArrowRainCardAppear();
-        //         spellType = "arrow rain";
-        //     break;
-
-        //     case "Thunder strike":
-        //         MakeThunderStrikeCardAppear();
-        //         spellType = "thunder strike";
-        //     break;
-
-        //     case "Armor":
-        //         MakeArmorCardAppear();
-        //         spellType = "armor";
-        //     break;
-
-        //     case "Heal":
-        //         MakeHealCardAppear();
-        //         spellType = "heal";
-        //     break;
-
-        //     case "Obliteration":
-        //         MakeObliterationCardAppear();
-        //         spellType = "obliteration";
-        //     break;
-
-        //     case "Draw":
-        //         MakeDrawCardAppear();
-        //         spellType = "draw";
-        //     break;
-
-        //     case "Teleport":
-        //         MakeTeleportCardAppear();
-        //         spellType = "teleport";
-        //     break;
-
-        //     case "Space distortion":
-        //         MakeSpaceDistortionCardAppear();
-        //         spellType = "space distortion";
-        //     break;
-
-        //     case "Slow time":
-        //         MakeSlowTimeCardAppear();
-        //         spellType = "slow time";
-        //     break;
-
-        //     case "Stop time":
-        //         MakeStopTimeCardAppear();
-        //         spellType = "stop time";
-        //     break;
-
-        //     case "Rain":
-        //         MakeRainCardAppear();
-        //         spellType = "rain";
-        //     break;
-        // }
-
         // Set the right sprite to the image target image component
         SpellImages.DisplaySpell(this.gameObject, spellType);
 
@@ -574,90 +547,6 @@ public class SpellCard : MonoBehaviour
     //---------------------------------------------------------------------------------------------------------------
     // Displaying spell on target image
     //---------------------------------------------------------------------------------------------------------------
-
-    // // Method used to make the meteor spell card appearance appear on the image target
-    // private void MakeMeteorCardAppear()
-    // {
-    //     //
-    //     SpellImages.DisplayMeteor(this.gameObject);
-    // }
-
-    // // Method used to make the arrow rain spell card appearance appear on the image target
-    // private void MakeArrowRainCardAppear()
-    // {
-    //     //
-    //     SpellImages.DisplayArrowRain(this.gameObject);
-    // }
-
-    // // Method used to make the thunder strike spell card appearance appear on the image target
-    // private void MakeThunderStrikeCardAppear()
-    // {
-    //     //
-    //     SpellImages.DisplayThunderStrike(this.gameObject);
-    // }
-
-    // // Method used to make the armor spell card appearance appear on the image target
-    // private void MakeArmorCardAppear()
-    // {
-    //     //
-    //     SpellImages.DisplayArmor(this.gameObject);
-    // }
-
-    // // Method used to make the heal spell card appearance appear on the image target
-    // private void MakeHealCardAppear()
-    // {
-    //     //
-    //     SpellImages.DisplayHeal(this.gameObject);
-    // }
-
-    // // Method used to make the obliteration spell card appearance appear on the image target
-    // private void MakeObliterationCardAppear()
-    // {
-    //     //
-    //     SpellImages.DisplayObliteration(this.gameObject);
-    // }
-
-    // // Method used to make the draw spell card appearance appear on the image target
-    // private void MakeDrawCardAppear()
-    // {
-    //     //
-    //     SpellImages.DisplayDraw(this.gameObject);
-    // }
-
-    // // Method used to make the teleport spell card appearance appear on the image target
-    // private void MakeTeleportCardAppear()
-    // {
-    //     //
-    //     SpellImages.DisplayTeleport(this.gameObject);
-    // }
-
-    // // Method used to make the space distortion spell card appearance appear on the image target
-    // private void MakeSpaceDistortionCardAppear()
-    // {
-    //     //
-    //     SpellImages.DisplaySpaceDistortion(this.gameObject);
-    // }
-
-    // // Method used to make the slow time spell card appearance appear on the image target
-    // private void MakeSlowTimeCardAppear()
-    // {
-    //     //
-    //     SpellImages.DisplaySlowTime(this.gameObject);
-    // }
-
-    // // Method used to make the stop time spell card appearance appear on the image target
-    // private void MakeStopTimeCardAppear()
-    // {
-    //     //
-    //     SpellImages.DisplayStopTime(this.gameObject);
-    // }
-
-    // // Method used to make the rain spell card appearance appear on the image target
-    // private void MakeRainCardAppear()
-    // {
-    //     //
-    //     SpellImages.DisplayRain(this.gameObject);
-    // }
 
     // The method that activates the canvas on which the reveal spell button is
     private void DisplaySpellImage()
@@ -733,8 +622,8 @@ public class SpellCard : MonoBehaviour
             // Set the variable that states that the spell card is on the board to false
             onGameBoard = false;
 
-            // Check if the card was drawn and the game paused
-            if(cardDrawn == true && GameAdvancement.gamePaused)
+            // Check if the card was drawn
+            if(cardDrawn == true)
             {
                 // Decrease the number of drawn spells that are on the board by one
                 Cards.drawnSpellsOnBoard = Cards.drawnSpellsOnBoard - 1;
@@ -830,6 +719,8 @@ public class SpellCard : MonoBehaviour
         // Decrease the number of drawn spells that are on the board by one
         Cards.drawnSpellsOnBoard = Cards.drawnSpellsOnBoard - 1;
 
+        Debug.Log("The number of drawn card spells that are on the board is: " + Cards.drawnSpellsOnBoard);
+
         // Make sure a new spell card can be drawn on this card
         DisplayDrawSpell();
 
@@ -837,106 +728,14 @@ public class SpellCard : MonoBehaviour
         cardDrawn = false;
 
         // Check if the number of drawn spell cards that are on the board is 0
-        if(Cards.drawnSpellsOnBoard == 0)
+        if(Cards.drawnSpellsOnBoard <= 0)
         {
+            Debug.Log("The game is being unpaused after a spell card has been played");
+
             // Un-pause the game
             GameAdvancement.gamePaused = false;
         }
     }
-
-    // // Method that wait the appropriate time before launching the spell
-    // IEnumerator PrepareForLaunchingSpell()
-    // {
-    //     // Initialize the time of wait variable
-    //     float waitTime = 0.5f;
-
-    //     // Initialize the flag that states if the spell can be launched or not
-    //     bool canLaunchSpell = false;
-
-    //     // Set the last position to the position of the card
-    //     lastPosition = this.gameObject.transform.position;
-
-    //     // Wait for some time
-    //     yield return new WaitForSeconds(waitTime);
-
-    //     // Set the current position to the position of the card
-    //     currentPosition = this.gameObject.transform.position;
-
-    //     // As long as the spell card is on the board, this method continues to try to launch the spell
-    //     while(onGameBoard == true && canLaunchSpell == false)
-    //     {
-    //         // Check if the current and last position are the same
-    //         if(lastPosition == currentPosition)
-    //         {
-    //             // If yes then add the wait time to the time the card was immobile
-    //            timeCardImmobile = timeCardImmobile + waitTime;
-
-    //         } else {
-
-    //             // Reset the wait time
-    //             timeCardImmobile = 0;
-    //         }
-
-    //         // Check if the time the card was immobile exceeds the time it must be immobile before the spell can be launched
-    //         if(timeCardImmobile >= timeBeforeSpellLaunch)
-    //         {
-    //             // Set the can launch spell to true
-    //             canLaunchSpell = true;
-    //         }
-    //     }
-
-    //     // Depending on the type of card that is next in the card deck, make the right overlay appear and set the spell type variable to the right type
-    //     switch(Cards.cardDeck[Cards.currentCardIndex])
-    //     {
-    //         case "Meteor":
-    //             PlayMeteor(this.gameObject);
-    //         break;
-
-    //         case "Arrow rain":
-    //             PlayArrowRain(this.gameObject);
-    //         break;
-
-    //         case "Thunder strike":
-    //             PlayThunderStrike(this.gameObject);
-    //         break;
-
-    //         case "Armor":
-    //             PlayArmor();
-    //         break;
-
-    //         case "Heal":
-    //             PlayHeal();
-    //         break;
-
-    //         case "Obliteration":
-    //             PlayObliteration();
-    //         break;
-
-    //         case "Draw":
-    //             PlayDraw();
-    //         break;
-
-    //         case "Teleport":
-    //             PlayTeleport(this.gameObject);
-    //         break;
-
-    //         case "Space distortion":
-    //             PlaySpaceDistortion(this.gameObject);
-    //         break;
-
-    //         case "Slow time":
-    //             PlaySlowTime();
-    //         break;
-
-    //         case "Stop time":
-    //             PlayStopTime();
-    //         break;
-
-    //         case "Rain":
-    //             PlayRain();
-    //         break;
-    //     }
-    // }
 
     //---------------------------------------------------------------------------------------------------------------
     // The spell cards effect
@@ -1185,62 +984,6 @@ public class SpellCard : MonoBehaviour
         GameSetup.ActualizeCastleHealthPoints();
     }
 
-    // // The method used to make the plague card take effect
-    // private void PlayPlague()
-    // {
-    //     // Get a random number
-    //     int newCategoryIndex = random.Next(0, 8);
-
-    //     // Depending on the random number, set a category of enemy as plagued
-    //     switch(newCategoryIndex)
-    //     {
-    //         case 0:
-    //             // Set the type of plagued enemy to normal enemy
-    //             GameAdvancement.plaguedEnemyType = "Normal Enemy";
-    //         break;
-
-    //         case 1:
-    //             // Set the type of plagued enemy to fast enemy
-    //             GameAdvancement.plaguedEnemyType = "Fast Enemy";
-    //         break;
-
-    //         case 2:
-    //             // Set the type of plagued enemy to super fast enemy
-    //             GameAdvancement.plaguedEnemyType = "Super Fast Enemy";
-    //         break;
-
-    //         case 3:
-    //             // Set the type of plagued enemy to flying enemy
-    //             GameAdvancement.plaguedEnemyType = "Flying Enemy";
-    //         break;
-
-    //         case 4:
-    //             // Set the type of plagued enemy to tank enemy
-    //             GameAdvancement.plaguedEnemyType = "Tank Enemy";
-    //         break;
-
-    //         case 5:
-    //             // Set the type of plagued enemy to slow enemy
-    //             GameAdvancement.plaguedEnemyType = "Slow Enemy";
-    //         break;
-
-    //         case 6:
-    //             // Set the type of plagued enemy to berzerker enemy
-    //             GameAdvancement.plaguedEnemyType = "Berzerker Enemy";
-    //         break;
-
-    //         case 7:
-    //             // Set the type of plagued enemy to berzerkerflying enemy
-    //             GameAdvancement.plaguedEnemyType = "Berzerker Flying Enemy";
-    //         break;
-
-    //         case 8:
-    //             // Set the type of plagued enemy to berzerker tank enemy
-    //             GameAdvancement.plaguedEnemyType = "Berzerker Tank Enemy";
-    //         break;
-    //     }
-    // }
-
     // The method used to make the obliteration spell card take effect
     private void PlayObliteration()
     {
@@ -1257,18 +1000,6 @@ public class SpellCard : MonoBehaviour
                 enemy.GetComponent<Enemy>().TakeDamage(1000);
             }
         }
-
-        // // Check if the castle maximum health points is over 10
-        // if(GameAdvancement.castleMaxHP <= 10)
-        // {
-        //     // Set the castle maximum health points to 0
-        //     GameAdvancement.castleMaxHP = 0;
-
-        // } else {
-
-        //     // Make the castle maximum health points lose 5 points
-        //     GameAdvancement.castleMaxHP = GameAdvancement.castleMaxHP - 10;
-        // }
 
         // Reduce the castle maximum health points by 30%
         GameAdvancement.castleMaxHP = (int)((float)GameAdvancement.castleMaxHP * (float)0.3);

@@ -241,6 +241,9 @@ public class AddLevel : MonoBehaviour
        return number;
     }
 
+    [SerializeField]
+    private Button deleteDirectoryButton;
+
     // Disabling or enabling of the buttons
     public void DisableOrEnableButtons()
     {
@@ -298,17 +301,23 @@ public class AddLevel : MonoBehaviour
 
         // Enable / Disable select directory button, the select directory button is not enabled in the root directory and in directories containing directories
         TMP_Text textSelectDirectory = selectDirectory.GetComponentInChildren<TMP_Text>();
-        if(Globals.currentPath != Globals.rootDirectoryPath || numberOfDirectories == 0)
+        if(Globals.currentPath != Globals.rootDirectoryPath && numberOfDirectories == 0 && GetNumberOfFiles(GetFilesArray()) == 0)
         {
             // Make the select directory button interactable and make it blue
             selectDirectory.interactable = true;
             textSelectDirectory.GetComponent<TMP_Text>().colorGradient = enabledTextGradient;
+
+            // Enable the delete directory button
+            deleteDirectoryButton.gameObject.SetActive(true);
 
         } else {
 
             // Make sure the select directory button is not interactable and make it grey
             selectDirectory.interactable = false;
             textSelectDirectory.GetComponent<TMP_Text>().colorGradient = disabledTextGradient;
+
+            // Make sure the delete directory button is disabled
+            deleteDirectoryButton.gameObject.SetActive(false);
         }
     }
 
@@ -399,6 +408,14 @@ public class AddLevel : MonoBehaviour
             // If there are no more directory, make sure the rest of the buttons are empty and not interactable
             if(currentDirectoryNumber != 5)
             {
+
+                // // Check if there are no directories
+                // if(currentDirectoryNumber == 1)
+                // {
+                //     // Enable the delete directory button
+                //     deleteDirectoryButton.gameObject.SetActive(true);
+                // }
+                
                 for(int counter = numberOfDirectories; counter <= lastEmptyIndex; counter = counter + 1)
                 {
                     switch (currentDirectoryNumber)
@@ -770,6 +787,22 @@ public class AddLevel : MonoBehaviour
             // Reset the text after you used it
             mainInputField.text = "";
 		}
+    }
+
+    // Method used to delete a directory
+    public void DeleteDirectory()
+    {
+        Debug.Log("Trying to delete the directory with path: " + Globals.currentPath);
+        // Check if the directory exist
+        if(Directory.Exists(Globals.currentPath))
+        {
+            Debug.Log("Deleting directory with path: " + Globals.currentPath);
+            // Delete directory
+            Directory.Delete(Globals.currentPath);
+
+            // Return one up
+            ReturnOneUp();
+        }
     }
 
     // Method used to exit the level description and return to the brows directories
