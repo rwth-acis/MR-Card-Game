@@ -143,7 +143,7 @@ public class Enemy : MonoBehaviour
         healthBar.value = CalculateHealth();
 
         // Scale the enemy down to have the right size
-        transform.localScale = new Vector3((float)0.3 * size, (float)0.3 * size, (float)0.3 * size);
+        transform.localScale = new Vector3((float)0.25 * size, (float)0.25 * size, (float)0.25 * size);
 
         // Set it to the position of the first waypoint on spawn
         transform.position = (waypoints[waypointIndex].transform.position + this.transform.up * flightHeight);

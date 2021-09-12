@@ -104,7 +104,7 @@ public class Projectile : MonoBehaviour
             lastPosition = target.transform.position;
 
             // If the target is not null and alive, move the projectile in the direction of the target
-            transform.position = Vector3.MoveTowards(transform.position, target.gameObject.transform.position, Time.deltaTime * parent.getProjectileSpeed);
+            transform.position = Vector3.MoveTowards(transform.position, target.gameObject.transform.position, Time.deltaTime * parent.getProjectileSpeed * 14 * Board.greatestBoardDimension);
 
             // Check if the projectile is an arrow
             if(parent.getTowerType == "Archer Tower")

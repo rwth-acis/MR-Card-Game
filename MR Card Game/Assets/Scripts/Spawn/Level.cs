@@ -146,6 +146,9 @@ public class Level : MonoBehaviour
             // Check if the current wave is smaller than the number of waves and if the number of undefeated enemies is 0
             if(LevelInfo.numberOfUndefeatedEnemies == 0)
             {
+                // // Unground the game board
+                // GameBoard.UngroundGameBoard();
+
                 if(GameAdvancement.currentWave < LevelInfo.numberOfWaves)
                 {
                     // Make the next wave setup
@@ -188,6 +191,9 @@ public class Level : MonoBehaviour
 
         // Increase the current wave number
         GameAdvancement.currentWave = GameAdvancement.currentWave + 1;
+
+        // // Ground the game board
+        // GameBoard.GroundGameBoard();
 
         // Actualize the wave display
         GameSetup.ActualizeWaveDisplay();

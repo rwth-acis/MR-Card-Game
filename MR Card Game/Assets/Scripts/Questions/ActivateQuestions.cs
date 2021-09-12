@@ -1633,6 +1633,8 @@ public class ActivateQuestions : MonoBehaviour
             // Add the model tag
             obj.tag = "Model";
 
+            obj.gameObject.layer = 10;
+
             Debug.Log("Model renamed in: " + "Model_" + modelObject.modelName.Substring(0, modelObject.modelName.Length-4));
 
             // Initialize the model (resize it correctly) and set it as the child of the same model object

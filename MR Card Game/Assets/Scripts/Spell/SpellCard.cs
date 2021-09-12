@@ -62,14 +62,17 @@ public class SpellCard : MonoBehaviour
     [SerializeField]
     private Image spellImage;
 
-    // The boolean variable that states that the image target is in the camera field
-    private bool cardVisibleButNotDisplayed = false;
+    // // The boolean variable that states that the image target is in the camera field
+    // private bool cardVisibleButNotDisplayed = false;
 
-    // The boolean variable that states that the image target with a drawn spell is in the game board field but was not displayed
-    private bool cardDrawnButNotDisplayed = false;
+    // // The boolean variable that states that the image target with a drawn spell is in the game board field but was not displayed
+    // private bool cardDrawnButNotDisplayed = false;
 
     // The flag that states that the card was drawn
     private bool cardDrawn = false;
+
+    // The flag that states if the card is currently visible
+    private bool visible = false;
 
     // Define the currency display button
     [SerializeField]
@@ -106,6 +109,8 @@ public class SpellCard : MonoBehaviour
     {
         instance = this;
 
+        Debug.Log("Start method was run");
+
         // Initialize the deck of cards array in the Cards class
         Cards.cardDeck = new string[35];
 
@@ -128,78 +133,38 @@ public class SpellCard : MonoBehaviour
         // Check if the wave is not ongoing anymore
         if(LevelInfo.waveOngoing == false)
         {
-            // Debug.Log("The wave was not ongoing anymore, so the canvas should be hided now");
-            // Check if the spell card was already drawn
-            if(cardDrawn == true)
-            {
-                // Hide the play spell button
-                HideSpellCanvas();
-
-                // Set the variable that states that the spell card is visible but the overlay not displayed to true
-                cardDrawnButNotDisplayed = true;
-
-            } else {
-
-                // Hide the spell card canvas
-                HideSpellCanvas();
-
-                // Set the variable that states that the spell card is visible but the overlay not displayed to true
-                cardVisibleButNotDisplayed = true;
-            }
+            // Hide the play spell button
+            HideSpellCanvas();
 
         } else {
-
-            // // Check if the game is paused
-            // if(GameAdvancement.gamePaused == true)
-            // {
-            //     // Check if the card was already drawn
-            //     if(cardDrawn == false)
-            //     {
-            //         // Set the flag that the card is visible but not displayed
-            //         cardVisibleButNotDisplayed = true;
-
-            //     } else {
-
-            //         // Set the flag that the card was drawn but not displayed
-            //         cardDrawnButNotDisplayed = true;
-            //     }
-            // }
 
             // Check if there is at least one drawn spell card on the game board
             if(Cards.drawnSpellsOnBoard > 0 && cardDrawn == false)
             {
-                // Set the variable that states that the spell card is visible but the overlay not displayed to true
-                cardVisibleButNotDisplayed = true;
-
                 // Hide the reveal spell menu
                 HideSpellCanvas();
             }
 
-            // Check if the reveal spell card overlay is not displayed while the image target is in the camera field and the game is not paused
-            if(cardVisibleButNotDisplayed == true && GameAdvancement.gamePaused == false && Cards.drawnSpellsOnBoard <= 0 && Questions.numberOfQuestionsNeededToAnswer == 0)
+            // Check if the card is visible but not drawn while the game is not paused and no other spell card is beeing drawn
+            if(visible == true && cardDrawn == false && GameAdvancement.gamePaused == false && Questions.numberOfQuestionsNeededToAnswer == 0)
             {
-                // Set the variable that states that the spell card is visible but the overlay not displayed to false
-                cardVisibleButNotDisplayed = false;
-
                 // Display the reveal spell menu
                 DisplayDrawSpell();
             }
 
-            // Check if the reveal spell card overlay is not displayed while the image target is in the camera field and the game is not paused
-            if(cardDrawnButNotDisplayed == true)
+            // Make drawn spells appear if the wave is ongoing
+            if(visible == true && cardDrawn == true)
             {
-                // Set the variable that states that the spell card is visible but the overlay not displayed to false
-                cardDrawnButNotDisplayed = false;
+                if(onGameBoard == true)
+                {
+                    // Display the reveal spell menu
+                    DisplayPlaySpell();
 
-                // Display the reveal spell menu
-                DisplaySpellImage();
-            }
+                } else {
 
-            // Check if the reveal spell card overlay is not displayed while the image target is in the camera field and the game is not paused
-            if(cardDrawn == true && onGameBoard == true)
-            {
-                // Display the reveal spell menu
-                DisplayPlaySpell();
+                    // Display the reveal spell menu
+                    DisplaySpellImage();
+                }
             }
         }
     }
@@ -346,11 +311,15 @@ public class SpellCard : MonoBehaviour
     // Method that is activated when the spell image target enters the camera field
     public void SpellCardEnteredCameraField()
     {
+        // Set the flag that the card is now visible
+        visible = true;
+
         // Check if that card was already drawn
         if(cardDrawn == true)
         {
             if(onGameBoard == true)
             {
+                // Increase the number of drawn spells on the board by one
                 Cards.drawnSpellsOnBoard = Cards.drawnSpellsOnBoard + 1;
 
                 DisplayPlaySpell();
@@ -366,14 +335,9 @@ public class SpellCard : MonoBehaviour
             // Check that the game is not paused
             if(GameAdvancement.gamePaused == false && LevelInfo.waveOngoing == true && Questions.numberOfQuestionsNeededToAnswer == 0)
             {
-                Debug.Log("The card was not drawn before");
                 // Display the reveal spell menu
                 DisplayDrawSpell();
 
-            } else {
-
-                // Set the variable that the spell card is visible but the overlay not displayed to true
-                cardVisibleButNotDisplayed = true;
             }
         }
     }
@@ -381,25 +345,17 @@ public class SpellCard : MonoBehaviour
     // Method that is activated when the spell image target leaves the camera field
     public void SpellCardLeftCameraField()
     {
+        // Set the flag that the card is not visible anymore
+        visible = false;
+
         // Hide the reveal spell menu
         HideSpellCanvas();
 
-        cardVisibleButNotDisplayed = false;
-
         // Check if the card was drawn
-        if(cardDrawn == false)
+        if(cardDrawn == false && onGameBoard == true)
         {
-            // Set the card visible but not displayed flag to false
-            cardDrawnButNotDisplayed = false;
-
-        } else {
-
-            if(onGameBoard == true)
-            {
-                Cards.drawnSpellsOnBoard = Cards.drawnSpellsOnBoard - 1;
-            }
-
-            cardDrawnButNotDisplayed = true;
+            // Decrease the number of drawn spells on the game board by one
+            Cards.drawnSpellsOnBoard = Cards.drawnSpellsOnBoard - 1;
         }
 
         
@@ -605,10 +561,6 @@ public class SpellCard : MonoBehaviour
                     DisplayPlaySpell();
                 }
 
-            } else {
-
-                // Set the flag that the card is drawn but not displayed
-                cardDrawnButNotDisplayed = true;
             }
         }
     }
@@ -1338,9 +1290,8 @@ public class SpellCard : MonoBehaviour
     public void ResetSpellCard()
     {
         // Reset the spell card so that it was not drawn and cannot be played
-        cardVisibleButNotDisplayed = false;
-        cardDrawnButNotDisplayed = false;
         cardDrawn = false;
+        visible = false;
         onGameBoard = false;
 
         // Reset the spell type

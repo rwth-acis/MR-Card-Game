@@ -27,6 +27,10 @@ static class Board
     // The gameboard object
     public static GameObject gameBoard;
 
+    public static GameObject gameBoardGroundObject;
+
+    public static GameObject gameBoardImageTarget;
+
     // The castle game object
     public static GameObject castle;
 
@@ -53,6 +57,10 @@ public class GameBoard : MonoBehaviour
     // Define the game board object
     [SerializeField]
     private GameObject gameBoard;
+
+    // Define the game board ground object
+    [SerializeField]
+    private GameObject gameBoardGroundObject;
 
     // Define the castle object
     [SerializeField]
@@ -86,6 +94,10 @@ public class GameBoard : MonoBehaviour
 
         // Set the game board of the static class Board to the given game board object
         Board.gameBoard = gameBoard;
+
+        Board.gameBoardGroundObject = gameBoardGroundObject;
+
+        Board.gameBoardImageTarget = topLeftCorner;
 
         // Set the camera of the static class Board to the given camera object
         Board.camera = camera;
@@ -147,6 +159,20 @@ public class GameBoard : MonoBehaviour
             RemoveGameBoard();
         }
         
+    }
+
+    // Method used to ground the game board on wave begin (so that the board cannot dissapear and stays in place)
+    public static void GroundGameBoard()
+    {
+        // Set the game board as child of the game board ground object used to store it
+        Board.gameBoard.transform.parent = Board.gameBoardGroundObject.transform;
+    }
+
+    // Method used to ground the game board on wave begin (so that the board cannot dissapear and stays in place)
+    public static void UngroundGameBoard()
+    {
+        // Set the game board as child of the top left corner
+        Board.gameBoard.transform.parent = Board.gameBoardImageTarget.transform;
     }
 
     // // Method that is activated when the bottom right corner image target leaves the camera field
@@ -408,7 +434,7 @@ public class GameBoard : MonoBehaviour
             // positionTopLeftCorner = positionTopLeftCorner;
 
             // Set the position of the game board
-            gameBoard.transform.position = positionTopLeftCorner - topLeftCorner.transform.up * 0.04f;
+            gameBoard.transform.position = positionTopLeftCorner + Camera.main.transform.forward * 0.02f;
         }
     }
 
