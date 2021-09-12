@@ -434,7 +434,7 @@ public class GameBoard : MonoBehaviour
             // positionTopLeftCorner = positionTopLeftCorner;
 
             // Set the position of the game board
-            gameBoard.transform.position = positionTopLeftCorner + Camera.main.transform.forward * 0.02f;
+            gameBoard.transform.position = positionTopLeftCorner + Camera.main.transform.forward * 0.01f;
         }
     }
 
