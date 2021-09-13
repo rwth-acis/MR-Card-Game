@@ -634,6 +634,8 @@ public class ActivateQuestions : MonoBehaviour
         // Access the box collider information
         BoxCollider m_Collider = childGameObject1.GetComponent<BoxCollider>();
 
+        childGameObject1.gameObject.layer = 10;
+
         // Get the greatest size of the sizes of the box collider
         float greatest = ReturnGreatestFloat(m_Collider.size.x, m_Collider.size.y, m_Collider.size.z);
         
@@ -1669,8 +1671,6 @@ public class ActivateQuestions : MonoBehaviour
 
             // Add the model tag
             obj.tag = "Model";
-
-            obj.gameObject.layer = 10;
 
             Debug.Log("Model renamed in: " + "Model_" + modelObject.modelName.Substring(0, modelObject.modelName.Length-4));
 

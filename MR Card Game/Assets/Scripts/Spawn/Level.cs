@@ -1313,7 +1313,7 @@ public class Level : MonoBehaviour
         }
 
         // Reset all spell cards so that they are not drawn
-         GameObject[] spellArray = GameObject.FindGameObjectsWithTag ("Spell Card");
+        GameObject[] spellArray = GameObject.FindGameObjectsWithTag ("Spell Card");
 
         foreach(GameObject spellCard in spellArray)
         {
@@ -1374,6 +1374,15 @@ public class Level : MonoBehaviour
     // The method used to reset the level info
     private void ResetLevelInfo()
     {
+
+        // Reset all spell cards so that they are not drawn
+        GameObject[] enemyArray = GameObject.FindGameObjectsWithTag ("Enemy");
+
+        foreach(GameObject enemy in enemyArray)
+        {
+            ObjectPools.ReleaseEnemy(enemy.GetComponent<Enemy>());
+        }
+
         // Set the number of waves
         SetNumberOfWaves();
 
