@@ -687,10 +687,5 @@ public class BrowsLevels : MonoBehaviour
 
         // Set the flag that a new level started so that all level information are reset
         LevelInfo.newLevelStarted = true;
-
-        // if(LevelInfo.newLevelStarted == true)
-        // {
-        //     Board.gameBoard.GetComponent<GameBoard>().DisplayGameBoard();
-        // }
     }
 }

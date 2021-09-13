@@ -1533,6 +1533,43 @@ public class ActivateQuestions : MonoBehaviour
 
         // Reset the game setup
         GameSetup.ResetGameSetup();
+
+        // Make sure all towers are released
+        // Get the array of all tower objects
+        GameObject[] towerArray = GameObject.FindGameObjectsWithTag ("Tower");
+ 
+        // Disable all towers
+        foreach(GameObject tower in towerArray)
+        {
+            // Check if the tower is active
+            if(tower.activeSelf == true)
+            {
+                // Release the tower object
+                ObjectPools.ReleaseTower(tower);
+            }
+        }
+
+        // Get the array of all trap objects
+        GameObject[] trapArray = GameObject.FindGameObjectsWithTag ("Trap");
+ 
+        // Disable all traps
+        foreach(GameObject trap in trapArray)
+        {
+            // Check if the trap is active
+            if(trap.activeSelf == true)
+            {
+                // Release the trap object
+                ObjectPools.ReleaseTrap(trap.GetComponent<Trap>());
+            }
+        }
+
+        // Reset all spell cards so that they are not drawn
+         GameObject[] spellArray = GameObject.FindGameObjectsWithTag ("Spell Card");
+
+        foreach(GameObject spellCard in spellArray)
+        {
+            spellCard.GetComponent<SpellCard>().ResetSpellCard();
+        }
     }
 
     private bool lastQuestionWasAnsweredCorrectly = false;
