@@ -1003,7 +1003,7 @@ public class SpellCard : MonoBehaviour
         }
 
         // Reduce the castle maximum health points by 30%
-        GameAdvancement.castleMaxHP = (int)((float)GameAdvancement.castleMaxHP * (float)0.3);
+        GameAdvancement.castleMaxHP = (int)((float)GameAdvancement.castleMaxHP * (float)0.7);
 
         // Check that the castle current health points are not exceeding the castle maximum health points
         if(GameAdvancement.castlecurrentHP > GameAdvancement.castleMaxHP)

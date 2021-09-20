@@ -854,7 +854,12 @@ namespace build
 
             Vector3 newPosition = building.transform.localPosition;
 
-            newPosition.y = 0.1f;
+            if(building.transform.tag == "Trap")
+            {
+                newPosition.y = -0.07f;
+            } else {
+                newPosition.y = 0.1f;
+            }
 
             building.transform.localPosition = newPosition;
             
