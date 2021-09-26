@@ -420,6 +420,9 @@ namespace build
         // The method that activates when the player wants to build a fire tower by pressing on the fire tower button in the build menu
         public void InitiateFireTowerBuild()
         {
+            // Set the question requesting image target correctly
+            Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
+            
             // Disable the game overlay
             DeactivateGameOverlay();
 
