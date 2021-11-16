@@ -247,40 +247,20 @@ public class AddLevel : MonoBehaviour
     // Disabling or enabling of the buttons
     public void DisableOrEnableButtons()
     {
-        // Define the disabled color gradient
-        VertexGradient disabledTextGradient;
-        disabledTextGradient.bottomLeft = new Color32(99, 101, 102, 150);
-        disabledTextGradient.bottomRight = new Color32(99, 101, 102, 150);
-        disabledTextGradient.topLeft = new Color32(99, 101, 102, 255);
-        disabledTextGradient.topRight = new Color32 (99, 101, 102, 255);
-
-        // Define the enabled color gradient
-        VertexGradient enabledTextGradient;
-        enabledTextGradient.bottomLeft = new Color32(0, 84, 159, 255);
-        enabledTextGradient.bottomRight = new Color32(0, 84, 159, 255);
-        enabledTextGradient.topLeft = new Color32(64, 127, 183, 255);
-        enabledTextGradient.topRight = new Color32 (64, 127, 183, 255);
-
         // Enable / Disable previous button and change color
-        TMP_Text textPrevious = previousPage.GetComponentInChildren<TMP_Text>();
         if(currentPage == 1)
         {
             previousPage.interactable = false;
-            textPrevious.GetComponent<TMP_Text>().colorGradient = disabledTextGradient;
         } else {
             previousPage.interactable = true;
-            textPrevious.GetComponent<TMP_Text>().colorGradient = enabledTextGradient;
         }
 
         // Enable / Disable next button and change color
-        TMP_Text textNext = nextPage.GetComponentInChildren<TMP_Text>();
         if(currentPage != numberOfPages)
         {
             nextPage.interactable = true;
-            textNext.GetComponent<TMP_Text>().colorGradient = enabledTextGradient;
         } else {
             nextPage.interactable = false;
-            textNext.GetComponent<TMP_Text>().colorGradient = disabledTextGradient;
         }
 
         Debug.Log("The current path is: " + Globals.currentPath);
@@ -300,24 +280,19 @@ public class AddLevel : MonoBehaviour
         }
 
         // Enable / Disable select directory button, the select directory button is not enabled in the root directory and in directories containing directories
-        TMP_Text textSelectDirectory = selectDirectory.GetComponentInChildren<TMP_Text>();
         if(Globals.currentPath != Globals.rootDirectoryPath && numberOfDirectories == 0 && GetNumberOfFiles(GetFilesArray()) == 0)
         {
             // Make the select directory button interactable and make it blue
             selectDirectory.interactable = true;
-            textSelectDirectory.GetComponent<TMP_Text>().colorGradient = enabledTextGradient;
+            deleteDirectoryButton.interactable = true;
 
-            // Enable the delete directory button
-            deleteDirectoryButton.gameObject.SetActive(true);
 
         } else {
 
             // Make sure the select directory button is not interactable and make it grey
             selectDirectory.interactable = false;
-            textSelectDirectory.GetComponent<TMP_Text>().colorGradient = disabledTextGradient;
-
-            // Make sure the delete directory button is disabled
-            deleteDirectoryButton.gameObject.SetActive(false);
+            deleteDirectoryButton.interactable = false;
+   
         }
     }
 
