@@ -39,7 +39,7 @@ public class BrowsLevels : MonoBehaviour
 
     // Here menus and buttons are defined
     public GameObject mainMenu;
-    public GameObject browsDirectoriesMenu;
+    public GameObject browseDirectoriesMenu;
     public GameObject levelDescriptionMenu;
     public GameObject backGround;
 
@@ -289,7 +289,7 @@ public class BrowsLevels : MonoBehaviour
             levelDescriptionMenu.SetActive(true);
 
             // Disable the brows directories menu
-            browsDirectoriesMenu.SetActive(false);
+            browseDirectoriesMenu.SetActive(false);
 
             // Set the level description and heading correctly
             SetUpLevelDescription();
@@ -407,7 +407,7 @@ public class BrowsLevels : MonoBehaviour
         currentPage = currentPage + 1;
         DisableOrEnableButtons();
         RenameButtons(currentPathBrowse);
-        GameObject.Find("HeadingTextBrowsDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
+        GameObject.Find("HeadingTextBrowseDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
     }
 
     // Method that is activated when pressing previous (change the other directories)
@@ -415,7 +415,7 @@ public class BrowsLevels : MonoBehaviour
         currentPage = currentPage - 1;
         DisableOrEnableButtons();
         RenameButtons(currentPathBrowse);
-        GameObject.Find("HeadingTextBrowsDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
+        GameObject.Find("HeadingTextBrowseDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
     }
 
     // Method that is activated when pressing the return arrow (get to the parent directory)
@@ -567,14 +567,14 @@ public class BrowsLevels : MonoBehaviour
         mainMenu.SetActive(true);
 
         // First reset the globals so that everything is reset the next time the user enters the menu
-        resetBrowsDirectories();
+        resetBrowseDirectories();
 
         // Disable the menu
-        browsDirectoriesMenu.SetActive(false);
+        browseDirectoriesMenu.SetActive(false);
     }
 
     // Method that resets the brows directories menu
-    public void resetBrowsDirectories()
+    public void resetBrowseDirectories()
     {
         currentPathBrowse = rootDirectoryPathBrowse;
         depth = 1;
@@ -604,7 +604,7 @@ public class BrowsLevels : MonoBehaviour
         RenameButtons(currentPathBrowse);
 
         // Enable the brows directories menu
-        browsDirectoriesMenu.SetActive(true);
+        browseDirectoriesMenu.SetActive(true);
 
         // Disable the level description
         levelDescriptionMenu.SetActive(false);
