@@ -5,8 +5,8 @@ using UnityEngine;
 public class GalleryCardPlacementHandler : MonoBehaviour
 {
     [SerializeField] private GameObject[] cards;
-    private float start = 115;
-    private float range = 560;
+    private float start = Screen.width / 4;
+    private float range = Screen.width - Screen.width / 3;
     [SerializeField] private float offset = 0;
 
     // Start is called before the first frame update
@@ -19,7 +19,7 @@ public class GalleryCardPlacementHandler : MonoBehaviour
         {
             RectTransform cardTransform = cards[i].GetComponent<RectTransform>();
             float xPosition = start + i * (range / (numberOfCards-1));
-            cards[i].GetComponent<RectTransform>().SetPositionAndRotation(new Vector3(xPosition, 160, cardTransform.position.z), cardTransform.rotation);
+            cards[i].GetComponent<RectTransform>().SetPositionAndRotation(new Vector3(xPosition, Screen.height/3, cardTransform.position.z), cardTransform.rotation);
         }
     }
 
