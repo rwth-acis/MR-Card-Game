@@ -50,7 +50,7 @@ public class AddLevel : MonoBehaviour
     [SerializeField]
     private GameObject levelDescriptionMenu;
 
-    // Define the page x / y text of the brows directories menu
+    // Define the page x / y text of the browse directories menu
     [SerializeField]
     private TextMeshProUGUI currentPageText;
 
@@ -428,7 +428,7 @@ public class AddLevel : MonoBehaviour
         currentPage = currentPage + 1;
         DisableOrEnableButtons();
         RenameButtons(Globals.currentPath);
-        GameObject.Find("HeadingTextBrowsDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
+        GameObject.Find("HeadingTextBrowseDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
     }
 
     // Method that is activated when pressing previous (change the other directories)
@@ -436,7 +436,7 @@ public class AddLevel : MonoBehaviour
         currentPage = currentPage - 1;
         DisableOrEnableButtons();
         RenameButtons(Globals.currentPath);
-        GameObject.Find("HeadingTextBrowsDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
+        GameObject.Find("HeadingTextBrowseDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
     }
 
     // Method that is activated when pressing the return arrow (get to the parent directory)
@@ -654,10 +654,10 @@ public class AddLevel : MonoBehaviour
         }
     }
 
-    // Method used to exit the level description and return to the brows directories
+    // Method used to exit the level description and return to the browse directories
     public void LeaveLevelDescription()
     {
-        // Enable the brows directories menu
+        // Enable the browse directories menu
         addLevelMenu.SetActive(true);
 
         // Disable the level description
@@ -780,10 +780,10 @@ public class AddLevel : MonoBehaviour
         }
     }
 
-    // Method used to exit the level description and return to the brows directories
+    // Method used to exit the level description and return to the browse directories
     public void LeaveCreateDirectory()
     {
-        // Enable the brows directories menu
+        // Enable the browse directories menu
         addLevelMenu.SetActive(true);
 
         // Disable the level description
