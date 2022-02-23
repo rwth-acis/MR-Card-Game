@@ -12,6 +12,8 @@ To play the MR Card Game, printing out the AR Image Targets is required. These a
 ### Quizzes
 In order to play the MR Card Game, you will also need a pre-build quiz from which the questions are asked during the game. You can either create this quiz yourself using the MR Card Game Question Creator Tool which you can download [here](https://github.com/rwth-acis/MR-Question-Creator-For-Card-Game), or you can simply download a quiz created by someone else. [Here](https://github.com/JulianStaab/mr-card-game-quizzes/) you can find a repository of pre-build quizzes ready to use.
 
+After creating or downloading a quiz, the quiz folder has to be placed on your device in the \Card\Android\data\com.RWTH-ACIS.MRCardGame\files\ folder. This is important otherwise the quiz won't show up in the app.
+
 ## Navigating the Main Menu
 ![](https://user-images.githubusercontent.com/19326682/155305174-9b391f7e-197d-42ba-b069-4b5ce03450a9.PNG)
 
