@@ -36,6 +36,7 @@ After successfully starting a game as described in the *Browse Levels* section, 
 
 ### The Game Board
 ![](https://user-images.githubusercontent.com/19326682/155305466-75d94a16-bbf9-407d-8c9a-35a55213e454.PNG)
+
 To start, place the **Board** card firmly within the camera field, preferably on a flat surface. The AR camera will detect the card and display the game board on top of it. The board consists of many components. The castle that is connected to the stone path is your main base of defense. This is the castle you have to protect from the invading enemies. Every time an enemy enters the castle, the castle will take damage depending on the enemy type. The castle's health is displayed above it as a green bar that will grow increasingly red the more damage it takes. The stone path, the castle is connected to, is the walk path of the enemies. They will spawn at the Portal placed opposite of the castle and walk all the way around the woods in the middle along the stone path to reach the castle. But while they are walking toward the castle, they are vulnerable to your attacks. Use this to your advantage to strategically play and place defenses along this path to protect the castle.
 
 ### The Setup Phase (Wave 0)
