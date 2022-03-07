@@ -10,7 +10,7 @@ MR Card Game is an educational, customizable AR (Augmented Reality) tower defens
 ## How to Setup the Game
 
 ### AR Image Targets
-To play the MR Card Game, printing out the AR Image Targets is required. These are physical card that you can find [here](https://github.com/AnPerret/Evaluation-Repository/raw/main/Image%20Targets/) or in the material section of this site. Simply download and print out the sheet in this .pdf-file and cut out the individual cards with scissors or a different cutting device.
+To play the MR Card Game, printing out the AR Image Targets is required. These are physical card that you can find here. Simply download and print out the sheet in this .pdf-file and cut out the individual cards with scissors or a different cutting device.
 
 <div> <ul class="icons alt">
 			<li><a href="https://github.com/JulianStaab/MR-Card-Game/raw/UIRevision/MR%20Card%20Game/Assets/ImageTargetsModified.pdf" class="button icon fa-download">Image Targets</a></li>
