@@ -1,7 +1,9 @@
 # MR Card Game Instructions
 
 ## What is the MR Card Game?
-![](https://user-images.githubusercontent.com/44223481/156355375-d3413231-aefb-44cf-8224-5c1c013d2e54.png)
+
+<div><center><a class="image main"><img src="https://user-images.githubusercontent.com/19326682/157031128-6cdcf8c8-1d4e-4ef7-a210-6f4bdf10fd03.png" alt="" style="max-width: 40%;"/></a></center></div>
+
 
 MR Card Game is an educational, customizable AR (Augmented Reality) tower defense card game application that allows for playful learning by combining quiz questions with engaging real-time strategy gameplay. The goal of the game is to defend your castle against approaching attackers by casting spells, setting traps and building powerful defensive towers to slow down the invaders. In order to gain access to these defenses, players need to answer questions from a chosen field or topic. If answered correctly, players can use varying cards to defeat wave after wave of a wide variety of attackers.
 
@@ -37,6 +39,7 @@ After starting the application, you will be placed in the main menu. There you h
 <div><a class="image main"><img src="https://user-images.githubusercontent.com/19326682/155305352-bc0921a6-8392-4c7a-bc31-a0dba8879455.png" alt="" style="max-width: 100%;"/></a></div>
 
 Clicking Browse Levels is the standard way to start a game. The next page will show the folder structure of the application where you can select the quiz to use in the game. If everything was set-up properly, you should see the quiz that you downloaded and placed in this folder in the Setup section. If not, make sure all Quiz Setup steps are fulfilled. After selecting a quiz, you will see the quiz name and description and a start button in the form of a triangle. Press it to get to the start screen where you can press `Start` to go start the game.
+
 ### Gallery
 <div><a class="image main"><img src="https://user-images.githubusercontent.com/19326682/155305338-84d6d042-53bb-4f83-9a1e-db1a31f1a33f.PNG" alt="" style="max-width: 100%;"/></a></div>
 
