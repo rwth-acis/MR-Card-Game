@@ -50,7 +50,7 @@ public class AddLevel : MonoBehaviour
     [SerializeField]
     private GameObject levelDescriptionMenu;
 
-    // Define the page x / y text of the brows directories menu
+    // Define the page x / y text of the browse directories menu
     [SerializeField]
     private TextMeshProUGUI currentPageText;
 
@@ -247,40 +247,20 @@ public class AddLevel : MonoBehaviour
     // Disabling or enabling of the buttons
     public void DisableOrEnableButtons()
     {
-        // Define the disabled color gradient
-        VertexGradient disabledTextGradient;
-        disabledTextGradient.bottomLeft = new Color32(99, 101, 102, 150);
-        disabledTextGradient.bottomRight = new Color32(99, 101, 102, 150);
-        disabledTextGradient.topLeft = new Color32(99, 101, 102, 255);
-        disabledTextGradient.topRight = new Color32 (99, 101, 102, 255);
-
-        // Define the enabled color gradient
-        VertexGradient enabledTextGradient;
-        enabledTextGradient.bottomLeft = new Color32(0, 84, 159, 255);
-        enabledTextGradient.bottomRight = new Color32(0, 84, 159, 255);
-        enabledTextGradient.topLeft = new Color32(64, 127, 183, 255);
-        enabledTextGradient.topRight = new Color32 (64, 127, 183, 255);
-
         // Enable / Disable previous button and change color
-        TMP_Text textPrevious = previousPage.GetComponentInChildren<TMP_Text>();
         if(currentPage == 1)
         {
             previousPage.interactable = false;
-            textPrevious.GetComponent<TMP_Text>().colorGradient = disabledTextGradient;
         } else {
             previousPage.interactable = true;
-            textPrevious.GetComponent<TMP_Text>().colorGradient = enabledTextGradient;
         }
 
         // Enable / Disable next button and change color
-        TMP_Text textNext = nextPage.GetComponentInChildren<TMP_Text>();
         if(currentPage != numberOfPages)
         {
             nextPage.interactable = true;
-            textNext.GetComponent<TMP_Text>().colorGradient = enabledTextGradient;
         } else {
             nextPage.interactable = false;
-            textNext.GetComponent<TMP_Text>().colorGradient = disabledTextGradient;
         }
 
         Debug.Log("The current path is: " + Globals.currentPath);
@@ -300,24 +280,19 @@ public class AddLevel : MonoBehaviour
         }
 
         // Enable / Disable select directory button, the select directory button is not enabled in the root directory and in directories containing directories
-        TMP_Text textSelectDirectory = selectDirectory.GetComponentInChildren<TMP_Text>();
         if(Globals.currentPath != Globals.rootDirectoryPath && numberOfDirectories == 0 && GetNumberOfFiles(GetFilesArray()) == 0)
         {
             // Make the select directory button interactable and make it blue
             selectDirectory.interactable = true;
-            textSelectDirectory.GetComponent<TMP_Text>().colorGradient = enabledTextGradient;
+            deleteDirectoryButton.interactable = true;
 
-            // Enable the delete directory button
-            deleteDirectoryButton.gameObject.SetActive(true);
 
         } else {
 
             // Make sure the select directory button is not interactable and make it grey
             selectDirectory.interactable = false;
-            textSelectDirectory.GetComponent<TMP_Text>().colorGradient = disabledTextGradient;
-
-            // Make sure the delete directory button is disabled
-            deleteDirectoryButton.gameObject.SetActive(false);
+            deleteDirectoryButton.interactable = false;
+   
         }
     }
 
@@ -453,7 +428,7 @@ public class AddLevel : MonoBehaviour
         currentPage = currentPage + 1;
         DisableOrEnableButtons();
         RenameButtons(Globals.currentPath);
-        GameObject.Find("HeadingTextBrowsDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
+        GameObject.Find("HeadingTextBrowseDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
     }
 
     // Method that is activated when pressing previous (change the other directories)
@@ -461,7 +436,7 @@ public class AddLevel : MonoBehaviour
         currentPage = currentPage - 1;
         DisableOrEnableButtons();
         RenameButtons(Globals.currentPath);
-        GameObject.Find("HeadingTextBrowsDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
+        GameObject.Find("HeadingTextBrowseDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
     }
 
     // Method that is activated when pressing the return arrow (get to the parent directory)
@@ -679,10 +654,10 @@ public class AddLevel : MonoBehaviour
         }
     }
 
-    // Method used to exit the level description and return to the brows directories
+    // Method used to exit the level description and return to the browse directories
     public void LeaveLevelDescription()
     {
-        // Enable the brows directories menu
+        // Enable the browse directories menu
         addLevelMenu.SetActive(true);
 
         // Disable the level description
@@ -805,10 +780,10 @@ public class AddLevel : MonoBehaviour
         }
     }
 
-    // Method used to exit the level description and return to the brows directories
+    // Method used to exit the level description and return to the browse directories
     public void LeaveCreateDirectory()
     {
-        // Enable the brows directories menu
+        // Enable the browse directories menu
         addLevelMenu.SetActive(true);
 
         // Disable the level description

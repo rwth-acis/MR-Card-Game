@@ -1725,7 +1725,7 @@ public class ActivateQuestions : MonoBehaviour
         // Activate the game menu, where wave and currency are displayed
         StartCoroutine(ActivateGame());
 
-        Board.activateGameBoard = true;
+        Board.activateGameBoard = false;
     }
 
     // Method used to increase the number of questions that need to be answered
