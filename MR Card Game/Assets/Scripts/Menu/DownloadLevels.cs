@@ -112,7 +112,12 @@ public class DownloadLevels : MonoBehaviour
                             result = resultArray[0];
                             for(int i = 0; i < int.Parse(result);i++)
                             {
-                                StartCoroutine(GetRequest(currentQuizname + "/Question00"+ i +".json", 2));
+                                if(i < 10)
+                                    StartCoroutine(GetRequest(currentQuizname + "/Question00"+ i +".json", 2));
+                                else if (i < 100)
+                                    StartCoroutine(GetRequest(currentQuizname + "/Question0" + i + ".json", 2));
+                                else
+                                    StartCoroutine(GetRequest(currentQuizname + "/Question" + i + ".json", 2));
                             }
                             break;
                         case 2:
