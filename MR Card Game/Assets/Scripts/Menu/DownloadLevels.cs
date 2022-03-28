@@ -18,10 +18,6 @@ public class DownloadLevels : MonoBehaviour
     //DownloadLevels menu button
     [SerializeField] private Button downloadLevelsMenuButton;
 
-    //Download Icons
-    [SerializeField] private Sprite downloadIcon;
-    [SerializeField] private Sprite downloadedIcon;
-
     // The directories array
     private string[] directoriesArray;
 
@@ -84,6 +80,7 @@ public class DownloadLevels : MonoBehaviour
                 directories[i].GetComponentInChildren<TMP_Text>().SetText("-");
                 directories[i].GetComponent<Button>().interactable = false;
                 directories[i].GetComponentsInChildren<Image>()[1].color = new Color(1, 1, 1, 0);
+                directories[i].GetComponentsInChildren<Image>()[2].color = new Color(1, 1, 1, 0);
 
             } else
             {
@@ -92,21 +89,21 @@ public class DownloadLevels : MonoBehaviour
                 directories[i].GetComponent<Button>().interactable = true;
                 if (downloaded)
                 {
-                    directories[i].GetComponentsInChildren<Image>()[1].sprite = downloadedIcon;
                     var colors = directories[i].GetComponent<Button>().colors;
                     colors.normalColor = new Color(1, 1, 1, 1);
                     colors.selectedColor = new Color(1, 1, 1, 1);
                     directories[i].GetComponent<Button>().colors = colors;
-                    directories[i].GetComponentsInChildren<Image>()[1].color = new Color(1, 1, 1, 0.9f);
+                    directories[i].GetComponentsInChildren<Image>()[1].color = new Color(1, 1, 1, 0);
+                    directories[i].GetComponentsInChildren<Image>()[2].color = new Color(1, 1, 1, 0.784f);
                 }
                 else
                 {
-                    directories[i].GetComponentsInChildren<Image>()[1].sprite = downloadIcon;
                     var colors = directories[i].GetComponent<Button>().colors;
                     colors.normalColor = new Color(1, 1, 1, 0.392f);
                     colors.selectedColor = new Color(1, 1, 1, 0.682f);
                     directories[i].GetComponent<Button>().colors = colors;
-                    directories[i].GetComponentsInChildren<Image>()[1].color = new Color(1, 1, 1, 0.5f);
+                    directories[i].GetComponentsInChildren<Image>()[1].color = new Color(1, 1, 1, 0.784f);
+                    directories[i].GetComponentsInChildren<Image>()[2].color = new Color(1, 1, 1, 0);
                 }
             }
         }
