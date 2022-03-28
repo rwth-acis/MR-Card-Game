@@ -18,6 +18,10 @@ public class DownloadLevels : MonoBehaviour
     //DownloadLevels menu button
     [SerializeField] private Button downloadLevelsMenuButton;
 
+    //Download Icons
+    [SerializeField] private Sprite downloadIcon;
+    [SerializeField] private Sprite downloadedIcon;
+
     // The directories array
     private string[] directoriesArray;
 
@@ -26,6 +30,7 @@ public class DownloadLevels : MonoBehaviour
 
     // The number of the current page
     private int currentPage;
+
 
     private void Start()
     {
@@ -69,13 +74,26 @@ public class DownloadLevels : MonoBehaviour
             {
                 directories[i].GetComponentInChildren<TMP_Text>().SetText("-");
                 directories[i].GetComponent<Button>().interactable = false;
+                directories[i].GetComponentsInChildren<Image>()[1].color = new Color(1, 1, 1, 0);
+
             } else
             {
+                bool downloaded = File.Exists(Application.persistentDataPath + "/" + directoriesArray[i] + "/Description.json");
                 directories[i].GetComponentInChildren<TMP_Text>().SetText(directoriesArray[i]);
                 directories[i].GetComponent<Button>().interactable = true;
+                directories[i].GetComponentsInChildren<Image>()[1].color = new Color(1, 1, 1, 0.9f);
+                if (downloaded)
+                {
+                    directories[i].GetComponentsInChildren<Image>()[1].sprite = downloadedIcon;
+                }
+                else
+                {
+                    directories[i].GetComponentsInChildren<Image>()[1].sprite = downloadIcon;
+                }
             }
         }
     }
+
 
     //Manage the Webrequest
     IEnumerator GetRequest(string uri, int typeOfRequest)
@@ -121,6 +139,7 @@ public class DownloadLevels : MonoBehaviour
                                 else
                                     StartCoroutine(GetRequest(currentQuizname + "/Question" + i + ".json", 2));
                             }
+                            UpdateDirectoriesArray(string.Join(",",directoriesArray));
                             break;
                         case 2:
                             File.WriteAllText(Application.persistentDataPath + "/" + uri, webRequest.downloadHandler.text);
