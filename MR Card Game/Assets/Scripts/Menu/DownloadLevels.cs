@@ -60,8 +60,10 @@ public class DownloadLevels : MonoBehaviour
     private void UpdateDirectoriesArray(string quiznames)
     {
         directoriesArray = quiznames.Split(',');
-        
-        for(int i = 0; i < 5; i++)
+        directoriesArray[directoriesArray.Length - 1] = directoriesArray[directoriesArray.Length - 1].Trim();
+
+
+        for (int i = 0; i < 5; i++)
         {
             if (i > directoriesArray.Length - 1)
             {
@@ -78,7 +80,7 @@ public class DownloadLevels : MonoBehaviour
     //Manage the Webrequest
     IEnumerator GetRequest(string uri, int typeOfRequest)
     {
-        string requesturi = "https://raw.githubusercontent.com/JulianStaab/mr-card-game-quizzes/main/" + uri;
+        string requesturi = "https://raw.githubusercontent.com/rwth-acis/mr-card-game-quizzes/main/" + uri;
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(requesturi))
         {
