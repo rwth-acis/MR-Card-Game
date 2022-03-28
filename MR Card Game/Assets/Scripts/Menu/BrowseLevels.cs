@@ -296,6 +296,12 @@ public class BrowseLevels : MonoBehaviour
             // Set the level description and heading correctly
             SetUpLevelDescription();
 
+            // Set all delete buttons to disabled
+            foreach (Button deleteButton in deleteButtons)
+            {
+                deleteButton.gameObject.SetActive(false);
+            }
+
         // Case there is at least one directory, then display the numbers 5*x + 1 to 5*x + 5 (x is number of the page)
         } else {
 
@@ -331,13 +337,16 @@ public class BrowseLevels : MonoBehaviour
                     // Get the name
                     string lastFolderName = Path.GetFileName(dir);
 
+                    //Activate the delete button
+                    deleteButtons[currentDirectoryNumber-1].gameObject.SetActive(true);
+
                     // Print the directory name on the right button
                     switch (currentDirectoryNumber)
                     {
                         case 1:
                             directory1.GetComponentInChildren<TMP_Text>().text = lastFolderName;
                             directory1.interactable = true;
-                        break;
+                            break;
 
                         case 2:
                             directory2.GetComponentInChildren<TMP_Text>().text = lastFolderName;
@@ -365,11 +374,14 @@ public class BrowseLevels : MonoBehaviour
                 }
             }
 
-            // If there are no more directory, make sure the rest of the buttons are empty and not interactable
+            // If there are no more directories, make sure the rest of the buttons are empty and not interactable
             if(currentDirectoryNumber != 5)
             {
                 for(int counter = numberOfDirectories; counter <= lastEmptyIndex; counter = counter + 1)
                 {
+                    //Deactivate the delete button
+                    deleteButtons[currentDirectoryNumber - 1].gameObject.SetActive(false);
+
                     switch (currentDirectoryNumber)
                     {
                         case 1:
