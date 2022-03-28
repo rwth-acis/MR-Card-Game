@@ -29,10 +29,18 @@ public class DownloadLevels : MonoBehaviour
     private string currentQuizname;
 
     // The number of the current page
-    private int currentPage;
+    private int currentPage = 1;
 
+    // The number of the current page
+    private int numberOfPages;
 
-    private void Start()
+    [SerializeField] private TextMeshProUGUI currentPageText;
+
+    // Define the previous and next buttons
+    [SerializeField] private Button previousPage;
+    [SerializeField] private Button nextPage;
+
+    private void OnEnable()
     {
         StartCoroutine(GetRequest("quiznames.txt",0));
     }
@@ -67,6 +75,7 @@ public class DownloadLevels : MonoBehaviour
         directoriesArray = quiznames.Split(',');
         directoriesArray[directoriesArray.Length - 1] = directoriesArray[directoriesArray.Length - 1].Trim();
 
+        UpdateButtons();
 
         for (int i = 0; i < 5; i++)
         {
@@ -101,6 +110,34 @@ public class DownloadLevels : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void UpdateButtons()
+    {
+        numberOfPages = System.Convert.ToInt32(System.Math.Ceiling((double)directoriesArray.Length / 5.0));
+
+        // Change the current page text
+        currentPageText.text = "Page " + currentPage + "/" + numberOfPages;
+
+        // Enable / Disable previous button and change color
+        previousPage.interactable = (currentPage != 1);
+
+        // Enable / Disable next button and change color
+        nextPage.interactable = (currentPage != numberOfPages);
+    }
+
+    // Method that is activated when pressing next (change the other directories)
+    public void NextPage()
+    {
+        currentPage = currentPage + 1;
+        UpdateButtons();
+    }
+
+    // Method that is activated when pressing previous (change the other directories)
+    public void PreviousPage()
+    {
+        currentPage = currentPage - 1;
+        UpdateButtons();
     }
 
 

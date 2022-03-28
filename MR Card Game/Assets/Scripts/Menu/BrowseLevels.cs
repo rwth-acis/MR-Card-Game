@@ -53,7 +53,7 @@ public class BrowseLevels : MonoBehaviour
     public Button directory4;
     public Button directory5;
 
-    // Define the previous an next buttons
+    // Define the previous and next buttons
     public Button previousPage;
     public Button nextPage;
 
@@ -62,6 +62,8 @@ public class BrowseLevels : MonoBehaviour
 
     // Define the launch level button
     public Button selectLevel;
+
+    public Button[] deleteButtons = new Button[5];
 
     // The sprites of the return one level up button
     [SerializeField]
@@ -687,5 +689,37 @@ public class BrowseLevels : MonoBehaviour
 
         // Set the flag that a new level started so that all level information are reset
         LevelInfo.newLevelStarted = true;
+    }
+
+    public void DeleteLevel(int directorynumber)
+    {
+        Button directoryToBeDeleted;
+        switch (directorynumber)
+        {
+            case 1:
+                directoryToBeDeleted = directory1;
+                break;
+            case 2:
+                directoryToBeDeleted = directory2;
+                break;
+            case 3:
+                directoryToBeDeleted = directory3;
+                break;
+            case 4:
+                directoryToBeDeleted = directory4;
+                break;
+            case 5:
+                directoryToBeDeleted = directory5;
+                break;
+            default:
+                directoryToBeDeleted = directory1;
+                break;
+        }
+        string quizname = directoryToBeDeleted.GetComponentInChildren<TMP_Text>().text;
+        Directory.Delete(Application.persistentDataPath + "/" + quizname, true);
+
+        UpdateGlobals();
+        DisableOrEnableButtons();
+        RenameButtons(currentPathBrowse);
     }
 }
