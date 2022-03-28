@@ -81,14 +81,23 @@ public class DownloadLevels : MonoBehaviour
                 bool downloaded = File.Exists(Application.persistentDataPath + "/" + directoriesArray[i] + "/Description.json");
                 directories[i].GetComponentInChildren<TMP_Text>().SetText(directoriesArray[i]);
                 directories[i].GetComponent<Button>().interactable = true;
-                directories[i].GetComponentsInChildren<Image>()[1].color = new Color(1, 1, 1, 0.9f);
                 if (downloaded)
                 {
                     directories[i].GetComponentsInChildren<Image>()[1].sprite = downloadedIcon;
+                    var colors = directories[i].GetComponent<Button>().colors;
+                    colors.normalColor = new Color(1, 1, 1, 1);
+                    colors.selectedColor = new Color(1, 1, 1, 1);
+                    directories[i].GetComponent<Button>().colors = colors;
+                    directories[i].GetComponentsInChildren<Image>()[1].color = new Color(1, 1, 1, 0.9f);
                 }
                 else
                 {
                     directories[i].GetComponentsInChildren<Image>()[1].sprite = downloadIcon;
+                    var colors = directories[i].GetComponent<Button>().colors;
+                    colors.normalColor = new Color(1, 1, 1, 0.392f);
+                    colors.selectedColor = new Color(1, 1, 1, 0.682f);
+                    directories[i].GetComponent<Button>().colors = colors;
+                    directories[i].GetComponentsInChildren<Image>()[1].color = new Color(1, 1, 1, 0.5f);
                 }
             }
         }
@@ -118,7 +127,7 @@ public class DownloadLevels : MonoBehaviour
                     Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
-                    Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+                    //Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
                     switch(typeOfRequest)
                     {
                         case 0:
