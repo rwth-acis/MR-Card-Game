@@ -72,7 +72,7 @@ public class AddLevel : MonoBehaviour
     [SerializeField]
     private Button selectDirectory;
 
-    // Define the previous an next buttons
+    // Define the previous and next buttons
     [SerializeField]
     private Button previousPage;
     [SerializeField]

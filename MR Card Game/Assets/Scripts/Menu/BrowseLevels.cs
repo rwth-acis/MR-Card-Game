@@ -37,6 +37,8 @@ public class BrowseLevels : MonoBehaviour
 
     private bool androidBoot = true;
 
+    private Button directoryToBeDeleted = null;
+
     // Here menus and buttons are defined
     public GameObject mainMenu;
     public GameObject browseDirectoriesMenu;
@@ -53,7 +55,7 @@ public class BrowseLevels : MonoBehaviour
     public Button directory4;
     public Button directory5;
 
-    // Define the previous an next buttons
+    // Define the previous and next buttons
     public Button previousPage;
     public Button nextPage;
 
@@ -62,6 +64,10 @@ public class BrowseLevels : MonoBehaviour
 
     // Define the launch level button
     public Button selectLevel;
+
+    public Button[] deleteButtons = new Button[5];
+
+    [SerializeField] GameObject deletionWindow;
 
     // The sprites of the return one level up button
     [SerializeField]
@@ -86,11 +92,13 @@ public class BrowseLevels : MonoBehaviour
     void Start()
     {
         // Check if it is an android boot
-        if(androidBoot == true)
+        if (androidBoot == true)
         {
             rootDirectoryPathBrowse = Application.persistentDataPath;
 
-        } else {
+        }
+        else
+        {
 
             // First I initialize the Global paths
             string scriptPath = GetCurrentFilePath();
@@ -149,7 +157,7 @@ public class BrowseLevels : MonoBehaviour
     }
 
     // Method that returns the array of directories in the current directory
-    public string[] GetDirectoriesArray() 
+    public string[] GetDirectoriesArray()
     {
         string[] dirs = Directory.GetDirectories(currentPathBrowse, "*", SearchOption.TopDirectoryOnly);
         return dirs;
@@ -161,7 +169,7 @@ public class BrowseLevels : MonoBehaviour
         string[] files = Directory.GetFiles(currentPathBrowse, "Question*");
 
         // Check if the description file exists
-        if (File.Exists(Path.Combine(currentPathBrowse, "Description.json"))) 
+        if (File.Exists(Path.Combine(currentPathBrowse, "Description.json")))
         {
 
             // Case it exists
@@ -169,7 +177,7 @@ public class BrowseLevels : MonoBehaviour
 
             // Get the length of the files array
             int length = 0;
-            foreach(string file in files)
+            foreach (string file in files)
             {
                 length = length + 1;
             }
@@ -183,7 +191,7 @@ public class BrowseLevels : MonoBehaviour
             int index = 1;
 
             // Append all elements in the files array to the description array
-            foreach(string file in files)
+            foreach (string file in files)
             {
                 array[index] = file;
                 index = index + 1;
@@ -192,7 +200,9 @@ public class BrowseLevels : MonoBehaviour
             // Return the array that contains the description and the questions
             return array;
 
-        } else {
+        }
+        else
+        {
 
             // Case the description file does not exist
             return files;
@@ -200,23 +210,25 @@ public class BrowseLevels : MonoBehaviour
     }
 
     // Method that returns the number of directories in the current directory
-    public int GetNumberOfDirectories(string[] dirs) 
+    public int GetNumberOfDirectories(string[] dirs)
     {
-       int number = 0;
-       foreach (string dir in dirs) {
-           number = number + 1;
-       }
-       return number;
+        int number = 0;
+        foreach (string dir in dirs)
+        {
+            number = number + 1;
+        }
+        return number;
     }
 
     // Method that returns the number of directories in the current directory
-    public int GetNumberOfFiles(string[] files) 
+    public int GetNumberOfFiles(string[] files)
     {
-       int number = 0;
-       foreach (string file in files) {
-           number = number + 1;
-       }
-       return number;
+        int number = 0;
+        foreach (string file in files)
+        {
+            number = number + 1;
+        }
+        return number;
     }
 
     // Disabling or enabling of the buttons
@@ -227,33 +239,37 @@ public class BrowseLevels : MonoBehaviour
         disabledTextGradient.bottomLeft = new Color32(99, 101, 102, 150);
         disabledTextGradient.bottomRight = new Color32(99, 101, 102, 150);
         disabledTextGradient.topLeft = new Color32(99, 101, 102, 255);
-        disabledTextGradient.topRight = new Color32 (99, 101, 102, 255);
+        disabledTextGradient.topRight = new Color32(99, 101, 102, 255);
 
         // Define the enabled color gradient
         VertexGradient enabledTextGradient;
         enabledTextGradient.bottomLeft = new Color32(0, 84, 159, 255);
         enabledTextGradient.bottomRight = new Color32(0, 84, 159, 255);
         enabledTextGradient.topLeft = new Color32(64, 127, 183, 255);
-        enabledTextGradient.topRight = new Color32 (64, 127, 183, 255);
+        enabledTextGradient.topRight = new Color32(64, 127, 183, 255);
 
         // Enable / Disable previous button and change color
         TMP_Text textPrevious = previousPage.GetComponentInChildren<TMP_Text>();
-        if(currentPage == 1)
+        if (currentPage == 1)
         {
             previousPage.interactable = false;
             textPrevious.GetComponent<TMP_Text>().colorGradient = disabledTextGradient;
-        } else {
+        }
+        else
+        {
             previousPage.interactable = true;
             textPrevious.GetComponent<TMP_Text>().colorGradient = enabledTextGradient;
         }
 
         // Enable / Disable next button and change color
         TMP_Text textNext = nextPage.GetComponentInChildren<TMP_Text>();
-        if(currentPage != numberOfPages)
+        if (currentPage != numberOfPages)
         {
             nextPage.interactable = true;
             textNext.GetComponent<TMP_Text>().colorGradient = enabledTextGradient;
-        } else {
+        }
+        else
+        {
             nextPage.interactable = false;
             textNext.GetComponent<TMP_Text>().colorGradient = disabledTextGradient;
         }
@@ -263,13 +279,15 @@ public class BrowseLevels : MonoBehaviour
 
         // Enable / disable the return button
         switchImage = returnOneUp.image;
-        if(currentPathBrowse != rootDirectoryPathBrowse)
+        if (currentPathBrowse != rootDirectoryPathBrowse)
         {
             //returnButtonOn.interactable = true;
             returnOneUp.interactable = true;
             switchImage.sprite = switchSprites[1];
 
-        } else {
+        }
+        else
+        {
 
             //returnButtonOff.interactable = false;
             returnOneUp.interactable = false;
@@ -282,7 +300,7 @@ public class BrowseLevels : MonoBehaviour
     {
 
         // Case there are no directories to be displayed
-        if(numberOfDirectories == 0 && File.Exists(Path.Combine(currentPathBrowse, "Description.json")))
+        if (numberOfDirectories == 0 && File.Exists(Path.Combine(currentPathBrowse, "Description.json")))
         {
             // If there are no directories, then display the level information with name, description, etc. as well as a launch level button
             // Enable the level description menu
@@ -294,8 +312,16 @@ public class BrowseLevels : MonoBehaviour
             // Set the level description and heading correctly
             SetUpLevelDescription();
 
-        // Case there is at least one directory, then display the numbers 5*x + 1 to 5*x + 5 (x is number of the page)
-        } else {
+            // Set all delete buttons to disabled
+            foreach (Button deleteButton in deleteButtons)
+            {
+                deleteButton.gameObject.SetActive(false);
+            }
+
+            // Case there is at least one directory, then display the numbers 5*x + 1 to 5*x + 5 (x is number of the page)
+        }
+        else
+        {
 
             // First rename the buttons that should have button names, check that they are enabled
             // for that initialize the range of the for loop
@@ -310,18 +336,20 @@ public class BrowseLevels : MonoBehaviour
             int lastEmptyIndex = (currentPage) * 5 - 1;
 
             // Check that the number of directories is unequal to 0
-            if(numberOfDirectories != 0)
+            if (numberOfDirectories != 0)
             {
                 // Value for the end of the for loop (for the renaming loop)
                 int lastIndex = 0;
-                if(numberOfDirectories <= (currentPage) * 5)
+                if (numberOfDirectories <= (currentPage) * 5)
                 {
                     lastIndex = numberOfDirectories - 1;
-                } else {
+                }
+                else
+                {
                     lastIndex = currentPage * 5 - 1;
                 }
 
-                for(int currentIndex = initialIndex; currentIndex <= lastIndex; currentIndex = currentIndex + 1)
+                for (int currentIndex = initialIndex; currentIndex <= lastIndex; currentIndex = currentIndex + 1)
                 {
                     // Get the directory path
                     string dir = directoriesArray[currentIndex];
@@ -329,33 +357,36 @@ public class BrowseLevels : MonoBehaviour
                     // Get the name
                     string lastFolderName = Path.GetFileName(dir);
 
+                    //Activate the delete button
+                    deleteButtons[currentDirectoryNumber - 1].gameObject.SetActive(true);
+
                     // Print the directory name on the right button
                     switch (currentDirectoryNumber)
                     {
                         case 1:
                             directory1.GetComponentInChildren<TMP_Text>().text = lastFolderName;
                             directory1.interactable = true;
-                        break;
+                            break;
 
                         case 2:
                             directory2.GetComponentInChildren<TMP_Text>().text = lastFolderName;
                             directory2.interactable = true;
-                        break;
+                            break;
 
                         case 3:
                             directory3.GetComponentInChildren<TMP_Text>().text = lastFolderName;
                             directory3.interactable = true;
-                        break;
+                            break;
 
                         case 4:
                             directory4.GetComponentInChildren<TMP_Text>().text = lastFolderName;
                             directory4.interactable = true;
-                        break;
+                            break;
 
                         case 5:
                             directory5.GetComponentInChildren<TMP_Text>().text = lastFolderName;
                             directory5.interactable = true;
-                        break;
+                            break;
                     }
 
                     // Increase the current directory number by one
@@ -363,39 +394,42 @@ public class BrowseLevels : MonoBehaviour
                 }
             }
 
-            // If there are no more directory, make sure the rest of the buttons are empty and not interactable
-            if(currentDirectoryNumber != 5)
+            // If there are no more directories, make sure the rest of the buttons are empty and not interactable
+            if (currentDirectoryNumber != 5)
             {
-                for(int counter = numberOfDirectories; counter <= lastEmptyIndex; counter = counter + 1)
+                for (int counter = numberOfDirectories; counter <= lastEmptyIndex; counter = counter + 1)
                 {
+                    //Deactivate the delete button
+                    deleteButtons[currentDirectoryNumber - 1].gameObject.SetActive(false);
+
                     switch (currentDirectoryNumber)
                     {
                         case 1:
                             directory1.GetComponentInChildren<TMP_Text>().text = "";
                             directory1.interactable = false;
-                        break;
+                            break;
 
                         case 2:
                             directory2.GetComponentInChildren<TMP_Text>().text = "";
                             directory2.interactable = false;
-                        break;
+                            break;
 
                         case 3:
                             directory3.GetComponentInChildren<TMP_Text>().text = "";
                             directory3.interactable = false;
-                        break;
+                            break;
 
                         case 4:
                             directory4.GetComponentInChildren<TMP_Text>().text = "";
                             directory4.interactable = false;
-                        break;
+                            break;
 
                         case 5:
                             directory5.GetComponentInChildren<TMP_Text>().text = "";
                             directory5.interactable = false;
-                        break;
+                            break;
                     }
-                    
+
                     currentDirectoryNumber = currentDirectoryNumber + 1;
                 }
             }
@@ -403,7 +437,8 @@ public class BrowseLevels : MonoBehaviour
     }
 
     // Method that is activated when pressing next (change the other directories)
-    public void NextPage(){
+    public void NextPage()
+    {
         currentPage = currentPage + 1;
         DisableOrEnableButtons();
         RenameButtons(currentPathBrowse);
@@ -411,7 +446,8 @@ public class BrowseLevels : MonoBehaviour
     }
 
     // Method that is activated when pressing previous (change the other directories)
-    public void PreviousPage(){
+    public void PreviousPage()
+    {
         currentPage = currentPage - 1;
         DisableOrEnableButtons();
         RenameButtons(currentPathBrowse);
@@ -427,7 +463,7 @@ public class BrowseLevels : MonoBehaviour
         System.IO.DirectoryInfo parentDirectory = Directory.GetParent(currentPathBrowse);
 
         currentPathBrowse = parentDirectory.FullName;
-        
+
         // Then we can update everything
         UpdateGlobals();
         DisableOrEnableButtons();
@@ -455,7 +491,7 @@ public class BrowseLevels : MonoBehaviour
         Button button = GameObject.Find(name).GetComponent<Button>();
         string fileName = button.GetComponentInChildren<TMP_Text>().text;
 
-        if(flagVariable == true)
+        if (flagVariable == true)
         {
             // Increase the browsing depth
             depth = depth + 1;
@@ -475,7 +511,7 @@ public class BrowseLevels : MonoBehaviour
     }
 
     // Method that returns the array of models (json files) in the given path
-    static string[] GetModelsArray(string path) 
+    static string[] GetModelsArray(string path)
     {
         Debug.Log("The model array was created");
         string[] questions = Directory.GetFiles(path, "Model*", SearchOption.TopDirectoryOnly);
@@ -514,23 +550,23 @@ public class BrowseLevels : MonoBehaviour
         // First get the index inside the page
         int indexOnPage = 0;
 
-        switch(buttonName)
+        switch (buttonName)
         {
             case "Directory1":
                 indexOnPage = 0;
-            break;
+                break;
             case "Directory2":
                 indexOnPage = 1;
-            break;
+                break;
             case "Directory3":
                 indexOnPage = 2;
-            break;
+                break;
             case "Directory4":
                 indexOnPage = 3;
-            break;
+                break;
             case "Directory5":
                 indexOnPage = 4;
-            break;
+                break;
         }
         return indexOnPage;
     }
@@ -544,11 +580,11 @@ public class BrowseLevels : MonoBehaviour
 
         // Update the page heading
         currentPage = 1;
-        double value = (double)numberOfDirectories/(double)5;
+        double value = (double)numberOfDirectories / (double)5;
         numberOfPages = System.Convert.ToInt32(System.Math.Ceiling(value));
 
         // Check if the number of pages is 0
-        if(numberOfPages == 0)
+        if (numberOfPages == 0)
         {
             // If yes, set it to 1
             numberOfPages = 1;
@@ -593,8 +629,8 @@ public class BrowseLevels : MonoBehaviour
     public void LeaveLevelDescription()
     {
         // Set the current path to one layer up
-        string currentPathBrowseLong= Path.GetFullPath(Path.Combine(currentPathBrowse, @"..\"));
-        currentPathBrowse = currentPathBrowseLong.Remove(currentPathBrowseLong.Length - 1, 1); 
+        string currentPathBrowseLong = Path.GetFullPath(Path.Combine(currentPathBrowse, @"..\"));
+        currentPathBrowse = currentPathBrowseLong.Remove(currentPathBrowseLong.Length - 1, 1);
 
         Debug.Log("The current path browse was changed to: " + currentPathBrowse);
 
@@ -624,26 +660,30 @@ public class BrowseLevels : MonoBehaviour
         // feedbackButton.GetComponentInChildren<TMP_Text>().text = json;
 
         // Check if the level heading is blank
-        if(descriptionObject.heading == "")
+        if (descriptionObject.heading == "")
         {
             // Give the level the name of the folder that it contains
             levelHeading.text = Path.GetFileName(Path.GetDirectoryName(currentPathBrowse));
 
             // NOT WORKING TODO!!!!
 
-        } else {
+        }
+        else
+        {
 
             // Set the title to the heading of the description object
             levelHeading.text = descriptionObject.heading;
         }
 
         // Check if the level description is blank
-        if(descriptionObject.description == "")
+        if (descriptionObject.description == "")
         {
             // State that the level creator did not give a description
             levelDescription.text = "The creator of theses questions did not give a description for this level.";
 
-        } else {
+        }
+        else
+        {
 
             // Set the description to the description of the description object
             levelDescription.text = descriptionObject.description;
@@ -653,11 +693,11 @@ public class BrowseLevels : MonoBehaviour
     // The start level menu
     [SerializeField]
     public GameObject startLevelMenu;
-    
+
     // The start level button
     [SerializeField]
     public Button startLevelButton;
-    
+
     // The initializing button
     [SerializeField]
     public Button initializingButton;
@@ -687,5 +727,53 @@ public class BrowseLevels : MonoBehaviour
 
         // Set the flag that a new level started so that all level information are reset
         LevelInfo.newLevelStarted = true;
+    }
+
+    public void DeleteLevel(int directorynumber)
+    {
+        switch (directorynumber)
+        {
+            case 1:
+                directoryToBeDeleted = directory1;
+                break;
+            case 2:
+                directoryToBeDeleted = directory2;
+                break;
+            case 3:
+                directoryToBeDeleted = directory3;
+                break;
+            case 4:
+                directoryToBeDeleted = directory4;
+                break;
+            case 5:
+                directoryToBeDeleted = directory5;
+                break;
+            default:
+                directoryToBeDeleted = null;
+                break;
+        }
+
+        if (directoryToBeDeleted != null)
+        {
+            deletionWindow.SetActive(true);
+            deletionWindow.GetComponentInChildren<TMP_Text>().SetText("Are you sure you want to delete the quiz: " + directoryToBeDeleted.GetComponentInChildren<TMP_Text>().text + "?");
+        }
+    }
+
+    public void ConfirmDeletion()
+    {
+        string quizname = directoryToBeDeleted.GetComponentInChildren<TMP_Text>().text;
+        Directory.Delete(Application.persistentDataPath + "/" + quizname, true);
+
+        UpdateGlobals();
+        DisableOrEnableButtons();
+        RenameButtons(currentPathBrowse);
+        deletionWindow.SetActive(false);
+    }
+
+    public void CancelDeletion()
+    {
+        directoryToBeDeleted = null;
+        deletionWindow.SetActive(false);
     }
 }
