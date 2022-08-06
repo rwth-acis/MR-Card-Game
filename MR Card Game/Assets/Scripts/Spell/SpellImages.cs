@@ -22,7 +22,7 @@ public class SpellImages : MonoBehaviour
         get { return instance.meteorSpellCardImage; }
     }
 
-    // The meteor image
+    // The arror rain image
     [SerializeField]
     private Sprite arrowRainSpellCardImage;
 
@@ -32,7 +32,7 @@ public class SpellImages : MonoBehaviour
         get { return instance.arrowRainSpellCardImage; }
     }
 
-    // The meteor image
+    // The thunder strike image
     [SerializeField]
     private Sprite thunderStrikeSpellCardImage;
 
@@ -42,7 +42,7 @@ public class SpellImages : MonoBehaviour
         get { return instance.thunderStrikeSpellCardImage; }
     }
 
-    // The meteor image
+    // The obliteration image
     [SerializeField]
     private Sprite obliterationSpellCardImage;
 
@@ -52,7 +52,7 @@ public class SpellImages : MonoBehaviour
         get { return instance.obliterationSpellCardImage; }
     }
 
-    // The meteor image
+    // The stop time image
     [SerializeField]
     private Sprite stopTimeSpellCardImage;
 
@@ -62,7 +62,7 @@ public class SpellImages : MonoBehaviour
         get { return instance.stopTimeSpellCardImage; }
     }
 
-    // The meteor image
+    // The slow time image
     [SerializeField]
     private Sprite slowTimeSpellCardImage;
 
@@ -72,7 +72,7 @@ public class SpellImages : MonoBehaviour
         get { return instance.slowTimeSpellCardImage; }
     }
 
-    // The meteor image
+    // The space distortion image
     [SerializeField]
     private Sprite spaceDistortionSpellCardImage;
 
@@ -82,7 +82,7 @@ public class SpellImages : MonoBehaviour
         get { return instance.spaceDistortionSpellCardImage; }
     }
 
-    // The meteor image
+    // The rain image
     [SerializeField]
     private Sprite rainSpellCardImage;
 
@@ -92,7 +92,7 @@ public class SpellImages : MonoBehaviour
         get { return instance.rainSpellCardImage; }
     }
 
-    // The meteor image
+    // The heal image
     [SerializeField]
     private Sprite healSpellCardImage;
 
@@ -102,7 +102,7 @@ public class SpellImages : MonoBehaviour
         get { return instance.healSpellCardImage; }
     }
 
-    // The meteor image
+    // The armor image
     [SerializeField]
     private Sprite armorSpellCardImage;
 
@@ -112,7 +112,7 @@ public class SpellImages : MonoBehaviour
         get { return instance.armorSpellCardImage; }
     }
 
-    // The meteor image
+    // The draw spell image
     [SerializeField]
     private Sprite drawSpellCardImage;
 
@@ -122,7 +122,7 @@ public class SpellImages : MonoBehaviour
         get { return instance.drawSpellCardImage; }
     }
 
-    // The meteor image
+    // The teleport image
     [SerializeField]
     private Sprite teleportSpellCardImage;
 
@@ -410,31 +410,23 @@ public class SpellImages : MonoBehaviour
         {
             case "LocationSpell1":
                 return getSpellAppearanceImageTarget1;
-            break;
 
             case "LocationSpell2":
                 return getSpellAppearanceImageTarget2;
-            break;
 
             case "LocationSpell3":
                 return getSpellAppearanceImageTarget3;
-            break;
 
             case "LocationSpell4":
                 return getSpellAppearanceImageTarget4;
-            break;
 
             case "LocationSpell5":
                 return getSpellAppearanceImageTarget5;
-            break;
 
             case "LocationSpell6":
                 return getSpellAppearanceImageTarget6;
-            break;
-
             case "LocationSpell7":
                 return getSpellAppearanceImageTarget7;
-            break;
         }
 
         return getSpellAppearanceImageTarget7;
