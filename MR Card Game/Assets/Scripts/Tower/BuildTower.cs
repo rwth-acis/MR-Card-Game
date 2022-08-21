@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using static build.BuildTowerMenu;
+using Vuforia;
 
 // Define a static class that saves the image target on which the current tower is beeing built
 public static class TowerImageTarget
@@ -14,46 +15,61 @@ public static class TowerImageTarget
 
 public class BuildTower : MonoBehaviour
 {
-    // // The variable stating that the image target is currently on the field and the build UI button should appear
-    // private bool makeBuildAppear = false;
-
-    // // The variable stating that the image target is currently not the field and the build UI button should disappear
-    // private bool makeBuildDisappear = false;
-
-    // // The variables stating if a tower was already built on this image target
-    // public bool towerBuiltCorrectly;
-
-    // The minimum distance between the image target and buildings for the build menu to appear
+    [Tooltip("The minimum distance between the image target and buildings for the build menu to appear")]
     public float minimumDistanceBase = 0.1f;
 
-    // The flag that states if the build building image target is on the game board or not
+    [Tooltip("The flag that states if the build building image target is on the game board or not")]
     public bool onBoard = false;
 
     public bool visible = false;
 
+    [SerializeField] private GameObject groundPlane;
+
+    [SerializeField] private GameObject towerImageTarget;
+
+    [SerializeField] private GameObject gameBoard;
     // Define the individual canvas for the build tower button
     [SerializeField]
     private GameObject buildUI;
+
+    //The projected position on ground plane
+    private Vector3 projectedPos = Vector3.zero; 
 
     // Start is called before the first frame update
     void Start()
     {
         // Make sure the box collider is enabled
-        this.GetComponent<BoxCollider>().enabled = true;
+        GetComponent<BoxCollider>().enabled = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // // Check that no tower was built on the image target
-        // if(towerBuiltCorrectly == false)
-        // {
-
         // Make sure the box collider is enabled
-        this.GetComponent<BoxCollider>().enabled = true;
+        GetComponent<BoxCollider>().enabled = true;
+
+        if (visible)
+        {
+            projectedPos = ProjectPositionOnGroundPlane();
+            if (OverlapWithGameBoard(projectedPos))
+            {
+                onBoard = true;
+            }
+            else
+            {
+                onBoard = false;
+            }
+
+            Debug.Log("Projected Position: " + projectedPos);
+            Debug.Log("onBoard: " + onBoard);
+        }
+        else
+        {
+            onBoard = false;
+        }
 
         // Check if the image target just entered the game board or left it
-        if(onBoard == true && GameAdvancement.gamePaused == false && CheckDistanceToTowers() == true && visible == true)
+        if(onBoard && !GameAdvancement.gamePaused && CheckDistanceToTowers() && visible)
         {
             // Make the ui button appear that should be clickable to construct a tower
             buildUI.SetActive(true);
@@ -64,16 +80,12 @@ public class BuildTower : MonoBehaviour
             // Activate the billboard script
             buildUI.GetComponent<Billboard>().enabled = true;
 
-            // // Set the flag to false
-            // makeBuildAppear = false;
 
-        } else if(onBoard == false || CheckDistanceToTowers() == false || visible == false)
+        } else if(!onBoard || !CheckDistanceToTowers() || !visible)
         {
             // Make the ui button disappear
             buildUI.SetActive(false);
 
-            // // Set the flag to false
-            // makeBuildDisappear = false;
         }
 
         // Check if the build UI is active and if the game was paused
@@ -81,14 +93,17 @@ public class BuildTower : MonoBehaviour
         {
             // Deactivate the billboard script
             buildUI.SetActive(false);
-
-            // // Set the flag to false
-            // makeBuildAppear = true;
-
-            // }
         }
     }
 
+    private void LateUpdate()
+    {
+        if (visible)
+        {
+            //towerImageTarget.transform.localPosition = new Vector3(towerImageTarget.transform.localPosition.x, 0, towerImageTarget.transform.localPosition.z);
+            ProjectPositionOnGroundPlane();
+        }
+    }
     // Methods activated when the image target enters the field
     public void ImageTargetVisible()
     {
@@ -102,31 +117,26 @@ public class BuildTower : MonoBehaviour
     }
 
     // The method that adds entering enemies to the collider list
-    private void OnTriggerEnter(Collider other)
+/*    private void OnTriggerEnter(Collider other)
     {
         Debug.Log("On trigger enter was activated");
 
         // Check if the collider that entered the box collider of the image target is the game board
-        if(other.gameObject.tag == "Board")
+        if(other.gameObject.CompareTag("Board"))
         {
-            // Debug.Log("Build should appear now.");
-            // makeBuildAppear = true;
-
             onBoard = true;
         }
-    }
+    }*/
 
     // The method that removes exiting enemies of the collider list
-    private void OnTriggerExit(Collider other)
+/*    private void OnTriggerExit(Collider other)
     {
         // Check if the collider that left the box collider of the image target is the game board
-        if(other.gameObject.tag == "Board")
+        if(other.gameObject.CompareTag("Board"))
         {
-            // makeBuildDisappear = true;
-
             onBoard = false;
         }
-    }
+    }*/
 
     // The method that checks the distance between the towers and the image target to see if a tower can be built here or not
     public bool CheckDistanceToTowers()
@@ -141,9 +151,6 @@ public class BuildTower : MonoBehaviour
         // Initialize the minimum distance variable
         float minimumDistance = 1f * Board.greatestBoardDimension;
 
-        Debug.Log("The board dimension is: " + Board.greatestBoardDimension);
-        Debug.Log("The minimum distance is: " + minimumDistance);
-
         // Initialize the distance ok flag that states that the minimum distance was kept
         bool distanceOK = true;
 
@@ -151,7 +158,7 @@ public class BuildTower : MonoBehaviour
         foreach(GameObject tower in towerArray)
         {
             // Get the distance between the image target and the tower
-            distance = Vector3.Distance(tower.transform.position, this.transform.position);
+            distance = Vector3.Distance(GetRelativePosition(groundPlane.transform, tower.transform.position), projectedPos);
 
             // Check if the distance is too short
             if(distance < minimumDistance)
@@ -164,16 +171,16 @@ public class BuildTower : MonoBehaviour
         foreach(GameObject trap in trapArray)
         {
             // Get the distance between the image target and the trap
-            distance = Vector3.Distance(trap.transform.position, this.transform.position);
+            distance = Vector3.Distance(GetRelativePosition(groundPlane.transform, trap.transform.position), projectedPos);
 
             // Check if the distance is too short
-            if(distance < minimumDistance)
+            if (distance < minimumDistance)
             {
                 distanceOK = false;
             }
         }
 
-        Debug.Log("The distance ok flag is: " + distanceOK);
+/*        Debug.Log("The distance ok flag is: " + distanceOK);*/
 
         // Return the distance ok flag
         return distanceOK;
@@ -203,5 +210,51 @@ public class BuildTower : MonoBehaviour
 
         // Save the position of the building in the build position vector
         TowerEnhancer.buildPosition = gameObject.transform.position;
+    }
+
+
+    // Project the position of the image target GameObject to the ground plane with position.y=0, using similar triangles
+    // return the projected position
+    private Vector3 ProjectPositionOnGroundPlane()
+    {
+        Vector3 cameraPos = GetRelativePosition(groundPlane.transform, Camera.main.transform.position);
+        Vector3 imageTargetPos = GetRelativePosition(groundPlane.transform, towerImageTarget.transform.position);
+        Vector3 cameraToCard = imageTargetPos - cameraPos;
+        float similarityRatio = cameraPos.y / (cameraPos.y - imageTargetPos.y);
+        Vector3 cameraToProjectedPos = cameraToCard * similarityRatio;
+        Vector3 projectedPos = cameraPos + cameraToProjectedPos;
+        Debug.Log("Projected Pos: " + projectedPos);
+        return projectedPos;
+    }
+
+    private Vector3 GetRelativePosition(Transform origin, Vector3 position)
+    {
+        Vector3 distance = position - origin.position;
+        Vector3 relativePosition = Vector3.zero;
+        relativePosition.x = Vector3.Dot(distance, origin.right.normalized);
+        relativePosition.y = Vector3.Dot(distance, origin.up.normalized);
+        relativePosition.z = Vector3.Dot(distance, origin.forward.normalized);
+        return relativePosition;
+    }
+
+    //get a position vector in gameboard coordinate.
+    private bool OverlapWithGameBoard(Vector3 pos)
+    {
+        Vector3 gameBoardMin = GetRelativePosition(groundPlane.transform, gameBoard.GetComponentInChildren<BoxCollider>().bounds.min);
+        Vector3 gameBoardMax = GetRelativePosition(groundPlane.transform, gameBoard.GetComponentInChildren<BoxCollider>().bounds.max);
+        if(pos.x > gameBoardMin.x && pos.z > gameBoardMin.z && pos.x < gameBoardMax.x && pos.z < gameBoardMax.z)
+        {
+            return true;
+        }
+        //if the game board is rotated 180 degrees
+        else if(pos.x < gameBoardMin.x && pos.z < gameBoardMin.x && pos.x > gameBoardMax.x  && pos.z > gameBoardMax.z)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+        
     }
 }

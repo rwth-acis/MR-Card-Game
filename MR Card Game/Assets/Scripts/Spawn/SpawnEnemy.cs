@@ -206,31 +206,22 @@ namespace i5.Toolkit.Core.Examples.Spawners
             {
                 case "Normal Enemy":
                     return aNormalEnemy;
-                break;
                 case "Fast Enemy":
                     return aFastEnemy;
-                break;
                 case "Super Fast Enemy":
                     return aSuperFastEnemy;
-                break;
                 case "Flying Enemy":
                     return aFlyingEnemy;
-                break;
                 case "Tank Enemy":
                     return aTankEnemy;
-                break;
                 case "Slow Enemy":
                     return aSlowEnemy;
-                break;
                 case "Berzerker Enemy":
                     return aBerzerkerEnemy;
-                break;
                 case "Berzerker Flying Enemy":
                     return aBerzerkerFlyingEnemy;
-                break;
                 case "Berzerker Tank Enemy":
                     return aBerzerkerTankEnemy;
-                break;
             }
 
             // Just in case return normal enemy if the type was not found

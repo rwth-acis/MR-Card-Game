@@ -18,7 +18,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
         private GameObject archerTower;
 
         // The method used to access to the archer tower prefab as a static object
-        public static GameObject anArcherTower
+        public static GameObject ArcherTower
         {
             get { return instance.archerTower; }
         }
@@ -28,7 +28,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
         private GameObject fireTower;
 
         // The method used to access to the fire towerprefab as a static object
-        public static GameObject aFireTower
+        public static GameObject FireTower
         {
             get { return instance.fireTower; }
         }
@@ -38,7 +38,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
         private GameObject earthTower;
 
         // The method used to access to the earth tower prefab as a static object
-        public static GameObject anEarthTower
+        public static GameObject EarthTower
         {
             get { return instance.earthTower; }
         }
@@ -48,7 +48,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
         private GameObject lightningTower;
 
         // The method used to access to the lightning tower prefab as a static object
-        public static GameObject aLightningTower
+        public static GameObject LightningTower
         {
             get { return instance.lightningTower; }
         }
@@ -58,7 +58,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
         private GameObject windTower;
 
         // The method used to access to the wind tower prefab as a static object
-        public static GameObject aWindTower
+        public static GameObject WindTower
         {
             get { return instance.windTower; }
         }
@@ -69,29 +69,41 @@ namespace i5.Toolkit.Core.Examples.Spawners
             instance = this;
         }
 
-        // Update is called once per frame
-        void Update()
+        public static GameObject GetTowerPrefabOfType(TowerType type)
         {
-            
+            switch (type)
+            {
+                case TowerType.Archer:
+                    return ArcherTower;
+                case TowerType.Fire:
+                    return FireTower;
+                case TowerType.Wind:
+                    return WindTower;
+                case TowerType.Lightning:
+                    return LightningTower;
+                case TowerType.Earth:
+                    return EarthTower;
+                default:
+                    return ArcherTower;
+            }
         }
 
-        // Method that spawns an archer tower
-        public static GameObject SpawnArcherTower(GameObject parent)
+        public static GameObject SpawnTowerFromPool(GameObject parent, TowerType type)
         {
             // Get the right object pool index for the tower type
-            int poolIndex = ObjectPools.GetTowerPoolIndex("Archer Tower");
+            int poolIndex = ObjectPools.GetTowerPoolIndex(type);
 
             // Get a new tower from the object pool of the archer tower
-            GameObject tower = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(anArcherTower);});
+            GameObject tower = ObjectPool<GameObject>.RequestResource(poolIndex, () => { return Instantiate(GetTowerPrefabOfType(type)); });
 
             // Set the tower as active
-            tower.gameObject.SetActive(true);
+            tower.SetActive(true);
 
             // Set them as children of the parent that was passed
             tower.transform.parent = parent.transform;
 
             // Scale the tower down
-            tower.transform.localScale = new Vector3(Board.greatestBoardDimension * 3, Board.greatestBoardDimension * 3, Board.greatestBoardDimension * 3) * (float)0.2;
+            tower.transform.localScale = new Vector3(Board.greatestBoardDimension * 3, Board.greatestBoardDimension * 3, Board.greatestBoardDimension * 3) * 0.2f;
 
             // Vector3 newPosition =  new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
 
@@ -103,119 +115,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
 
             // // Add the reference to this building to the Buildings class so that it can be accessed
             // AddBuildingReference(tower, parent);
-        }
-
-        // Method that spawns a fire tower
-        public static GameObject SpawnFireTower(GameObject parent)
-        {
-            // Get the right object pool index for the tower type
-            int poolIndex = ObjectPools.GetTowerPoolIndex("Fire Tower");
-
-            // Get a new tower from the object pool of the fire tower
-            GameObject tower = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(aFireTower);});
-
-            // Set the tower as active
-            tower.gameObject.SetActive(true);
-
-            // Set them as children of the parent that was passed
-            tower.transform.parent = parent.transform;
-
-             // Scale the tower down
-            tower.transform.localScale = new Vector3(Board.greatestBoardDimension * 3, Board.greatestBoardDimension * 3, Board.greatestBoardDimension * 3) * (float)0.2;
-
-            // Reset the position of the tower and add the necessary overhead so that the tower is over the ground
-            tower.transform.localPosition = new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
-
-            // Return the tower object
-            return tower;
-
-            // // Add the reference to this building to the Buildings class so that it can be accessed
-            // AddBuildingReference(tower, parent);
-        }
-
-        // Method that spawns an earth tower
-        public static GameObject SpawnEarthTower(GameObject parent)
-        {
-            // Get the right object pool index for the tower type
-            int poolIndex = ObjectPools.GetTowerPoolIndex("Earth Tower");
-
-            // Get a new tower from the object pool of the earth tower
-            GameObject tower = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(anEarthTower);});
-
-            // Set the tower as active
-            tower.gameObject.SetActive(true);
-
-            // Set them as children of the parent that was passed
-            tower.transform.parent = parent.transform;
-
-             // Scale the tower down
-            tower.transform.localScale = new Vector3(Board.greatestBoardDimension * 3, Board.greatestBoardDimension * 3, Board.greatestBoardDimension * 3) * (float)0.2;
-
-            // Reset the position of the tower and add the necessary overhead so that the tower is over the ground
-            tower.transform.localPosition = new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
-
-            // Return the tower object
-            return tower;
-
-            // // Add the reference to this building to the Buildings class so that it can be accessed
-            // AddBuildingReference(tower, parent);
-        }
-
-        // Method that spawns an lightning tower
-        public static GameObject SpawnLightningTower(GameObject parent)
-        {
-            // Get the right object pool index for the tower type
-            int poolIndex = ObjectPools.GetTowerPoolIndex("Lightning Tower");
-
-            // Get a new tower from the object pool of the lightning tower
-            GameObject tower = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(aLightningTower);});
-
-            // Set the tower as active
-            tower.gameObject.SetActive(true);
-
-            // Set them as children of the parent that was passed
-            tower.transform.parent = parent.transform;
-
-             // Scale the tower down
-            tower.transform.localScale = new Vector3(Board.greatestBoardDimension * 3, Board.greatestBoardDimension * 3, Board.greatestBoardDimension * 3) * (float)0.2;
-
-            // Reset the position of the tower and add the necessary overhead so that the tower is over the ground
-            tower.transform.localPosition = new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
-
-            // Return the tower object
-            return tower;
-
-            // // Add the reference to this building to the Buildings class so that it can be accessed
-            // AddBuildingReference(tower, parent);
-        }
-
-        // Method that spawns a wind tower
-        public static GameObject SpawnWindTower(GameObject parent)
-        {
-            // Get the right object pool index for the tower type
-            int poolIndex = ObjectPools.GetTowerPoolIndex("Wind Tower");
-
-            // Get a new tower from the object pool of the wind tower
-            GameObject tower = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(aWindTower);});
-
-            // Set the tower as active
-            tower.gameObject.SetActive(true);
-
-            // Set them as children of the parent that was passed
-            tower.transform.parent = parent.transform;
-
-             // Scale the tower down
-            tower.transform.localScale = new Vector3(Board.greatestBoardDimension * 3, Board.greatestBoardDimension * 3, Board.greatestBoardDimension * 3) * (float)0.2;
-
-            // Reset the position of the tower and add the necessary overhead so that the tower is over the ground
-            tower.transform.localPosition = new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
-
-            // Return the tower object
-            return tower;
-
-            // // Add the reference to this building to the Buildings class so that it can be accessed
-            // AddBuildingReference(tower, parent);
-        }
+        }        
 
         // // The method that adds the buildings reference to the buildings class
         // public static void AddBuildingReference(GameObject tower, GameObject parent)

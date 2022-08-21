@@ -97,7 +97,7 @@ public class Level : MonoBehaviour
     private float spawnTimer;
 
     // The boolean variable stating if a unit can spawn or not
-    private bool canSpawn = true;
+    // private bool canSpawn = true;
 
     // Instantiate random number generator.  
     private readonly System.Random _random = new System.Random();  
@@ -833,23 +833,14 @@ public class Level : MonoBehaviour
         {
             case 0:
                 return "Piercing";
-            break;
-
             case 1:
                 return "Fire";
-            break;
-
             case 2:
                 return "Earth";
-            break;
-
             case 3:
                 return "Lightning";
-            break;
-
             case 4:
                 return "Wind";
-            break;
         }
 
         return "Piercing";
@@ -863,7 +854,7 @@ public class Level : MonoBehaviour
     // Method that creates the level information
     public void CreateLevelInformation()
     {
-        if(false)
+/*        if(false)
         {
             // For testing
             LevelInfo.numberOfWaves = 1;
@@ -879,153 +870,153 @@ public class Level : MonoBehaviour
             LevelInfo.berzerkerFlyingEnemies[0] = 3;
             LevelInfo.berzerkerTankEnemies[0] = 3;
 
-        } else {
+        }*/
             
-            // The real method
+        // The real method
             
-            // -------------------------------------------------------------------------------------------------------
-            // Generate the first wave
-            // -------------------------------------------------------------------------------------------------------
+        // -------------------------------------------------------------------------------------------------------
+        // Generate the first wave
+        // -------------------------------------------------------------------------------------------------------
 
-            // Get a random number between 10 and 20 and set the number of enemies to this number
-            int numberOfEnemiesInTheWave = RandomNumber(10, 20);
-            LevelInfo.numberOfEnemies[0] = numberOfEnemiesInTheWave;
+        // Get a random number between 10 and 20 and set the number of enemies to this number
+        int numberOfEnemiesInTheWave = RandomNumber(10, 20);
+        LevelInfo.numberOfEnemies[0] = numberOfEnemiesInTheWave;
+
+        // Save the number of enemies that do not have a category
+        int enemiesWithoutCategory = numberOfEnemiesInTheWave;
+
+        // A high number of enemies in the first wave should be normal enemies
+        int normalEnemies = RandomNumber(10, numberOfEnemiesInTheWave);
+        LevelInfo.normalEnemies[0] = normalEnemies;
+
+        // Set the number of enemies without category correctly
+        enemiesWithoutCategory = enemiesWithoutCategory - normalEnemies;
+
+        // Initialize the enemy index and the number of enemies in the new category
+        int enemyIndex = 0;
+        int numberOfEnemiesInNewCategory = 0;
+
+        // For as long as there are enemies, choose what enemy should be added and the number
+        while(enemiesWithoutCategory > 0)
+        {
+            // Generate a random number between 0 and 3
+            enemyIndex = RandomNumber(0, 3);
+
+            // Generate a random number between 1 and the number of enemies without category
+            numberOfEnemiesInNewCategory = RandomNumber(1, enemiesWithoutCategory);
+
+            //
+            switch(enemyIndex)
+            {
+                case 0:
+                    LevelInfo.normalEnemies[0] = LevelInfo.normalEnemies[0] + numberOfEnemiesInNewCategory;
+                break;
+
+                case 1:
+                    LevelInfo.fastEnemies[0] = LevelInfo.fastEnemies[0] + numberOfEnemiesInNewCategory;
+                break;
+
+                case 2:
+                    LevelInfo.flyingEnemies[0] = LevelInfo.flyingEnemies[0] + numberOfEnemiesInNewCategory;
+                break;
+
+                case 3:
+                    LevelInfo.tankEnemies[0] = LevelInfo.tankEnemies[0] + numberOfEnemiesInNewCategory;
+                break;
+            }
+
+            // Reduce the number of enemies without category by the number of enemies that were but in a category
+            enemiesWithoutCategory = enemiesWithoutCategory - numberOfEnemiesInNewCategory;
+        }
+
+        // -------------------------------------------------------------------------------------------------------
+        // Generate the other waves
+        // -------------------------------------------------------------------------------------------------------
+
+        // Generate the number of waves - 1 other waves
+        for(int index = 1; index < LevelInfo.numberOfWaves; index = index + 1)
+        {
+            // Set the number of enemies in the wave
+            numberOfEnemiesInTheWave = RandomNumber(10, 20) + index * numberOfAdditionalEnemiesPerWave;
+            LevelInfo.numberOfEnemies[index] = numberOfEnemiesInTheWave;
 
             // Save the number of enemies that do not have a category
-            int enemiesWithoutCategory = numberOfEnemiesInTheWave;
-
-            // A high number of enemies in the first wave should be normal enemies
-            int normalEnemies = RandomNumber(10, numberOfEnemiesInTheWave);
-            LevelInfo.normalEnemies[0] = normalEnemies;
-
-            // Set the number of enemies without category correctly
-            enemiesWithoutCategory = enemiesWithoutCategory - normalEnemies;
-
-            // Initialize the enemy index and the number of enemies in the new category
-            int enemyIndex = 0;
-            int numberOfEnemiesInNewCategory = 0;
+            enemiesWithoutCategory = numberOfEnemiesInTheWave;
 
             // For as long as there are enemies, choose what enemy should be added and the number
             while(enemiesWithoutCategory > 0)
             {
-                // Generate a random number between 0 and 3
-                enemyIndex = RandomNumber(0, 3);
+                // Not all enemies should be added at the second wave, only standard berzerker enemy
+                if(index == 1)
+                {
+                    // Generate a random number between 0 and 10
+                    enemyIndex = RandomNumber(0, 9);
+
+                } else {
+
+                    // Generate a random number between 0 and 12
+                    enemyIndex = RandomNumber(0, 11);
+                }
 
                 // Generate a random number between 1 and the number of enemies without category
                 numberOfEnemiesInNewCategory = RandomNumber(1, enemiesWithoutCategory);
 
-                //
+                // Add this number of enemies in the right category. The probability it is a normal enemy is higher than the rest
                 switch(enemyIndex)
                 {
                     case 0:
-                        LevelInfo.normalEnemies[0] = LevelInfo.normalEnemies[0] + numberOfEnemiesInNewCategory;
+                        LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnemiesInNewCategory;
                     break;
 
                     case 1:
-                        LevelInfo.fastEnemies[0] = LevelInfo.fastEnemies[0] + numberOfEnemiesInNewCategory;
+                        LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnemiesInNewCategory;
                     break;
 
                     case 2:
-                        LevelInfo.flyingEnemies[0] = LevelInfo.flyingEnemies[0] + numberOfEnemiesInNewCategory;
+                        LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnemiesInNewCategory;
                     break;
 
                     case 3:
-                        LevelInfo.tankEnemies[0] = LevelInfo.tankEnemies[0] + numberOfEnemiesInNewCategory;
+                        LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnemiesInNewCategory;
+                    break;
+
+                    case 4:
+                        LevelInfo.fastEnemies[index] = LevelInfo.fastEnemies[index] + numberOfEnemiesInNewCategory;
+                    break;
+
+                    case 5:
+                        LevelInfo.superFastEnemies[index] = LevelInfo.superFastEnemies[index] + numberOfEnemiesInNewCategory;
+                    break;
+
+                    case 6:
+                        LevelInfo.flyingEnemies[index] = LevelInfo.flyingEnemies[index] + numberOfEnemiesInNewCategory;
+                    break;
+
+                    case 7:
+                        LevelInfo.tankEnemies[index] = LevelInfo.tankEnemies[index] + numberOfEnemiesInNewCategory;
+                    break;
+
+                    case 8:
+                        LevelInfo.slowEnemies[index] = LevelInfo.slowEnemies[index] + numberOfEnemiesInNewCategory;
+                    break;
+
+                    case 9:
+                        LevelInfo.berzerkerEnemies[index] = LevelInfo.berzerkerEnemies[index] + numberOfEnemiesInNewCategory;
+                    break;
+
+                    case 10:
+                        LevelInfo.berzerkerFlyingEnemies[index] = LevelInfo.berzerkerFlyingEnemies[index] + numberOfEnemiesInNewCategory;
+                    break;
+
+                    case 11:
+                        LevelInfo.berzerkerTankEnemies[index] = LevelInfo.berzerkerTankEnemies[index] + numberOfEnemiesInNewCategory;
                     break;
                 }
 
                 // Reduce the number of enemies without category by the number of enemies that were but in a category
                 enemiesWithoutCategory = enemiesWithoutCategory - numberOfEnemiesInNewCategory;
             }
-
-            // -------------------------------------------------------------------------------------------------------
-            // Generate the other waves
-            // -------------------------------------------------------------------------------------------------------
-
-            // Generate the number of waves - 1 other waves
-            for(int index = 1; index < LevelInfo.numberOfWaves; index = index + 1)
-            {
-                // Set the number of enemies in the wave
-                numberOfEnemiesInTheWave = RandomNumber(10, 20) + index * numberOfAdditionalEnemiesPerWave;
-                LevelInfo.numberOfEnemies[index] = numberOfEnemiesInTheWave;
-
-                // Save the number of enemies that do not have a category
-                enemiesWithoutCategory = numberOfEnemiesInTheWave;
-
-                // For as long as there are enemies, choose what enemy should be added and the number
-                while(enemiesWithoutCategory > 0)
-                {
-                    // Not all enemies should be added at the second wave, only standard berzerker enemy
-                    if(index == 1)
-                    {
-                        // Generate a random number between 0 and 10
-                        enemyIndex = RandomNumber(0, 9);
-
-                    } else {
-
-                        // Generate a random number between 0 and 12
-                        enemyIndex = RandomNumber(0, 11);
-                    }
-
-                    // Generate a random number between 1 and the number of enemies without category
-                    numberOfEnemiesInNewCategory = RandomNumber(1, enemiesWithoutCategory);
-
-                    // Add this number of enemies in the right category. The probability it is a normal enemy is higher than the rest
-                    switch(enemyIndex)
-                    {
-                        case 0:
-                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnemiesInNewCategory;
-                        break;
-
-                        case 1:
-                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnemiesInNewCategory;
-                        break;
-
-                        case 2:
-                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnemiesInNewCategory;
-                        break;
-
-                        case 3:
-                            LevelInfo.normalEnemies[index] = LevelInfo.normalEnemies[index] + numberOfEnemiesInNewCategory;
-                        break;
-
-                        case 4:
-                            LevelInfo.fastEnemies[index] = LevelInfo.fastEnemies[index] + numberOfEnemiesInNewCategory;
-                        break;
-
-                        case 5:
-                            LevelInfo.superFastEnemies[index] = LevelInfo.superFastEnemies[index] + numberOfEnemiesInNewCategory;
-                        break;
-
-                        case 6:
-                            LevelInfo.flyingEnemies[index] = LevelInfo.flyingEnemies[index] + numberOfEnemiesInNewCategory;
-                        break;
-
-                        case 7:
-                            LevelInfo.tankEnemies[index] = LevelInfo.tankEnemies[index] + numberOfEnemiesInNewCategory;
-                        break;
-
-                        case 8:
-                            LevelInfo.slowEnemies[index] = LevelInfo.slowEnemies[index] + numberOfEnemiesInNewCategory;
-                        break;
-
-                        case 9:
-                            LevelInfo.berzerkerEnemies[index] = LevelInfo.berzerkerEnemies[index] + numberOfEnemiesInNewCategory;
-                        break;
-
-                        case 10:
-                            LevelInfo.berzerkerFlyingEnemies[index] = LevelInfo.berzerkerFlyingEnemies[index] + numberOfEnemiesInNewCategory;
-                        break;
-
-                        case 11:
-                            LevelInfo.berzerkerTankEnemies[index] = LevelInfo.berzerkerTankEnemies[index] + numberOfEnemiesInNewCategory;
-                        break;
-                    }
-
-                    // Reduce the number of enemies without category by the number of enemies that were but in a category
-                    enemiesWithoutCategory = enemiesWithoutCategory - numberOfEnemiesInNewCategory;
-                }
-            }
+            
         }
     }
 
@@ -1159,7 +1150,7 @@ public class Level : MonoBehaviour
     //     }
     // }
 
-    private float additionalOffset = (float)1.5;
+    //private float additionalOffset = (float)1.5;
 
     // // The method used to ground buildings
     // public void GroundBuilding(GameObject building, int index)

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 // The class of the castle game object
-static class GameAdvancement
+public static class GameAdvancement
 {
     // The maximum and current health point of the castle
     public static int castleMaxHP;
@@ -110,7 +111,7 @@ public class GameSetup : MonoBehaviour
     private GameObject gameOverlay;
 
     // The method used to access the game overlay object as a static object
-    public static GameObject getGameOverlay
+    public static GameObject GetGameOverlay
     {
         get { return instance.gameOverlay; }
     }
@@ -120,7 +121,7 @@ public class GameSetup : MonoBehaviour
     private int castleHP;
 
     // The method used to access the castle health points as a static object
-    public static int getCastleHP
+    public static int GetCastleHP
     {
         get { return instance.castleHP; }
     }
@@ -130,7 +131,7 @@ public class GameSetup : MonoBehaviour
     private int beginingCurrency;
 
     // The method used to access the begining currecy as a static object
-    public static int getBeginingCurrency
+    public static int GetBeginingCurrency
     {
         get { return instance.beginingCurrency; }
     }
@@ -155,12 +156,18 @@ public class GameSetup : MonoBehaviour
     [SerializeField]
     private Slider castleArmorBar;
 
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            // Set the instance to this script
+            instance = this;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        // Set the instance to this script
-        instance = this;
-
         // armorPoints.GetComponent<Renderer>().sortingLayerID = armorPoints.transform.parent.GetComponent<Renderer>().sortingLayerID;
 
         // // Set the number of buildings built in this round to zero
@@ -195,15 +202,6 @@ public class GameSetup : MonoBehaviour
 
         // Reset the game setup
         ResetGameSetup();
-
-        // Actualize the wave display
-        ActualizeWaveDisplay();
-
-        // Actualize the currency display
-        ActualizeCurrencyDisplay();
-
-        // Actualize the castle health points
-        ActualizeCastleHealthPoints();
     }
 
     // Update is called once per frame
@@ -221,7 +219,7 @@ public class GameSetup : MonoBehaviour
     }
 
     // Method used to actualize the current currency display of the player
-    public static void ActualizeCurrencyDisplay()
+    public static void UpdateCurrencyDisplay()
     {
         // Actualize the currency currently owned
         GameAdvancement.currencyDisplay.GetComponentInChildren<TMP_Text>().text = "Currency: " + GameAdvancement.currencyPoints;
@@ -241,10 +239,10 @@ public class GameSetup : MonoBehaviour
     }
 
     // Method used to actualize the current wave
-    public static void  ActualizeWaveDisplay()
+    public static void ActualizeWaveDisplay()
     {
-        // Change the button display
         GameAdvancement.waveDisplay.GetComponentInChildren<TMP_Text>().text = "Wave: " + GameAdvancement.currentWave;
+
     }
 
     // Method used to reset the game setup after a level was finished
@@ -264,7 +262,7 @@ public class GameSetup : MonoBehaviour
         } else {
 
             // Reset the max health points
-            GameAdvancement.castleMaxHP = getCastleHP;
+            GameAdvancement.castleMaxHP = GetCastleHP;
         }
 
         // // Reset the max health points
@@ -277,7 +275,7 @@ public class GameSetup : MonoBehaviour
         GameAdvancement.castleCurrentAP = 0;
 
         // Set the current currency points to the begining currency
-        GameAdvancement.currencyPoints = getBeginingCurrency;
+        GameAdvancement.currencyPoints = GetBeginingCurrency;
 
         // Set the wave counter to wave 0
         GameAdvancement.currentWave = 0;
@@ -304,7 +302,7 @@ public class GameSetup : MonoBehaviour
         ActualizeWaveDisplay();
 
         // Actualize the currency display
-        ActualizeCurrencyDisplay();
+        UpdateCurrencyDisplay();
 
         // Actualize the castle health points
         ActualizeCastleHealthPoints();

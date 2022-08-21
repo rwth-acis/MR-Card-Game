@@ -264,7 +264,7 @@ public class Enemy : MonoBehaviour
         GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + enemyValue;
 
         // Actualize the currency display so that the player can see that he won currency points
-        GameSetup.ActualizeCurrencyDisplay();
+        GameSetup.UpdateCurrencyDisplay();
     }
 
     // Method that reduces the health points of the castle if an enemy reaches it

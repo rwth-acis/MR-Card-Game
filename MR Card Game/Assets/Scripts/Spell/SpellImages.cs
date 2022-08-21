@@ -17,7 +17,7 @@ public class SpellImages : MonoBehaviour
     private Sprite meteorSpellCardImage;
 
     // The method used to access to the meteor spell card image as a static object
-    public static Sprite getMeteorSpellCardImage
+    public static Sprite GetMeteorSpellCardImage
     {
         get { return instance.meteorSpellCardImage; }
     }
@@ -27,7 +27,7 @@ public class SpellImages : MonoBehaviour
     private Sprite arrowRainSpellCardImage;
 
     // The method used to access to the arrow rain spell card image as a static object
-    public static Sprite getArrowRainSpellCardImage
+    public static Sprite GetArrowRainSpellCardImage
     {
         get { return instance.arrowRainSpellCardImage; }
     }
@@ -37,7 +37,7 @@ public class SpellImages : MonoBehaviour
     private Sprite thunderStrikeSpellCardImage;
 
     // The method used to access to the thunder strike spell card image as a static object
-    public static Sprite getThunderStrikeSpellCardImage
+    public static Sprite GetThunderStrikeSpellCardImage
     {
         get { return instance.thunderStrikeSpellCardImage; }
     }
@@ -47,7 +47,7 @@ public class SpellImages : MonoBehaviour
     private Sprite obliterationSpellCardImage;
 
     // The method used to access to the obliteration spell card image as a static object
-    public static Sprite getObliterationSpellCardImage
+    public static Sprite GetObliterationSpellCardImage
     {
         get { return instance.obliterationSpellCardImage; }
     }
@@ -57,7 +57,7 @@ public class SpellImages : MonoBehaviour
     private Sprite stopTimeSpellCardImage;
 
     // The method used to access to the stop time spell card image as a static object
-    public static Sprite getStopTimeSpellCardImage
+    public static Sprite GetStopTimeSpellCardImage
     {
         get { return instance.stopTimeSpellCardImage; }
     }
@@ -67,7 +67,7 @@ public class SpellImages : MonoBehaviour
     private Sprite slowTimeSpellCardImage;
 
     // The method used to access to the slow time spell card image as a static object
-    public static Sprite getSlowTimeSpellCardImage
+    public static Sprite GetSlowTimeSpellCardImage
     {
         get { return instance.slowTimeSpellCardImage; }
     }
@@ -77,7 +77,7 @@ public class SpellImages : MonoBehaviour
     private Sprite spaceDistortionSpellCardImage;
 
     // The method used to access to the space distortion spell card image as a static object
-    public static Sprite getSpaceDistortionSpellCardImage
+    public static Sprite GetSpaceDistortionSpellCardImage
     {
         get { return instance.spaceDistortionSpellCardImage; }
     }
@@ -87,7 +87,7 @@ public class SpellImages : MonoBehaviour
     private Sprite rainSpellCardImage;
 
     // The method used to access to the rain spell card image as a static object
-    public static Sprite getRainSpellCardImage
+    public static Sprite GetRainSpellCardImage
     {
         get { return instance.rainSpellCardImage; }
     }
@@ -97,7 +97,7 @@ public class SpellImages : MonoBehaviour
     private Sprite healSpellCardImage;
 
     // The method used to access to the heal spell card image as a static object
-    public static Sprite getHealSpellCardImage
+    public static Sprite GetHealSpellCardImage
     {
         get { return instance.healSpellCardImage; }
     }
@@ -107,7 +107,7 @@ public class SpellImages : MonoBehaviour
     private Sprite armorSpellCardImage;
 
     // The method used to access to the armor spell card image as a static object
-    public static Sprite getArmorSpellCardImage
+    public static Sprite GetArmorSpellCardImage
     {
         get { return instance.armorSpellCardImage; }
     }
@@ -117,7 +117,7 @@ public class SpellImages : MonoBehaviour
     private Sprite drawSpellCardImage;
 
     // The method used to access to the draw spell card image as a static object
-    public static Sprite getDrawSpellCardImage
+    public static Sprite GetDrawSpellCardImage
     {
         get { return instance.drawSpellCardImage; }
     }
@@ -127,7 +127,7 @@ public class SpellImages : MonoBehaviour
     private Sprite teleportSpellCardImage;
 
     // The method used to access to the teleport spell card image as a static object
-    public static Sprite getTeleportSpellCardImage
+    public static Sprite GetTeleportSpellCardImage
     {
         get { return instance.teleportSpellCardImage; }
     }
@@ -141,7 +141,7 @@ public class SpellImages : MonoBehaviour
     private GameObject spellAppearanceImageTarget1;
 
     // The method used to access to the spell appearance of the image target 1 as a static object
-    public static GameObject getSpellAppearanceImageTarget1
+    public static GameObject GetSpellAppearanceImageTarget1
     {
         get { return instance.spellAppearanceImageTarget1; }
     }
@@ -151,7 +151,7 @@ public class SpellImages : MonoBehaviour
     private GameObject spellAppearanceImageTarget2;
 
     // The method used to access to the spell appearance of the image target 2 as a static object
-    public static GameObject getSpellAppearanceImageTarget2
+    public static GameObject GetSpellAppearanceImageTarget2
     {
         get { return instance.spellAppearanceImageTarget2; }
     }
@@ -161,7 +161,7 @@ public class SpellImages : MonoBehaviour
     private GameObject spellAppearanceImageTarget3;
 
     // The method used to access to the spell appearance of the image target 3 as a static object
-    public static GameObject getSpellAppearanceImageTarget3
+    public static GameObject GetSpellAppearanceImageTarget3
     {
         get { return instance.spellAppearanceImageTarget3; }
     }
@@ -171,7 +171,7 @@ public class SpellImages : MonoBehaviour
     private GameObject spellAppearanceImageTarget4;
 
     // The method used to access to the spell appearance of the image target 4 as a static object
-    public static GameObject getSpellAppearanceImageTarget4
+    public static GameObject GetSpellAppearanceImageTarget4
     {
         get { return instance.spellAppearanceImageTarget4; }
     }
@@ -181,7 +181,7 @@ public class SpellImages : MonoBehaviour
     private GameObject spellAppearanceImageTarget5;
 
     // The method used to access to the spell appearance of the image target 5 as a static object
-    public static GameObject getSpellAppearanceImageTarget5
+    public static GameObject GetSpellAppearanceImageTarget5
     {
         get { return instance.spellAppearanceImageTarget5; }
     }
@@ -191,7 +191,7 @@ public class SpellImages : MonoBehaviour
     private GameObject spellAppearanceImageTarget6;
 
     // The method used to access to the spell appearance of the image target 6 as a static object
-    public static GameObject getSpellAppearanceImageTarget6
+    public static GameObject GetSpellAppearanceImageTarget6
     {
         get { return instance.spellAppearanceImageTarget6; }
     }
@@ -201,7 +201,7 @@ public class SpellImages : MonoBehaviour
     private GameObject spellAppearanceImageTarget7;
 
     // The method used to access to the spell appearance of the image target 7 as a static object
-    public static GameObject getSpellAppearanceImageTarget7
+    public static GameObject GetSpellAppearanceImageTarget7
     {
         get { return instance.spellAppearanceImageTarget7; }
     }
@@ -409,27 +409,27 @@ public class SpellImages : MonoBehaviour
         switch(imageTarget.name)
         {
             case "LocationSpell1":
-                return getSpellAppearanceImageTarget1;
+                return GetSpellAppearanceImageTarget1;
 
             case "LocationSpell2":
-                return getSpellAppearanceImageTarget2;
+                return GetSpellAppearanceImageTarget2;
 
             case "LocationSpell3":
-                return getSpellAppearanceImageTarget3;
+                return GetSpellAppearanceImageTarget3;
 
             case "LocationSpell4":
-                return getSpellAppearanceImageTarget4;
+                return GetSpellAppearanceImageTarget4;
 
             case "LocationSpell5":
-                return getSpellAppearanceImageTarget5;
+                return GetSpellAppearanceImageTarget5;
 
             case "LocationSpell6":
-                return getSpellAppearanceImageTarget6;
+                return GetSpellAppearanceImageTarget6;
             case "LocationSpell7":
-                return getSpellAppearanceImageTarget7;
+                return GetSpellAppearanceImageTarget7;
         }
 
-        return getSpellAppearanceImageTarget7;
+        return GetSpellAppearanceImageTarget7;
     }
 
     // Method used to get the right spell image from the spell type
@@ -439,54 +439,31 @@ public class SpellImages : MonoBehaviour
         switch(type)
         {
             case "Meteor":
-                return getMeteorSpellCardImage;
-            break;
-
+                return GetMeteorSpellCardImage;
             case "Arrow rain":
-                return getArrowRainSpellCardImage;
-            break;
-
+                return GetArrowRainSpellCardImage;
             case "Thunder strike":
-                return getThunderStrikeSpellCardImage;
-            break;
-
+                return GetThunderStrikeSpellCardImage;
             case "Armor":
-                return getArmorSpellCardImage;
-            break;
-
+                return GetArmorSpellCardImage;
             case "Heal":
-                return getHealSpellCardImage;
-            break;
-
+                return GetHealSpellCardImage;
             case "Obliteration":
-                return getObliterationSpellCardImage;
-            break;
-
+                return GetObliterationSpellCardImage;
             case "Draw":
-                return getDrawSpellCardImage;
-            break;
-
+                return GetDrawSpellCardImage;
             case "Teleport":
-                return getTeleportSpellCardImage;
-            break;
-
+                return GetTeleportSpellCardImage;
             case "Space distortion":
-                return getSpaceDistortionSpellCardImage;
-            break;
-
+                return GetSpaceDistortionSpellCardImage;
             case "Slow time":
-                return getSlowTimeSpellCardImage;
-            break;
-
+                return GetSlowTimeSpellCardImage;
             case "Stop time":
-                return getStopTimeSpellCardImage;
-            break;
-
+                return GetStopTimeSpellCardImage;
             case "Rain":
-                return getRainSpellCardImage;
-            break;
+                return GetRainSpellCardImage;
         }
 
-        return getMeteorSpellCardImage;
+        return GetMeteorSpellCardImage;
     }
 }

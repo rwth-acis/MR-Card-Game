@@ -1030,7 +1030,7 @@ public class SpellCard : MonoBehaviour
         float greatestDistance = teleportRadius * Board.greatestBoardDimension;
 
         // Initialize the distance variable
-        float distance = 0;
+        //float distance = 0;
 
         // Initialize the closest enemy variable
         List<GameObject> enemiesInRange = EnemiesInRange(spellCard, greatestDistance);
@@ -1057,7 +1057,7 @@ public class SpellCard : MonoBehaviour
         float closestDistance = spaceDistortionRadius * Board.greatestBoardDimension;
 
         // Initialize the distance variable
-        float distance = 0;
+        //float distance = 0;
 
         // Initialize the closest enemy variable
         List<GameObject> enemiesInRange = EnemiesInRange(spellCard, closestDistance);
@@ -1266,7 +1266,7 @@ public class SpellCard : MonoBehaviour
         float closestDistance = radius * Board.greatestBoardDimension;
 
         // Initialize the distance variable
-        float distance = 0;
+        // float distance = 0;
 
         // Initialize the closest enemy variable
         List<GameObject> enemiesInRange = EnemiesInRange(spellCard, closestDistance);
