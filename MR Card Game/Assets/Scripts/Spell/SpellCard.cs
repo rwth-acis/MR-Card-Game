@@ -40,7 +40,7 @@ public class SpellCard : MonoBehaviour
 {
 
     // The boolean variable that states that the image target is on or off the game board
-    private bool onGameBoard = false;
+    private bool onBoard = false;
 
     // The answer question overlay object
     [SerializeField]
@@ -62,6 +62,18 @@ public class SpellCard : MonoBehaviour
     [SerializeField]
     private Image spellImage;
 
+    [SerializeField]
+    private GameObject groundPlane;
+
+    [SerializeField]
+    private GameObject spellImageTarget;
+
+    [SerializeField]
+    private GameObject gameBoard;
+
+    [SerializeField]
+    private GameObject spellPositionIndicator;
+
     // // The boolean variable that states that the image target is in the camera field
     // private bool cardVisibleButNotDisplayed = false;
 
@@ -73,6 +85,9 @@ public class SpellCard : MonoBehaviour
 
     // The flag that states if the card is currently visible
     private bool visible = false;
+
+    //The projected position on ground plane
+    private Vector3 projectedPos;
 
     // Define the currency display button
     [SerializeField]
@@ -137,25 +152,43 @@ public class SpellCard : MonoBehaviour
             HideSpellCanvas();
 
         } else {
-
             // Check if there is at least one drawn spell card on the game board
-            if(Cards.drawnSpellsOnBoard > 0 && cardDrawn == false)
+            if(Cards.drawnSpellsOnBoard > 0 && !cardDrawn)
             {
                 // Hide the reveal spell menu
                 HideSpellCanvas();
             }
 
+            if (visible)
+            {
+                projectedPos = ProjectPositionOnGroundPlane();
+                spellPositionIndicator.transform.SetParent(groundPlane.transform, true);
+                spellPositionIndicator.transform.localPosition = new Vector3(projectedPos.x, 0.005f, projectedPos.z);
+                if (OverlapWithGameBoard(projectedPos))
+                {
+                    onBoard = true;
+                }
+                else
+                {
+                    onBoard = false;
+                }
+            }
+            else
+            {
+                onBoard = false;
+            }
+
             // Check if the card is visible but not drawn while the game is not paused and no other spell card is beeing drawn
-            if(visible == true && cardDrawn == false && GameAdvancement.gamePaused == false && Questions.numberOfQuestionsNeededToAnswer == 0)
+            if (visible&& !cardDrawn && !GameAdvancement.gamePaused && Questions.numberOfQuestionsNeededToAnswer == 0)
             {
                 // Display the reveal spell menu
                 DisplayDrawSpell();
             }
 
             // Make drawn spells appear if the wave is ongoing
-            if(visible == true && cardDrawn == true)
+            if (visible && cardDrawn)
             {
-                if(onGameBoard == true)
+                if (onBoard)
                 {
                     // Display the reveal spell menu
                     DisplayPlaySpell();
@@ -166,6 +199,49 @@ public class SpellCard : MonoBehaviour
                     DisplaySpellImage();
                 }
             }
+        }
+    }
+
+    // Project the position of the image target GameObject to the ground plane with position.y=0, using similar triangles
+    // return the projected position
+    private Vector3 ProjectPositionOnGroundPlane()
+    {
+        Vector3 cameraPos = GetRelativePosition(groundPlane.transform, Camera.main.transform.position);
+        Vector3 imageTargetPos = GetRelativePosition(groundPlane.transform, spellImageTarget.transform.position);
+        Vector3 cameraToCard = imageTargetPos - cameraPos;
+        float similarityRatio = cameraPos.y / (cameraPos.y - imageTargetPos.y);
+        Vector3 cameraToProjectedPos = cameraToCard * similarityRatio;
+        Vector3 projectedPos = cameraPos + cameraToProjectedPos;
+        return projectedPos;
+    }
+
+    private Vector3 GetRelativePosition(Transform origin, Vector3 position)
+    {
+        Vector3 distance = position - origin.position;
+        Vector3 relativePosition = Vector3.zero;
+        relativePosition.x = Vector3.Dot(distance, origin.right.normalized);
+        relativePosition.y = Vector3.Dot(distance, origin.up.normalized);
+        relativePosition.z = Vector3.Dot(distance, origin.forward.normalized);
+        return relativePosition;
+    }
+
+    //get a position vector in gameboard coordinate.
+    private bool OverlapWithGameBoard(Vector3 pos)
+    {
+        Vector3 gameBoardMin = GetRelativePosition(groundPlane.transform, gameBoard.GetComponentInChildren<BoxCollider>().bounds.min);
+        Vector3 gameBoardMax = GetRelativePosition(groundPlane.transform, gameBoard.GetComponentInChildren<BoxCollider>().bounds.max);
+        if (pos.x > gameBoardMin.x && pos.z > gameBoardMin.z && pos.x < gameBoardMax.x && pos.z < gameBoardMax.z)
+        {
+            return true;
+        }
+        //if the game board is rotated 180 degrees
+        else if (pos.x < gameBoardMin.x && pos.z < gameBoardMin.x && pos.x > gameBoardMax.x && pos.z > gameBoardMax.z)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -317,7 +393,7 @@ public class SpellCard : MonoBehaviour
         // Check if that card was already drawn
         if(cardDrawn == true)
         {
-            if(onGameBoard == true)
+            if(onBoard == true)
             {
                 // Increase the number of drawn spells on the board by one
                 Cards.drawnSpellsOnBoard = Cards.drawnSpellsOnBoard + 1;
@@ -352,7 +428,7 @@ public class SpellCard : MonoBehaviour
         HideSpellCanvas();
 
         // Check if the card was drawn
-        if(cardDrawn == false && onGameBoard == true)
+        if(cardDrawn == false && onBoard == true)
         {
             // Decrease the number of drawn spells on the game board by one
             Cards.drawnSpellsOnBoard = Cards.drawnSpellsOnBoard - 1;
@@ -483,7 +559,7 @@ public class SpellCard : MonoBehaviour
         DisplaySpellImage();
 
         // Check if the spell card is on the game board
-        if(onGameBoard == true)
+        if(onBoard == true)
         {
             // Increase the number of drawn spells that are on the board by one
             Cards.drawnSpellsOnBoard = Cards.drawnSpellsOnBoard + 1;
@@ -537,10 +613,10 @@ public class SpellCard : MonoBehaviour
     private float timeBeforeSpellLaunch;
 
     // The method used to detect that the image target entered the game board space
-    private void OnTriggerEnter(Collider other)
+/*    private void OnTriggerEnter(Collider other)
     {
         // Check if the collider that entered the box collider of the image target is the game board
-        if(other.gameObject.tag == "Board")
+        if(other.gameObject.CompareTag("Board"))
         {
             // Set the variable that states that the spell card is on the board to true
             onGameBoard = true;
@@ -588,7 +664,7 @@ public class SpellCard : MonoBehaviour
                 GameAdvancement.gamePaused = false;
             }            
         }
-    }
+    }*/
 
     // The method that displays the spell card canvas correctly so that the play spell button is enabled
     private void DisplayPlaySpell()
@@ -1292,7 +1368,7 @@ public class SpellCard : MonoBehaviour
         // Reset the spell card so that it was not drawn and cannot be played
         cardDrawn = false;
         visible = false;
-        onGameBoard = false;
+        onBoard = false;
 
         // Reset the spell type
         spellType = "";

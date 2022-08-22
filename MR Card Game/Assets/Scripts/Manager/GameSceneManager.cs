@@ -198,11 +198,6 @@ public class GameSceneManager : MonoBehaviour
             spellCard.GetComponent<SpellCard>().ResetSpellCard();
         }
     }
-
-    public void ContentPlaced()
-    {
-        Debug.Log("Placed");
-    }
 }
 /// <summary>
 /// The JSON Serialization for the Models

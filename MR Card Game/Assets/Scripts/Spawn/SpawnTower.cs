@@ -102,13 +102,13 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Set them as children of the parent that was passed
             tower.transform.parent = parent.transform;
 
-            // Scale the tower down
+/*            // Scale the tower down
             tower.transform.localScale = new Vector3(Board.greatestBoardDimension * 3, Board.greatestBoardDimension * 3, Board.greatestBoardDimension * 3) * 0.2f;
 
             // Vector3 newPosition =  new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
 
             // Reset the position of the tower and add the necessary overhead so that the tower is over the ground
-            tower.transform.localPosition = new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
+            tower.transform.localPosition = new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);*/
 
             // Return the tower object
             return tower;

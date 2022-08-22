@@ -81,7 +81,7 @@ public class GameBoard : MonoBehaviour
     [SerializeField]
     private Button startNextWave;
 
-    private bool gameBoardTracked = false;
+    //private bool gameBoardTracked = false;
 
     // public static GameObject GetGameBoard()
     // {
@@ -114,14 +114,10 @@ public class GameBoard : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Board.activateGameBoard == true)
+/*        if(Board.activateGameBoard)
         {
             Board.activateGameBoard = false;
-            Board.gameBoard.gameObject.SetActive(true);
-        }
-        /*if (gameBoardTracked)
-        {
-            gameBoard.transform.position = topLeftCorner.transform.position;
+            Board.gameBoard.SetActive(true);
         }*/
     }
 
@@ -142,8 +138,6 @@ public class GameBoard : MonoBehaviour
         // Set the flag that the top left corner is in view
         Board.topLeftCornerVisible = true;
 
-        gameBoardTracked = true;
-
         // If the other corner is visible, then display the game board
         DisplayGameBoard();
 
@@ -157,7 +151,6 @@ public class GameBoard : MonoBehaviour
     // Method that is activated when the top left corner image target leaves the camera field
     public void TopLeftLeftCameraField()
     {
-        gameBoardTracked = false;
 
         // Set the flag that the top left corner is not in view anymore
         Board.topLeftCornerVisible = false;
@@ -216,14 +209,14 @@ public class GameBoard : MonoBehaviour
 
         // Set the game board as child of the top left corner
         //gameBoard.transform.parent = topLeftCorner.transform;
-        gameBoard.transform.position = topLeftCorner.transform.position;
+/*        gameBoard.transform.position = topLeftCorner.transform.position;
 
         // Set the game board rotation correctly
         SetBoardRotationCorrectly();
 
         SetBoardPositionCorrectly();
 
-        SetBoardScalingCorrectly();
+        SetBoardScalingCorrectly();*/
         
     }
 

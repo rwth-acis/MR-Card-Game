@@ -239,7 +239,7 @@ public class GameSetup : MonoBehaviour
     }
 
     // Method used to actualize the current wave
-    public static void ActualizeWaveDisplay()
+    public static void UpdateWaveDisplay()
     {
         GameAdvancement.waveDisplay.GetComponentInChildren<TMP_Text>().text = "Wave: " + GameAdvancement.currentWave;
 
@@ -299,7 +299,7 @@ public class GameSetup : MonoBehaviour
         GameAdvancement.raining = false;
 
         // Actualize the wave display
-        ActualizeWaveDisplay();
+        UpdateWaveDisplay();
 
         // Actualize the currency display
         UpdateCurrencyDisplay();

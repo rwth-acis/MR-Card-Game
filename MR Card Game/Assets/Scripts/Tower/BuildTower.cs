@@ -29,8 +29,9 @@ public class BuildTower : MonoBehaviour
 
     [SerializeField] private GameObject gameBoard;
     // Define the individual canvas for the build tower button
-    [SerializeField]
-    private GameObject buildUI;
+    [SerializeField] private GameObject buildUI;
+
+    [SerializeField] private GameObject buildPositionIndicator;
 
     //The projected position on ground plane
     private Vector3 projectedPos = Vector3.zero; 
@@ -47,10 +48,11 @@ public class BuildTower : MonoBehaviour
     {
         // Make sure the box collider is enabled
         GetComponent<BoxCollider>().enabled = true;
-
-        if (visible)
+        if (visible && !GameAdvancement.gamePaused)
         {
             projectedPos = ProjectPositionOnGroundPlane();
+            buildPositionIndicator.transform.SetParent(groundPlane.transform, true);
+            buildPositionIndicator.transform.localPosition = projectedPos;
             if (OverlapWithGameBoard(projectedPos))
             {
                 onBoard = true;
@@ -59,9 +61,6 @@ public class BuildTower : MonoBehaviour
             {
                 onBoard = false;
             }
-
-            Debug.Log("Projected Position: " + projectedPos);
-            Debug.Log("onBoard: " + onBoard);
         }
         else
         {
@@ -96,14 +95,6 @@ public class BuildTower : MonoBehaviour
         }
     }
 
-    private void LateUpdate()
-    {
-        if (visible)
-        {
-            //towerImageTarget.transform.localPosition = new Vector3(towerImageTarget.transform.localPosition.x, 0, towerImageTarget.transform.localPosition.z);
-            ProjectPositionOnGroundPlane();
-        }
-    }
     // Methods activated when the image target enters the field
     public void ImageTargetVisible()
     {
@@ -195,8 +186,8 @@ public class BuildTower : MonoBehaviour
         // Use the open build tower menu of the build tower menu script
         OpenBuildTowerMenu();
 
-        // Save the position of the building in the build position vector
-        TowerEnhancer.buildPosition = gameObject.transform.position;
+        // Save the position of the building in the build position vector in the gameboard coordinate (assume the localPosition of gameBoard on Ground Plane is 0,0,0
+        TowerEnhancer.buildPosition = new Vector3(projectedPos.x / gameBoard.transform.localScale.x, projectedPos.y / gameBoard.transform.localScale.y, projectedPos.z / gameBoard.transform.localScale.z);
     }
 
     // The method used to begin to build a tower on an image target when pressing on the build tower button
@@ -208,8 +199,8 @@ public class BuildTower : MonoBehaviour
         // Use the open build trap menu of the build tower menu script
         OpenBuildTrapMenu();
 
-        // Save the position of the building in the build position vector
-        TowerEnhancer.buildPosition = gameObject.transform.position;
+        // Save the position of the building in the build position vector in the gameboard coordinate (assume the localPosition of gameBoard on Ground Plane is 0,0,0
+        TowerEnhancer.buildPosition = new Vector3(projectedPos.x / gameBoard.transform.localScale.x, projectedPos.y / gameBoard.transform.localScale.y, projectedPos.z / gameBoard.transform.localScale.z);
     }
 
 
@@ -223,7 +214,6 @@ public class BuildTower : MonoBehaviour
         float similarityRatio = cameraPos.y / (cameraPos.y - imageTargetPos.y);
         Vector3 cameraToProjectedPos = cameraToCard * similarityRatio;
         Vector3 projectedPos = cameraPos + cameraToProjectedPos;
-        Debug.Log("Projected Pos: " + projectedPos);
         return projectedPos;
     }
 
@@ -254,7 +244,6 @@ public class BuildTower : MonoBehaviour
         else
         {
             return false;
-        }
-        
+        }       
     }
 }

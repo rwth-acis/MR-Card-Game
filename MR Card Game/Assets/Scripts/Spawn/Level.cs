@@ -190,13 +190,13 @@ public class Level : MonoBehaviour
         // GroundAllBuildings();
 
         // Increase the current wave number
-        GameAdvancement.currentWave = GameAdvancement.currentWave + 1;
+        GameAdvancement.currentWave++;
 
         // // Ground the game board
         // GameBoard.GroundGameBoard();
 
         // Actualize the wave display
-        GameSetup.ActualizeWaveDisplay();
+        GameSetup.UpdateWaveDisplay();
 
         // Set the wave ongoing flag to true
         LevelInfo.waveOngoing = true;
@@ -240,7 +240,7 @@ public class Level : MonoBehaviour
         Debug.Log("The number of berzerker tank enemies in the wave is: " + LevelInfo.berzerkerTankEnemies[GameAdvancement.currentWave - 1]);
 
         // Spawn the whole wave
-        for(int counter = LevelInfo.numberOfEnemies[GameAdvancement.currentWave - 1]; counter > 0; counter = counter - 1)
+        for(int counter = LevelInfo.numberOfEnemies[GameAdvancement.currentWave - 1]; counter > 0; counter--)
         {
             // Check if currently there is no group of enemy that should be spawned
             if(enemySpawnNumber == 0)
@@ -271,7 +271,7 @@ public class Level : MonoBehaviour
                 enemy.weakness = weakness;
 
                 // Reduce the number of enemies that should spawn as a group
-                enemySpawnNumber = enemySpawnNumber - 1;
+                enemySpawnNumber--;
 
                 // // Reset the flag that an enemy can spawn
                 // canSpawn = false;
@@ -320,10 +320,10 @@ public class Level : MonoBehaviour
                 yield return new WaitForSeconds(0.1f);
 
                 // Check that the game is not paused, the time not stopped, and the board visible
-                if(GameAdvancement.gamePaused == false && GameAdvancement.timeStopped == false && Board.boardVisible == true)
+                if(GameAdvancement.gamePaused == false && GameAdvancement.timeStopped == false && Board.boardVisible)
                 {
                     // Increase the time waited by 0.1 seconds
-                    timeWaited = timeWaited + 0.1f;
+                    timeWaited += 0.1f;
                 }
             }
 

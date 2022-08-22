@@ -574,20 +574,22 @@ namespace build
         // The method used to ground buildings
         public void GroundBuilding(GameObject building, GameObject imageTarget)
         {
-            // Set the position of the building to the position of the image target
-            building.transform.position = TowerEnhancer.buildPosition;
-
             // Set the building as child of the buildings storage object that is a child of the game board
             building.transform.parent = Board.buildingStorage.transform;
 
+            // Set the position of the building to the position of the image target
+            building.transform.localPosition = TowerEnhancer.buildPosition;
+
             // Set the rotation of the tower to the same as the rotation of the game board
             building.transform.rotation = Board.gameBoard.transform.rotation;
+
+            building.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
 
             // Make sure the y position of the tower is at 0.1
 
             Vector3 newPosition = building.transform.localPosition;
 
-            if(building.transform.tag == "Trap")
+            if(building.transform.CompareTag("Trap"))
             {
                 newPosition.y = -0.07f;
             } else {
