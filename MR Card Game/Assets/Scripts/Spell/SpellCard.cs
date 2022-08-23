@@ -39,9 +39,6 @@ public static class Cards
 public class SpellCard : MonoBehaviour
 {
 
-    // The boolean variable that states that the image target is on or off the game board
-    private bool onBoard = false;
-
     // The answer question overlay object
     [SerializeField]
     private GameObject answerQuestions;
@@ -94,7 +91,7 @@ public class SpellCard : MonoBehaviour
     private Button currencyDisplay;
 
     // The method used to access to the currency display button as a static object
-    public static Button getCurrencyDisplay
+    public static Button CurrencyDisplay
     {
         get { return instance.currencyDisplay; }
     }
@@ -103,8 +100,11 @@ public class SpellCard : MonoBehaviour
     [SerializeField]
     private Button waveDisplay;
 
+    // The boolean variable that states that the image target is on or off the game board
+    private bool onBoard = false;
+
     // The method used to access to the wave display button as a static object
-    public static Button getWaveDisplay
+    public static Button WaveDisplay
     {
         get { return instance.waveDisplay; }
     }
@@ -114,7 +114,7 @@ public class SpellCard : MonoBehaviour
     private Button startNextWave;
 
     // The method used to access to the start next wave button as a static object
-    public static Button getStartNextWave
+    public static Button StartNextWave
     {
         get { return instance.startNextWave; }
     }
@@ -253,16 +253,16 @@ public class SpellCard : MonoBehaviour
     public static void ActivateGameOverlay()
     {
         // Activate the currency display button
-        getCurrencyDisplay.gameObject.SetActive(true);
+        CurrencyDisplay.gameObject.SetActive(true);
 
         // Activate the wave display button
-        getWaveDisplay.gameObject.SetActive(true);
+        WaveDisplay.gameObject.SetActive(true);
 
         // Check if the wave is currently ongoing
         if(LevelInfo.waveOngoing == false || (LevelInfo.numberOfUndefeatedEnemies == 0 && GameAdvancement.currentWave < LevelInfo.numberOfWaves))
         {
             // If it is not the case, activate the start next wave button
-            getStartNextWave.gameObject.SetActive(true);
+            StartNextWave.gameObject.SetActive(true);
         }
     }
 
@@ -270,13 +270,13 @@ public class SpellCard : MonoBehaviour
     public static void DeactivateGameOverlay()
     {
         // Deactivate the currency display button
-        getCurrencyDisplay.gameObject.SetActive(false);
+        CurrencyDisplay.gameObject.SetActive(false);
 
         // Deactivate the wave display button
-        getWaveDisplay.gameObject.SetActive(false);
+        WaveDisplay.gameObject.SetActive(false);
 
         // Deactivate the start next wave button
-        getStartNextWave.gameObject.SetActive(false);
+        StartNextWave.gameObject.SetActive(false);
     }
 
     //---------------------------------------------------------------------------------------------------------------

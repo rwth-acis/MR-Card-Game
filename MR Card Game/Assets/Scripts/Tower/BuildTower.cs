@@ -33,14 +33,32 @@ public class BuildTower : MonoBehaviour
 
     [SerializeField] private GameObject buildPositionIndicator;
 
+    [SerializeField] private GameObject imageTargetPicture;
+
     //The projected position on ground plane
-    private Vector3 projectedPos = Vector3.zero; 
+    private Vector3 projectedPos = Vector3.zero;
+
+    //Multiply with the alpha of materials on the tower indicator.
+    private float indicatorAlphaMultiplyFactor = 1;
+
+    private Renderer[] indicatorRenderers;
+    private float[] initialAlphas;
+    private List<Material> gameBoardMaterials;
 
     // Start is called before the first frame update
     void Start()
     {
         // Make sure the box collider is enabled
         GetComponent<BoxCollider>().enabled = true;
+        indicatorRenderers = buildPositionIndicator.GetComponentsInChildren<Renderer>();
+        initialAlphas = new float[indicatorRenderers.Length];
+        for(int i = 0; i < indicatorRenderers.Length; i++)
+        {
+            if (indicatorRenderers[i].gameObject.name != "ImageTargetPicture")
+            {
+                initialAlphas[i] = indicatorRenderers[i].material.color.a;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -48,11 +66,12 @@ public class BuildTower : MonoBehaviour
     {
         // Make sure the box collider is enabled
         GetComponent<BoxCollider>().enabled = true;
+        //onBoard check
         if (visible && !GameAdvancement.gamePaused)
         {
             projectedPos = ProjectPositionOnGroundPlane();
             buildPositionIndicator.transform.SetParent(groundPlane.transform, true);
-            buildPositionIndicator.transform.localPosition = projectedPos;
+            buildPositionIndicator.SetActive(true);
             if (OverlapWithGameBoard(projectedPos))
             {
                 onBoard = true;
@@ -67,6 +86,16 @@ public class BuildTower : MonoBehaviour
             onBoard = false;
         }
 
+        if (onBoard)
+        {
+            //ChangeBoardMaterialAlpha(0.5f);
+        }
+        else
+        {
+            //ChangeBoardMaterialAlpha(1f);
+            buildPositionIndicator.SetActive(false);
+        }
+
         // Check if the image target just entered the game board or left it
         if(onBoard && !GameAdvancement.gamePaused && CheckDistanceToTowers() && visible)
         {
@@ -78,7 +107,6 @@ public class BuildTower : MonoBehaviour
 
             // Activate the billboard script
             buildUI.GetComponent<Billboard>().enabled = true;
-
 
         } else if(!onBoard || !CheckDistanceToTowers() || !visible)
         {
@@ -92,6 +120,25 @@ public class BuildTower : MonoBehaviour
         {
             // Deactivate the billboard script
             buildUI.SetActive(false);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (onBoard)
+        {
+            // Set the position of the indicator correctly, not influenced by image target
+            buildPositionIndicator.transform.localPosition = projectedPos;
+            buildPositionIndicator.transform.rotation = Quaternion.identity;
+        }
+
+    }
+
+    private void FixedUpdate()
+    {
+        if (onBoard)
+        {
+            FlashIndicator();
         }
     }
 
@@ -245,5 +292,31 @@ public class BuildTower : MonoBehaviour
         {
             return false;
         }       
+    }
+
+
+    //Used only in FixedUpdate
+    private void FlashIndicator()
+    {
+        for(int i = 0; i < indicatorRenderers.Length; i++)
+        {
+            if (indicatorRenderers[i].gameObject.name != "ImageTargetPicture")
+            {
+                indicatorRenderers[i].material.color = new Color(indicatorRenderers[i].material.color.r, indicatorRenderers[i].material.color.g, indicatorRenderers[i].material.color.b, initialAlphas[i] * indicatorAlphaMultiplyFactor);
+            }
+        }
+        indicatorAlphaMultiplyFactor -= 0.01f;
+        if(indicatorAlphaMultiplyFactor < 0)
+        {
+            indicatorAlphaMultiplyFactor = 1;
+        }
+    }
+
+    private void ChangeBoardMaterialAlpha(float alpha)
+    {
+        foreach(Material mat in gameBoardMaterials)
+        {
+            mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, alpha);
+        }
     }
 }
