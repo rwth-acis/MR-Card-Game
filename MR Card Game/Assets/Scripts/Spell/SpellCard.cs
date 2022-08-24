@@ -163,7 +163,7 @@ public class SpellCard : MonoBehaviour
             {
                 projectedPos = ProjectPositionOnGroundPlane();
                 spellPositionIndicator.transform.SetParent(groundPlane.transform, true);
-                spellPositionIndicator.transform.localPosition = new Vector3(projectedPos.x, 0.005f, projectedPos.z);
+                spellPositionIndicator.transform.localPosition = new Vector3(projectedPos.x, 0.01f, projectedPos.z);
                 if (OverlapWithGameBoard(projectedPos))
                 {
                     onBoard = true;
