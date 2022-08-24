@@ -104,7 +104,7 @@ public class Projectile : MonoBehaviour
             lastPosition = target.transform.position;
 
             // If the target is not null and alive, move the projectile in the direction of the target
-            transform.position = Vector3.MoveTowards(transform.position, target.gameObject.transform.position, Time.deltaTime * parent.GetProjectileSpeed * 14 * Board.greatestBoardDimension);
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.deltaTime * parent.GetProjectileSpeed * 14 * Board.greatestBoardDimension);
 
             // Check if the projectile is an arrow
             if(parent.GetTowerType == TowerType.Archer)
@@ -114,8 +114,9 @@ public class Projectile : MonoBehaviour
             }
 
             // Check if the projectile reached the destination
-            if(transform.position == target.transform.position)
+            if(ReachPosition(target.transform.position))
             {
+
                 // Here, depending on the tower type, the enemy or enemies need to take damage depending on the type of projectile of the tower
                 if(parent.GetTowerType == TowerType.Archer)
                 {
@@ -153,6 +154,18 @@ public class Projectile : MonoBehaviour
                 // Case it is an arrow and needs to despawn
                 ObjectPools.ReleaseProjectile(this, parent);
             }
+        }
+    }
+
+    private bool ReachPosition(Vector3 position)
+    {
+        if (Vector3.Magnitude(transform.position - position) <= 0.002f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

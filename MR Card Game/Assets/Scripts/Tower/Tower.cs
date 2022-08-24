@@ -228,7 +228,7 @@ public class Tower : MonoBehaviour
         if(!canAttack)
         {
             // If it is false, increase the timer by the time passed
-            attackTimer = attackTimer + Time.deltaTime;
+            attackTimer += Time.deltaTime;
 
             // Check if the attack timer has reached the attack cooldown
             if(attackTimer >= attackCooldown)

@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,7 +14,13 @@ public class GameSceneManager : MonoBehaviour
     [Tooltip("Define the game object under which all models are saved (so that they can be found with their name, even if they have the same name as a game object")]
     public GameObject saveModelObject;
 
+    [SerializeField] private GameObject planeFinder;
+
+    [SerializeField] private TextMeshProUGUI toggleGameboardButtonText;
+
     private bool firstImport = true;
+
+    private bool gameBoardLocked = false;
 
     private void Awake()
     {
@@ -27,6 +34,32 @@ public class GameSceneManager : MonoBehaviour
         SceneManager.UnloadSceneAsync("GameScene");
         SceneManager.LoadSceneAsync("IntroScene", LoadSceneMode.Additive);
 
+    }
+
+    private void LockGameboard()
+    {
+        gameBoardLocked = true;
+        planeFinder.SetActive(false);
+        toggleGameboardButtonText.text = "Unlock Gameboard";
+    }
+
+    private void UnlockGameboard()
+    {
+        gameBoardLocked = false;
+        planeFinder.SetActive(true);
+        toggleGameboardButtonText.text = "Lock Gameboard";
+    }
+
+    public void ToggleGameboard()
+    {
+        if (gameBoardLocked)
+        {
+            UnlockGameboard();
+        }
+        else
+        {
+            LockGameboard();
+        }
     }
 
     private void ActiveIntroSceneOnLoad(Scene scene, LoadSceneMode mode)

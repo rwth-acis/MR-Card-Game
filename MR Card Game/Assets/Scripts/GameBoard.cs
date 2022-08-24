@@ -217,6 +217,8 @@ public class GameBoard : MonoBehaviour
         SetBoardPositionCorrectly();
 
         SetBoardScalingCorrectly();*/
+
+        Board.greatestBoardDimension = 0.03f;
         
     }
 

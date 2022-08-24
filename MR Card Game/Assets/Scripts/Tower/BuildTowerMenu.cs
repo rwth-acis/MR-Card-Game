@@ -13,6 +13,8 @@ namespace build
         [SerializeField]
         private int archerTowerCost;
 
+        private bool GameboardLocked;
+
         // The method used to access to the archer tower cost integer as a static object
         public static int GetArcherTowerCost
         {
@@ -127,6 +129,14 @@ namespace build
             get { return instance.waveDisplay; }
         }
 
+        [SerializeField]
+        private Button toggleGameboard;
+
+        public static Button GetToogleGameboard
+        {
+            get { return instance.toggleGameboard; }
+        }
+
         // Define the start next wave button
         [SerializeField]
         private Button startNextWave;
@@ -229,6 +239,8 @@ namespace build
                 // If it is not the case, activate the start next wave button
                 GetStartNextWave.gameObject.SetActive(true);
             }
+
+            GetToogleGameboard.gameObject.SetActive(true);
         }
 
         // Method that deactivates the components of the game overlay
@@ -242,6 +254,8 @@ namespace build
 
             // Deactivate the start next wave button
             GetStartNextWave.gameObject.SetActive(false);
+
+            GetToogleGameboard.gameObject.SetActive(false);
         }
 
         // The method that opens the build tower menu
