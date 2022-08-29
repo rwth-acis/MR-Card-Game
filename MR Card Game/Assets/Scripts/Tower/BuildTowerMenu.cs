@@ -10,100 +10,42 @@ namespace build
         // The instance object used to access the static prefabs / objects
         public static BuildTowerMenu instance;
 
+        [Header("Costs")]
+
         [SerializeField]
         private int archerTowerCost;
-
-        private bool GameboardLocked;
-
-        // The method used to access to the archer tower cost integer as a static object
-        public static int GetArcherTowerCost
-        {
-            get { return instance.archerTowerCost; }
-        }
 
         [SerializeField]
         private int fireTowerCost;
 
-        // The method used to access to the fire tower cost integer as a static object
-        public static int GetFireTowerCost
-        {
-            get { return instance.fireTowerCost; }
-        }
-
         [SerializeField]
         private int earthTowerCost;
-
-        // The method used to access to the earth tower cost integer as a static object
-        public static int GetEarthTowerCost
-        {
-            get { return instance.earthTowerCost; }
-        }
 
         [SerializeField]
         private int lightningTowerCost;
 
-        // The method used to access to the lightning tower cost integer as a static object
-        public static int GetLightningTowerCost
-        {
-            get { return instance.lightningTowerCost; }
-        }
-
         [SerializeField]
         private int windTowerCost;
-
-        // The method used to access to the wind tower cost integer as a static object
-        public static int GetWindTowerCost
-        {
-            get { return instance.windTowerCost; }
-        }
 
         [SerializeField]
         private int holeCost;
 
-        // The method used to access to the hole cost integer as a static object
-        public static int GetHoleCost
-        {
-            get { return instance.holeCost; }
-        }
-
         [SerializeField]
         private int swampCost;
 
-        // The method used to access to the swamp cost integer as a static object
-        public static int GetSwampCost
-        {
-            get { return instance.swampCost; }
-        }
+        [Header("UI Elements")]
 
         // Define the canvas of the build tower menu
         [SerializeField]
         private GameObject buildTowerCanvas;
 
-        // The method used to access to the build tower canvas as a static object
-        public static GameObject GetBuildTowerCanvas
-        {
-            get { return instance.buildTowerCanvas; }
-        }
-
         // Define the build trap window
         [SerializeField]
         private GameObject buildTrapWindow;
 
-        // The method used to access to the build trap window as a static object
-        public static GameObject GetBuildTrapWindow
-        {
-            get { return instance.buildTrapWindow; }
-        }
-
         // Define the build tower window
         [SerializeField]
         private GameObject buildTowerWindow;
-
-        // The method used to access to the build tower window as a static object
-        public static GameObject GetBuildTowerWindow
-        {
-            get { return instance.buildTowerWindow; }
-        }
 
         // Define the answer questions menu
         [SerializeField]
@@ -113,106 +55,140 @@ namespace build
         [SerializeField]
         private Button currencyDisplay;
 
-        // The method used to access to the currency display button as a static object
-        public static Button GetCurrencyDisplay
-        {
-            get { return instance.currencyDisplay; }
-        }
-
         // Define the wave display button
         [SerializeField]
         private Button waveDisplay;
 
-        // The method used to access to the wave display button as a static object
-        public static Button GetWaveDisplay
-        {
-            get { return instance.waveDisplay; }
-        }
-
         [SerializeField]
         private Button toggleGameboard;
-
-        public static Button GetToogleGameboard
-        {
-            get { return instance.toggleGameboard; }
-        }
-
         // Define the start next wave button
         [SerializeField]
         private Button startNextWave;
-
-        // The method used to access to the start next wave button as a static object
-        public static Button GetStartNextWave
-        {
-            get { return instance.startNextWave; }
-        }
-
         // Define the build archer tower button
         [SerializeField]
         private Button buildArcherTower;
-
-        // The method used to access to the build archer tower button as a static object
-        public static Button GetBuildArcherTower
-        {
-            get { return instance.buildArcherTower; }
-        }
-
         // Define the build fire tower button
         [SerializeField]
         private Button buildFireTower;
-
-        // The method used to access to the build fire tower button as a static object
-        public static Button GetBuildFireTower
-        {
-            get { return instance.buildFireTower; }
-        }
-
         // Define the build earth tower button
         [SerializeField]
         private Button buildEarthTower;
-
-        // The method used to access to the build earth tower button as a static object
-        public static Button GetBuildEarthTower
-        {
-            get { return instance.buildEarthTower; }
-        }
-
         // Define the build Lightning tower button
         [SerializeField]
         private Button buildLightningTower;
-
-        // The method used to access to the build lightning tower button as a static object
-        public static Button GetBuildLightningTower
-        {
-            get { return instance.buildLightningTower; }
-        }
-
         // Define the build wind tower button
         [SerializeField]
         private Button buildWindTower;
-
-        // The method used to access to the build wind tower button as a static object
-        public static Button GetBuildWindTower
-        {
-            get { return instance.buildWindTower; }
-        }
-
         // Define the build wind tower button
         [SerializeField]
         private Button buildHole;
-
-        // The method used to access to the build hole button as a static object
-        public static Button GetBuildHole
-        {
-            get { return instance.buildHole; }
-        }
-
         // Define the build wind tower button
         [SerializeField]
         private Button buildSwamp;
 
+        private bool GameboardLocked;
+
+        // The method used to access to the archer tower cost integer as a static object
+        public static int ArcherTowerCost
+        {
+            get { return instance.archerTowerCost; }
+        }
+        // The method used to access to the fire tower cost integer as a static object
+        public static int FireTowerCost
+        {
+            get { return instance.fireTowerCost; }
+        }
+        // The method used to access to the earth tower cost integer as a static object
+        public static int EarthTowerCost
+        {
+            get { return instance.earthTowerCost; }
+        }
+        // The method used to access to the lightning tower cost integer as a static object
+        public static int LightningTowerCost
+        {
+            get { return instance.lightningTowerCost; }
+        }
+        // The method used to access to the wind tower cost integer as a static object
+        public static int WindTowerCost
+        {
+            get { return instance.windTowerCost; }
+        }
+        // The method used to access to the hole cost integer as a static object
+        public static int HoleCost
+        {
+            get { return instance.holeCost; }
+        }
+        // The method used to access to the swamp cost integer as a static object
+        public static int SwampCost
+        {
+            get { return instance.swampCost; }
+        }
+        // The method used to access to the build tower canvas as a static object
+        public static GameObject BuildTowerCanvas
+        {
+            get { return instance.buildTowerCanvas; }
+        }
+        // The method used to access to the build trap window as a static object
+        public static GameObject BuildTrapWindow
+        {
+            get { return instance.buildTrapWindow; }
+        }
+        // The method used to access to the build tower window as a static object
+        public static GameObject BuildTowerWindow
+        {
+            get { return instance.buildTowerWindow; }
+        }
+        // The method used to access to the currency display button as a static object
+        public static Button CurrencyDisplay
+        {
+            get { return instance.currencyDisplay; }
+        }
+        // The method used to access to the wave display button as a static object
+        public static Button WaveDisplay
+        {
+            get { return instance.waveDisplay; }
+        }
+        public static Button ToogleGameboard
+        {
+            get { return instance.toggleGameboard; }
+        }
+        // The method used to access to the start next wave button as a static object
+        public static Button StartNextWave
+        {
+            get { return instance.startNextWave; }
+        }
+        // The method used to access to the build archer tower button as a static object
+        public static Button BuildArcherTowerButton
+        {
+            get { return instance.buildArcherTower; }
+        }
+        // The method used to access to the build fire tower button as a static object
+        public static Button BuildFireTowerButton
+        {
+            get { return instance.buildFireTower; }
+        }
+        // The method used to access to the build earth tower button as a static object
+        public static Button BuildEarthTowerButton
+        {
+            get { return instance.buildEarthTower; }
+        }
+        // The method used to access to the build lightning tower button as a static object
+        public static Button BuildLightningTowerButton
+        {
+            get { return instance.buildLightningTower; }
+        }
+        // The method used to access to the build wind tower button as a static object
+        public static Button BuildWindTowerButton
+        {
+            get { return instance.buildWindTower; }
+        }
+        // The method used to access to the build hole button as a static object
+        public static Button BuildHoleButton
+        {
+            get { return instance.buildHole; }
+        }
         // The method used to access to the build swamp button as a static object
-        public static Button GetBuildSwamp
+        public static Button BuildSwampButton
         {
             get { return instance.buildSwamp; }
         }
@@ -223,39 +199,38 @@ namespace build
             // Set the instance to this script
             instance = this;
         }
-
         // Method that activates the components of the game overlay
         public static void ActivateGameOverlay()
         {
             // Activate the currency display button
-            GetCurrencyDisplay.gameObject.SetActive(true);
+            CurrencyDisplay.gameObject.SetActive(true);
 
             // Activate the wave display button
-            GetWaveDisplay.gameObject.SetActive(true);
+            WaveDisplay.gameObject.SetActive(true);
 
             // Check if the wave is currently ongoing
             if(LevelInfo.waveOngoing == false)
             {
                 // If it is not the case, activate the start next wave button
-                GetStartNextWave.gameObject.SetActive(true);
+                StartNextWave.gameObject.SetActive(true);
             }
 
-            GetToogleGameboard.gameObject.SetActive(true);
+            ToogleGameboard.gameObject.SetActive(true);
         }
 
         // Method that deactivates the components of the game overlay
         public static void DeactivateGameOverlay()
         {
             // Deactivate the currency display button
-            GetCurrencyDisplay.gameObject.SetActive(false);
+            CurrencyDisplay.gameObject.SetActive(false);
 
             // Deactivate the wave display button
-            GetWaveDisplay.gameObject.SetActive(false);
+            WaveDisplay.gameObject.SetActive(false);
 
             // Deactivate the start next wave button
-            GetStartNextWave.gameObject.SetActive(false);
+            StartNextWave.gameObject.SetActive(false);
 
-            GetToogleGameboard.gameObject.SetActive(false);
+            ToogleGameboard.gameObject.SetActive(false);
         }
 
         // The method that opens the build tower menu
@@ -267,74 +242,74 @@ namespace build
             GameAdvancement.gamePaused = true;
 
             // Set the canvas as active
-            GetBuildTowerCanvas.SetActive(true);
+            BuildTowerCanvas.SetActive(true);
 
             // Set the build tower menu as active
-            GetBuildTowerWindow.SetActive(true);
+            BuildTowerWindow.SetActive(true);
 
             // Make sure the build trap menu is inactive
-            GetBuildTrapWindow.SetActive(false);
+            BuildTrapWindow.SetActive(false);
 
             // Disable the tower buttons that cannot be bought, and enable the tower buttons that can be bought
 
             // Check if the player has enough coin to build an archer tower
-            if(GameAdvancement.currencyPoints >= GetArcherTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
+            if(GameAdvancement.currencyPoints >= ArcherTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the archer tower
-                GetBuildArcherTower.interactable = true;
+                BuildArcherTowerButton.interactable = true;
 
             } else {
 
                 // Disable the archer tower
-                GetBuildArcherTower.interactable = false;
+                BuildArcherTowerButton.interactable = false;
             }
 
             // Check if the player has enough coin to build a fire tower
-            if(GameAdvancement.currencyPoints >= GetFireTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
+            if(GameAdvancement.currencyPoints >= FireTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the fire tower
-                GetBuildFireTower.interactable = true;
+                BuildFireTowerButton.interactable = true;
 
             } else {
 
                 // Disable the fire tower
-                GetBuildFireTower.interactable = false;
+                BuildFireTowerButton.interactable = false;
             }
 
             // Check if the player has enough coin to build an earth tower
-            if(GameAdvancement.currencyPoints >= GetEarthTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
+            if(GameAdvancement.currencyPoints >= EarthTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the earth tower
-                GetBuildEarthTower.interactable = true;
+                BuildEarthTowerButton.interactable = true;
 
             } else {
 
                 // Disable the earth tower
-                GetBuildEarthTower.interactable = false;
+                BuildEarthTowerButton.interactable = false;
             }
 
             // Check if the player has enough coin to build a lightning tower
-            if(GameAdvancement.currencyPoints >= GetLightningTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
+            if(GameAdvancement.currencyPoints >= LightningTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the lightning tower
-                GetBuildLightningTower.interactable = true;
+                BuildLightningTowerButton.interactable = true;
 
             } else {
 
                 // Disable the lightning tower
-                GetBuildLightningTower.interactable = false;
+                BuildLightningTowerButton.interactable = false;
             }
 
             // Check if the player has enough coin to build a wind tower
-            if(GameAdvancement.currencyPoints >= GetWindTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
+            if(GameAdvancement.currencyPoints >= WindTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the wind tower
-                GetBuildWindTower.interactable = true;
+                BuildWindTowerButton.interactable = true;
 
             } else {
 
                 // Disable the wind tower
-                GetBuildWindTower.interactable = false;
+                BuildWindTowerButton.interactable = false;
             }
         }
 
@@ -361,38 +336,38 @@ namespace build
             GameAdvancement.gamePaused = true;
 
             // Set the canvas as active
-            GetBuildTowerCanvas.SetActive(true);
+            BuildTowerCanvas.SetActive(true);
 
             // Set the build trap menu as active
-            GetBuildTrapWindow.SetActive(true);
+            BuildTrapWindow.SetActive(true);
 
             // Make sure the build tower menu is inactive
-            GetBuildTowerWindow.SetActive(false);
+            BuildTowerWindow.SetActive(false);
 
             // Disable the trap buttons that cannot be bought, and enable the trap buttons that can be bought
 
             // Check if the player has enough coin to build a hole
-            if(GameAdvancement.currencyPoints >= GetHoleCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
+            if(GameAdvancement.currencyPoints >= HoleCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the hole button
-                GetBuildHole.interactable = true;
+                BuildHoleButton.interactable = true;
 
             } else {
 
                 // Disable the hole button
-                GetBuildHole.interactable = false;
+                BuildHoleButton.interactable = false;
             }
 
             // Check if the player has enough coin to build a swamp
-            if(GameAdvancement.currencyPoints >= GetSwampCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
+            if(GameAdvancement.currencyPoints >= SwampCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the swamp button
-                GetBuildSwamp.interactable = true;
+                BuildSwampButton.interactable = true;
 
             } else {
 
                 // Disable the swamp button
-                GetBuildSwamp.interactable = false;
+                BuildSwampButton.interactable = false;
             }
         }
 
@@ -467,13 +442,13 @@ namespace build
 
             // Close the menu
             // Disable the build canvas
-            GetBuildTowerCanvas.SetActive(false);
+            BuildTowerCanvas.SetActive(false);
 
             // Set the build trap menu as inactive
-            GetBuildTrapWindow.SetActive(false);
+            BuildTrapWindow.SetActive(false);
 
             // Make sure the build tower menu is inactive
-            GetBuildTowerWindow.SetActive(false);
+            BuildTowerWindow.SetActive(false);
         }
 
         // Function that is used to test when all questions that were needed to be answered were answered correctly
@@ -491,7 +466,7 @@ namespace build
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Archer);
             // Ground the building
             GroundBuilding(tower, TowerImageTarget.currentImageTarget);
-            UpdateGameAdvancementAfterBuilding(GetArcherTowerCost);
+            UpdateGameAdvancementAfterBuilding(ArcherTowerCost);
         }
 
 
@@ -504,7 +479,7 @@ namespace build
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Fire);
             // Ground the building
             GroundBuilding(tower, TowerImageTarget.currentImageTarget);
-            UpdateGameAdvancementAfterBuilding(GetFireTowerCost);
+            UpdateGameAdvancementAfterBuilding(FireTowerCost);
         }
 
         // The method that builds a earth tower over the image target
@@ -516,7 +491,7 @@ namespace build
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Earth);
             // Ground the building
             GroundBuilding(tower, TowerImageTarget.currentImageTarget);
-            UpdateGameAdvancementAfterBuilding(GetEarthTowerCost);
+            UpdateGameAdvancementAfterBuilding(EarthTowerCost);
         }
 
         // The method that builds a lightning tower over the image target
@@ -528,7 +503,7 @@ namespace build
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Lightning);
             // Ground the building
             GroundBuilding(tower, TowerImageTarget.currentImageTarget);
-            UpdateGameAdvancementAfterBuilding(GetLightningTowerCost);
+            UpdateGameAdvancementAfterBuilding(LightningTowerCost);
         }
 
         // The method that builds a wind tower over the image target
@@ -540,7 +515,7 @@ namespace build
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Wind);
             // Ground the building
             GroundBuilding(tower, TowerImageTarget.currentImageTarget);
-            UpdateGameAdvancementAfterBuilding(GetWindTowerCost);
+            UpdateGameAdvancementAfterBuilding(WindTowerCost);
         }
 
         // The method that builds a hole over the image target
@@ -552,7 +527,7 @@ namespace build
             Trap trap = SpawnTrap.SpawnHole(TowerImageTarget.currentImageTarget);
             // Ground the building
             GroundBuilding(trap.gameObject, TowerImageTarget.currentImageTarget);
-            UpdateGameAdvancementAfterBuilding(GetHoleCost);
+            UpdateGameAdvancementAfterBuilding(HoleCost);
         }
 
         // The method that builds a swamp over the image target
@@ -564,7 +539,7 @@ namespace build
             Trap trap = SpawnTrap.SpawnSwamp(TowerImageTarget.currentImageTarget);
             // Ground the building
             GroundBuilding(trap.gameObject, TowerImageTarget.currentImageTarget);
-            UpdateGameAdvancementAfterBuilding(GetSwampCost);
+            UpdateGameAdvancementAfterBuilding(SwampCost);
         }
 
         private void UpdateGameAdvancementAfterBuilding(int cost)

@@ -12,41 +12,38 @@ public class SpawnSpellEffect : MonoBehaviour
     [SerializeField]
     private GameObject spellEffectParent;
 
-    // The method used to access to the spell effect parent object as a static object
-    public static GameObject getSpellEffectParent
-    {
-        get { return instance.spellEffectParent; }
-    }
-
-
-
-
     // The prefab for the arrow rain
     [SerializeField]
     private GameObject arrowRain;
-
-    // The method used to access to the arrow rain prefab as a static object
-    public static GameObject getArrowRain
-    {
-        get { return instance.arrowRain; }
-    }
 
     // The prefab for the arrow rain
     [SerializeField]
     private GameObject meteorImpact;
 
-    // The method used to access to the meteor impact prefab as a static object
-    public static GameObject getMeteorImpact
-    {
-        get { return instance.meteorImpact; }
-    }
-
     // The prefab for the arrow rain
     [SerializeField]
     private GameObject lightningStrike;
 
+    // The method used to access to the spell effect parent object as a static object
+    public static GameObject SpellEffectParent
+    {
+        get { return instance.spellEffectParent; }
+    }
+
+    // The method used to access to the arrow rain prefab as a static object
+    public static GameObject ArrowRain
+    {
+        get { return instance.arrowRain; }
+    }
+
+    // The method used to access to the meteor impact prefab as a static object
+    public static GameObject MeteorImpact
+    {
+        get { return instance.meteorImpact; }
+    }
+
     // The method used to access to the lightning strike prefab as a static object
-    public static GameObject getLightningStrike
+    public static GameObject LightningStrike
     {
         get { return instance.lightningStrike; }
     }
@@ -65,19 +62,19 @@ public class SpawnSpellEffect : MonoBehaviour
     }
 
     // Method that spawns an arrow rain spell prefab
-    public static GameObject SpawnAnArrowRain()
+    public static GameObject SpawnArrowRain()
     {
         // Get the right object pool index for the arrow rain
-        int poolIndex = ObjectPools.GetSpellEffectPoolIndex("Arrow Rain");
+        int poolIndex = ObjectPools.GetSpellEffectPoolIndex(SpellType.ArrowRain);
 
         // Get a new arrow rain from the right object pool
-        GameObject arrowRain = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(getArrowRain);});
+        GameObject arrowRain = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(ArrowRain);});
 
         // Set the arrow rain as active
         arrowRain.gameObject.SetActive(true);
 
         // Set the spell effect under the object that hold the script
-        arrowRain.transform.parent = getSpellEffectParent.transform;
+        arrowRain.transform.parent = SpellEffectParent.transform;
 
         // Scale the spell effect down
         arrowRain.transform.localScale = new Vector3(1, 1, 1);
@@ -87,19 +84,19 @@ public class SpawnSpellEffect : MonoBehaviour
     }
 
     // Method that spawns a meteor impact spell prefab
-    public static GameObject SpawnAMeteorImpact()
+    public static GameObject SpawnMeteorImpact()
     {
         // Get the right object pool index for the meteor impact
-        int poolIndex = ObjectPools.GetSpellEffectPoolIndex("Meteor Impact");
+        int poolIndex = ObjectPools.GetSpellEffectPoolIndex(SpellType.Meteor);
 
         // Get a new meteor impact from the right object pool
-        GameObject meteorImpact = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(getMeteorImpact);});
+        GameObject meteorImpact = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(MeteorImpact);});
 
         // Set the meteor impact as active
         meteorImpact.gameObject.SetActive(true);
 
         // Set the spell effect under the object that hold the script
-        meteorImpact.transform.parent = getSpellEffectParent.transform;
+        meteorImpact.transform.parent = SpellEffectParent.transform;
 
         // Scale the spell effect down
         meteorImpact.transform.localScale = new Vector3(1, 1, 1);
@@ -109,19 +106,19 @@ public class SpawnSpellEffect : MonoBehaviour
     }
 
     // Method that spawns a lightning strike spell prefab
-    public static GameObject SpawnAThunderStrike()
+    public static GameObject SpawnThunderStrike()
     {
         // Get the right object pool index for the lightning strike
-        int poolIndex = ObjectPools.GetSpellEffectPoolIndex("Thunder Strike");
+        int poolIndex = ObjectPools.GetSpellEffectPoolIndex(SpellType.ThunderStrike);
 
         // Get a new lightning strike from the right object pool
-        GameObject lightningStrike = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(getLightningStrike);});
+        GameObject lightningStrike = ObjectPool<GameObject>.RequestResource(poolIndex, () => {return Instantiate(LightningStrike);});
 
         // Set the lightning strike as active
         lightningStrike.gameObject.SetActive(true);
 
         // Set the spell effect under the object that hold the script
-        lightningStrike.transform.parent = getSpellEffectParent.transform;
+        lightningStrike.transform.parent = SpellEffectParent.transform;
 
         // Scale the spell effect down
         lightningStrike.transform.localScale = new Vector3(1, 1, 1);

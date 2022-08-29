@@ -75,16 +75,16 @@ public class Level : MonoBehaviour
     private Button startNextWave;
 
     // The current enemy index that should be spawned together
-    private string enemyType = "";
+    private EnemyType enemyType;
 
     // The current number of the enemies that should be spawned at the same time that remain
     private int enemySpawnNumber = 0;
 
     // The current weakness of the enemies
-    private string weakness = "";
+    private ResistenceAndWeaknessType weakness = ResistenceAndWeaknessType.None;
 
     // The current resistance of the enemies;
-    private string resistance = "";
+    private ResistenceAndWeaknessType resistance = ResistenceAndWeaknessType.None;
 
     // The number of enemy categories that are non empty at the moment
     private int numberOfCategoriesNotEmpty = 0;
@@ -265,10 +265,10 @@ public class Level : MonoBehaviour
                 Enemy enemy = SpawnAnEnemy(enemyType);
 
                 // Set the resistance of the enemy
-                enemy.resistance = resistance;
+                enemy.Resistance = resistance;
 
                 // Set the weakness of the enemy
-                enemy.weakness = weakness;
+                enemy.Weakness = weakness;
 
                 // Reduce the number of enemies that should spawn as a group
                 enemySpawnNumber--;
@@ -283,7 +283,7 @@ public class Level : MonoBehaviour
                 enemy.transform.rotation = Board.gameBoard.transform.rotation;
 
                 // Set the position of the child to the position of the parent object
-                enemy.transform.position = (Waypoints.mapWaypoints[0].transform.position + enemy.transform.up * enemy.GetFlightHeight);;
+                enemy.transform.position = (Waypoints.mapWaypoints[0].transform.position + enemy.transform.up * enemy.FlightHeight);;
             }
 
             // // Check that the stop time card is not taking effect
@@ -348,63 +348,63 @@ public class Level : MonoBehaviour
         if(CounterE1 > 0)
         {
             // Increase the number by one
-            number = number + 1;
+            number++;
         }
 
         // Check if the second category is non empty
         if(CounterE2 > 0)
         {
             // Increase the number by one
-            number = number + 1;
+            number++;
         }
 
         // Check if the third category is non empty
         if(CounterE3 > 0)
         {
             // Increase the number by one
-            number = number + 1;
+            number++;
         }
 
         // Check if the fourth category is non empty
         if(CounterE4 > 0)
         {
             // Increase the number by one
-            number = number + 1;
+            number++;
         }
 
         // Check if the fifth category is non empty
         if(CounterE5 > 0)
         {
             // Increase the number by one
-            number = number + 1;
+            number++;
         }
 
         // Check if the sixth category is non empty
         if(CounterE6 > 0)
         {
             // Increase the number by one
-            number = number + 1;
+            number++;
         }
 
         // Check if the seventh category is non empty
         if(CounterE7 > 0)
         {
             // Increase the number by one
-            number = number + 1;
+            number++;
         }
 
         // Check if the eighth category is non empty
         if(CounterE8 > 0)
         {
             // Increase the number by one
-            number = number + 1;
+            number++;
         }
 
         // Check if the ninth category is non empty
         if(CounterE9 > 0)
         {
             // Increase the number by one
-            number = number + 1;
+            number++;
         }
 
         // Set the number of categories that is not empty
@@ -435,7 +435,7 @@ public class Level : MonoBehaviour
             if(newCategoryIndex == 0)
             {
                 // Set the enemy type correctly
-                enemyType = "Normal Enemy";
+                enemyType = EnemyType.Normal;
 
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
                 if(CounterE1 > newEnemySpawnNumber)
@@ -464,7 +464,7 @@ public class Level : MonoBehaviour
             if(newCategoryIndex == 1)
             {
                 // Set the enemy type correctly
-                enemyType = "Fast Enemy";
+                enemyType = EnemyType.Fast;
                 Debug.Log("The counter of the fast enemies is: " + CounterE2 + " and will be reduced by at most: " + newEnemySpawnNumber);
 
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
@@ -494,7 +494,7 @@ public class Level : MonoBehaviour
             if(newCategoryIndex == 2)
             {
                 // Set the enemy type correctly
-                enemyType = "Super Fast Enemy";
+                enemyType = EnemyType.SuperFast;
 
                 Debug.Log("The counter of the super fast enemies is: " + CounterE3 + " and will be reduced by at most: " + newEnemySpawnNumber);
 
@@ -525,7 +525,7 @@ public class Level : MonoBehaviour
             if(newCategoryIndex == 3)
             {
                 // Set the enemy type correctly
-                enemyType = "Flying Enemy";
+                enemyType = EnemyType.Flying;
 
                 Debug.Log("The counter of the flying enemies is: " + CounterE4 + " and will be reduced by at most: " + newEnemySpawnNumber);
 
@@ -556,7 +556,7 @@ public class Level : MonoBehaviour
             if(newCategoryIndex == 4)
             {
                 // Set the enemy type correctly
-                enemyType = "Tank Enemy";
+                enemyType = EnemyType.Tank;
 
                 Debug.Log("The counter of the tank enemies is: " + CounterE5 + " and will be reduced by at most: " + newEnemySpawnNumber);
 
@@ -587,7 +587,7 @@ public class Level : MonoBehaviour
             if(newCategoryIndex == 5)
             {
                 // Set the enemy type correctly
-                enemyType = "Slow Enemy";
+                enemyType = EnemyType.Slow;
 
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
                 if(CounterE6 > newEnemySpawnNumber)
@@ -616,7 +616,7 @@ public class Level : MonoBehaviour
             if(newCategoryIndex == 6)
             {
                 // Set the enemy type correctly
-                enemyType = "Berzerker Enemy";
+                enemyType = EnemyType.Berzerker;
 
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
                 if(CounterE7 > newEnemySpawnNumber)
@@ -645,7 +645,7 @@ public class Level : MonoBehaviour
             if(newCategoryIndex == 7)
             {
                 // Set the enemy type correctly
-                enemyType = "Berzerker Flying Enemy";
+                enemyType = EnemyType.Flying;
 
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
                 if(CounterE8 > newEnemySpawnNumber)
@@ -674,7 +674,7 @@ public class Level : MonoBehaviour
             if(newCategoryIndex == 8)
             {
                 // Set the enemy type correctly
-                enemyType = "Berzerker Tank Enemy";
+                enemyType = EnemyType.BerzerkerTank;
 
                 // Check if the counter of remaining enemies is higher than the enemy spawn number that was drawn before
                 if(CounterE9 > newEnemySpawnNumber)
@@ -770,7 +770,7 @@ public class Level : MonoBehaviour
             int randomNumberResistance = RandomNumber(0, 4);
 
             // Give resistance
-            resistance = GetRandomType(randomNumberResistance);
+            resistance = GetRandomAttackType(randomNumberResistance);
 
             // Initialize the random number for the weakness
             int randomNumberWeakness = RandomNumber(0, 3);
@@ -782,12 +782,12 @@ public class Level : MonoBehaviour
             }
 
             // Give weakness
-            weakness = GetRandomType(randomNumberWeakness);
+            weakness = GetRandomAttackType(randomNumberWeakness);
 
         } else {
 
             // Delete the resistance
-            resistance = "";
+            resistance = ResistenceAndWeaknessType.None;
 
             // Get a random number to decide if the enemies should have a weakness or not
             int weaknessOrNot = enemySpawnNumber = RandomNumber(0, weaknessRandom);
@@ -799,12 +799,12 @@ public class Level : MonoBehaviour
                 int randomNumberWeakness = RandomNumber(0, 4);
 
                 // Give resistance
-                weakness = GetRandomType(randomNumberWeakness);
+                weakness = GetRandomAttackType(randomNumberWeakness);
 
             } else {
 
                 // Delete the weakness
-                weakness = "";
+                weakness = ResistenceAndWeaknessType.None;
             }
         }
 
@@ -826,24 +826,24 @@ public class Level : MonoBehaviour
     // }
 
     // Method that returns a random damage type
-    public string GetRandomType(int randomNumber)
+    public ResistenceAndWeaknessType GetRandomAttackType(int randomNumber)
     {
         // Depending on that number, return a type
         switch(randomNumber)
         {
             case 0:
-                return "Piercing";
+                return ResistenceAndWeaknessType.Archer;
             case 1:
-                return "Fire";
+                return ResistenceAndWeaknessType.Fire;
             case 2:
-                return "Earth";
+                return ResistenceAndWeaknessType.Earth;
             case 3:
-                return "Lightning";
+                return ResistenceAndWeaknessType.Lighting;
             case 4:
-                return "Wind";
+                return ResistenceAndWeaknessType.Wind;
+            default:
+                return ResistenceAndWeaknessType.Archer;
         }
-
-        return "Piercing";
     }
 
     //---------------------------------------------------------------------------------------------------------------------------------
@@ -1403,7 +1403,7 @@ public class Level : MonoBehaviour
         CreateLevelInformation();
 
         // Set the type of enemy to spawn to normal enemy
-        enemyType = "Normal Enemy";
+        enemyType = EnemyType.Normal;
 
         // Set the number of enemies to spawn of that type to 5
         enemySpawnNumber = 5;

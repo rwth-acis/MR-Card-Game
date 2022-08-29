@@ -355,7 +355,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSpawner: {fileID: 0}
-  towerType: Lightning Tower
+  towerType: 3
   towerProjectile: {fileID: 0}
   cost: 75
   attackRange: 15
@@ -374,6 +374,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2883701790878028789}
+  - component: {fileID: 7755818708978820718}
   m_Layer: 0
   m_Name: LightningTower
   m_TagString: Tower
@@ -398,6 +399,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7755818708978820718
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2883701792044503380}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3, y: 8, z: 3}
+  m_Center: {x: 0.05454095, y: 2.7592902, z: -0.23537892}
 --- !u!1001 &2383424416845451914
 PrefabInstance:
   m_ObjectHideFlags: 0

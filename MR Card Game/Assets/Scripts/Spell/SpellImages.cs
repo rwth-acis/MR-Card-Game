@@ -16,118 +16,118 @@ public class SpellImages : MonoBehaviour
     [SerializeField]
     private Sprite meteorSpellCardImage;
 
-    // The method used to access to the meteor spell card image as a static object
-    public static Sprite GetMeteorSpellCardImage
-    {
-        get { return instance.meteorSpellCardImage; }
-    }
 
     // The arror rain image
     [SerializeField]
     private Sprite arrowRainSpellCardImage;
 
-    // The method used to access to the arrow rain spell card image as a static object
-    public static Sprite GetArrowRainSpellCardImage
-    {
-        get { return instance.arrowRainSpellCardImage; }
-    }
-
     // The thunder strike image
     [SerializeField]
     private Sprite thunderStrikeSpellCardImage;
-
-    // The method used to access to the thunder strike spell card image as a static object
-    public static Sprite GetThunderStrikeSpellCardImage
-    {
-        get { return instance.thunderStrikeSpellCardImage; }
-    }
 
     // The obliteration image
     [SerializeField]
     private Sprite obliterationSpellCardImage;
 
-    // The method used to access to the obliteration spell card image as a static object
-    public static Sprite GetObliterationSpellCardImage
-    {
-        get { return instance.obliterationSpellCardImage; }
-    }
-
     // The stop time image
     [SerializeField]
     private Sprite stopTimeSpellCardImage;
-
-    // The method used to access to the stop time spell card image as a static object
-    public static Sprite GetStopTimeSpellCardImage
-    {
-        get { return instance.stopTimeSpellCardImage; }
-    }
 
     // The slow time image
     [SerializeField]
     private Sprite slowTimeSpellCardImage;
 
-    // The method used to access to the slow time spell card image as a static object
-    public static Sprite GetSlowTimeSpellCardImage
-    {
-        get { return instance.slowTimeSpellCardImage; }
-    }
-
     // The space distortion image
     [SerializeField]
     private Sprite spaceDistortionSpellCardImage;
-
-    // The method used to access to the space distortion spell card image as a static object
-    public static Sprite GetSpaceDistortionSpellCardImage
-    {
-        get { return instance.spaceDistortionSpellCardImage; }
-    }
 
     // The rain image
     [SerializeField]
     private Sprite rainSpellCardImage;
 
-    // The method used to access to the rain spell card image as a static object
-    public static Sprite GetRainSpellCardImage
-    {
-        get { return instance.rainSpellCardImage; }
-    }
-
     // The heal image
     [SerializeField]
     private Sprite healSpellCardImage;
-
-    // The method used to access to the heal spell card image as a static object
-    public static Sprite GetHealSpellCardImage
-    {
-        get { return instance.healSpellCardImage; }
-    }
 
     // The armor image
     [SerializeField]
     private Sprite armorSpellCardImage;
 
-    // The method used to access to the armor spell card image as a static object
-    public static Sprite GetArmorSpellCardImage
-    {
-        get { return instance.armorSpellCardImage; }
-    }
-
     // The draw spell image
     [SerializeField]
     private Sprite drawSpellCardImage;
-
-    // The method used to access to the draw spell card image as a static object
-    public static Sprite GetDrawSpellCardImage
-    {
-        get { return instance.drawSpellCardImage; }
-    }
 
     // The teleport image
     [SerializeField]
     private Sprite teleportSpellCardImage;
 
+    // The method used to access to the meteor spell card image as a static object
+    public static Sprite MeteorSpellCardImage
+    {
+        get { return instance.meteorSpellCardImage; }
+    }
+    // The method used to access to the arrow rain spell card image as a static object
+    public static Sprite ArrowRainSpellCardImage
+    {
+        get { return instance.arrowRainSpellCardImage; }
+    }
+
+    // The method used to access to the thunder strike spell card image as a static object
+    public static Sprite ThunderStrikeSpellCardImage
+    {
+        get { return instance.thunderStrikeSpellCardImage; }
+    }
+
+    // The method used to access to the obliteration spell card image as a static object
+    public static Sprite ObliterationSpellCardImage
+    {
+        get { return instance.obliterationSpellCardImage; }
+    }
+
+    // The method used to access to the stop time spell card image as a static object
+    public static Sprite StopTimeSpellCardImage
+    {
+        get { return instance.stopTimeSpellCardImage; }
+    }
+
+    // The method used to access to the slow time spell card image as a static object
+    public static Sprite SlowTimeSpellCardImage
+    {
+        get { return instance.slowTimeSpellCardImage; }
+    }
+
+    // The method used to access to the space distortion spell card image as a static object
+    public static Sprite SpaceDistortionSpellCardImage
+    {
+        get { return instance.spaceDistortionSpellCardImage; }
+    }
+
+    // The method used to access to the rain spell card image as a static object
+    public static Sprite RainSpellCardImage
+    {
+        get { return instance.rainSpellCardImage; }
+    }
+
+    // The method used to access to the heal spell card image as a static object
+    public static Sprite HealSpellCardImage
+    {
+        get { return instance.healSpellCardImage; }
+    }
+
+    // The method used to access to the armor spell card image as a static object
+    public static Sprite ArmorSpellCardImage
+    {
+        get { return instance.armorSpellCardImage; }
+    }
+
+    // The method used to access to the draw spell card image as a static object
+    public static Sprite DrawSpellCardImage
+    {
+        get { return instance.drawSpellCardImage; }
+    }
+
     // The method used to access to the teleport spell card image as a static object
-    public static Sprite GetTeleportSpellCardImage
+    public static Sprite TeleportSpellCardImage
     {
         get { return instance.teleportSpellCardImage; }
     }
@@ -231,7 +231,7 @@ public class SpellImages : MonoBehaviour
     }
 
     // Method used to display the meteor image on spell cards
-    public static void DisplaySpell(GameObject imageTarget, string type)
+    public static void DisplaySpell(GameObject imageTarget, SpellType type)
     {
         // Get the right image to change depending on the current image target
         GameObject imageToChange = GetRightImageComponent(imageTarget);
@@ -433,37 +433,24 @@ public class SpellImages : MonoBehaviour
     }
 
     // Method used to get the right spell image from the spell type
-    public static Sprite GetRightImage(string type)
+    public static Sprite GetRightImage(SpellType type)
     {
         // Check what the image target name is, and return the right image object
-        switch(type)
+        return type switch
         {
-            case "Meteor":
-                return GetMeteorSpellCardImage;
-            case "Arrow rain":
-                return GetArrowRainSpellCardImage;
-            case "Thunder strike":
-                return GetThunderStrikeSpellCardImage;
-            case "Armor":
-                return GetArmorSpellCardImage;
-            case "Heal":
-                return GetHealSpellCardImage;
-            case "Obliteration":
-                return GetObliterationSpellCardImage;
-            case "Draw":
-                return GetDrawSpellCardImage;
-            case "Teleport":
-                return GetTeleportSpellCardImage;
-            case "Space distortion":
-                return GetSpaceDistortionSpellCardImage;
-            case "Slow time":
-                return GetSlowTimeSpellCardImage;
-            case "Stop time":
-                return GetStopTimeSpellCardImage;
-            case "Rain":
-                return GetRainSpellCardImage;
-        }
-
-        return GetMeteorSpellCardImage;
+            SpellType.Meteor => MeteorSpellCardImage,
+            SpellType.ArrowRain => ArrowRainSpellCardImage,
+            SpellType.ThunderStrike => ThunderStrikeSpellCardImage,
+            SpellType.Armor => ArmorSpellCardImage,
+            SpellType.Heal => HealSpellCardImage,
+            SpellType.Obliteration => ObliterationSpellCardImage,
+            SpellType.Draw => DrawSpellCardImage,
+            SpellType.Teleport => TeleportSpellCardImage,
+            SpellType.SpaceDistortion => SpaceDistortionSpellCardImage,
+            SpellType.SlowTime => SlowTimeSpellCardImage,
+            SpellType.StopTime => StopTimeSpellCardImage,
+            SpellType.Rain => RainSpellCardImage,
+            _ => MeteorSpellCardImage,
+        };
     }
 }

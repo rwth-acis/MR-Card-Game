@@ -33,8 +33,6 @@ public class BuildTower : MonoBehaviour
 
     [SerializeField] private GameObject buildPositionIndicator;
 
-    [SerializeField] private GameObject imageTargetPicture;
-
     //The projected position on ground plane
     private Vector3 projectedPos = Vector3.zero;
 
@@ -73,11 +71,12 @@ public class BuildTower : MonoBehaviour
             buildPositionIndicator.transform.SetParent(groundPlane.transform, true);
             buildPositionIndicator.SetActive(true);
             if (OverlapWithGameBoard(projectedPos))
-            {
+            {              
                 onBoard = true;
             }
             else
             {
+                buildPositionIndicator.SetActive(false);
                 onBoard = false;
             }
         }
@@ -86,18 +85,13 @@ public class BuildTower : MonoBehaviour
             onBoard = false;
         }
 
-        if (onBoard)
+        if (!visible)
         {
-            //ChangeBoardMaterialAlpha(0.5f);
-        }
-        else
-        {
-            //ChangeBoardMaterialAlpha(1f);
             buildPositionIndicator.SetActive(false);
         }
 
         // Check if the image target just entered the game board or left it
-        if(onBoard && !GameAdvancement.gamePaused && CheckDistanceToTowers() && visible)
+        if(onBoard && !GameAdvancement.gamePaused && !BuildingIndicatorOverlap() && visible)
         {
             // Make the ui button appear that should be clickable to construct a tower
             buildUI.SetActive(true);
@@ -108,7 +102,9 @@ public class BuildTower : MonoBehaviour
             // Activate the billboard script
             buildUI.GetComponent<Billboard>().enabled = true;
 
-        } else if(!onBoard || !CheckDistanceToTowers() || !visible)
+            buildPositionIndicator.SetActive(true);
+
+        } else if(!onBoard || BuildingIndicatorOverlap() || !visible)
         {
             // Make the ui button disappear
             buildUI.SetActive(false);
@@ -116,7 +112,7 @@ public class BuildTower : MonoBehaviour
         }
 
         // Check if the build UI is active and if the game was paused
-        if(GameAdvancement.gamePaused == true && buildUI.activeSelf == true)
+        if (GameAdvancement.gamePaused == true && buildUI.activeSelf == true)
         {
             // Deactivate the billboard script
             buildUI.SetActive(false);
@@ -175,6 +171,7 @@ public class BuildTower : MonoBehaviour
             onBoard = false;
         }
     }*/
+
 
     // The method that checks the distance between the towers and the image target to see if a tower can be built here or not
     public bool CheckDistanceToTowers()
@@ -294,7 +291,6 @@ public class BuildTower : MonoBehaviour
         }       
     }
 
-
     //Used only in FixedUpdate
     private void FlashIndicator()
     {
@@ -312,11 +308,8 @@ public class BuildTower : MonoBehaviour
         }
     }
 
-    private void ChangeBoardMaterialAlpha(float alpha)
+    private bool BuildingIndicatorOverlap()
     {
-        foreach(Material mat in gameBoardMaterials)
-        {
-            mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, alpha);
-        }
+        return buildPositionIndicator.GetComponentInChildren<BuildTowerIndicator>().OverlapWithTowerOrTrap;
     }
 }

@@ -14,100 +14,93 @@ namespace i5.Toolkit.Core.Examples.Spawners
         [SerializeField]
         private Enemy normalEnemy;
 
-        // The method used to access to the normal enemy prefab as a static object
-        public static Enemy aNormalEnemy
-        {
-            get { return instance.normalEnemy; }
-        }
-
         // The prefab for the fast enemy
         [SerializeField]
         private Enemy fastEnemy;
-
-        // The method used to access to the fast enemy prefab as a static object
-        public static Enemy aFastEnemy
-        {
-            get { return instance.fastEnemy; }
-        }
 
         // The prefab for the super fast enemy
         [SerializeField]
         private Enemy superFastEnemy;
 
-        // The method used to access to the super fast enemy prefab as a static object
-        public static Enemy aSuperFastEnemy
-        {
-            get { return instance.superFastEnemy; }
-        }
-
         // The prefab for the flying enemy
         [SerializeField]
         private Enemy flyingEnemy;
-
-        // The method used to access to the flying enemy prefab as a static object
-        public static Enemy aFlyingEnemy
-        {
-            get { return instance.flyingEnemy; }
-        }
 
         // The prefab for the tank enemy
         [SerializeField]
         private Enemy tankEnemy;
 
-        // The method used to access to the tank enemy prefab as a static object
-        public static Enemy aTankEnemy
-        {
-            get { return instance.tankEnemy; }
-        }
-        
         // The prefab for the slow enemy
         [SerializeField]
         private Enemy slowEnemy;
-
-        // The method used to access to the slow enemy prefab as a static object
-        public static Enemy aSlowEnemy
-        {
-            get { return instance.slowEnemy; }
-        }
 
         // The prefab for the berzerker enemy
         [SerializeField]
         private Enemy berzerkerEnemy;
 
-        // The method used to access to the berzerker enemy prefab as a static object
-        public static Enemy aBerzerkerEnemy
-        {
-            get { return instance.berzerkerEnemy; }
-        }
-
         // The prefab for the berzerker flying enemy
         [SerializeField]
         private Enemy berzerkerFlyingEnemy;
-
-        // The method used to access to the berzerker flying enemy prefab as a static object
-        public static Enemy aBerzerkerFlyingEnemy
-        {
-            get { return instance.berzerkerFlyingEnemy; }
-        }
 
         // The prefab for the berzerker tank enemy
         [SerializeField]
         private Enemy berzerkerTankEnemy;
 
-        // The method used to access to the berzerker tank enemy prefab as a static object
-        public static Enemy aBerzerkerTankEnemy
-        {
-            get { return instance.berzerkerTankEnemy; }
-        }
-
         [SerializeField]
         private static Spawner spawner;
 
+        private string mode = "object pool";
+
+        // The method used to access to the normal enemy prefab as a static object
+        public static Enemy NormalEnemy
+        {
+            get { return instance.normalEnemy; }
+        }
+        // The method used to access to the fast enemy prefab as a static object
+        public static Enemy FastEnemy
+        {
+            get { return instance.fastEnemy; }
+        }
+        // The method used to access to the super fast enemy prefab as a static object
+        public static Enemy SuperFastEnemy
+        {
+            get { return instance.superFastEnemy; }
+        }
+        // The method used to access to the flying enemy prefab as a static object
+        public static Enemy FlyingEnemy
+        {
+            get { return instance.flyingEnemy; }
+        }
+        // The method used to access to the tank enemy prefab as a static object
+        public static Enemy TankEnemy
+        {
+            get { return instance.tankEnemy; }
+        }
+        // The method used to access to the slow enemy prefab as a static object
+        public static Enemy SlowEnemy
+        {
+            get { return instance.slowEnemy; }
+        }
+        // The method used to access to the berzerker enemy prefab as a static object
+        public static Enemy BerzerkerEnemy
+        {
+            get { return instance.berzerkerEnemy; }
+        }
+        // The method used to access to the berzerker flying enemy prefab as a static object
+        public static Enemy BerzerkerFlyingEnemy
+        {
+            get { return instance.berzerkerFlyingEnemy; }
+        }
+        // The method used to access to the berzerker tank enemy prefab as a static object
+        public static Enemy BerzerkerTankEnemy
+        {
+            get { return instance.berzerkerTankEnemy; }
+        }
         // // The parent game object, so the board
         // [SerializeField]
         // private GameObject parentObject;
 
-        private string mode = "object pool";
+
 
         void Start()
         {
@@ -135,7 +128,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
                 } else {
 
                     // Get a new enemy from the object pool 1
-                    Enemy enemy1 = ObjectPool<Enemy>.RequestResource(EnemyPools.enemyPoolIds[9], () => {return Instantiate(aNormalEnemy);});
+                    Enemy enemy1 = ObjectPool<Enemy>.RequestResource(EnemyPools.enemyPoolIds[9], () => {return Instantiate(NormalEnemy);});
 
                     // Set the enemy as active
                     enemy1.gameObject.SetActive(true);
@@ -153,7 +146,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
         }
 
         // Method that spawns an enemy given the enemy type
-        public static Enemy SpawnAnEnemy(string type)
+        public static Enemy SpawnAnEnemy(EnemyType type)
         {
             // Get the right object pool index for the enemy type
             int poolIndex = ObjectPools.GetObjectPoolIndex(type);
@@ -174,7 +167,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // enemy.transform.parent = Waypoints.enemySpawn.transform;
 
             // Remove the enemy slow
-            enemy.personalSlowFactor = 1;
+            enemy.enemySlowFactor = 1;
 
             // // Set the position of the child to the position of the parent object
             // enemy.transform.position = Waypoints.enemySpawn.transform.position;
@@ -198,34 +191,22 @@ namespace i5.Toolkit.Core.Examples.Spawners
         }
 
         // Method that returns the right enemy prefab given the enemy tpye
-        public static Enemy GetRightEnemyPrefab(string type)
+        public static Enemy GetRightEnemyPrefab(EnemyType type)
         {
-
             // Depending on the type, return the right prefab
-            switch(type)
+            return type switch
             {
-                case "Normal Enemy":
-                    return aNormalEnemy;
-                case "Fast Enemy":
-                    return aFastEnemy;
-                case "Super Fast Enemy":
-                    return aSuperFastEnemy;
-                case "Flying Enemy":
-                    return aFlyingEnemy;
-                case "Tank Enemy":
-                    return aTankEnemy;
-                case "Slow Enemy":
-                    return aSlowEnemy;
-                case "Berzerker Enemy":
-                    return aBerzerkerEnemy;
-                case "Berzerker Flying Enemy":
-                    return aBerzerkerFlyingEnemy;
-                case "Berzerker Tank Enemy":
-                    return aBerzerkerTankEnemy;
-            }
-
-            // Just in case return normal enemy if the type was not found
-            return aNormalEnemy;
+                EnemyType.Normal => NormalEnemy,
+                EnemyType.Fast => FastEnemy,
+                EnemyType.SuperFast => SuperFastEnemy,
+                EnemyType.Flying => FlyingEnemy,
+                EnemyType.Tank => TankEnemy,
+                EnemyType.Slow => SlowEnemy,
+                EnemyType.Berzerker => BerzerkerEnemy,
+                EnemyType.BerzerkerFlying => BerzerkerFlyingEnemy,
+                EnemyType.BerzerkerTank => BerzerkerTankEnemy,
+                _ => NormalEnemy,
+            };
         }
     }
 }

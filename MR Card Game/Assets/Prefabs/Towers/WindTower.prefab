@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSpawner: {fileID: 0}
-  towerType: Wind Tower
+  towerType: 4
   towerProjectile: {fileID: 0}
   cost: 40
   attackRange: 15
@@ -128,6 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7427726679478930589}
+  - component: {fileID: 930538237010998271}
   m_Layer: 0
   m_Name: WindTower
   m_TagString: Tower
@@ -152,6 +153,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &930538237010998271
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7427726680290872776}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3, y: 8, z: 3}
+  m_Center: {x: 0.05454095, y: 2.7592902, z: -0.23537892}
 --- !u!1 &7427726680601149884
 GameObject:
   m_ObjectHideFlags: 0

@@ -16,72 +16,51 @@ public static class TowerEnhancer
     public static Vector3 buildPosition;
 }
 
-public enum TowerType
-{
-    Archer,
-    Earth,
-    Fire,
-    Lightning,
-    Wind
-}
-
 public class Tower : MonoBehaviour
 {
     [SerializeField]
     private GameObject projectileSpawner;
 
-    // The type of the tower
     [SerializeField]
     private TowerType towerType;
 
-    // Method used in the projectile class to read the tower type
-    public TowerType GetTowerType
-    {
-        get { return towerType; }
-    }
-
-    // The projectile prefab of the tower
+    [Tooltip("The projectile prefab of the tower")]
     [SerializeField]
     private Projectile towerProjectile;
 
-    // The level of the tower
-    private int level;
-
-    // Method used to access the current level of the tower
-    public float GetLevel
-    {
-        get { return level; }
-    }
-
-    // The weakness multiplier of the tower type
     [SerializeField]
     private float cost;
-
-    // The variable used to access the value of the weakness multiplier of projectiles from the projectile class
-    public float GetCost
-    {
-        get { return cost; }
-    }
 
     // The attack range of the tower
     [SerializeField]
     private float attackRange;
 
-    // The method used to access the attack range value
-    public float GetAttackRange
-    {
-        get { return attackRange; }
-    }
-
     // The damage of the tower
     [SerializeField]
     private int damage;
 
-    // The method used to access the damage value
-    public int GetDamage
-    {
-        get { return damage; }
-    }
+    // The attack cooldown between the attacks of the tower
+    [SerializeField]
+    private float attackCooldown;
+
+    // The projectile speed of the projectiles of this tower
+    [SerializeField]
+    private float projectileSpeed;
+
+    [Tooltip("The effect range of the projectiles of this tower")] 
+    [SerializeField]
+    private float effectRange;
+
+    [Tooltip("The effect number of the projectiles of this tower")]
+    [SerializeField]
+    private int numberOfEffect;
+
+    [Tooltip("The weakness multiplier of the tower type")]
+    [SerializeField]
+    private float weaknessMultiplier;
+
+    // The level of the tower
+    private int level;
 
     // The flag that states if the tower can attack right now or not
     private bool canAttack;
@@ -89,85 +68,89 @@ public class Tower : MonoBehaviour
     // The attack timer that is counted up after an attack
     private float attackTimer;
 
-    // The attack cooldown between the attacks of the tower
-    [SerializeField]
-    private float attackCooldown;
-
-    // The method used to access the attack cooldown value
-    public float GetAttackCooldown
-    {
-        get { return attackCooldown; }
-    }
-
-    // The projectile speed of the projectiles of this tower
-    [SerializeField]
-    private float projectileSpeed;
-
-    // The variable used to access the value of the projectile speed from the projectile class
-    public float GetProjectileSpeed
-    {
-        get { return projectileSpeed; }
-    }
-
-    // The effect range of the projectiles of this tower
-    [SerializeField]
-    private float effectRange;
-
-    // The variable used to access the value of the effect range of projectiles from the projectile class
-    public float GetEffectRange
-    {
-        get { return effectRange; }
-    }
-
-    // The effect number of the projectiles of this tower
-    [SerializeField]
-    private int numberOfEffect;
-
-    // The variable used to access the value of the effect number of projectiles from the projectile class
-    public int GetNumberOfEffect
-    {
-        get { return numberOfEffect; }
-    }
-
-    // The weakness multiplier of the tower type
-    [SerializeField]
-    private float weaknessMultiplier;
-
-    // The variable used to access the value of the weakness multiplier of projectiles from the projectile class
-    public float GetWeaknessMultiplier
-    {
-        get { return weaknessMultiplier; }
-    }
-
-
     // The current target of the tower
     private Collider target;
-
-    // The variable used to access the value of the target from the projectile class
-    public Collider GetTarget
-    {
-        get { return target; }
-    }
 
     // The list of colliders that enter the range of the tower
     private List<Collider> colliders = new List<Collider>();
 
-    // The method used to access the list of colliders
-    public List<Collider> GetColliders()
-    {
-        return colliders;
-    }
-
     // The list of enemies that can still be targeted by the lightning tower
     private List<Collider> enemies = new List<Collider>();
 
-    // The method used to access the list of enemies that can be targeted by the lightning tower
-    public List<Collider> GetEnemies()
+    // Method used in the projectile class to read the tower type
+    public TowerType TowerType
     {
-        return enemies;
+        get { return towerType; }
     }
 
+    // Method used to access the current level of the tower
+    public float Level
+    {
+        get { return level; }
+    }
 
+    // The variable used to access the value of the weakness multiplier of projectiles from the projectile class
+    public float Cost
+    {
+        get { return cost; }
+    }
+
+    // The method used to access the attack range value
+    public float AttackRange
+    {
+        get { return attackRange; }
+    }
+
+    // The method used to access the damage value
+    public int Damage
+    {
+        get { return damage; }
+    }
+
+    // The method used to access the attack cooldown value
+    public float AttackCooldown
+    {
+        get { return attackCooldown; }
+    }
+
+    // The variable used to access the value of the projectile speed from the projectile class
+    public float ProjectileSpeed
+    {
+        get { return projectileSpeed; }
+    }
+
+    // The variable used to access the value of the effect range of projectiles from the projectile class
+    public float EffectRange
+    {
+        get { return effectRange; }
+    }
+
+    // The variable used to access the value of the effect number of projectiles from the projectile class
+    public int NumberOfEffect
+    {
+        get { return numberOfEffect; }
+    }
+
+    // The variable used to access the value of the weakness multiplier of projectiles from the projectile class
+    public float WeaknessMultiplier
+    {
+        get { return weaknessMultiplier; }
+    }
+    // The variable used to access the value of the target from the projectile class
+    public Collider Target
+    {
+        get { return target; }
+    }
+    // The method used to access the list of colliders
+    public List<Collider> Colliders
+    {
+        get => colliders;
+    }
+    // The method used to access the list of enemies that can be targeted by the lightning tower
+    public List<Collider> Enemies
+    {
+        get => enemies;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -273,7 +256,7 @@ public class Tower : MonoBehaviour
         // }
 
         // Check if the sphere colider around the tower still contains the target enemy
-        if(GetColliders().Contains(target) == false)
+        if(Colliders.Contains(target) == false)
         {
             // If the target left the range, set it to null
             target = null;
@@ -286,7 +269,7 @@ public class Tower : MonoBehaviour
         if(target == null && colliders.Count > 0)
         {
             // If a new target is needed, and there are enemies in range, set the oldest enemy as target
-            target = GetColliders()[0];
+            target = Colliders[0];
 
             // Debug.Log("The new target was set to " + target);
         }
@@ -335,7 +318,7 @@ public class Tower : MonoBehaviour
         // Get a projectile form the object pool
         // Projectile spawnedProjectile = ObjectPool<Projectile>.RequestResource(() => {return new Projectile();});
 
-        if(GetTowerType == TowerType.Lightning)
+        if(TowerType == TowerType.Lightning)
         {
             // // Set the list of targets to the list of colliders
             // enemies = GetColliders();
@@ -345,11 +328,11 @@ public class Tower : MonoBehaviour
             enemies.Remove(target);
 
             // Apply the effect to the enemy
-            LightningStrikeEffect(GetNumberOfEffect, target.gameObject.GetComponent<Enemy>());
+            LightningStrikeEffect(NumberOfEffect, target.gameObject.GetComponent<Enemy>());
 
             // Apply a visual effect on all enemies hit
 
-        } else if(GetTowerType == TowerType.Wind)
+        } else if(TowerType == TowerType.Wind)
         {
             // Apply the effect to the enemy
             WindGustEffect();
@@ -358,7 +341,7 @@ public class Tower : MonoBehaviour
 
             // Spawn the projectile
             // Projectile spawnedProjectile = SpawnProjectileForTower(towerType).GetComponent<Projectile>();
-            Projectile spawnedProjectile = SpawnProjectileForTower(towerType, towerProjectile, projectileSpawner, GetEffectRange);
+            Projectile spawnedProjectile = SpawnProjectileForTower(towerType, towerProjectile, projectileSpawner, EffectRange);
 
             // Initialize the projectile object, so that it knows what his parent is
             spawnedProjectile.Initialize(this);
@@ -395,7 +378,7 @@ public class Tower : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Make sure it is a game object with enemy tag
-        if(other.gameObject.tag == "Enemy" && !colliders.Contains(other) )
+        if(other.gameObject.CompareTag("Enemy") && !colliders.Contains(other) )
         {
             colliders.Add(other);
         }
@@ -404,7 +387,7 @@ public class Tower : MonoBehaviour
     // The method that removes exiting enemies of the collider list
     private void OnTriggerExit (Collider other)
     {
-        if(other.gameObject.tag == "Enemy")
+        if(other.gameObject.CompareTag("Enemy"))
         {
             colliders.Remove(other);
         }
@@ -423,7 +406,7 @@ public class Tower : MonoBehaviour
         // enemiesList = 
 
         // Calculate the damage
-        int damage = Projectile.CalculateDamage(GetDamage, GetWeaknessMultiplier, GetTowerType, targetEnemy);
+        int damage = Projectile.CalculateDamage(Damage, WeaknessMultiplier, TowerType, targetEnemy);
 
         // Make the enemy take damage
         targetEnemy.TakeDamage(damage);
@@ -441,25 +424,25 @@ public class Tower : MonoBehaviour
             // float radius = getEffectRange * targetEnemy.gameBoard.transform.localScale.x;
 
             // Check if there is another enemy in the range of the tower
-            if(GetEnemies().Count >= 1)
+            if(Enemies.Count >= 1)
             {
                 // Initialize the nearest enemy
                 Collider nearestEnemy = null;
 
                 // Initialize the shortest distance
-                float shortestDistance = GetEffectRange * Board.greatestBoardDimension;
+                float shortestDistance = EffectRange * Board.greatestBoardDimension;
 
                 // Go through all other enemies, so skip the first index of the array
-                for(int counter = 0; counter < GetEnemies().Count; counter = counter + 1)
+                for(int counter = 0; counter < Enemies.Count; counter = counter + 1)
                 {
                     // Get the distance between the current target and the current candidate
-                    float distance = Vector3.Distance(targetEnemy.transform.position, GetEnemies()[counter].GetComponent<Enemy>().transform.position);
+                    float distance = Vector3.Distance(targetEnemy.transform.position, Enemies[counter].GetComponent<Enemy>().transform.position);
 
                     // Check if this distance is shorter than the current shortest distance
                     if(distance <= shortestDistance)
                     {
                         // Set this enemy as nearest enemy
-                        nearestEnemy = GetEnemies()[counter];
+                        nearestEnemy = Enemies[counter];
 
                         // Set the shortest distance to the distance between those two
                         shortestDistance = distance;
@@ -498,7 +481,7 @@ public class Tower : MonoBehaviour
         // Get the enemy component of the target collinder
         Enemy targetEnemy = target.GetComponent<Enemy>();
         // Calculate the damage
-        int damage = Projectile.CalculateDamage(GetDamage, GetWeaknessMultiplier, GetTowerType, targetEnemy);
+        int damage = Projectile.CalculateDamage(Damage, WeaknessMultiplier, TowerType, targetEnemy);
 
         // Make the enemy take damage
         targetEnemy.TakeDamage(damage);
@@ -510,7 +493,7 @@ public class Tower : MonoBehaviour
         // target.transform.position = Vector3.MoveTowards(transform.position, target.waypoints[target.waypointIndex - 1].transform.position + new Vector3(0, target.flightHeight, 0), parent.GetProjectileSpeed * parent.effectTime * parent.level * target.gameBoard.transform.localScale.x);    
         // target.transform.position = transform.Translate(targetPosition);
         // targetEnemy.transform.position = Vector3.MoveTowards(transform.position, targetPosition, getProjectileSpeed * GetEffectTime * getLevel * targetEnemy.gameBoard.transform.localScale.x);
-        targetEnemy.transform.position = targetEnemy.transform.position - targetEnemy.transform.forward * GetEffectRange * Board.greatestBoardDimension;
+        targetEnemy.transform.position = targetEnemy.transform.position - targetEnemy.transform.forward * EffectRange * Board.greatestBoardDimension;
     }
 
     // The method activated when clicking on the hidden button on towers to upgrade them
@@ -613,20 +596,20 @@ public class Tower : MonoBehaviour
     private void AdjustTowerRange()
     {
         // Set the radius of the sphere collider on the tower range component with the tower script to the attack range
-        this.gameObject.transform.localScale = new Vector3(GetAttackRange, GetAttackRange, GetAttackRange);
+        this.gameObject.transform.localScale = new Vector3(AttackRange, AttackRange, AttackRange);
     }
 
     public void ResetTowerStatistics(Tower towerprefab)
     {
         Debug.Log("The tower statistics were reset");
         level = 1;
-        cost = towerprefab.GetCost;
-        attackRange = towerprefab.GetAttackRange;
-        damage = towerprefab.GetDamage;
-        attackCooldown = towerprefab.GetAttackCooldown;
-        projectileSpeed = towerprefab.GetProjectileSpeed;
-        effectRange = towerprefab.GetEffectRange;
-        numberOfEffect = towerprefab.GetNumberOfEffect;
-        weaknessMultiplier = towerprefab.GetWeaknessMultiplier;
+        cost = towerprefab.Cost;
+        attackRange = towerprefab.AttackRange;
+        damage = towerprefab.Damage;
+        attackCooldown = towerprefab.AttackCooldown;
+        projectileSpeed = towerprefab.ProjectileSpeed;
+        effectRange = towerprefab.EffectRange;
+        numberOfEffect = towerprefab.NumberOfEffect;
+        weaknessMultiplier = towerprefab.WeaknessMultiplier;
     }
 }

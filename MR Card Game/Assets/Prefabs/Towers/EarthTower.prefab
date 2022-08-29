@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7335757762483917790}
+  - component: {fileID: 1757081485474365905}
   m_Layer: 0
   m_Name: EarthTower
   m_TagString: Tower
@@ -33,6 +34,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1757081485474365905
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7335757762642316412}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3, y: 8, z: 3}
+  m_Center: {x: 0.05454095, y: 2.7592902, z: -0.23537892}
 --- !u!1 &7335757762656105154
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +446,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSpawner: {fileID: 7335757763316993793}
-  towerType: Earth Tower
+  towerType: 1
   towerProjectile: {fileID: 4304954633899946434, guid: cf8da1e35675d5a43bae2f374d246d53, type: 3}
   cost: 80
   attackRange: 15

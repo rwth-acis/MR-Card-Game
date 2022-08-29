@@ -18,6 +18,12 @@ public class DownloadLevels : MonoBehaviour
     //DownloadLevels menu button
     [SerializeField] private Button downloadLevelsMenuButton;
 
+    [SerializeField] private TextMeshProUGUI currentPageText;
+
+    // Define the previous and next buttons
+    [SerializeField] private Button previousPage;
+    [SerializeField] private Button nextPage;
+
     // The directories array
     private string[] directoriesArray;
 
@@ -29,12 +35,6 @@ public class DownloadLevels : MonoBehaviour
 
     // The number of the current page
     private int numberOfPages;
-
-    [SerializeField] private TextMeshProUGUI currentPageText;
-
-    // Define the previous and next buttons
-    [SerializeField] private Button previousPage;
-    [SerializeField] private Button nextPage;
 
     private void OnEnable()
     {

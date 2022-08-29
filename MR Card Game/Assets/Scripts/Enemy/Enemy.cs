@@ -6,37 +6,27 @@ using UnityEngine.EventSystems;
 
 public class Enemy : MonoBehaviour
 {
-    // Waypoints placed on the path that enemies have to travel
-    private Transform[] waypoints;
 
+    #region Serializable Fields
+    [Header("Properties")]
     // The type of the enemy
     [SerializeField]
-    private string enemyType;
+    private EnemyType enemyType;
 
-    // Method used to get the type of the enemy
-    public string GetEnemyType
-    {
-        get { return enemyType; }
-    }
+    [Tooltip("What the enemy is resistant to")]
+    [SerializeField]
+    private ResistenceAndWeaknessType resistance;
+
+    [Tooltip("What the enemy is weak to")]
+    [SerializeField]
+    private ResistenceAndWeaknessType weakness;
 
     // The maximum and current health point of the enemy unit
     [SerializeField]
     private int maximumHP;
 
-    // Method used to get the type of the enemy
-    public int GetMaximumHP
-    {
-        get { return maximumHP; }
-    }
-
     [SerializeField]
     private int currentHP;
-
-    // Method used to get the type of the enemy
-    public int GetCurrentHP
-    {
-        get { return currentHP; }
-    }
 
     // The size of the enemy unit
     [SerializeField]
@@ -44,30 +34,24 @@ public class Enemy : MonoBehaviour
 
     // The movement speed of the enemy unit
     [SerializeField]
-    private float moveSpeed;
+    private float movingSpeed;
 
     // The damage that the enemy unit deals to the castle if it is reached
     [SerializeField]
     private int damage;
 
-    // The currency points won when defeating the enemy
+    [Tooltip("The currency points won when defeating the enemy")] 
     [SerializeField]
-    private int enemyValue;
+    private int currencyPoints;
 
-    // The height of fly, if zero then the unit cannot fly
+    [Tooltip("The height of fly, if zero then the unit cannot fly")]
     [SerializeField]
-    private float flying;
+    private float flyingHeight;
 
-    // Initialize the flight height variable
-    private float flightHeight = 0;
+    // The personal slow factor of the enemy
+    public float enemySlowFactor = 1;
 
-    // Method used to get the flight height of the enemy
-    public float GetFlightHeight
-    {
-        get { return flightHeight; }
-    }
-
-    // The UI for the health bar
+    [Header("Control")]
     [SerializeField]
     private GameObject healthBarUI;
 
@@ -75,52 +59,71 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private Slider healthBar;
 
-    // What the enemy is resistant to
-    [SerializeField]
-    public string resistance;
-
-    // Method used to get the restistance of the enemy
-    public string GetEnemyResistance
-    {
-        get { return resistance; }
-    }
-
-    // What the enemy is weak to
-    [SerializeField]
-    public string weakness;
-
-    // Method used to get the weakness of the enemy
-    public string GetEnemyWeakness
-    {
-        get { return weakness; }
-    }
-
-    // The gameboard game object
-    private GameObject gameBoard;
-
     // The current waypoint index so that enemies go from waypoint to waypoint
     public int waypointIndex = 0;
 
     // The flag that tells if the enemy is currently alive or not
     public bool isAlive = true;
 
-    // The personal slow factor of the enemy
-    public float personalSlowFactor = 1;
-
-    public int numberOfTrapsIn = 0;
-
     // The flag that states if an enemy is wet or not
     public bool isWet = false;
 
-    // The flag that states if the enemy need its position to be reset or not
+    [Tooltip(" The flag that states if the enemy need its position to be reset or not")]
     public int firstLife = 0;
 
-    // // Method used to get the weakness of the enemy
-    // public bool isAlive
-    // {
-    //     get { return alive; }
-    // }
+    public int numberOfTrapsIn = 0;
 
+    #endregion
+
+    #region Non-Serializable Fields
+
+    // Waypoints placed on the path that enemies have to travel
+    private Transform[] waypoints;
+
+    // Initialize the flight height variable
+    private float flightHeight = 0;
+
+    // The gameboard game object
+    private GameObject gameBoard;
+    #endregion
+
+    #region Properties
+    // Method used to get the type of the enemy
+    public EnemyType EnemyType
+    {
+        get { return enemyType; }
+    }
+
+    public int MaximumHP
+    {
+        get { return maximumHP; }
+    }
+
+    public int CurrentHP
+    {
+        get { return currentHP; }
+    }
+
+    public float FlightHeight
+    {
+        get { return flightHeight; }
+    }
+
+    // Method used to get the restistance of the enemy
+    public ResistenceAndWeaknessType Resistance
+    {
+        get => resistance;
+        set => resistance = value;
+    }
+
+    // Method used to get the weakness of the enemy
+    public ResistenceAndWeaknessType Weakness
+    {
+        get => weakness;
+        set => weakness = value;
+    }
+
+    #endregion
     // Start is called before the first frame update
     void Start()
     {
@@ -134,7 +137,7 @@ public class Enemy : MonoBehaviour
         // transform.parent = gameBoard.transform;
 
         // Set the flight height and standing size
-        flightHeight = flying * Board.greatestBoardDimension * (float)0.6  + (float)0.2 * size * Board.greatestBoardDimension;
+        flightHeight = flyingHeight * Board.greatestBoardDimension * 0.6f  + 0.2f * size * Board.greatestBoardDimension;
 
         // Deactivate the health bar since it is full
         healthBarUI.SetActive(false);
@@ -143,7 +146,7 @@ public class Enemy : MonoBehaviour
         healthBar.value = CalculateHealth();
 
         // Scale the enemy down to have the right size
-        transform.localScale = new Vector3((float)0.25 * size, (float)0.25 * size, (float)0.25 * size);
+        transform.localScale = new Vector3(0.25f * size, 0.25f * size, 0.25f * size);
 
         // Set it to the position of the first waypoint on spawn
         transform.position = (waypoints[waypointIndex].transform.position + this.transform.up * flightHeight);
@@ -208,8 +211,7 @@ public class Enemy : MonoBehaviour
             Vector3 currentGoal = waypoints[waypointIndex].transform.position + transform.up * flightHeight;
 
             // Move the enemy toward the next waypoint
-            transform.position = Vector3.MoveTowards(transform.position, currentGoal, moveSpeed * GameAdvancement.globalSlow * personalSlowFactor * Time.deltaTime * gameBoard.transform.localScale.x);
-
+            transform.position = Vector3.MoveTowards(transform.position, currentGoal, movingSpeed * GameAdvancement.globalSlow * enemySlowFactor * Time.deltaTime * gameBoard.transform.localScale.x);
             // // Make the enemy face the direction it is moving
             // transform.LookAt(waypoints[waypointIndex].transform.position);
 
@@ -263,14 +265,14 @@ public class Enemy : MonoBehaviour
     // Method that calculates the health value
     public float CalculateHealth()
     {
-        return (float)currentHP / (float)maximumHP;
+        return currentHP / maximumHP;
     }
 
     // Method that rewards the player with currency points if an enemy is defeated
     public void WinPoints()
     {
         // Add the enemy value to the currency points of the player
-        GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + enemyValue;
+        GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + currencyPoints;
 
         // Actualize the currency display so that the player can see that he won currency points
         GameSetup.UpdateCurrencyDisplay();
@@ -345,7 +347,7 @@ public class Enemy : MonoBehaviour
         isAlive = true;
 
         // Set the health points to max hp
-        currentHP = GetMaximumHP;
+        currentHP = MaximumHP;
 
         // if(firstLife > 1)
         // {

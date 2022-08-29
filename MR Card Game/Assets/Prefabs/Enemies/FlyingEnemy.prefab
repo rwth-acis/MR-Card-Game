@@ -110,19 +110,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1149d3072ef1b2942bf08844eb3e72cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: Flying Enemy
+  enemyType: 3
+  resistance: 0
+  weakness: 0
   maximumHP: 50
   currentHP: 50
   size: 1
-  moveSpeed: 0.75
+  movingSpeed: 0.75
   damage: 1
-  enemyValue: 15
-  flying: 1
+  currencyPoints: 0
+  flyingHeight: 0
+  enemySlowFactor: 1
   healthBarUI: {fileID: 2920807489428759730}
   healthBar: {fileID: 2920807488653493314}
-  resistance: 
-  weakness: 
+  waypointIndex: 0
   isAlive: 1
+  isWet: 0
+  firstLife: 0
+  numberOfTrapsIn: 0
 --- !u!54 &2920807488357547947
 Rigidbody:
   m_ObjectHideFlags: 0

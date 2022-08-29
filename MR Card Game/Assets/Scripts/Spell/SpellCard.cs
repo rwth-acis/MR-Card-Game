@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Windows.Speech;
 
 // List of spell cards:     Status:     Comments:               Tested:
-// - Meteor                 Done        animation done!         working
+// - SpellType.Meteor                 Done        animation done!         working
 // - Arrow rain             Done        animation done!         working
 // - Thunder strike         Done        animation done!         working
 // - Armor                  Done        display is there        working
@@ -24,7 +25,7 @@ public static class Cards
     public static int freeDraws = 0;
 
     // The shuffled cards array
-    public static string[] cardDeck;
+    public static SpellType[] cardDeck;
 
     // The index of the current card in the card array
     public static int currentCardIndex;
@@ -71,11 +72,20 @@ public class SpellCard : MonoBehaviour
     [SerializeField]
     private GameObject spellPositionIndicator;
 
-    // // The boolean variable that states that the image target is in the camera field
-    // private bool cardVisibleButNotDisplayed = false;
+    // Define the currency display button
+    [SerializeField]
+    private Button currencyDisplay;
 
-    // // The boolean variable that states that the image target with a drawn spell is in the game board field but was not displayed
-    // private bool cardDrawnButNotDisplayed = false;
+    // Define the wave display button
+    [SerializeField]
+    private Button waveDisplay;
+
+    // Define the start next wave button
+    [SerializeField]
+    private Button startNextWaveButton;
+
+    // Initialize the spell type
+    private SpellType spellType;
 
     // The flag that states that the card was drawn
     private bool cardDrawn = false;
@@ -86,19 +96,11 @@ public class SpellCard : MonoBehaviour
     //The projected position on ground plane
     private Vector3 projectedPos;
 
-    // Define the currency display button
-    [SerializeField]
-    private Button currencyDisplay;
-
     // The method used to access to the currency display button as a static object
     public static Button CurrencyDisplay
     {
         get { return instance.currencyDisplay; }
     }
-
-    // Define the wave display button
-    [SerializeField]
-    private Button waveDisplay;
 
     // The boolean variable that states that the image target is on or off the game board
     private bool onBoard = false;
@@ -109,14 +111,10 @@ public class SpellCard : MonoBehaviour
         get { return instance.waveDisplay; }
     }
 
-    // Define the start next wave button
-    [SerializeField]
-    private Button startNextWave;
-
     // The method used to access to the start next wave button as a static object
-    public static Button StartNextWave
+    public static Button StartNextWaveButton
     {
-        get { return instance.startNextWave; }
+        get { return instance.startNextWaveButton; }
     }
 
     // Start is called before the first frame update
@@ -127,7 +125,7 @@ public class SpellCard : MonoBehaviour
         Debug.Log("Start method was run");
 
         // Initialize the deck of cards array in the Cards class
-        Cards.cardDeck = new string[35];
+        Cards.cardDeck = new SpellType[35];
 
         // Fill the card deck
         FillCardDeck();
@@ -262,7 +260,7 @@ public class SpellCard : MonoBehaviour
         if(LevelInfo.waveOngoing == false || (LevelInfo.numberOfUndefeatedEnemies == 0 && GameAdvancement.currentWave < LevelInfo.numberOfWaves))
         {
             // If it is not the case, activate the start next wave button
-            StartNextWave.gameObject.SetActive(true);
+            StartNextWaveButton.gameObject.SetActive(true);
         }
     }
 
@@ -276,7 +274,7 @@ public class SpellCard : MonoBehaviour
         WaveDisplay.gameObject.SetActive(false);
 
         // Deactivate the start next wave button
-        StartNextWave.gameObject.SetActive(false);
+        StartNextWaveButton.gameObject.SetActive(false);
     }
 
     //---------------------------------------------------------------------------------------------------------------
@@ -287,70 +285,70 @@ public class SpellCard : MonoBehaviour
     private void FillCardDeck()
     {
         // Add five meteor cards
-        Cards.cardDeck[0] = "Meteor";
-        Cards.cardDeck[1] = "Meteor";
-        Cards.cardDeck[2] = "Meteor";
-        Cards.cardDeck[3] = "Meteor";
-        Cards.cardDeck[4] = "Meteor";
+        Cards.cardDeck[0] = SpellType.Meteor;
+        Cards.cardDeck[1] = SpellType.Meteor;
+        Cards.cardDeck[2] = SpellType.Meteor;
+        Cards.cardDeck[3] = SpellType.Meteor;
+        Cards.cardDeck[4] = SpellType.Meteor;
 
         // Add five arrow rain cards
-        Cards.cardDeck[5] = "Arrow rain";
-        Cards.cardDeck[6] = "Arrow rain";
-        Cards.cardDeck[7] = "Arrow rain";
-        Cards.cardDeck[8] = "Arrow rain";
-        Cards.cardDeck[9] = "Arrow rain";
+        Cards.cardDeck[5] = SpellType.ArrowRain;
+        Cards.cardDeck[6] = SpellType.ArrowRain;
+        Cards.cardDeck[7] = SpellType.ArrowRain;
+        Cards.cardDeck[8] = SpellType.ArrowRain;
+        Cards.cardDeck[9] = SpellType.ArrowRain;
 
         // Add three thunder strike cards
-        Cards.cardDeck[10] = "Thunder strike";
-        Cards.cardDeck[11] = "Thunder strike";
-        Cards.cardDeck[12] = "Thunder strike";
-        Cards.cardDeck[13] = "Thunder strike";
+        Cards.cardDeck[10] = SpellType.ThunderStrike;
+        Cards.cardDeck[11] = SpellType.ThunderStrike;
+        Cards.cardDeck[12] = SpellType.ThunderStrike;
+        Cards.cardDeck[13] = SpellType.ThunderStrike;
 
         // Add three armor cards
-        Cards.cardDeck[14] = "Armor";
-        Cards.cardDeck[15] = "Armor";
-        Cards.cardDeck[16] = "Armor";
-        Cards.cardDeck[17] = "Armor";
+        Cards.cardDeck[14] = SpellType.Armor;
+        Cards.cardDeck[15] = SpellType.Armor;
+        Cards.cardDeck[16] = SpellType.Armor;
+        Cards.cardDeck[17] = SpellType.Armor;
 
         // Add three heal cards
-        Cards.cardDeck[18] = "Heal";
-        Cards.cardDeck[19] = "Heal";
-        Cards.cardDeck[20] = "Heal";
-        Cards.cardDeck[21] = "Heal";
+        Cards.cardDeck[18] = SpellType.Heal;
+        Cards.cardDeck[19] = SpellType.Heal;
+        Cards.cardDeck[20] = SpellType.Heal;
+        Cards.cardDeck[21] = SpellType.Heal;
 
         // Add one obliteration cards
-        Cards.cardDeck[22] = "Obliteration";
+        Cards.cardDeck[22] = SpellType.Obliteration;
 
         // Add one draw cards
-        Cards.cardDeck[23] = "Draw";
+        Cards.cardDeck[23] = SpellType.Draw;
 
         // Add three teleport cards
-        Cards.cardDeck[24] = "Teleport";
-        Cards.cardDeck[25] = "Teleport";
-        Cards.cardDeck[26] = "Teleport";
+        Cards.cardDeck[24] = SpellType.Teleport;
+        Cards.cardDeck[25] = SpellType.Teleport;
+        Cards.cardDeck[26] = SpellType.Teleport;
 
         // Add three space distortion cards
-        Cards.cardDeck[27] = "Space distortion";
-        Cards.cardDeck[28] = "Space distortion";
-        Cards.cardDeck[29] = "Space distortion";
+        Cards.cardDeck[27] = SpellType.SpaceDistortion;
+        Cards.cardDeck[28] = SpellType.SpaceDistortion;
+        Cards.cardDeck[29] = SpellType.SpaceDistortion;
 
         // Add two slow time cards
-        Cards.cardDeck[30] = "Slow time";
-        Cards.cardDeck[31] = "Slow time";
+        Cards.cardDeck[30] = SpellType.SlowTime;
+        Cards.cardDeck[31] = SpellType.SlowTime;
 
         // Add one stop time cards
-        Cards.cardDeck[32] = "Stop time";
+        Cards.cardDeck[32] = SpellType.StopTime;
 
         // Add two rain cards
-        Cards.cardDeck[33] = "Rain";
-        Cards.cardDeck[34] = "Rain";
+        Cards.cardDeck[33] = SpellType.Rain;
+        Cards.cardDeck[34] = SpellType.Rain;
     }
 
     // Initialize random number generator
     private static readonly System.Random random = new System.Random();
 
     // Method that shuffles the card deck
-    public static void ShuffleCardDeck(string[] array)
+    public static void ShuffleCardDeck(SpellType[] array)
     {
         // Get the length of the question array
         int length = array.Length;
@@ -368,7 +366,7 @@ public class SpellCard : MonoBehaviour
             swapIndex = random.Next(0, index);
 
             // Copy entry at swapIndex to the entry index of the array
-            string value = array[swapIndex];
+            SpellType value = array[swapIndex];
             array[swapIndex] = array[index];
             array[index] = value;
 
@@ -381,8 +379,7 @@ public class SpellCard : MonoBehaviour
     // Drawing spell cards
     //---------------------------------------------------------------------------------------------------------------
 
-    // Initialize the spell type
-    private string spellType;
+
 
     // Method that is activated when the spell image target enters the camera field
     public void SpellCardEnteredCameraField()
@@ -553,7 +550,7 @@ public class SpellCard : MonoBehaviour
     private void RevealSpell()
     {
         // Set the right sprite to the image target image component
-        SpellImages.DisplaySpell(this.gameObject, spellType);
+        SpellImages.DisplaySpell(gameObject, spellType);
 
         // Display the spell image
         DisplaySpellImage();
@@ -695,51 +692,51 @@ public class SpellCard : MonoBehaviour
         // Depending on the type of card that is next in the card deck, make the right overlay appear and set the spell type variable to the right type
         switch(spellType)
         {
-            case "Meteor":
-                PlayMeteor(this.gameObject);
+            case SpellType.Meteor:
+                PlayMeteor(gameObject);
             break;
 
-            case "Arrow rain":
-                PlayArrowRain(this.gameObject);
+            case SpellType.ArrowRain:
+                PlayArrowRain(gameObject);
             break;
 
-            case "Thunder strike":
-                PlayThunderStrike(this.gameObject);
+            case SpellType.ThunderStrike:
+                PlayThunderStrike(gameObject);
             break;
 
-            case "Armor":
+            case SpellType.Armor:
                 PlayArmor();
             break;
 
-            case "Heal":
+            case SpellType.Heal:
                 PlayHeal();
             break;
 
-            case "Obliteration":
+            case SpellType.Obliteration:
                 PlayObliteration();
             break;
 
-            case "Draw":
+            case SpellType.Draw:
                 PlayDraw();
             break;
 
-            case "Teleport":
-                PlayTeleport(this.gameObject);
+            case SpellType.Teleport:
+                PlayTeleport(gameObject);
             break;
 
-            case "Space distortion":
-                PlaySpaceDistortion(this.gameObject);
+            case SpellType.SpaceDistortion:
+                PlaySpaceDistortion(gameObject);
             break;
 
-            case "Slow time":
+            case SpellType.SlowTime:
                 PlaySlowTime();
             break;
 
-            case "Stop time":
+            case SpellType.StopTime:
                 PlayStopTime();
             break;
 
-            case "Rain":
+            case SpellType.Rain:
                 PlayRain();
             break;
         }
@@ -880,7 +877,7 @@ public class SpellCard : MonoBehaviour
     IEnumerator ActivateMeteorAnimation()
     {
         // Make the arrow rain prefab appear at the position of the image target
-        GameObject meteorImpact = SpawnSpellEffect.SpawnAMeteorImpact();
+        GameObject meteorImpact = SpawnSpellEffect.SpawnMeteorImpact();
 
         // Set the position of the spell effect to the position of the image target
         meteorImpact.transform.position = positionObject.transform.position;
@@ -903,7 +900,7 @@ public class SpellCard : MonoBehaviour
         }
 
         // Release the arrow rain object
-        ObjectPools.ReleaseSpellEffect(meteorImpact, "Meteor Impact");
+        ObjectPools.ReleaseSpellEffect(meteorImpact, SpellType.Meteor);
     }
 
     [SerializeField]
@@ -931,7 +928,7 @@ public class SpellCard : MonoBehaviour
     IEnumerator ActivateArrowRainAnimation()
     {
         // Make the arrow rain prefab appear at the position of the image target
-        GameObject arrowRain = SpawnSpellEffect.SpawnAnArrowRain();
+        GameObject arrowRain = SpawnSpellEffect.SpawnArrowRain();
 
         // Set the position of the spell effect to the position of the image target
         arrowRain.transform.position = positionObject.transform.position;
@@ -954,7 +951,7 @@ public class SpellCard : MonoBehaviour
         }
 
         // Release the arrow rain object
-        ObjectPools.ReleaseSpellEffect(arrowRain, "Arrow Rain");
+        ObjectPools.ReleaseSpellEffect(arrowRain, SpellType.ArrowRain);
     }
 
     // The method used to make the thunder strike spell card take effect
@@ -1006,7 +1003,7 @@ public class SpellCard : MonoBehaviour
     IEnumerator ActivateThunderStrikeAnimation(GameObject enemy)
     {
         // Make the thunder strike prefab appear at the position of the image target
-        GameObject thunderStrike = SpawnSpellEffect.SpawnAThunderStrike();
+        GameObject thunderStrike = SpawnSpellEffect.SpawnThunderStrike();
 
         // Set the position of the spell effect to the position of the image target
         thunderStrike.transform.position = enemy.transform.position;
@@ -1029,7 +1026,7 @@ public class SpellCard : MonoBehaviour
         }
 
         // Release the thunder strike object
-        ObjectPools.ReleaseSpellEffect(thunderStrike, "Thunder Strike");
+        ObjectPools.ReleaseSpellEffect(thunderStrike, SpellType.ThunderStrike);
     }
 
     // The method used to make the armor spell card take effect
@@ -1153,7 +1150,7 @@ public class SpellCard : MonoBehaviour
         foreach(GameObject enemy in enemies)
         {
             // Set the personal slow factor of the enemies to the space distortion factor
-            enemy.GetComponent<Enemy>().personalSlowFactor = spaceDistortionFactor;
+            enemy.GetComponent<Enemy>().enemySlowFactor = spaceDistortionFactor;
         }
 
         // Initialize the time waited variable
@@ -1177,7 +1174,7 @@ public class SpellCard : MonoBehaviour
         foreach(GameObject enemy in enemies)
         {
             // Reset the personal slow factor of the enemies
-            enemy.GetComponent<Enemy>().personalSlowFactor = 1;
+            enemy.GetComponent<Enemy>().enemySlowFactor = 1;
         }
     }
 
@@ -1371,7 +1368,7 @@ public class SpellCard : MonoBehaviour
         onBoard = false;
 
         // Reset the spell type
-        spellType = "";
+        spellType = 0;
 
         // Hide the play spell button
         HideSpellCanvas();

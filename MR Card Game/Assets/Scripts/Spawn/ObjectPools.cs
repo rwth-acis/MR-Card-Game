@@ -76,25 +76,6 @@ public class ObjectPools : MonoBehaviour
         EnemyPools.enemyPoolIds[21] = poolId22;
         EnemyPools.enemyPoolIds[22] = poolId23;
 
-        // Debug.Log("Pool index: " + poolId1);
-        // Debug.Log("Pool index: " + poolId2);
-        // Debug.Log("Pool index: " + poolId3);
-        // Debug.Log("Pool index: " + poolId4);
-        // Debug.Log("Pool index: " + poolId5);
-        // Debug.Log("Pool index: " + poolId6);
-        // Debug.Log("Pool index: " + poolId7);
-        // Debug.Log("Pool index: " + poolId8);
-        // Debug.Log("Pool index: " + poolId9);
-        // Debug.Log("Pool index: " + poolId10);
-        // Debug.Log("Pool index: " + poolId11);
-        // Debug.Log("Pool index: " + poolId12);
-        // Debug.Log("Pool index: " + poolId13);
-        // Debug.Log("Pool index: " + poolId14);
-        // Debug.Log("Pool index: " + poolId15);
-        // Debug.Log("Pool index: " + poolId16);
-        // Debug.Log("Pool index: " + poolId17);
-        // Debug.Log("Pool index: " + poolId18);
-
     }
 
     // Update is called once per frame
@@ -131,39 +112,29 @@ public class ObjectPools : MonoBehaviour
     // }
 
     // Method that returns the correct object pool index given the enemy type
-    public static int GetObjectPoolIndex(string type)
-    {
-        switch(type)
-        {
-            case "Normal Enemy":
-                return EnemyPools.enemyPoolIds[0];
-            case "Fast Enemy":
-                return EnemyPools.enemyPoolIds[1];
-            case "Super Fast Enemy":
-                return EnemyPools.enemyPoolIds[2];
-            case "Flying Enemy":
-                return EnemyPools.enemyPoolIds[3];
-            case "Tank Enemy":
-                return EnemyPools.enemyPoolIds[4];
-            case "Slow Enemy":
-                return EnemyPools.enemyPoolIds[5];
-            case "Berzerker Enemy":
-                return EnemyPools.enemyPoolIds[6];
-            case "Berzerker Flying Enemy":
-                return EnemyPools.enemyPoolIds[7];
-            case "Berzerker Tank Enemy":
-                return EnemyPools.enemyPoolIds[8];
-        }
 
-        // Case the enemy does not have a correct type
-        return EnemyPools.enemyPoolIds[12];
+    public static int GetObjectPoolIndex(EnemyType type)
+    {
+        return type switch
+        {
+            EnemyType.Normal => EnemyPools.enemyPoolIds[0],
+            EnemyType.Fast => EnemyPools.enemyPoolIds[1],
+            EnemyType.SuperFast => EnemyPools.enemyPoolIds[2],
+            EnemyType.Flying => EnemyPools.enemyPoolIds[3],
+            EnemyType.Tank => EnemyPools.enemyPoolIds[4],
+            EnemyType.Slow => EnemyPools.enemyPoolIds[5],
+            EnemyType.Berzerker => EnemyPools.enemyPoolIds[6],
+            EnemyType.BerzerkerFlying => EnemyPools.enemyPoolIds[7],
+            EnemyType.BerzerkerTank => EnemyPools.enemyPoolIds[8],
+            _ => EnemyPools.enemyPoolIds[12],// Case the enemy does not have a correct type
+        };
     }
 
     // The method that releses the enemy game objects
     public static void ReleaseEnemy(Enemy enemy)
     {
         // Get the correclt object pool index from the object pools class
-        int objectPoolIndex = GetObjectPoolIndex(enemy.GetEnemyType);
+        int objectPoolIndex = GetObjectPoolIndex(enemy.EnemyType);
 
         // Release the enemy into the right object pool
         ObjectPool<Enemy>.ReleaseResource(objectPoolIndex, enemy);
@@ -175,28 +146,21 @@ public class ObjectPools : MonoBehaviour
     // Method that returns the correct object pool index given the tower type
     public static int GetTowerPoolIndex(TowerType type)
     {
-        switch(type)
+        return type switch
         {
-            case TowerType.Archer:
-                return EnemyPools.enemyPoolIds[13];
-            case TowerType.Fire:
-                return EnemyPools.enemyPoolIds[14];
-            case TowerType.Earth:
-                return EnemyPools.enemyPoolIds[15];
-            case TowerType.Lightning:
-                return EnemyPools.enemyPoolIds[16];
-            case TowerType.Wind:
-                return EnemyPools.enemyPoolIds[17];
-        }
-
-        // Case the enemy does not have a correct type
-        return EnemyPools.enemyPoolIds[12];
+            TowerType.Archer => EnemyPools.enemyPoolIds[13],
+            TowerType.Fire => EnemyPools.enemyPoolIds[14],
+            TowerType.Earth => EnemyPools.enemyPoolIds[15],
+            TowerType.Lightning => EnemyPools.enemyPoolIds[16],
+            TowerType.Wind => EnemyPools.enemyPoolIds[17],
+            _ => EnemyPools.enemyPoolIds[12],
+        };
     }
 
     // The method that releses the tower game objects
     public static void ReleaseTower(GameObject tower)
     {
-        TowerType towerType = tower.GetComponentInChildren<Tower>().GetTowerType;
+        TowerType towerType = tower.GetComponentInChildren<Tower>().TowerType;
 
         // Get the correct object pool index from the object pools class
         int objectPoolIndex = GetTowerPoolIndex(towerType);
@@ -230,7 +194,7 @@ public class ObjectPools : MonoBehaviour
     public static void ReleaseProjectile(Projectile projectile, Tower parent)
     {
         // Get the correctly object pool index from the object pools class
-        int objectPoolIndex = GetProjectilePoolIndex(parent.GetTowerType);
+        int objectPoolIndex = GetProjectilePoolIndex(parent.TowerType);
 
         // Release the projectile into the right object pool
         ObjectPool<Projectile>.ReleaseResource(objectPoolIndex, projectile);
@@ -240,25 +204,20 @@ public class ObjectPools : MonoBehaviour
     }
 
     // Method that returns the correct object pool index given the spell type
-    public static int GetSpellEffectPoolIndex(string type)
+    public static int GetSpellEffectPoolIndex(SpellType type)
     {
         // Return the right spell effect pool index given the spell effect type
-        switch(type)
+        return type switch
         {
-            case "Arrow Rain":
-                return EnemyPools.enemyPoolIds[18];
-            case "Meteor Impact":
-                return EnemyPools.enemyPoolIds[19];
-            case "Thunder Strike":
-                return EnemyPools.enemyPoolIds[20];
-        }
-
-        // In case the name is incorrect return a thunder strike
-        return EnemyPools.enemyPoolIds[20];
+            SpellType.ArrowRain => EnemyPools.enemyPoolIds[18],
+            SpellType.Meteor => EnemyPools.enemyPoolIds[19],
+            SpellType.ThunderStrike => EnemyPools.enemyPoolIds[20],
+            _ => EnemyPools.enemyPoolIds[20],
+        };
     }
 
     // The method that releases the spell game objects
-    public static void ReleaseSpellEffect(GameObject spellEffect, string type)
+    public static void ReleaseSpellEffect(GameObject spellEffect, SpellType type)
     {
         // Get the correctly object pool index from the object pools class
         int objectPoolIndex = GetSpellEffectPoolIndex(type);
@@ -271,26 +230,23 @@ public class ObjectPools : MonoBehaviour
     }
 
      // Method that returns the correct object pool index given the trap type
-    public static int GetTrapPoolIndex(string type)
+    public static int GetTrapPoolIndex(TrapType type)
     {
         // Return the right trap pool index given the trap type
-        switch(type)
+        return type switch
         {
-            case "Hole":
-                return EnemyPools.enemyPoolIds[21];
-            case "Swamp":
-                return EnemyPools.enemyPoolIds[22];
-        }
-
-        // In case the name is incorrect return a hole
-        return EnemyPools.enemyPoolIds[21];
+            TrapType.Hole => EnemyPools.enemyPoolIds[21],
+            TrapType.Swamp => EnemyPools.enemyPoolIds[22],
+            // In case the name is incorrect return a hole
+            _ => EnemyPools.enemyPoolIds[21],
+        };
     }
 
     // The method that releases the trap game objects
     public static void ReleaseTrap(Trap trap)
     {
         // Get the correctly object pool index from the object pools class
-        int objectPoolIndex = GetTrapPoolIndex(trap.getTrapType);
+        int objectPoolIndex = GetTrapPoolIndex(trap.TrapType);
 
         // Release the trap into the right object pool
         ObjectPool<Trap>.ReleaseResource(objectPoolIndex, trap);

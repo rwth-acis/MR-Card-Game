@@ -12,13 +12,7 @@ public class Trap : MonoBehaviour
 {
     // The trap type
     [SerializeField]
-    private string trapType;
-
-    // Method used to get the type of the trap
-    public string getTrapType
-    {
-        get { return trapType; }
-    }
+    private TrapType trapType;
 
     // The hole slow factor
     [SerializeField]
@@ -26,6 +20,12 @@ public class Trap : MonoBehaviour
 
     // The inverse factors
     private float slowRemoveFactor;
+
+    // Method used to get the type of the trap
+    public TrapType TrapType
+    {
+        get { return trapType; }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -48,13 +48,13 @@ public class Trap : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Check if the collider that entered the box collider of the image target is the game board
-        if(other.gameObject.tag == "Enemy")
+        if(other.gameObject.CompareTag("Enemy"))
         {
             // Slow the enemy by the slow factor
-            other.GetComponent<Enemy>().personalSlowFactor = other.GetComponent<Enemy>().personalSlowFactor * slowFactor;
+            other.GetComponent<Enemy>().enemySlowFactor = other.GetComponent<Enemy>().enemySlowFactor * slowFactor;
 
             // Check if the trap type is a swamp
-            if(trapType == "Swamp")
+            if(trapType == TrapType.Swamp)
             {
                 // Make the enemy wet since this is a swamp
                 other.GetComponent<Enemy>().isWet = true;
@@ -66,13 +66,13 @@ public class Trap : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         // Check if the collider that left the box collider of the image target is the game board
-        if(other.gameObject.tag == "Enemy")
+        if(other.gameObject.CompareTag("Enemy"))
         {
             // Remove the slow on the enemy with the slow remove factor
-            other.GetComponent<Enemy>().personalSlowFactor = other.GetComponent<Enemy>().personalSlowFactor * slowRemoveFactor;
+            other.GetComponent<Enemy>().enemySlowFactor = other.GetComponent<Enemy>().enemySlowFactor * slowRemoveFactor;
 
             // Check if the trap type is a swamp
-            if(trapType == "Swamp")
+            if(trapType == TrapType.Swamp)
             {
                 // Remove the enemy wetness
                 other.GetComponent<Enemy>().isWet = false;

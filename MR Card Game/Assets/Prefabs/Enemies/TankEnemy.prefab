@@ -440,7 +440,7 @@ GameObject:
   - component: {fileID: 2954925561535918266}
   - component: {fileID: 2954925561535918405}
   m_Layer: 6
-  m_Name: TankyEnemy
+  m_Name: TankEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -535,19 +535,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1149d3072ef1b2942bf08844eb3e72cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: Tank Enemy
+  enemyType: 4
+  resistance: 0
+  weakness: 0
   maximumHP: 200
   currentHP: 200
   size: 1.25
-  moveSpeed: 0.4
+  movingSpeed: 0.4
   damage: 1
-  enemyValue: 20
-  flying: 0
+  currencyPoints: 0
+  flyingHeight: 0
+  enemySlowFactor: 1
   healthBarUI: {fileID: 2954925560202668403}
   healthBar: {fileID: 2954925561367110201}
-  resistance: 
-  weakness: 
+  waypointIndex: 0
   isAlive: 1
+  isWet: 0
+  firstLife: 0
+  numberOfTrapsIn: 0
 --- !u!54 &2954925561535918405
 Rigidbody:
   m_ObjectHideFlags: 0

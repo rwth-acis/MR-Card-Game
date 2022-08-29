@@ -12,38 +12,35 @@ public class SpawnTrap : MonoBehaviour
     [SerializeField]
     private Trap hole;
 
-    // The method used to access to the hole prefab as a static object
-    public static Trap getHole
-    {
-        get { return instance.hole; }
-    }
-
     // The hole size
     [SerializeField]
     private float holeSize;
-
-    // The method used to access to the hole size in a static way
-    public static float getHoleSize
-    {
-        get { return instance.holeSize; }
-    }
 
     // The prefab for the swamp
     [SerializeField]
     private Trap swamp;
 
-    // The method used to access to the swamp prefab as a static object
-    public static Trap getSwamp
-    {
-        get { return instance.swamp; }
-    }
-
     // The swamp size
     [SerializeField]
     private float swampSize;
 
+    // The method used to access to the hole prefab as a static object
+    public static Trap Hole
+    {
+        get { return instance.hole; }
+    }
+    // The method used to access to the hole size in a static way
+    public static float HoleSize
+    {
+        get { return instance.holeSize; }
+    }
+    // The method used to access to the swamp prefab as a static object
+    public static Trap Swamp
+    {
+        get { return instance.swamp; }
+    }
     // The method used to access to the swamp size in a static way
-    public static float getSwampSize
+    public static float SwampSize
     {
         get { return instance.swampSize; }
     }
@@ -64,10 +61,10 @@ public class SpawnTrap : MonoBehaviour
     public static Trap SpawnHole(GameObject parent)
     {
         // Get the right object pool index for the trap type
-        int poolIndex = ObjectPools.GetTrapPoolIndex("Swamp");
+        int poolIndex = ObjectPools.GetTrapPoolIndex(TrapType.Hole);
 
         // Get a new trap from the object pool of the hole
-        Trap trap = ObjectPool<Trap>.RequestResource(poolIndex, () => {return Instantiate(getHole);});
+        Trap trap = ObjectPool<Trap>.RequestResource(poolIndex, () => {return Instantiate(Hole);});
 
         // Set the trap as active
         trap.gameObject.SetActive(true);
@@ -76,7 +73,7 @@ public class SpawnTrap : MonoBehaviour
         trap.gameObject.transform.parent = parent.transform;
 
         // Scale the trap down
-        trap.transform.localScale = new Vector3(Board.greatestBoardDimension * getHoleSize * 3, Board.greatestBoardDimension * 3, Board.greatestBoardDimension * getHoleSize * 3);
+        trap.transform.localScale = new Vector3(Board.greatestBoardDimension * HoleSize * 3, Board.greatestBoardDimension * 3, Board.greatestBoardDimension * HoleSize * 3);
 
         // Vector3 newPosition =  new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
 
@@ -93,10 +90,10 @@ public class SpawnTrap : MonoBehaviour
     public static Trap SpawnSwamp(GameObject parent)
     {
         // Get the right object pool index for the trap type
-        int poolIndex = ObjectPools.GetTrapPoolIndex("Swamp");
+        int poolIndex = ObjectPools.GetTrapPoolIndex(TrapType.Swamp);
 
         // Get a new trap from the object pool of the swamp
-        Trap trap = ObjectPool<Trap>.RequestResource(poolIndex, () => {return Instantiate(getSwamp);});
+        Trap trap = ObjectPool<Trap>.RequestResource(poolIndex, () => {return Instantiate(Swamp);});
 
         // Set the trap as active
         trap.gameObject.SetActive(true);
@@ -108,7 +105,7 @@ public class SpawnTrap : MonoBehaviour
         trap.gameObject.transform.parent = parent.transform;
 
         // Scale the trap down
-        trap.transform.localScale = new Vector3(Board.greatestBoardDimension * getSwampSize * 3, Board.greatestBoardDimension * 3, Board.greatestBoardDimension * getSwampSize * 3);
+        trap.transform.localScale = new Vector3(Board.greatestBoardDimension * SwampSize * 3, Board.greatestBoardDimension * 3, Board.greatestBoardDimension * SwampSize * 3);
 
         // Vector3 newPosition =  new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
 

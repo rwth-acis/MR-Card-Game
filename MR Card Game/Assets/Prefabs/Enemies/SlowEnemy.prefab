@@ -535,19 +535,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1149d3072ef1b2942bf08844eb3e72cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyType: Slow Enemy
+  enemyType: 5
+  resistance: 0
+  weakness: 0
   maximumHP: 400
   currentHP: 400
   size: 2
-  moveSpeed: 0.25
+  movingSpeed: 0.25
   damage: 1
-  enemyValue: 35
-  flying: 0
+  currencyPoints: 0
+  flyingHeight: 0
+  enemySlowFactor: 1
   healthBarUI: {fileID: 6855792060451731365}
   healthBar: {fileID: 6855792060134530100}
-  resistance: 
-  weakness: 
+  waypointIndex: 0
   isAlive: 1
+  isWet: 0
+  firstLife: 0
+  numberOfTrapsIn: 0
 --- !u!54 &6855792061748905509
 Rigidbody:
   m_ObjectHideFlags: 0

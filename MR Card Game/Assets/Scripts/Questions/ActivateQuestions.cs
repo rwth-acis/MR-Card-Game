@@ -43,42 +43,16 @@ static class Questions
 
 public class ActivateQuestions : MonoBehaviour
 {
+    // The instance of this script
+    public static ActivateQuestions instance;
+
     // Define the "menus"
-    public GameObject startMenu;
     public GameObject viewModel;
     public GameObject viewMultipleChoiceQuestion;
     public GameObject viewInputQuestion;
     public GameObject gameOverlay;
-
-    // The method used to access to the view model (so view activate question) menu as a static object
-    public static GameObject getViewModel
-    {
-        get { return instance.viewModel; }
-    }
-
-    // The method used to access to the view multiple choice question menu as a static object
-    public static GameObject getViewMultipleChoiceQuestion
-    {
-        get { return instance.viewMultipleChoiceQuestion; }
-    }
-
-    // The method used to access to the view input question menu as a static object
-    public static GameObject getViewInputQuestion
-    {
-        get { return instance.viewInputQuestion; }
-    }
-
-    // The instance of this script
-    public static ActivateQuestions instance;
-
     // Define the button on which the number of questions that need to be answered is written
     public Button numberOfQuestionsThatNeedToBeAnsweredDisplay;
-
-    // The method used to access to the additional field 2 as a static object
-    public static Button getNumberOfQuestionsThatNeedToBeAnsweredDisplay
-    {
-        get { return instance.numberOfQuestionsThatNeedToBeAnsweredDisplay; }
-    }
 
     // Define the children of the slider that permits to see all multiple choice answers
     public GameObject multipleChoice2Answers;
@@ -158,6 +132,30 @@ public class ActivateQuestions : MonoBehaviour
 
     // The begin of the url to the .obj object downloaded in the created examples
     public string urlBegin;
+
+    // The method used to access to the view model (so view activate question) menu as a static object
+    public static GameObject ViewModel
+    {
+        get { return instance.viewModel; }
+    }
+
+    // The method used to access to the view multiple choice question menu as a static object
+    public static GameObject ViewMultipleChoiceQuestion
+    {
+        get { return instance.viewMultipleChoiceQuestion; }
+    }
+
+    // The method used to access to the view input question menu as a static object
+    public static GameObject ViewInputQuestion
+    {
+        get { return instance.viewInputQuestion; }
+    }
+
+    // The method used to access to the additional field 2 as a static object
+    public static Button NumberOfQuestionsThatNeedToBeAnsweredDisplay
+    {
+        get { return instance.numberOfQuestionsThatNeedToBeAnsweredDisplay; }
+    }
 
     // // The path to the question
     // public string questionPath;
@@ -1712,20 +1710,20 @@ public class ActivateQuestions : MonoBehaviour
     public static void ActualizeNumberOfQuestionsThatNeedToBeAnsweredDisplay()
     {
         // Change the number displayed to the global variables
-        getNumberOfQuestionsThatNeedToBeAnsweredDisplay.GetComponentInChildren<TMP_Text>().text = Questions.numberOfQuestionsNeededToAnswer.ToString();
+        NumberOfQuestionsThatNeedToBeAnsweredDisplay.GetComponentInChildren<TMP_Text>().text = Questions.numberOfQuestionsNeededToAnswer.ToString();
     }
 
     // Method that resets the question menu windows
     public static void ResetQuestionMenuWindows()
     {
         // Disable the view input question menu
-        getViewInputQuestion.SetActive(false);
+        ViewInputQuestion.SetActive(false);
 
         // Disable the view multiple choice question menu
-        getViewMultipleChoiceQuestion.SetActive(false);
+        ViewMultipleChoiceQuestion.SetActive(false);
 
         // Disable the view model (view activate question) menu
-        getViewModel.SetActive(false);
+        ViewModel.SetActive(false);
 
         // Reset the number of questions needed to be answered
         Questions.numberOfQuestionsNeededToAnswer = 0;

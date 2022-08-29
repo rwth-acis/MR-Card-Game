@@ -10,53 +10,46 @@ namespace i5.Toolkit.Core.Examples.Spawners
         // The instance, needed to access the static versions of the tower prefabs
         public static SpawnTower instance;
 
-        // The distance tower have to be placed over the image target so that they are not in the game board but over it
-        private static float towerOverhead = (float)0.35;
-
         // The prefab for the archer tower
         [SerializeField]
         private GameObject archerTower;
+
+        // The prefab for the fire tower
+        [SerializeField]
+        private GameObject fireTower;
+
+        // The prefab for the earth tower
+        [SerializeField]
+        private GameObject earthTower;
+
+        // The prefab for the lightning tower
+        [SerializeField]
+        private GameObject lightningTower;
+
+        // The prefab for the wind tower
+        [SerializeField]
+        private GameObject windTower;
 
         // The method used to access to the archer tower prefab as a static object
         public static GameObject ArcherTower
         {
             get { return instance.archerTower; }
         }
-
-        // The prefab for the fire tower
-        [SerializeField]
-        private GameObject fireTower;
-
         // The method used to access to the fire towerprefab as a static object
         public static GameObject FireTower
         {
             get { return instance.fireTower; }
         }
-
-        // The prefab for the earth tower
-        [SerializeField]
-        private GameObject earthTower;
-
         // The method used to access to the earth tower prefab as a static object
         public static GameObject EarthTower
         {
             get { return instance.earthTower; }
         }
-
-        // The prefab for the lightning tower
-        [SerializeField]
-        private GameObject lightningTower;
-
         // The method used to access to the lightning tower prefab as a static object
         public static GameObject LightningTower
         {
             get { return instance.lightningTower; }
         }
-
-        // The prefab for the wind tower
-        [SerializeField]
-        private GameObject windTower;
-
         // The method used to access to the wind tower prefab as a static object
         public static GameObject WindTower
         {
