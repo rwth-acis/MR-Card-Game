@@ -64,7 +64,7 @@ public class DownloadLevel : MonoBehaviour
         yield return uwr.SendWebRequest();
 
         // Check if there was a network error
-        if (uwr.isNetworkError)
+        if (!string.IsNullOrEmpty(uwr.error))
         {
             Debug.Log("Error While Sending: " + uwr.error);
 
@@ -111,7 +111,7 @@ public class DownloadLevel : MonoBehaviour
         yield return uwr.SendWebRequest();
 
         // Check if there was a network error
-        if (uwr.isNetworkError)
+        if (!string.IsNullOrEmpty(uwr.error))
         {
             Debug.Log("Error While Sending: " + uwr.error);
 
@@ -181,7 +181,7 @@ public class DownloadLevel : MonoBehaviour
         yield return uwr.SendWebRequest();
 
         // Check if there was an error
-        if (uwr.isNetworkError)
+        if (!string.IsNullOrEmpty(uwr.error))
         {
             Debug.Log("Error While Sending: " + uwr.error);
 

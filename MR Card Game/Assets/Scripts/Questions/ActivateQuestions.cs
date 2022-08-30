@@ -232,10 +232,6 @@ public class ActivateQuestions : MonoBehaviour
 
         Questions.numberOfQuestionsNeededToAnswer = 0;
 
-        // Disable the question menus
-        viewMultipleChoiceQuestion.SetActive(false);
-        viewInputQuestion.SetActive(false);
-
         // The number of models
         Questions.numberOfModels = 5;
 
@@ -405,7 +401,7 @@ public class ActivateQuestions : MonoBehaviour
     }
 
     // Import the first model and bind it to the first image target
-    public async void AddModelOverTargetImage1(string name, string pathToQuestion)
+    public void AddModelOverTargetImage1(string name, string pathToQuestion)
     {
         // Access the model gameobject
         string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
@@ -451,7 +447,7 @@ public class ActivateQuestions : MonoBehaviour
     }
 
     // Import the second model and bind it to the second image target
-    public async void AddModelOverTargetImage2(string name, string pathToQuestion)
+    public void AddModelOverTargetImage2(string name, string pathToQuestion)
     {
         // Access the model gameobject
         string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
@@ -495,7 +491,7 @@ public class ActivateQuestions : MonoBehaviour
     }
 
     // Import the third model and bind it to the third image target
-    public async void AddModelOverTargetImage3(string name, string pathToQuestion)
+    public void AddModelOverTargetImage3(string name, string pathToQuestion)
     {
         // Access the model gameobject
         string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
@@ -535,7 +531,7 @@ public class ActivateQuestions : MonoBehaviour
     }
 
     // Import the fourth model and bind it to the fourth image target
-    public async void AddModelOverTargetImage4(string name, string pathToQuestion)
+    public void AddModelOverTargetImage4(string name, string pathToQuestion)
     {
         // Access the model gameobject
         string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
@@ -575,7 +571,7 @@ public class ActivateQuestions : MonoBehaviour
     }
 
     // Import the fifth model and bind it to the fifth image target
-    public async void AddModelOverTargetImage5(string name, string pathToQuestion)
+    public void AddModelOverTargetImage5(string name, string pathToQuestion)
     {
         // Access the model gameobject
         string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
@@ -1166,19 +1162,14 @@ public class ActivateQuestions : MonoBehaviour
         {
             case 0:
                 return question.answer1Correct;
-            break;
             case 1:
                 return question.answer2Correct;
-            break;
             case 2:
                 return question.answer3Correct;
-            break;
             case 3:
                 return question.answer4Correct;
-            break;
             case 4:
                 return question.answer5Correct;
-            break;
         }
 
         // This case will never happen
@@ -1193,14 +1184,12 @@ public class ActivateQuestions : MonoBehaviour
         {
             // Case there are two answers, get the button of the two answers multiple choice preview
              switch(index)
-            {
+             {
                 case 0:
                     return answer12Answers;
-                break;
                 case 1:
                     return answer22Answers;
-                break;
-            }
+             }
 
         } else if(numberOfAnswers == 3)
         {
@@ -1209,13 +1198,10 @@ public class ActivateQuestions : MonoBehaviour
             {
                 case 0:
                     return answer13Answers;
-                break;
                 case 1:
                     return answer23Answers;
-                break;
                 case 2:
                     return answer33Answers;
-                break;
             }
 
         } else if(numberOfAnswers == 4)
@@ -1225,16 +1211,12 @@ public class ActivateQuestions : MonoBehaviour
             {
                 case 0:
                     return answer14Answers;
-                break;
                 case 1:
                     return answer24Answers;
-                break;
                 case 2:
                     return answer34Answers;
-                break;
                 case 3:
                     return answer44Answers;
-                break;
             }
             
         }else {
@@ -1244,19 +1226,14 @@ public class ActivateQuestions : MonoBehaviour
             {
                 case 0:
                     return answer15Answers;
-                break;
                 case 1:
                     return answer25Answers;
-                break;
                 case 2:
                     return answer35Answers;
-                break;
                 case 3:
                     return answer45Answers;
-                break;
                 case 4:
                     return answer55Answers;
-                break;
             }
         }
 
@@ -1508,9 +1485,6 @@ public class ActivateQuestions : MonoBehaviour
 
         // Display the models of the current questions
         DisplayModels();
-
-        // Disable the start menu
-        startMenu.SetActive(false);
     }
 
     // The method used to access the information of if the game overlay is active
@@ -1715,9 +1689,6 @@ public class ActivateQuestions : MonoBehaviour
 
         // // Activate the view model menu, where questions can be answered
         // ActivateViewModels();
-
-        // Disable the start menu
-        startMenu.SetActive(false);
 
         // Disable the background
         background.SetActive(false);

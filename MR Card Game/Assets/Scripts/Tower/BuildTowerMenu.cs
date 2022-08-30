@@ -13,8 +13,10 @@ namespace build
         [SerializeField]
         private int archerTowerCost;
 
+        private bool GameboardLocked;
+
         // The method used to access to the archer tower cost integer as a static object
-        public static int getArcherTowerCost
+        public static int GetArcherTowerCost
         {
             get { return instance.archerTowerCost; }
         }
@@ -23,7 +25,7 @@ namespace build
         private int fireTowerCost;
 
         // The method used to access to the fire tower cost integer as a static object
-        public static int getFireTowerCost
+        public static int GetFireTowerCost
         {
             get { return instance.fireTowerCost; }
         }
@@ -32,7 +34,7 @@ namespace build
         private int earthTowerCost;
 
         // The method used to access to the earth tower cost integer as a static object
-        public static int getEarthTowerCost
+        public static int GetEarthTowerCost
         {
             get { return instance.earthTowerCost; }
         }
@@ -41,7 +43,7 @@ namespace build
         private int lightningTowerCost;
 
         // The method used to access to the lightning tower cost integer as a static object
-        public static int getLightningTowerCost
+        public static int GetLightningTowerCost
         {
             get { return instance.lightningTowerCost; }
         }
@@ -50,7 +52,7 @@ namespace build
         private int windTowerCost;
 
         // The method used to access to the wind tower cost integer as a static object
-        public static int getWindTowerCost
+        public static int GetWindTowerCost
         {
             get { return instance.windTowerCost; }
         }
@@ -59,7 +61,7 @@ namespace build
         private int holeCost;
 
         // The method used to access to the hole cost integer as a static object
-        public static int getHoleCost
+        public static int GetHoleCost
         {
             get { return instance.holeCost; }
         }
@@ -68,7 +70,7 @@ namespace build
         private int swampCost;
 
         // The method used to access to the swamp cost integer as a static object
-        public static int getSwampCost
+        public static int GetSwampCost
         {
             get { return instance.swampCost; }
         }
@@ -78,7 +80,7 @@ namespace build
         private GameObject buildTowerCanvas;
 
         // The method used to access to the build tower canvas as a static object
-        public static GameObject getBuildTowerCanvas
+        public static GameObject GetBuildTowerCanvas
         {
             get { return instance.buildTowerCanvas; }
         }
@@ -88,7 +90,7 @@ namespace build
         private GameObject buildTrapWindow;
 
         // The method used to access to the build trap window as a static object
-        public static GameObject getBuildTrapWindow
+        public static GameObject GetBuildTrapWindow
         {
             get { return instance.buildTrapWindow; }
         }
@@ -98,7 +100,7 @@ namespace build
         private GameObject buildTowerWindow;
 
         // The method used to access to the build tower window as a static object
-        public static GameObject getBuildTowerWindow
+        public static GameObject GetBuildTowerWindow
         {
             get { return instance.buildTowerWindow; }
         }
@@ -112,7 +114,7 @@ namespace build
         private Button currencyDisplay;
 
         // The method used to access to the currency display button as a static object
-        public static Button getCurrencyDisplay
+        public static Button GetCurrencyDisplay
         {
             get { return instance.currencyDisplay; }
         }
@@ -122,9 +124,17 @@ namespace build
         private Button waveDisplay;
 
         // The method used to access to the wave display button as a static object
-        public static Button getWaveDisplay
+        public static Button GetWaveDisplay
         {
             get { return instance.waveDisplay; }
+        }
+
+        [SerializeField]
+        private Button toggleGameboard;
+
+        public static Button GetToogleGameboard
+        {
+            get { return instance.toggleGameboard; }
         }
 
         // Define the start next wave button
@@ -132,7 +142,7 @@ namespace build
         private Button startNextWave;
 
         // The method used to access to the start next wave button as a static object
-        public static Button getStartNextWave
+        public static Button GetStartNextWave
         {
             get { return instance.startNextWave; }
         }
@@ -142,7 +152,7 @@ namespace build
         private Button buildArcherTower;
 
         // The method used to access to the build archer tower button as a static object
-        public static Button getBuildArcherTower
+        public static Button GetBuildArcherTower
         {
             get { return instance.buildArcherTower; }
         }
@@ -152,7 +162,7 @@ namespace build
         private Button buildFireTower;
 
         // The method used to access to the build fire tower button as a static object
-        public static Button getBuildFireTower
+        public static Button GetBuildFireTower
         {
             get { return instance.buildFireTower; }
         }
@@ -162,7 +172,7 @@ namespace build
         private Button buildEarthTower;
 
         // The method used to access to the build earth tower button as a static object
-        public static Button getBuildEarthTower
+        public static Button GetBuildEarthTower
         {
             get { return instance.buildEarthTower; }
         }
@@ -172,7 +182,7 @@ namespace build
         private Button buildLightningTower;
 
         // The method used to access to the build lightning tower button as a static object
-        public static Button getBuildLightningTower
+        public static Button GetBuildLightningTower
         {
             get { return instance.buildLightningTower; }
         }
@@ -182,7 +192,7 @@ namespace build
         private Button buildWindTower;
 
         // The method used to access to the build wind tower button as a static object
-        public static Button getBuildWindTower
+        public static Button GetBuildWindTower
         {
             get { return instance.buildWindTower; }
         }
@@ -192,7 +202,7 @@ namespace build
         private Button buildHole;
 
         // The method used to access to the build hole button as a static object
-        public static Button getBuildHole
+        public static Button GetBuildHole
         {
             get { return instance.buildHole; }
         }
@@ -202,7 +212,7 @@ namespace build
         private Button buildSwamp;
 
         // The method used to access to the build swamp button as a static object
-        public static Button getBuildSwamp
+        public static Button GetBuildSwamp
         {
             get { return instance.buildSwamp; }
         }
@@ -214,40 +224,38 @@ namespace build
             instance = this;
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-            
-        }
-
         // Method that activates the components of the game overlay
         public static void ActivateGameOverlay()
         {
             // Activate the currency display button
-            getCurrencyDisplay.gameObject.SetActive(true);
+            GetCurrencyDisplay.gameObject.SetActive(true);
 
             // Activate the wave display button
-            getWaveDisplay.gameObject.SetActive(true);
+            GetWaveDisplay.gameObject.SetActive(true);
 
             // Check if the wave is currently ongoing
             if(LevelInfo.waveOngoing == false)
             {
                 // If it is not the case, activate the start next wave button
-                getStartNextWave.gameObject.SetActive(true);
+                GetStartNextWave.gameObject.SetActive(true);
             }
+
+            GetToogleGameboard.gameObject.SetActive(true);
         }
 
         // Method that deactivates the components of the game overlay
         public static void DeactivateGameOverlay()
         {
             // Deactivate the currency display button
-            getCurrencyDisplay.gameObject.SetActive(false);
+            GetCurrencyDisplay.gameObject.SetActive(false);
 
             // Deactivate the wave display button
-            getWaveDisplay.gameObject.SetActive(false);
+            GetWaveDisplay.gameObject.SetActive(false);
 
             // Deactivate the start next wave button
-            getStartNextWave.gameObject.SetActive(false);
+            GetStartNextWave.gameObject.SetActive(false);
+
+            GetToogleGameboard.gameObject.SetActive(false);
         }
 
         // The method that opens the build tower menu
@@ -259,74 +267,74 @@ namespace build
             GameAdvancement.gamePaused = true;
 
             // Set the canvas as active
-            getBuildTowerCanvas.SetActive(true);
+            GetBuildTowerCanvas.SetActive(true);
 
             // Set the build tower menu as active
-            getBuildTowerWindow.SetActive(true);
+            GetBuildTowerWindow.SetActive(true);
 
             // Make sure the build trap menu is inactive
-            getBuildTrapWindow.SetActive(false);
+            GetBuildTrapWindow.SetActive(false);
 
             // Disable the tower buttons that cannot be bought, and enable the tower buttons that can be bought
 
             // Check if the player has enough coin to build an archer tower
-            if(GameAdvancement.currencyPoints >= getArcherTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
+            if(GameAdvancement.currencyPoints >= GetArcherTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the archer tower
-                getBuildArcherTower.interactable = true;
+                GetBuildArcherTower.interactable = true;
 
             } else {
 
                 // Disable the archer tower
-                getBuildArcherTower.interactable = false;
+                GetBuildArcherTower.interactable = false;
             }
 
             // Check if the player has enough coin to build a fire tower
-            if(GameAdvancement.currencyPoints >= getFireTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
+            if(GameAdvancement.currencyPoints >= GetFireTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the fire tower
-                getBuildFireTower.interactable = true;
+                GetBuildFireTower.interactable = true;
 
             } else {
 
                 // Disable the fire tower
-                getBuildFireTower.interactable = false;
+                GetBuildFireTower.interactable = false;
             }
 
             // Check if the player has enough coin to build an earth tower
-            if(GameAdvancement.currencyPoints >= getEarthTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
+            if(GameAdvancement.currencyPoints >= GetEarthTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the earth tower
-                getBuildEarthTower.interactable = true;
+                GetBuildEarthTower.interactable = true;
 
             } else {
 
                 // Disable the earth tower
-                getBuildEarthTower.interactable = false;
+                GetBuildEarthTower.interactable = false;
             }
 
             // Check if the player has enough coin to build a lightning tower
-            if(GameAdvancement.currencyPoints >= getLightningTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
+            if(GameAdvancement.currencyPoints >= GetLightningTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the lightning tower
-                getBuildLightningTower.interactable = true;
+                GetBuildLightningTower.interactable = true;
 
             } else {
 
                 // Disable the lightning tower
-                getBuildLightningTower.interactable = false;
+                GetBuildLightningTower.interactable = false;
             }
 
             // Check if the player has enough coin to build a wind tower
-            if(GameAdvancement.currencyPoints >= getWindTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
+            if(GameAdvancement.currencyPoints >= GetWindTowerCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the wind tower
-                getBuildWindTower.interactable = true;
+                GetBuildWindTower.interactable = true;
 
             } else {
 
                 // Disable the wind tower
-                getBuildWindTower.interactable = false;
+                GetBuildWindTower.interactable = false;
             }
         }
 
@@ -353,66 +361,45 @@ namespace build
             GameAdvancement.gamePaused = true;
 
             // Set the canvas as active
-            getBuildTowerCanvas.SetActive(true);
+            GetBuildTowerCanvas.SetActive(true);
 
             // Set the build trap menu as active
-            getBuildTrapWindow.SetActive(true);
+            GetBuildTrapWindow.SetActive(true);
 
             // Make sure the build tower menu is inactive
-            getBuildTowerWindow.SetActive(false);
+            GetBuildTowerWindow.SetActive(false);
 
             // Disable the trap buttons that cannot be bought, and enable the trap buttons that can be bought
 
             // Check if the player has enough coin to build a hole
-            if(GameAdvancement.currencyPoints >= getHoleCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
+            if(GameAdvancement.currencyPoints >= GetHoleCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the hole button
-                getBuildHole.interactable = true;
+                GetBuildHole.interactable = true;
 
             } else {
 
                 // Disable the hole button
-                getBuildHole.interactable = false;
+                GetBuildHole.interactable = false;
             }
 
             // Check if the player has enough coin to build a swamp
-            if(GameAdvancement.currencyPoints >= getSwampCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
+            if(GameAdvancement.currencyPoints >= GetSwampCost && GameAdvancement.numberOfBuildingsBuilt < GameAdvancement.maxNumberOfBuildings)
             {
                 // Enable the swamp button
-                getBuildSwamp.interactable = true;
+                GetBuildSwamp.interactable = true;
 
             } else {
 
                 // Disable the swamp button
-                getBuildSwamp.interactable = false;
+                GetBuildSwamp.interactable = false;
             }
         }
 
         // The method that activates when the player wants to build an archer tower by pressing on the archer tower button in the build menu
         public void InitiateArcherTowerBuild()
         {
-            // Set the question requesting image target correctly
-            Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
-
-            // Disable the game overlay
-            DeactivateGameOverlay();
-
-            // Enable the answer question menu
-            answerQuestions.SetActive(true);
-
-            // Set the number of questions that are needed to answer to 1
-            ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
-
-            // Close the menu
-            // Disable the build canvas
-            getBuildTowerCanvas.SetActive(false);
-
-            // Set the build trap menu as inactive
-            getBuildTrapWindow.SetActive(false);
-
-            // Make sure the build tower menu is inactive
-            getBuildTowerWindow.SetActive(false);
-
+            PrepareForBuild();
             // Start the routine that waits for the questions to be answered
             StartCoroutine(BuildArcherTower());
         }
@@ -420,28 +407,7 @@ namespace build
         // The method that activates when the player wants to build a fire tower by pressing on the fire tower button in the build menu
         public void InitiateFireTowerBuild()
         {
-            // Set the question requesting image target correctly
-            Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
-            
-            // Disable the game overlay
-            DeactivateGameOverlay();
-
-            // Enable the answer question menu
-            answerQuestions.SetActive(true);
-
-            // Set the number of questions that are needed to answer to 1
-            ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
-
-            // Close the menu
-            // Disable the build canvas
-            getBuildTowerCanvas.SetActive(false);
-
-            // Set the build trap menu as inactive
-            getBuildTrapWindow.SetActive(false);
-
-            // Make sure the build tower menu is inactive
-            getBuildTowerWindow.SetActive(false);
-
+            PrepareForBuild();
             // Start the routine that waits for the questions to be answered
             StartCoroutine(BuildFireTower());
         }
@@ -449,28 +415,7 @@ namespace build
         // The method that activates when the player wants to build an earth tower by pressing on the earth tower button in the build menu
         public void InitiateEarthTowerBuild()
         {
-            // Set the question requesting image target correctly
-            Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
-
-            // Disable the game overlay
-            DeactivateGameOverlay();
-
-            // Enable the answer question menu
-            answerQuestions.SetActive(true);
-
-            // Set the number of questions that are needed to answer to 1
-            ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
-
-            // Close the menu
-            // Disable the build canvas
-            getBuildTowerCanvas.SetActive(false);
-
-            // Set the build trap menu as inactive
-            getBuildTrapWindow.SetActive(false);
-
-            // Make sure the build tower menu is inactive
-            getBuildTowerWindow.SetActive(false);
-
+            PrepareForBuild();
             // Start the routine that waits for the questions to be answered
             StartCoroutine(BuildEarthTower());
         }
@@ -478,28 +423,7 @@ namespace build
         // The method that activates when the player wants to build a lightning tower by pressing on the lightning tower button in the build menu
         public void InitiateLightningTowerBuild()
         {
-            // Set the question requesting image target correctly
-            Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
-
-            // Disable the game overlay
-            DeactivateGameOverlay();
-
-            // Enable the answer question menu
-            answerQuestions.SetActive(true);
-
-            // Set the number of questions that are needed to answer to 1
-            ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
-
-            // Close the menu
-            // Disable the build canvas
-            getBuildTowerCanvas.SetActive(false);
-
-            // Set the build trap menu as inactive
-            getBuildTrapWindow.SetActive(false);
-
-            // Make sure the build tower menu is inactive
-            getBuildTowerWindow.SetActive(false);
-
+            PrepareForBuild();
             // Start the routine that waits for the questions to be answered
             StartCoroutine(BuildLightningTower());
         }
@@ -507,56 +431,14 @@ namespace build
         // The method that activates when the player wants to build a wind tower by pressing on the wind tower button in the build menu
         public void InitiateWindTowerBuild()
         {
-            // Set the question requesting image target correctly
-            Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
-
-            // Disable the game overlay
-            DeactivateGameOverlay();
-
-            // Enable the answer question menu
-            answerQuestions.SetActive(true);
-
-            // Set the number of questions that are needed to answer to 1
-            ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
-
-            // Close the menu
-            // Disable the build canvas
-            getBuildTowerCanvas.SetActive(false);
-
-            // Set the build trap menu as inactive
-            getBuildTrapWindow.SetActive(false);
-
-            // Make sure the build tower menu is inactive
-            getBuildTowerWindow.SetActive(false);
-
+            PrepareForBuild();
             StartCoroutine(BuildWindTower());
         }
 
         // The method that activates when the player wants to build a hole by pressing on the archer tower button in the build menu
         public void InitiateHoleBuild()
         {
-            // Set the question requesting image target correctly
-            Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
-
-            // Disable the game overlay
-            DeactivateGameOverlay();
-
-            // Enable the answer question menu
-            answerQuestions.SetActive(true);
-
-            // Set the number of questions that are needed to answer to 1
-            ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
-
-            // Close the menu
-            // Disable the build canvas
-            getBuildTowerCanvas.SetActive(false);
-
-            // Make sure the build trap menu as inactive
-            getBuildTrapWindow.SetActive(false);
-
-            // Make sure the build tower menu is inactive
-            getBuildTowerWindow.SetActive(false);
-
+            PrepareForBuild();
             // Start the routine that waits for the questions to be answered
             StartCoroutine(BuildHole());
         }
@@ -564,9 +446,16 @@ namespace build
         // The method that activates when the player wants to build a swamp by pressing on the swamp button in the build menu
         public void InitiateSwampBuild()
         {
+            PrepareForBuild();
+            // Start the routine that waits for the questions to be answered
+            StartCoroutine(BuildSwamp());
+        }
+
+        private void PrepareForBuild()
+        {
             // Set the question requesting image target correctly
             Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
-            
+
             // Disable the game overlay
             DeactivateGameOverlay();
 
@@ -578,16 +467,13 @@ namespace build
 
             // Close the menu
             // Disable the build canvas
-            getBuildTowerCanvas.SetActive(false);
+            GetBuildTowerCanvas.SetActive(false);
 
-            // Make sure the build trap menu as inactive
-            getBuildTrapWindow.SetActive(false);
+            // Set the build trap menu as inactive
+            GetBuildTrapWindow.SetActive(false);
 
             // Make sure the build tower menu is inactive
-            getBuildTowerWindow.SetActive(false);
-
-            // Start the routine that waits for the questions to be answered
-            StartCoroutine(BuildSwamp());
+            GetBuildTowerWindow.SetActive(false);
         }
 
         // Function that is used to test when all questions that were needed to be answered were answered correctly
@@ -596,44 +482,16 @@ namespace build
             return Questions.numberOfQuestionsNeededToAnswer == 0;
         }
 
-        // // Function that is used to test when the game overlay is enabled correctly
-        // private bool GameOverlayEnabled()
-        // {
-        //     return gameOverlay.activeSelf == true;
-        // }
-
         // The method that builds an archer tower over the image target
         IEnumerator BuildArcherTower()
         {
             // Wait until the number of questions that need to be answered is 0
             yield return new WaitUntil(NoMoreQuestionsNeeded);
-
-            // Enable the game overlay
-            ActivateGameOverlay();
-
-            // // Wait until the game overlay is activated
-            // yield return new WaitUntil(GameOverlayEnabled);
-
             // Spawn the archer tower or extract it from the object pool
-            GameObject tower = SpawnArcherTower(TowerImageTarget.currentImageTarget);
-
-            // Reduce the current currency by the cost of the tower
-            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getArcherTowerCost;
-
-            // Actualize the currency display
-            GameSetup.ActualizeCurrencyDisplay();
-
-            // // Set the flag that this image target was used to build a tower on it
-            // TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
-
+            GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Archer);
             // Ground the building
-            GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
-
-            // Increase the number of buildings built by one
-            GameAdvancement.numberOfBuildingsBuilt = GameAdvancement.numberOfBuildingsBuilt + 1;
-
-            // Un-pause the game
-            GameAdvancement.gamePaused = false;
+            GroundBuilding(tower, TowerImageTarget.currentImageTarget);
+            UpdateGameAdvancementAfterBuilding(GetArcherTowerCost);
         }
 
 
@@ -642,33 +500,11 @@ namespace build
         {
             // Wait until the number of questions that need to be answered is 0
             yield return new WaitUntil(NoMoreQuestionsNeeded);
-
-            // Enable the game overlay
-            ActivateGameOverlay();
-
-            // // Wait until the game overlay is activated
-            // yield return new WaitUntil(GameOverlayEnabled);
-
             // Spawn the fire tower or extract it from the object pool
-            GameObject tower = SpawnFireTower(TowerImageTarget.currentImageTarget);
-
-            // Reduce the current currency by the cost of the tower
-            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getFireTowerCost;
-
-            // Actualize the currency display
-            GameSetup.ActualizeCurrencyDisplay();
-
-            // // Set the flag that this image target was used to build a tower on it
-            // TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
-
+            GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Fire);
             // Ground the building
-            GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
-
-            // Increase the number of buildings built by one
-            GameAdvancement.numberOfBuildingsBuilt = GameAdvancement.numberOfBuildingsBuilt + 1;
-            
-            // Un-pause the game
-            GameAdvancement.gamePaused = false;
+            GroundBuilding(tower, TowerImageTarget.currentImageTarget);
+            UpdateGameAdvancementAfterBuilding(GetFireTowerCost);
         }
 
         // The method that builds a earth tower over the image target
@@ -676,33 +512,11 @@ namespace build
         {
             // Wait until the number of questions that need to be answered is 0
             yield return new WaitUntil(NoMoreQuestionsNeeded);
-
-            // Enable the game overlay
-            ActivateGameOverlay();
-
-            // // Wait until the game overlay is activated
-            // yield return new WaitUntil(GameOverlayEnabled);
-
             // Spawn the earth tower or extract it from the object pool
-            GameObject tower = SpawnEarthTower(TowerImageTarget.currentImageTarget);
-
-            // Reduce the current currency by the cost of the tower
-            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getEarthTowerCost;
-
-            // Actualize the currency display
-            GameSetup.ActualizeCurrencyDisplay();
-
-            // // Set the flag that this image target was used to build a tower on it
-            // TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
-
+            GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Earth);
             // Ground the building
-            GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
-
-            // Increase the number of buildings built by one
-            GameAdvancement.numberOfBuildingsBuilt = GameAdvancement.numberOfBuildingsBuilt + 1;
-
-            // Un-pause the game
-            GameAdvancement.gamePaused = false;
+            GroundBuilding(tower, TowerImageTarget.currentImageTarget);
+            UpdateGameAdvancementAfterBuilding(GetEarthTowerCost);
         }
 
         // The method that builds a lightning tower over the image target
@@ -710,33 +524,11 @@ namespace build
         {
             // Wait until the number of questions that need to be answered is 0
             yield return new WaitUntil(NoMoreQuestionsNeeded);
-
-            // Enable the game overlay
-            ActivateGameOverlay();
-
-            // // Wait until the game overlay is activated
-            // yield return new WaitUntil(GameOverlayEnabled);
-
             // Spawn the lightning tower or extract it from the object pool
-            GameObject tower = SpawnLightningTower(TowerImageTarget.currentImageTarget);
-
-            // Reduce the current currency by the cost of the tower
-            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getLightningTowerCost;
-
-            // Actualize the currency display
-            GameSetup.ActualizeCurrencyDisplay();
-
-            // // Set the flag that this image target was used to build a tower on it
-            // TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
-
+            GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Lightning);
             // Ground the building
-            GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
-
-            // Increase the number of buildings built by one
-            GameAdvancement.numberOfBuildingsBuilt = GameAdvancement.numberOfBuildingsBuilt + 1;
-
-            // Un-pause the game
-            GameAdvancement.gamePaused = false;
+            GroundBuilding(tower, TowerImageTarget.currentImageTarget);
+            UpdateGameAdvancementAfterBuilding(GetLightningTowerCost);
         }
 
         // The method that builds a wind tower over the image target
@@ -744,33 +536,11 @@ namespace build
         {
             // Wait until the number of questions that need to be answered is 0
             yield return new WaitUntil(NoMoreQuestionsNeeded);
-
-            // Enable the game overlay
-            ActivateGameOverlay();
-
-            // // Wait until the game overlay is activated
-            // yield return new WaitUntil(GameOverlayEnabled);
-
             // Spawn the wind tower or extract it from the object pool
-            GameObject tower = SpawnWindTower(TowerImageTarget.currentImageTarget);
-
-            // Reduce the current currency by the cost of the tower
-            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getWindTowerCost;
-
-            // Actualize the currency display
-            GameSetup.ActualizeCurrencyDisplay();
-
-            // // Set the flag that this image target was used to build a tower on it
-            // TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
-
+            GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Wind);
             // Ground the building
-            GroundBuilding(tower.gameObject, TowerImageTarget.currentImageTarget);
-
-            // Increase the number of buildings built by one
-            GameAdvancement.numberOfBuildingsBuilt = GameAdvancement.numberOfBuildingsBuilt + 1;
-
-            // Un-pause the game
-            GameAdvancement.gamePaused = false;
+            GroundBuilding(tower, TowerImageTarget.currentImageTarget);
+            UpdateGameAdvancementAfterBuilding(GetWindTowerCost);
         }
 
         // The method that builds a hole over the image target
@@ -778,33 +548,11 @@ namespace build
         {
             // Wait until the number of questions that need to be answered is 0
             yield return new WaitUntil(NoMoreQuestionsNeeded);
-
-            // Enable the game overlay
-            ActivateGameOverlay();
-
-            // // Wait until the game overlay is activated
-            // yield return new WaitUntil(GameOverlayEnabled);
-
             // Spawn the archer tower or extract it from the object pool
             Trap trap = SpawnTrap.SpawnHole(TowerImageTarget.currentImageTarget);
-
-            // Reduce the current currency by the cost of the tower
-            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getHoleCost;
-
-            // Actualize the currency display
-            GameSetup.ActualizeCurrencyDisplay();
-
-            // // Set the flag that this image target was used to build a tower on it
-            // TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
-
             // Ground the building
             GroundBuilding(trap.gameObject, TowerImageTarget.currentImageTarget);
-
-            // Increase the number of buildings built by one
-            GameAdvancement.numberOfBuildingsBuilt = GameAdvancement.numberOfBuildingsBuilt + 1;
-
-            // Un-pause the game
-            GameAdvancement.gamePaused = false;
+            UpdateGameAdvancementAfterBuilding(GetHoleCost);
         }
 
         // The method that builds a swamp over the image target
@@ -812,30 +560,26 @@ namespace build
         {
             // Wait until the number of questions that need to be answered is 0
             yield return new WaitUntil(NoMoreQuestionsNeeded);
+            // Spawn the archer tower or extract it from the object pool
+            Trap trap = SpawnTrap.SpawnSwamp(TowerImageTarget.currentImageTarget);
+            // Ground the building
+            GroundBuilding(trap.gameObject, TowerImageTarget.currentImageTarget);
+            UpdateGameAdvancementAfterBuilding(GetSwampCost);
+        }
 
+        private void UpdateGameAdvancementAfterBuilding(int cost)
+        {
             // Enable the game overlay
             ActivateGameOverlay();
 
-            // // Wait until the game overlay is activated
-            // yield return new WaitUntil(GameOverlayEnabled);
-
-            // Spawn the archer tower or extract it from the object pool
-            Trap trap = SpawnTrap.SpawnSwamp(TowerImageTarget.currentImageTarget);
-
             // Reduce the current currency by the cost of the tower
-            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - getSwampCost;
+            GameAdvancement.currencyPoints -= cost;
 
             // Actualize the currency display
-            GameSetup.ActualizeCurrencyDisplay();
-
-            // // Set the flag that this image target was used to build a tower on it
-            // TowerImageTarget.currentImageTarget.GetComponent<BuildTower>().towerBuiltCorrectly = true;
-
-            // Ground the building
-            GroundBuilding(trap.gameObject, TowerImageTarget.currentImageTarget);
+            GameSetup.UpdateCurrencyDisplay();
 
             // Increase the number of buildings built by one
-            GameAdvancement.numberOfBuildingsBuilt = GameAdvancement.numberOfBuildingsBuilt + 1;
+            GameAdvancement.numberOfBuildingsBuilt++;
 
             // Un-pause the game
             GameAdvancement.gamePaused = false;
@@ -844,37 +588,28 @@ namespace build
         // The method used to ground buildings
         public void GroundBuilding(GameObject building, GameObject imageTarget)
         {
-            // Set the position of the building to the position of the image target
-            building.transform.position = TowerEnhancer.buildPosition;
-
             // Set the building as child of the buildings storage object that is a child of the game board
             building.transform.parent = Board.buildingStorage.transform;
 
+            // Set the position of the building to the position of the image target
+            building.transform.localPosition = TowerEnhancer.buildPosition;
+
             // Set the rotation of the tower to the same as the rotation of the game board
             building.transform.rotation = Board.gameBoard.transform.rotation;
+
+            building.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
 
             // Make sure the y position of the tower is at 0.1
 
             Vector3 newPosition = building.transform.localPosition;
 
-            if(building.transform.tag == "Trap")
+            if(building.transform.CompareTag("Trap"))
             {
                 newPosition.y = -0.07f;
             } else {
                 newPosition.y = 0.1f;
             }
-
-            building.transform.localPosition = newPosition;
-            
-
-            // // Initialize the build position
-            // Vector3 buildingPosition = building.transform.position;
-
-            // // Set the building position at the same height as the first waypoint (on the ground of the game board)
-            // buildingPosition = new Vector3(buildingPosition.x, Waypoints.mapWaypoints[0].position.y, buildingPosition.z);
-
-            // // Give this position to the building
-            // building.transform.position = buildingPosition;
+            building.transform.localPosition = newPosition;        
         }
     }
 }

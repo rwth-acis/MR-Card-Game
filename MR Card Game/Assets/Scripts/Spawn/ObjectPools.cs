@@ -137,31 +137,22 @@ public class ObjectPools : MonoBehaviour
         {
             case "Normal Enemy":
                 return EnemyPools.enemyPoolIds[0];
-            break;
             case "Fast Enemy":
                 return EnemyPools.enemyPoolIds[1];
-            break;
             case "Super Fast Enemy":
                 return EnemyPools.enemyPoolIds[2];
-            break;
             case "Flying Enemy":
                 return EnemyPools.enemyPoolIds[3];
-            break;
             case "Tank Enemy":
                 return EnemyPools.enemyPoolIds[4];
-            break;
             case "Slow Enemy":
                 return EnemyPools.enemyPoolIds[5];
-            break;
             case "Berzerker Enemy":
                 return EnemyPools.enemyPoolIds[6];
-            break;
             case "Berzerker Flying Enemy":
                 return EnemyPools.enemyPoolIds[7];
-            break;
             case "Berzerker Tank Enemy":
                 return EnemyPools.enemyPoolIds[8];
-            break;
         }
 
         // Case the enemy does not have a correct type
@@ -182,25 +173,20 @@ public class ObjectPools : MonoBehaviour
     }
 
     // Method that returns the correct object pool index given the tower type
-    public static int GetTowerPoolIndex(string type)
+    public static int GetTowerPoolIndex(TowerType type)
     {
         switch(type)
         {
-            case "Archer Tower":
+            case TowerType.Archer:
                 return EnemyPools.enemyPoolIds[13];
-            break;
-            case "Fire Tower":
+            case TowerType.Fire:
                 return EnemyPools.enemyPoolIds[14];
-            break;
-            case "Earth Tower":
+            case TowerType.Earth:
                 return EnemyPools.enemyPoolIds[15];
-            break;
-            case "Lightning Tower":
+            case TowerType.Lightning:
                 return EnemyPools.enemyPoolIds[16];
-            break;
-            case "Wind Tower":
+            case TowerType.Wind:
                 return EnemyPools.enemyPoolIds[17];
-            break;
         }
 
         // Case the enemy does not have a correct type
@@ -210,7 +196,7 @@ public class ObjectPools : MonoBehaviour
     // The method that releses the tower game objects
     public static void ReleaseTower(GameObject tower)
     {
-        string towerType = tower.GetComponentInChildren<Tower>().getTowerType;
+        TowerType towerType = tower.GetComponentInChildren<Tower>().GetTowerType;
 
         // Get the correct object pool index from the object pools class
         int objectPoolIndex = GetTowerPoolIndex(towerType);
@@ -223,20 +209,17 @@ public class ObjectPools : MonoBehaviour
     }
 
     // Method that returns the correct object pool index given the projectile type
-    public static int GetProjectilePoolIndex(string type)
+    public static int GetProjectilePoolIndex(TowerType type)
     {
         // Return the right projectile pool index given the projectile type
         switch(type)
         {
-            case "Archer Tower":
+            case TowerType.Archer:
                 return EnemyPools.enemyPoolIds[9];
-            break;
-            case "Fire Tower":
+            case TowerType.Fire:
                 return EnemyPools.enemyPoolIds[10];
-            break;
-            case "Earth Tower":
+            case TowerType.Earth:
                 return EnemyPools.enemyPoolIds[11];
-            break;
         }
 
         // In case the name is incorrect return an arrow
@@ -247,7 +230,7 @@ public class ObjectPools : MonoBehaviour
     public static void ReleaseProjectile(Projectile projectile, Tower parent)
     {
         // Get the correctly object pool index from the object pools class
-        int objectPoolIndex = GetProjectilePoolIndex(parent.getTowerType);
+        int objectPoolIndex = GetProjectilePoolIndex(parent.GetTowerType);
 
         // Release the projectile into the right object pool
         ObjectPool<Projectile>.ReleaseResource(objectPoolIndex, projectile);
@@ -264,13 +247,10 @@ public class ObjectPools : MonoBehaviour
         {
             case "Arrow Rain":
                 return EnemyPools.enemyPoolIds[18];
-            break;
             case "Meteor Impact":
                 return EnemyPools.enemyPoolIds[19];
-            break;
             case "Thunder Strike":
                 return EnemyPools.enemyPoolIds[20];
-            break;
         }
 
         // In case the name is incorrect return a thunder strike
@@ -298,10 +278,8 @@ public class ObjectPools : MonoBehaviour
         {
             case "Hole":
                 return EnemyPools.enemyPoolIds[21];
-            break;
             case "Swamp":
                 return EnemyPools.enemyPoolIds[22];
-            break;
         }
 
         // In case the name is incorrect return a hole

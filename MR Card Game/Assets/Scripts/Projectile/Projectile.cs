@@ -86,7 +86,7 @@ public class Projectile : MonoBehaviour
     public void Initialize(Tower parent)
     {
         // Set the parent tower of the projectile as the parent of the projectile
-        this.target = parent.getTarget.gameObject.GetComponent<Enemy>();
+        this.target = parent.GetTarget.gameObject.GetComponent<Enemy>();
         this.parent = parent;
 
         // // Set the game object as child under the tower
@@ -104,20 +104,21 @@ public class Projectile : MonoBehaviour
             lastPosition = target.transform.position;
 
             // If the target is not null and alive, move the projectile in the direction of the target
-            transform.position = Vector3.MoveTowards(transform.position, target.gameObject.transform.position, Time.deltaTime * parent.getProjectileSpeed * 14 * Board.greatestBoardDimension);
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.deltaTime * parent.GetProjectileSpeed * 14 * Board.greatestBoardDimension);
 
             // Check if the projectile is an arrow
-            if(parent.getTowerType == "Archer Tower")
+            if(parent.GetTowerType == TowerType.Archer)
             {
                 // Make the arrow face his target
                 transform.LookAt(target.transform.position);
             }
 
             // Check if the projectile reached the destination
-            if(transform.position == target.transform.position)
+            if(ReachPosition(target.transform.position))
             {
+
                 // Here, depending on the tower type, the enemy or enemies need to take damage depending on the type of projectile of the tower
-                if(parent.getTowerType == "Archer Tower")
+                if(parent.GetTowerType == TowerType.Archer)
                 {
                     // Make a single enemy take damage
                     ArrowEffect();
@@ -135,10 +136,10 @@ public class Projectile : MonoBehaviour
         } else {
 
             // Check if it is not a wind tower or lightning tower that do not have a projectile
-            if(parent.getTowerType != "Wind Tower" && parent.getTowerType != "Lightning Tower" && parent.getTowerType != "Archer Tower")
+            if(parent.GetTowerType != TowerType.Wind && parent.GetTowerType != TowerType.Lightning && parent.GetTowerType != TowerType.Archer)
             {
                 // Make the projectile move to the last position
-                transform.position = Vector3.MoveTowards(transform.position, lastPosition, Time.deltaTime * parent.getProjectileSpeed);
+                transform.position = Vector3.MoveTowards(transform.position, lastPosition, Time.deltaTime * parent.GetProjectileSpeed);
 
                 // Check if the projectile reached the destination
                 if(transform.position == target.transform.position)
@@ -153,6 +154,18 @@ public class Projectile : MonoBehaviour
                 // Case it is an arrow and needs to despawn
                 ObjectPools.ReleaseProjectile(this, parent);
             }
+        }
+    }
+
+    private bool ReachPosition(Vector3 position)
+    {
+        if (Vector3.Magnitude(transform.position - position) <= 0.002f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -172,7 +185,7 @@ public class Projectile : MonoBehaviour
         int damage = 0;
 
         // Calculate the damage
-        damage = CalculateDamage(parent.getDamage, parent.getWeaknessMultiplier, parent.getTowerType, target.GetComponent<Enemy>());
+        damage = CalculateDamage(parent.GetDamage, parent.GetWeaknessMultiplier, parent.GetTowerType, target.GetComponent<Enemy>());
 
         // Make the enemy take damage
         target.TakeDamage(damage);
@@ -195,7 +208,7 @@ public class Projectile : MonoBehaviour
             if(targetEnemy != null)
             {
                 // Calculate the damage
-                damage = CalculateDamage(parent.getDamage, parent.getWeaknessMultiplier, parent.getTowerType, targetEnemy.GetComponent<Enemy>());
+                damage = CalculateDamage(parent.GetDamage, parent.GetWeaknessMultiplier, parent.GetTowerType, targetEnemy.GetComponent<Enemy>());
 
                 // Check that the damage is not null
                 if(damage != 0)
@@ -229,7 +242,7 @@ public class Projectile : MonoBehaviour
     }
 
     // The method that calculates the damage a unit should take depending on the enemy, tower and tower attack type
-    public static int CalculateDamage(int damage, float weaknessMultiplier, string towerType, Enemy target)
+    public static int CalculateDamage(int damage, float weaknessMultiplier, TowerType towerType, Enemy target)
     {
 
         Debug.Log("The enemy for which damage is calculated is: " + (target == null));
@@ -240,7 +253,7 @@ public class Projectile : MonoBehaviour
         {
             switch(towerType)
             {
-                case "Archer Tower":
+                case TowerType.Archer:
 
                     if(target.GetEnemyWeakness == "Piercing")
                     {
@@ -252,7 +265,7 @@ public class Projectile : MonoBehaviour
 
                 break;
                 
-                case "Fire Tower":
+                case TowerType.Fire:
                     if(target.GetEnemyWeakness == "Fire")
                     {
                         additionalDamageMultiplier = 1;
@@ -262,7 +275,7 @@ public class Projectile : MonoBehaviour
                     }
                 break;
 
-                case "Lightning Tower":
+                case TowerType.Lightning:
                     if(target.GetEnemyWeakness == "Lightning")
                     {
                         if(GameAdvancement.raining == true || target.isWet == true)
@@ -287,7 +300,7 @@ public class Projectile : MonoBehaviour
                     }
                 break;
 
-                case "Earth Tower":
+                case TowerType.Earth:
                     if(target.GetEnemyWeakness == "Earth")
                     {
                         additionalDamageMultiplier = 1;
@@ -297,7 +310,7 @@ public class Projectile : MonoBehaviour
                     }
                 break;
 
-                case "Wind Tower":
+                case TowerType.Wind:
                     if(target.GetEnemyWeakness == "Wind")
                     {
                         additionalDamageMultiplier = 1;

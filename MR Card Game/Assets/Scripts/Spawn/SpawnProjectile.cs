@@ -88,7 +88,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
         // }
 
         // Method used to spawn the projectile for the tower
-        public static Projectile SpawnProjectileForTower(string type, Projectile projectile, GameObject parent, float size)
+        public static Projectile SpawnProjectileForTower(TowerType type, Projectile projectile, GameObject parent, float size)
         {
             // Initialize the pool index for the object pool of the projectile
             int poolId = ObjectPools.GetProjectilePoolIndex(type);
@@ -124,7 +124,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // Reset the colliders list of the projectile
             projectileObject.colliders = new List<Collider>();
 
-            if(type == "Archer Tower")
+            if(type == TowerType.Archer)
             {
                 // Scale the projectile correctly
                 projectileObject.transform.localScale = new Vector3(1, 1, 1);

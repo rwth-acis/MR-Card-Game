@@ -205,10 +205,7 @@ public class Enemy : MonoBehaviour
         if(waypointIndex <= waypoints.Length - 1)
         {
             // Get the current goal that is the position of the next waypoint, added with a height
-            Vector3 currentGoal = waypoints[waypointIndex].transform.position + this.transform.up * flightHeight;
-
-            // // Move the enemy toward the next waypoint
-            // transform.position = Vector3.MoveTowards(transform.position, waypoints[waypointIndex].transform.position + new Vector3(0, flightHeight, 0), moveSpeed * GameAdvancement.globalSlow * personalSlowFactor * Time.deltaTime * gameBoard.transform.localScale.x);
+            Vector3 currentGoal = waypoints[waypointIndex].transform.position + transform.up * flightHeight;
 
             // Move the enemy toward the next waypoint
             transform.position = Vector3.MoveTowards(transform.position, currentGoal, moveSpeed * GameAdvancement.globalSlow * personalSlowFactor * Time.deltaTime * gameBoard.transform.localScale.x);
@@ -217,14 +214,14 @@ public class Enemy : MonoBehaviour
             // transform.LookAt(waypoints[waypointIndex].transform.position);
 
             // If the enemy reached the position of a waypoint, increase the waypoint index by one
-            if(transform.position == currentGoal)
+            if(ReachPosition(currentGoal))
             // if(transform.position.x == waypoints[waypointIndex].transform.position.x && transform.position.z == waypoints[waypointIndex].transform.position.z)
             {
                 // // Set the passed waypoint as last waypoint
                 // lastWaypoint = waypoints[waypointIndex].transform.position;
 
                 // Increase the waypoint index by one
-                waypointIndex = waypointIndex + 1;
+                waypointIndex++;
 
                 if(waypointIndex <= waypoints.Length - 1)
                 {
@@ -251,6 +248,18 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private bool ReachPosition(Vector3 position)
+    {
+        if(Vector3.Magnitude(transform.position - position) <= 0.002f)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     // Method that calculates the health value
     public float CalculateHealth()
     {
@@ -264,7 +273,7 @@ public class Enemy : MonoBehaviour
         GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + enemyValue;
 
         // Actualize the currency display so that the player can see that he won currency points
-        GameSetup.ActualizeCurrencyDisplay();
+        GameSetup.UpdateCurrencyDisplay();
     }
 
     // Method that reduces the health points of the castle if an enemy reaches it

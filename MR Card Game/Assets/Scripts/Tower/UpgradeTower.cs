@@ -51,31 +51,31 @@ public class UpgradeTower : MonoBehaviour
         Tower towerprefab = archerTowerPrefab;
 
         // Get the right prefab for this tower and refund a part of the price
-        switch(TowerEnhancer.currentlyEnhancedTower.getTowerType)
+        switch(TowerEnhancer.currentlyEnhancedTower.GetTowerType)
         {
-            case "Archer Tower":
+            case TowerType.Archer:
                 towerprefab = archerTowerPrefab;
-                GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.getArcherTowerCost;
+                GameAdvancement.currencyPoints += build.BuildTowerMenu.GetArcherTowerCost;
             break;
 
-            case "Fire Tower":
+            case TowerType.Fire:
                 towerprefab = fireTowerPrefab;
-                GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.getFireTowerCost;
+                GameAdvancement.currencyPoints += build.BuildTowerMenu.GetFireTowerCost;
             break;
 
-            case "Earth Tower":
+            case TowerType.Earth:
                 towerprefab = earthTowerPrefab;
-                GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.getEarthTowerCost;
+                GameAdvancement.currencyPoints += build.BuildTowerMenu.GetEarthTowerCost;
             break;
 
-            case "Lightning Tower":
+            case TowerType.Lightning:
                 towerprefab = lightningTowerPrefab;
-                GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.getLightningTowerCost;
+                GameAdvancement.currencyPoints += build.BuildTowerMenu.GetLightningTowerCost;
             break;
 
-            case "Wind Tower":
+            case TowerType.Wind:
                 towerprefab = windTowerPrefab;
-                GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.getWindTowerCost;
+                GameAdvancement.currencyPoints += build.BuildTowerMenu.GetWindTowerCost;
             break;
         }
 
@@ -86,7 +86,7 @@ public class UpgradeTower : MonoBehaviour
         ObjectPools.ReleaseTower(TowerEnhancer.currentlyEnhancedTower.transform.parent.gameObject);
 
         // Actualize the currency display
-        GameSetup.ActualizeCurrencyDisplay();
+        GameSetup.UpdateCurrencyDisplay();
     }
 
     // Define the delete trap menu
@@ -111,15 +111,15 @@ public class UpgradeTower : MonoBehaviour
         // Check the type of the trap and refund the correct amount of currency
         if(TrapDeleter.currentlyOpenedTrapWindow.getTrapType == "Hole")
         {
-            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.getHoleCost;
+            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.GetHoleCost;
 
         } else {
 
-            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.getSwampCost;
+            GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + build.BuildTowerMenu.GetSwampCost;
         }
 
         // Actualize the currency display
-        GameSetup.ActualizeCurrencyDisplay();
+        GameSetup.UpdateCurrencyDisplay();
     }
 
     // Method used to open the delete trap menu
@@ -275,9 +275,9 @@ public class UpgradeTower : MonoBehaviour
     private static float earthSizeEnhancer = 1.2f;
     private static float windAttackCooldownEnhancer = 0.9f;
     private static float windDropBackEnhancer = 1.2f;
-    private static float arrowDamageEnhancer = 1.2f;
-    private static float arrowAttackCooldownEnhancer = 0.85f;
-    private static float arrowRangeEnhancer = 1.1f;
+    private static float archerDamageEnhancer = 1.2f;
+    private static float archerAttackCooldownEnhancer = 0.85f;
+    private static float archerRangeEnhancer = 1.1f;
     private static float fireDamageEnhancer = 1.4f;
     private static float fireAttackCooldownEnhancer = 0.85f;
 
@@ -345,176 +345,129 @@ public class UpgradeTower : MonoBehaviour
             getUpgradeTowerMenu.SetActive(true);
 
             // Write the right tower type as heading
-            getTowerTypeField.text = tower.getTowerType;
+            getTowerTypeField.text = tower.GetTowerType.ToString();
 
             // Initialize the upgrade cost integer
             int upgradeCost = 0;
 
             // Check the tower type and fill the stats window accordingly
-            switch(tower.getTowerType)
+            switch(tower.GetTowerType)
             {
-                case "Lightning Tower":
+                case TowerType.Lightning:
                     // Enable the two additional fields for the lightning tower
                     getAdditionalField1.gameObject.SetActive(true);
                     getAdditionalField2.gameObject.SetActive(true);
-
-                    // Actualize the standard fields
-                    getTowerDamageField.text = "Damage " + tower.getDamage + " > " + (tower.getDamage * lightningDamageEnhancer);
-                    getTowerAttackCooldownField.text = "Attack cooldown " + tower.getAttackCooldown;
-                    getTowerRangeField.text = "Range " + tower.getAttackRange + " > " + (tower.getDamage * lightningRangeEnhancer);
-
                     // Fill the aditional fields
-                    getAdditionalField1.text = "Number of jumps: " + tower.getNumberOfEffect + " > " + (tower.getNumberOfEffect + 1);
-                    getAdditionalField2.text = "Jump range: " + tower.getEffectRange + " > " + (tower.getEffectRange * lightningJumpRangeEnhancer);
-                    
+                    getAdditionalField1.text = "Number of jumps: " + tower.GetNumberOfEffect + " > " + (tower.GetNumberOfEffect + 1);
+                    getAdditionalField2.text = "Jump range: " + tower.GetEffectRange + " > " + (tower.GetEffectRange * lightningJumpRangeEnhancer);
                     // Calculate the cost of upgrading this tower
-                    upgradeCost = (int)(lightningTowerUpgradeBaseCost * Mathf.Pow(lightningTowerUpgradeCostMultiplicator, tower.getLevel - 1));
-
-                    // Write this cost in the upgrade cost field
-                    getUpgradeCostField.text = "Upgrade cost: " + upgradeCost;
-
-                    // Disable or enable the upgrade button depending on if the player has enough currency for it
-                    if(GameAdvancement.currencyPoints >= upgradeCost)
-                    {
-                        // Can upgrade, so enable the button
-                        getUpgradeTowerButton.interactable = true;
-                        
-                    } else {
-                        
-                        // Cannot upgrade, so disable the button
-                        getUpgradeTowerButton.interactable = false;
-                    }
-                
+                    upgradeCost = (int)(lightningTowerUpgradeBaseCost * Mathf.Pow(lightningTowerUpgradeCostMultiplicator, tower.GetLevel - 1));          
                 break;
-
-                case "Earth Tower":
+                case TowerType.Earth:
                     // Enable one of the additional fields for the earth tower
                     getAdditionalField1.gameObject.SetActive(true);
                     getAdditionalField2.gameObject.SetActive(false);
-
-                    // Actualize the standard fields
-                    getTowerDamageField.text = "Damage " + tower.getDamage + " > " + (tower.getDamage * earthDamageEnhancer);
-                    getTowerAttackCooldownField.text = "Attack cooldown " + tower.getAttackCooldown;
-                    getTowerRangeField.text = "Range " + tower.getAttackRange;
-
                     // Fill the aditional field
-                    getAdditionalField1.text = "Projectile size: " + tower.getEffectRange + " > " + (tower.getEffectRange * earthSizeEnhancer);
-                
+                    getAdditionalField1.text = "Projectile size: " + tower.GetEffectRange + " > " + (tower.GetEffectRange * earthSizeEnhancer);
                     // Calculate the cost of upgrading this tower
-                    upgradeCost = (int)(earthTowerUpgradeBaseCost * Mathf.Pow(earthTowerUpgradeCostMultiplicator, tower.getLevel - 1));
-
-                    // Write this cost in the upgrade cost field
-                    getUpgradeCostField.text = "Upgrade cost: " + upgradeCost;
-
-                    // Disable or enable the upgrade button depending on if the player has enough currency for it
-                    if(GameAdvancement.currencyPoints >= upgradeCost)
-                    {
-                        // Can upgrade, so enable the button
-                        getUpgradeTowerButton.interactable = true;
-                        
-                    } else {
-                        
-                        // Cannot upgrade, so disable the button
-                        getUpgradeTowerButton.interactable = false;
-                    }
-                
+                    upgradeCost = (int)(earthTowerUpgradeBaseCost * Mathf.Pow(earthTowerUpgradeCostMultiplicator, tower.GetLevel - 1));
                 break;
-
-                case "Wind Tower":
+                case TowerType.Wind:
                     // Enable one of the additional fields for the wind tower
                     getAdditionalField1.gameObject.SetActive(true);
                     getAdditionalField2.gameObject.SetActive(false);
-
-                    // Actualize the standard fields
-                    getTowerAttackCooldownField.text = "Attack cooldown " + tower.getAttackCooldown + " > " + (tower.getAttackCooldown * windAttackCooldownEnhancer);
-                    getTowerDamageField.text = "Damage " + tower.getDamage;
-                    getTowerRangeField.text = "Range " + tower.getAttackRange;
-
                     // Fill the aditional fields
-                    getAdditionalField1.text = "Drop back distance: " + tower.getEffectRange + " > " + (tower.getEffectRange * windDropBackEnhancer);
-                    
+                    getAdditionalField1.text = "Drop back distance: " + tower.GetEffectRange + " > " + (tower.GetEffectRange * windDropBackEnhancer);
                     // Calculate the cost of upgrading this tower
-                    upgradeCost = (int)(windTowerUpgradeBaseCost * Mathf.Pow(windTowerUpgradeCostMultiplicator, tower.getLevel - 1));
-
-                    // Write this cost in the upgrade cost field
-                    getUpgradeCostField.text = "Upgrade cost: " + upgradeCost;
-
-                    // Disable or enable the upgrade button depending on if the player has enough currency for it
-                    if(GameAdvancement.currencyPoints >= upgradeCost)
-                    {
-                        // Can upgrade, so enable the button
-                        getUpgradeTowerButton.interactable = true;
-                        
-                    } else {
-                        
-                        // Cannot upgrade, so disable the button
-                        getUpgradeTowerButton.interactable = false;
-                    }
-                
+                    upgradeCost = (int)(windTowerUpgradeBaseCost * Mathf.Pow(windTowerUpgradeCostMultiplicator, tower.GetLevel - 1));        
                 break;
-
-                case "Archer Tower":
+                case TowerType.Archer:
                     // Disable the two additinal fields for the archer tower
                     getAdditionalField1.gameObject.SetActive(false);
                     getAdditionalField2.gameObject.SetActive(false);
-
-                    // Actualize all standard fields
-                    getTowerDamageField.text = "Damage " + tower.getDamage + " > " + (tower.getDamage * arrowDamageEnhancer);
-                    getTowerAttackCooldownField.text = "Attack cooldown " + tower.getAttackCooldown + " > " + (tower.getAttackCooldown * arrowAttackCooldownEnhancer);
-                    getTowerRangeField.text = "Range " + tower.getAttackRange + " > " + (tower.getAttackRange * arrowRangeEnhancer);
-                
-                    Debug.Log("The damage on level 1 is multiplied with: " + (Mathf.Pow(arrowDamageEnhancer, tower.getLevel)));
-
                     // Calculate the cost of upgrading this tower
-                    upgradeCost = (int)(archerTowerUpgradeBaseCost * Mathf.Pow(archerTowerUpgradeCostMultiplicator, tower.getLevel - 1));
-
-                    // Write this cost in the upgrade cost field
-                    getUpgradeCostField.text = "Upgrade cost: " + upgradeCost;
-
-                    // Disable or enable the upgrade button depending on if the player has enough currency for it
-                    if(GameAdvancement.currencyPoints >= upgradeCost)
-                    {
-                        // Can upgrade, so enable the button
-                        getUpgradeTowerButton.interactable = true;
-                        
-                    } else {
-                        
-                        // Cannot upgrade, so disable the button
-                        getUpgradeTowerButton.interactable = false;
-                    }
-
+                    upgradeCost = (int)(archerTowerUpgradeBaseCost * Mathf.Pow(archerTowerUpgradeCostMultiplicator, tower.GetLevel - 1));
                 break;
-
-                case "Fire Tower":
+                case TowerType.Fire:
                     // Disable the two additinal fields for the fire tower
                     getAdditionalField1.gameObject.SetActive(false);
                     getAdditionalField2.gameObject.SetActive(false);
-
-                    // Actualize all standard fields
-                    getTowerDamageField.text = "Damage " + tower.getDamage + " > " + (tower.getDamage * fireDamageEnhancer);
-                    getTowerAttackCooldownField.text = "Attack cooldown " + tower.getAttackCooldown + " > " + (tower.getAttackCooldown * fireAttackCooldownEnhancer);
-                    getTowerRangeField.text = "Range " + tower.getAttackRange;
-
                     // Calculate the cost of upgrading this tower
-                    upgradeCost = (int)(fireTowerUpgradeBaseCost * Mathf.Pow(fireTowerUpgradeCostMultiplicator, tower.getLevel - 1));
-
-                    // Write this cost in the upgrade cost field
-                    getUpgradeCostField.text = "Upgrade cost: " + upgradeCost;
-
-                    // Disable or enable the upgrade button depending on if the player has enough currency for it
-                    if(GameAdvancement.currencyPoints >= upgradeCost)
-                    {
-                        // Can upgrade, so enable the button
-                        getUpgradeTowerButton.gameObject.SetActive(true);
-                        
-                    } else {
-                        
-                        // Cannot upgrade, so disable the button
-                        getUpgradeTowerButton.gameObject.SetActive(false);
-                    }
-
+                    upgradeCost = (int)(fireTowerUpgradeBaseCost * Mathf.Pow(fireTowerUpgradeCostMultiplicator, tower.GetLevel - 1));
                 break;
             }
+            DisplayUpgradeInfo(tower, upgradeCost);
+        }
+    }
+
+    private static void DisplayUpgradeInfo(Tower tower, int upgradeCost)
+    {
+        // Update all standard fields
+        float damageEnhancer = GetDamageEnhancer(tower.GetTowerType);
+        float cooldownEnhancer = GetCooldownEnhancer(tower.GetTowerType);
+        float rangeEnhancer = GetRangeEnhancer(tower.GetTowerType);
+        getTowerDamageField.text = "Damage " + tower.GetDamage + " > " + (tower.GetDamage * damageEnhancer);
+        getTowerAttackCooldownField.text = "Attack cooldown " + tower.GetAttackCooldown + " > " + (tower.GetAttackCooldown * cooldownEnhancer);
+        getTowerRangeField.text = "Range " + tower.GetAttackRange + " > " + (tower.GetAttackRange * rangeEnhancer);
+
+        // Write this cost in the upgrade cost field
+        getUpgradeCostField.text = "Upgrade cost: " + upgradeCost;
+
+        // Disable or enable the upgrade button depending on if the player has enough currency for it
+        if (GameAdvancement.currencyPoints >= upgradeCost)
+        {
+            // Can upgrade, so enable the button
+            getUpgradeTowerButton.interactable = true;
+        }
+        else
+        {
+            // Cannot upgrade, so disable the button
+            getUpgradeTowerButton.interactable = false;
+        }
+    }
+
+    public static float GetCooldownEnhancer(TowerType type)
+    {
+        switch (type)
+        {
+            case TowerType.Archer:
+                return archerAttackCooldownEnhancer;
+            case TowerType.Fire:
+                return fireAttackCooldownEnhancer;
+            case TowerType.Wind:
+                return windAttackCooldownEnhancer;
+            default:
+                return 1f;
+        }
+    }
+
+    public static float GetDamageEnhancer(TowerType type)
+    {
+        switch (type)
+        {
+            case TowerType.Archer:
+                return archerDamageEnhancer;
+            case TowerType.Fire:
+                return fireDamageEnhancer;
+            case TowerType.Lightning:
+                return lightningDamageEnhancer;
+            case TowerType.Earth:
+                return earthDamageEnhancer;
+            default:
+                return 1f;
+        }
+    }
+
+    public static float GetRangeEnhancer(TowerType type)
+    {
+        switch (type)
+        {
+            case TowerType.Archer:
+                return archerRangeEnhancer;
+            case TowerType.Lightning:
+                return lightningRangeEnhancer;
+            default:
+                return 1f;
         }
     }
 
@@ -540,8 +493,8 @@ public class UpgradeTower : MonoBehaviour
         // Disable the game overlay
         DeactivateGameOverlay();
 
-        ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered((int)(TowerEnhancer.currentlyEnhancedTower.getLevel + 2 / 2));
-        Debug.Log("The number of questions that need to be answered that was added was: " + (int)(TowerEnhancer.currentlyEnhancedTower.getLevel / 2));
+        ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered((int)(TowerEnhancer.currentlyEnhancedTower.GetLevel + 2 / 2));
+        Debug.Log("The number of questions that need to be answered that was added was: " + (int)(TowerEnhancer.currentlyEnhancedTower.GetLevel / 2));
 
         // ActivateQuestions.ActualizeNumberOfQuestionsThatNeedToBeAnsweredDisplay();
 
@@ -566,7 +519,7 @@ public class UpgradeTower : MonoBehaviour
         upgradeTowerMenu.SetActive(false);
 
         // Initialize the upgrade cost integer
-        int upgradeCost = 0;
+        // int upgradeCost = 0;
 
         // Start the coroutine that upgrades the tower
         StartCoroutine(UpgradeTowerMethod(towerTypeText));
@@ -596,17 +549,17 @@ public class UpgradeTower : MonoBehaviour
             case "Archer Tower":
 
                 // Calculate the cost of upgrading this tower
-                upgradeCost = (int)(archerTowerUpgradeBaseCost * Mathf.Pow(archerTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.getLevel - 1));
+                upgradeCost = (int)(archerTowerUpgradeBaseCost * Mathf.Pow(archerTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.GetLevel - 1));
 
                 // Upgrade the tower
-                TowerEnhancer.currentlyEnhancedTower.UpgradeArcherTower(arrowDamageEnhancer, arrowAttackCooldownEnhancer, arrowRangeEnhancer);
+                TowerEnhancer.currentlyEnhancedTower.UpgradeArcherTower(archerDamageEnhancer, archerAttackCooldownEnhancer, archerRangeEnhancer);
 
             break;
 
             case "Fire Tower":
 
                 // Calculate the cost of upgrading this tower
-                upgradeCost = (int)(fireTowerUpgradeBaseCost * Mathf.Pow(fireTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.getLevel - 1));
+                upgradeCost = (int)(fireTowerUpgradeBaseCost * Mathf.Pow(fireTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.GetLevel - 1));
 
                 // Upgrade the tower
                 TowerEnhancer.currentlyEnhancedTower.UpgradeFireTower(fireDamageEnhancer, fireAttackCooldownEnhancer);
@@ -616,7 +569,7 @@ public class UpgradeTower : MonoBehaviour
             case "Earth Tower":
 
                 // Calculate the cost of upgrading this tower
-                upgradeCost = (int)(earthTowerUpgradeBaseCost * Mathf.Pow(earthTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.getLevel - 1));
+                upgradeCost = (int)(earthTowerUpgradeBaseCost * Mathf.Pow(earthTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.GetLevel - 1));
 
                 // Upgrade the tower
                 TowerEnhancer.currentlyEnhancedTower.UpgradeEarthTower(earthDamageEnhancer, earthSizeEnhancer);
@@ -626,7 +579,7 @@ public class UpgradeTower : MonoBehaviour
             case "Lightning Tower":
 
                 // Calculate the cost of upgrading this tower
-                upgradeCost = (int)(lightningTowerUpgradeBaseCost * Mathf.Pow(lightningTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.getLevel - 1));
+                upgradeCost = (int)(lightningTowerUpgradeBaseCost * Mathf.Pow(lightningTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.GetLevel - 1));
 
                 // Upgrade the tower
                 TowerEnhancer.currentlyEnhancedTower.UpgradeLightningTower(lightningDamageEnhancer, lightningJumpRangeEnhancer, lightningRangeEnhancer);
@@ -636,7 +589,7 @@ public class UpgradeTower : MonoBehaviour
             case "Wind Tower":
 
                 // Calculate the cost of upgrading this tower
-                upgradeCost = (int)(windTowerUpgradeBaseCost * Mathf.Pow(windTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.getLevel - 1));
+                upgradeCost = (int)(windTowerUpgradeBaseCost * Mathf.Pow(windTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.GetLevel - 1));
 
                 // Upgrade the tower
                 TowerEnhancer.currentlyEnhancedTower.UpgradeWindTower(windAttackCooldownEnhancer, windDropBackEnhancer);
@@ -648,7 +601,7 @@ public class UpgradeTower : MonoBehaviour
         GameAdvancement.currencyPoints = GameAdvancement.currencyPoints - upgradeCost;
 
         // Actualize the currency display
-        GameSetup.ActualizeCurrencyDisplay();
+        GameSetup.UpdateCurrencyDisplay();
 
         // Set the upgrade tower menu as inactive
         getUpgradeTowerMenu.SetActive(false);
