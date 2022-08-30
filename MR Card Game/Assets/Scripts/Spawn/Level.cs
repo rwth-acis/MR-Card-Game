@@ -7,7 +7,7 @@ using static i5.Toolkit.Core.Examples.Spawners.SpawnEnemy;
 using UnityEngine.EventSystems;
 using TMPro;
 
-static class LevelInfo
+public static class LevelInfo
 {
     // The number of waves of the level
     public static int numberOfWaves;
@@ -60,6 +60,8 @@ static class LevelInfo
     // The number of enemies that reached and damaged the castle
     public static int numberOfEnemiesDefeated = 0;
 
+    public static int numberOfEnemiesDefeatedOrReachedCastleCurrentWave = 0;
+
     // The flag that states that a new level was started and the level information need to be reset
     public static bool newLevelStarted = false;
 }
@@ -73,6 +75,13 @@ public class Level : MonoBehaviour
     // The start next wave button
     [SerializeField]
     private Button startNextWave;
+
+    [SerializeField]
+    private TextMeshProUGUI enemyNumberDisplay;
+
+    // The time between spawning enemies
+    [SerializeField]
+    private float timeBetweenSpawns;
 
     // The current enemy index that should be spawned together
     private EnemyType enemyType;
@@ -89,10 +98,6 @@ public class Level : MonoBehaviour
     // The number of enemy categories that are non empty at the moment
     private int numberOfCategoriesNotEmpty = 0;
 
-    // The time between spawning enemies
-    [SerializeField]
-    private float timeBetweenSpawns;
-
     // The current time since the last spawn
     private float spawnTimer;
 
@@ -100,8 +105,10 @@ public class Level : MonoBehaviour
     // private bool canSpawn = true;
 
     // Instantiate random number generator.  
-    private readonly System.Random _random = new System.Random();  
-    
+    private readonly System.Random _random = new System.Random();
+
+    public static Level Instance;
+
     // Generates a random number within a range.      
     public int RandomNumber(int min, int max)  
     {  
@@ -113,6 +120,7 @@ public class Level : MonoBehaviour
     {
         // Reset the level info
         ResetLevelInfo();
+        Instance = this;
     }
 
     // Update is called once per frame
@@ -186,6 +194,8 @@ public class Level : MonoBehaviour
     // The method that starts a wave
     public void StartWave()
     {
+        LevelInfo.numberOfEnemiesDefeatedOrReachedCastleCurrentWave = 0;
+
         // // Ground all buildings when the wave begins
         // GroundAllBuildings();
 
@@ -205,6 +215,14 @@ public class Level : MonoBehaviour
 
         // Start the coroutine that spawns all the wave
         StartCoroutine(SpawnWave());
+    }
+
+    /// <summary>
+    /// Set the enemy number display to Enemy: numberOfEnemiesDefeatedOrReachedCastleCurrentWave / numberOfEnemyInCurrentWave
+    /// </summary>
+    public void UpdateEnemyNumberDisplay()
+    {
+        enemyNumberDisplay.text = $"Enemy {LevelInfo.numberOfEnemiesDefeatedOrReachedCastleCurrentWave}/{LevelInfo.numberOfEnemies[GameAdvancement.currentWave - 1]}";
     }
 
     // // Function that is used to test when the game is not paused anymore
@@ -239,8 +257,10 @@ public class Level : MonoBehaviour
         Debug.Log("The number of berzerker flying enemies in the wave is: " + LevelInfo.berzerkerFlyingEnemies[GameAdvancement.currentWave - 1]);
         Debug.Log("The number of berzerker tank enemies in the wave is: " + LevelInfo.berzerkerTankEnemies[GameAdvancement.currentWave - 1]);
 
+        UpdateEnemyNumberDisplay();
+
         // Spawn the whole wave
-        for(int counter = LevelInfo.numberOfEnemies[GameAdvancement.currentWave - 1]; counter > 0; counter--)
+        for (int counter = LevelInfo.numberOfEnemies[GameAdvancement.currentWave - 1]; counter > 0; counter--)
         {
             // Check if currently there is no group of enemy that should be spawned
             if(enemySpawnNumber == 0)
@@ -262,7 +282,7 @@ public class Level : MonoBehaviour
             if(enemySpawnNumber > 0)
             {
                 // Spawn enemy of the type given
-                Enemy enemy = SpawnAnEnemy(enemyType);
+                Enemy enemy = SpawnEnemyType(enemyType);
 
                 // Set the resistance of the enemy
                 enemy.Resistance = resistance;
@@ -1416,6 +1436,8 @@ public class Level : MonoBehaviour
 
         // Reset the number of enemies that were defeated
         LevelInfo.numberOfEnemiesDefeated = 0;
+
+        LevelInfo.numberOfEnemiesDefeatedOrReachedCastleCurrentWave = 0;
 
         // LevelInfo.needToReset
     }

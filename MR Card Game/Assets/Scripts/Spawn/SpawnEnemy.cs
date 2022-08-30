@@ -1,6 +1,7 @@
 using i5.Toolkit.Core.Spawners;
 using UnityEngine;
 using i5.Toolkit.Core.Utilities;
+using TMPro;
 
 namespace i5.Toolkit.Core.Examples.Spawners
 {
@@ -46,7 +47,6 @@ namespace i5.Toolkit.Core.Examples.Spawners
         [SerializeField]
         private Enemy berzerkerTankEnemy;
 
-        [SerializeField]
         private static Spawner spawner;
 
         private string mode = "object pool";
@@ -140,13 +140,15 @@ namespace i5.Toolkit.Core.Examples.Spawners
                     enemy1.transform.position = Waypoints.enemySpawn.transform.position;
 
                     // Set the health points to max
-                    enemy1.ReviveEnemy();
+                    enemy1.Initialize();
                 }
             }
         }
 
-        // Method that spawns an enemy given the enemy type
-        public static Enemy SpawnAnEnemy(EnemyType type)
+        /// <summary>
+        /// Spawns an enemy given the enemy type
+        /// </summary>
+        public static Enemy SpawnEnemyType(EnemyType type)
         {
             // Get the right object pool index for the enemy type
             int poolIndex = ObjectPools.GetObjectPoolIndex(type);
@@ -184,7 +186,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
             enemy.firstLife = enemy.firstLife + 1;
 
             // Set the health points to max and make it alive again
-            enemy.ReviveEnemy();
+            enemy.Initialize();
 
             // Return the enemy object
             return enemy;

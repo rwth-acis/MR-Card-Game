@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private int currentHP;
 
-    // The size of the enemy unit
+    [Tooltip("The size of the enemy unit")] 
     [SerializeField]
     private float size;
 
@@ -127,35 +127,8 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Set the gameboard object
-        gameBoard = Board.gameBoard;
-        
-        // Set the waypoints that apply to this map
-        waypoints = Waypoints.mapWaypoints;
+        Initialize();
 
-        // // Set the enemy as child of the gameboard
-        // transform.parent = gameBoard.transform;
-
-        // Set the flight height and standing size
-        flightHeight = flyingHeight * Board.greatestBoardDimension * 0.6f  + 0.2f * size * Board.greatestBoardDimension;
-
-        // Deactivate the health bar since it is full
-        healthBarUI.SetActive(false);
-
-        // Set the health bar correctly
-        healthBar.value = CalculateHealth();
-
-        // Scale the enemy down to have the right size
-        transform.localScale = new Vector3(0.25f * size, 0.25f * size, 0.25f * size);
-
-        // Set it to the position of the first waypoint on spawn
-        transform.position = (waypoints[waypointIndex].transform.position + this.transform.up * flightHeight);
-
-        // When spawning, set the current health points to the maximum health points
-        ReviveEnemy();
-
-        // Set the game board correctly
-        gameBoard = Board.gameBoard;
     }
 
     // Update is called once per frame
@@ -195,9 +168,6 @@ public class Enemy : MonoBehaviour
                 // Make the enemy mode
                 Move();
             }
-
-            // Set the health value correctly
-            healthBar.value = CalculateHealth();
         }
     }
 
@@ -263,9 +233,9 @@ public class Enemy : MonoBehaviour
     }
 
     // Method that calculates the health value
-    public float CalculateHealth()
+    public float UpdateHealth()
     {
-        return currentHP / maximumHP;
+        return (float)currentHP / maximumHP;
     }
 
     // Method that rewards the player with currency points if an enemy is defeated
@@ -282,7 +252,11 @@ public class Enemy : MonoBehaviour
     public void ReduceCastleHealth()
     {
         // Reduce the number of undefeated enemies of the wave by one
-        LevelInfo.numberOfUndefeatedEnemies = LevelInfo.numberOfUndefeatedEnemies - 1;
+        LevelInfo.numberOfUndefeatedEnemies--;
+
+        LevelInfo.numberOfEnemiesDefeatedOrReachedCastleCurrentWave++;
+
+        Level.Instance.UpdateEnemyNumberDisplay();
 
         // Check if the castle has armor points
         if(GameAdvancement.castleCurrentAP != 0) 
@@ -291,7 +265,7 @@ public class Enemy : MonoBehaviour
             if(GameAdvancement.castleCurrentAP >= damage)
             {
                 // Reduce the castle armor points by the enemy damage
-                GameAdvancement.castleCurrentAP = GameAdvancement.castleCurrentAP - damage;
+                GameAdvancement.castleCurrentAP -= damage;
 
             } else {
 
@@ -305,13 +279,13 @@ public class Enemy : MonoBehaviour
                 GameAdvancement.castleCurrentAP = 0;
 
                 // Reduce the castle health by the additional amount of damage the unit does
-                GameAdvancement.castlecurrentHP = GameAdvancement.castlecurrentHP - additionalDamage;
+                GameAdvancement.castlecurrentHP -= additionalDamage;
             }
             
         } else {
 
             // Reduce the castle health by the amount of damage the unit does
-            GameAdvancement.castlecurrentHP = GameAdvancement.castlecurrentHP - damage;
+            GameAdvancement.castlecurrentHP -= damage;
         }
 
         // Display the lost health points on the castle
@@ -324,10 +298,13 @@ public class Enemy : MonoBehaviour
         // Reduce the current health points of the monster by the damage
         if(currentHP - damage >= 0)
         {
-            currentHP = currentHP - damage;
+            currentHP -= damage;
         } else {
             currentHP = 0;
         }
+
+        // Set the health value correctly
+        healthBar.value = UpdateHealth();
     }
 
     // Method used to return the enemy to the right object pool uppn death
@@ -337,35 +314,46 @@ public class Enemy : MonoBehaviour
         ObjectPools.ReleaseEnemy(this);
     }
 
-    // Method used to set the health points of the enemy correctly upon respawn
-    public void ReviveEnemy()
+    /// <summary>
+    /// Set the health points of the enemy correctly upon respawn
+    /// </summary>
+    public void Initialize()
     {
-        // Set the waypoint index to 0
+        // Set the gameboard object
+        gameBoard = Board.gameBoard;
+
+        // Set the waypoints that apply to this map
+        waypoints = Waypoints.mapWaypoints;
         waypointIndex = 0;
+        // Set the flight height and standing size
+        flightHeight = flyingHeight * Board.greatestBoardDimension * 0.6f + 0.2f * size * Board.greatestBoardDimension;
 
-        // Make sure the enemy is alive
+        // Deactivate the health bar since it is full
+        healthBarUI.SetActive(false);
+
+        // Scale the enemy down to have the right size
+        transform.localScale = new Vector3(0.25f * size, 0.25f * size, 0.25f * size);
+
+        // Set it to the position of the first waypoint on spawn
+        transform.position = (waypoints[waypointIndex].transform.position + transform.up * flightHeight);
         isAlive = true;
-
-        // Set the health points to max hp
         currentHP = MaximumHP;
 
-        // if(firstLife > 1)
-        // {
-        //     flightHeight = flying * Board.greatestBoardDimension * (float)0.6  + (float)0.2 * size * Board.greatestBoardDimension;
-
-        //     // Set it to the position of the first waypoint on spawn
-        //     transform.position = (waypoints[waypointIndex].transform.position + this.transform.up * flightHeight);
-        // }
+        healthBar.value = UpdateHealth();
     }
 
     // The coroutine that spawns an oponent and waits for a time before the next spawn
     IEnumerator Die()
     {
         // Reduce the number of undefeated enemies of the wave by one
-        LevelInfo.numberOfUndefeatedEnemies = LevelInfo.numberOfUndefeatedEnemies - 1;
+        LevelInfo.numberOfUndefeatedEnemies--;
+
+        LevelInfo.numberOfEnemiesDefeatedOrReachedCastleCurrentWave++;
+
+        Level.Instance.UpdateEnemyNumberDisplay();
 
         // Wait for 0.5 second
-        yield return new WaitForSeconds((float)0.5);
+        yield return new WaitForSeconds(0.5f);
 
         // Return the enemy to the object pool
         ReturnEnemyToObjectPool();
