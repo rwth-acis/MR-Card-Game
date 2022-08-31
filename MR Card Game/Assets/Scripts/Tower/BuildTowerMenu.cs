@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static i5.Toolkit.Core.Examples.Spawners.SpawnTower;
@@ -58,6 +59,9 @@ namespace build
         // Define the wave display button
         [SerializeField]
         private Button waveDisplay;
+
+        [SerializeField]
+        private Button enemyDisplay;
 
         [SerializeField]
         private Button toggleGameboard;
@@ -148,6 +152,12 @@ namespace build
         {
             get { return instance.waveDisplay; }
         }
+
+        public static Button EnemyDisplay
+        {
+            get => instance.enemyDisplay;
+        }
+
         public static Button ToogleGameboard
         {
             get { return instance.toggleGameboard; }
@@ -198,6 +208,14 @@ namespace build
         {
             // Set the instance to this script
             instance = this;
+
+            buildArcherTower.transform.Find("Cost").GetComponent<TextMeshProUGUI>().text = $"Cost:{archerTowerCost}";
+            buildEarthTower.transform.Find("Cost").GetComponent<TextMeshProUGUI>().text = $"Cost:{earthTowerCost}";
+            buildFireTower.transform.Find("Cost").GetComponent<TextMeshProUGUI>().text = $"Cost:{fireTowerCost}";
+            buildLightningTower.transform.Find("Cost").GetComponent<TextMeshProUGUI>().text = $"Cost:{lightningTowerCost}";
+            buildWindTower.transform.Find("Cost").GetComponent<TextMeshProUGUI>().text = $"Cost:{windTowerCost}";
+            buildHole.transform.Find("Cost").GetComponent<TextMeshProUGUI>().text = $"Cost:{holeCost}";
+            buildSwamp.transform.Find("Cost").GetComponent<TextMeshProUGUI>().text = $"Cost:{swampCost}";
         }
         // Method that activates the components of the game overlay
         public static void ActivateGameOverlay()
@@ -216,6 +234,8 @@ namespace build
             }
 
             ToogleGameboard.gameObject.SetActive(true);
+
+            EnemyDisplay.gameObject.SetActive(true);
         }
 
         // Method that deactivates the components of the game overlay
@@ -231,6 +251,8 @@ namespace build
             StartNextWave.gameObject.SetActive(false);
 
             ToogleGameboard.gameObject.SetActive(false);
+
+            EnemyDisplay.gameObject.SetActive(false);
         }
 
         // The method that opens the build tower menu

@@ -459,6 +459,7 @@ public class SpellCard : MonoBehaviour
     // The method that is activated when the user clicks on the draw spell button
     public void InitiateDrawSpell()
     {
+        GameAdvancement.gamePaused = true;
         // Check if the player has free draws
         if(Cards.freeDraws == 0)
         {
@@ -483,7 +484,7 @@ public class SpellCard : MonoBehaviour
         } else {
 
             // Reduce the number of free draws by one
-            Cards.freeDraws = Cards.freeDraws - 1;
+            Cards.freeDraws--;
 
             // Set the spell type
             spellType = Cards.cardDeck[Cards.currentCardIndex];
@@ -506,7 +507,7 @@ public class SpellCard : MonoBehaviour
         if(Cards.currentCardIndex < Cards.lastCardIndex)
         {
             // Increase the current card index by one
-            Cards.currentCardIndex = Cards.currentCardIndex + 1;
+            Cards.currentCardIndex++;
 
         } else {
 
@@ -742,7 +743,7 @@ public class SpellCard : MonoBehaviour
         }
 
         // Decrease the number of drawn spells that are on the board by one
-        Cards.drawnSpellsOnBoard = Cards.drawnSpellsOnBoard - 1;
+        Cards.drawnSpellsOnBoard--;
 
         Debug.Log("The number of drawn card spells that are on the board is: " + Cards.drawnSpellsOnBoard);
 

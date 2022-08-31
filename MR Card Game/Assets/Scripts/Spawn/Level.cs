@@ -77,6 +77,12 @@ public class Level : MonoBehaviour
     private Button startNextWave;
 
     [SerializeField]
+    private Button pauseButton;
+
+    [SerializeField]
+    private Button continueButton;
+
+    [SerializeField]
     private TextMeshProUGUI enemyNumberDisplay;
 
     // The time between spawning enemies
@@ -1476,6 +1482,20 @@ public class Level : MonoBehaviour
 
         // Un-pause the game
         GameAdvancement.gamePaused = false;
+    }
+    
+    public void PauseGame()
+    {
+        GameAdvancement.gamePaused = true;
+        pauseButton.gameObject.SetActive(false);
+        continueButton.gameObject.SetActive(true);
+    }
+
+    public void ContinueGame()
+    {
+        GameAdvancement.gamePaused = false;
+        pauseButton.gameObject.SetActive(true);
+        continueButton.gameObject.SetActive(false);
     }
 
     // The method that activates the win screen

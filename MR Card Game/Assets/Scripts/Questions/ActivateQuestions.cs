@@ -1559,7 +1559,7 @@ public class ActivateQuestions : MonoBehaviour
         {
             // Reduce the number of questions that need to be answered by one
             Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer - 1;
-            ActualizeNumberOfQuestionsThatNeedToBeAnsweredDisplay();
+            UpdateNumberOfQuestionsThatNeedToBeAnsweredDisplay();
         }
 
         // Check if the the current question index reached the end of the index
@@ -1703,11 +1703,11 @@ public class ActivateQuestions : MonoBehaviour
         // Increase the number of questions that need to be answered by the number given
         Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer + number;
 
-        ActualizeNumberOfQuestionsThatNeedToBeAnsweredDisplay();
+        UpdateNumberOfQuestionsThatNeedToBeAnsweredDisplay();
     }
 
     // Method that actualizes the button that displays the number of questions that need to be answered
-    public static void ActualizeNumberOfQuestionsThatNeedToBeAnsweredDisplay()
+    public static void UpdateNumberOfQuestionsThatNeedToBeAnsweredDisplay()
     {
         // Change the number displayed to the global variables
         NumberOfQuestionsThatNeedToBeAnsweredDisplay.GetComponentInChildren<TMP_Text>().text = Questions.numberOfQuestionsNeededToAnswer.ToString();

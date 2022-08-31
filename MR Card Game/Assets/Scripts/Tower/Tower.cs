@@ -493,7 +493,7 @@ public class Tower : MonoBehaviour
         // target.transform.position = Vector3.MoveTowards(transform.position, target.waypoints[target.waypointIndex - 1].transform.position + new Vector3(0, target.flightHeight, 0), parent.GetProjectileSpeed * parent.effectTime * parent.level * target.gameBoard.transform.localScale.x);    
         // target.transform.position = transform.Translate(targetPosition);
         // targetEnemy.transform.position = Vector3.MoveTowards(transform.position, targetPosition, getProjectileSpeed * GetEffectTime * getLevel * targetEnemy.gameBoard.transform.localScale.x);
-        targetEnemy.transform.position = targetEnemy.transform.position - targetEnemy.transform.forward * EffectRange * Board.greatestBoardDimension;
+        targetEnemy.transform.position = targetEnemy.transform.position - Board.greatestBoardDimension * EffectRange * targetEnemy.transform.forward;
     }
 
     // The method activated when clicking on the hidden button on towers to upgrade them
