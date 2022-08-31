@@ -8,6 +8,7 @@ using System.IO;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class BrowseLevels : MonoBehaviour
 {
@@ -159,7 +160,8 @@ public class BrowseLevels : MonoBehaviour
     // Method that returns the array of directories in the current directory
     public string[] GetDirectoriesArray()
     {
-        string[] dirs = Directory.GetDirectories(currentPathBrowse, "*", SearchOption.TopDirectoryOnly);
+        string[] dirs = Directory.GetDirectories(currentPathBrowse, "*", SearchOption.TopDirectoryOnly)
+            .Where(dir => !dir.EndsWith("il2cpp")).ToArray();
         return dirs;
     }
 
