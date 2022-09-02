@@ -1069,30 +1069,38 @@ public class ActivateQuestions : MonoBehaviour
             // Check if the answer should be correct and was selected
             if(AnswerShouldBeCorrect(index, question) == true)
             {
-                // Check if the user selected the correct answer
-                if(currentButton.GetComponent<Image>().color == selectedColor)
+                //// Check if the user selected the correct answer
+                //if(currentButton.GetComponent<Image>().color == selectedColor)
+                //{
+                //    // User did select this correct answer as correct
+                //    currentButton.GetComponentInChildren<TMP_Text>().color = correctColor;
+
+                //} else {
+
+                //    // User did not select this correct answer as incorrect
+                //    currentButton.GetComponentInChildren<TMP_Text>().color = incorrectColor;
+
+                //    // Did not select correct answer, question answered incorrectly
+                //    answeredCorrectly = false;
+                //}
+
+                if (currentButton.GetComponent<Image>().color != selectedColor)
                 {
-                    // User did select this correct answer as correct
-                    currentButton.GetComponentInChildren<TMP_Text>().color = correctColor;
-
-                } else {
-
-                    // User did not select this correct answer as incorrect
-                    currentButton.GetComponentInChildren<TMP_Text>().color = incorrectColor;
-
-                    // Did not select correct answer, question answered incorrectly
                     answeredCorrectly = false;
                 }
 
                 // Answer was correct, give the button a greenish tint
                 currentButton.GetComponent<Image>().color = correctButtonColor;
-                
-            } else {
+                // make text green
+                currentButton.GetComponentInChildren<TMP_Text>().color = correctColor;
+
+            }
+            else {
 
                 if(currentButton.GetComponent<Image>().color == selectedColor)
                 {
-                    // User did select this incorrect answer as correct
-                    currentButton.GetComponentInChildren<TMP_Text>().color = correctColor;
+                    //// User did select this incorrect answer as correct
+                    //currentButton.GetComponentInChildren<TMP_Text>().color = correctColor;
 
                     // Did select incorrect answer, question answered incorrectly
                     answeredCorrectly = false;
@@ -1100,11 +1108,12 @@ public class ActivateQuestions : MonoBehaviour
                 } else {
 
                     // User did not select this incorrect answer as incorrect
-                    currentButton.GetComponentInChildren<TMP_Text>().color = incorrectColor;
+                    //currentButton.GetComponentInChildren<TMP_Text>().color = incorrectColor;
                 }
 
                 // Answer was incorrect, give the button a reddish tint
                 currentButton.GetComponent<Image>().color = incorrectButtonColor;
+                currentButton.GetComponentInChildren<TMP_Text>().color = incorrectColor;
             }
 
             // Make the button not interactable
