@@ -341,7 +341,12 @@ public class Tower : MonoBehaviour
 
             // Spawn the projectile
             // Projectile spawnedProjectile = SpawnProjectileForTower(towerType).GetComponent<Projectile>();
-            Projectile spawnedProjectile = SpawnProjectileForTower(towerType, towerProjectile, projectileSpawner, EffectRange);
+            if (towerProjectile == null)
+            {
+                i5Debug.LogError($"No projectile given for tower of type {GetTowerType}", this);
+                return;
+            }
+            Projectile spawnedProjectile = SpawnProjectileForTower(towerType, towerProjectile, projectileSpawner, GetEffectRange);
 
             // Initialize the projectile object, so that it knows what his parent is
             spawnedProjectile.Initialize(this);
