@@ -182,6 +182,7 @@ public class Enemy : MonoBehaviour
 
             // Move the enemy toward the next waypoint
             transform.position = Vector3.MoveTowards(transform.position, currentGoal, movingSpeed * GameAdvancement.globalSlow * enemySlowFactor * Time.deltaTime * gameBoard.transform.localScale.x);
+            transform.LookAt(currentGoal);
             // // Make the enemy face the direction it is moving
             // transform.LookAt(waypoints[waypointIndex].transform.position);
 

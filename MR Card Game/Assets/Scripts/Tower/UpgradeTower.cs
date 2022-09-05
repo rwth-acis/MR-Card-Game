@@ -94,7 +94,7 @@ public class UpgradeTower : MonoBehaviour
     private GameObject deleteTrapMenu;
 
     // The method used to access to the delete trap menu as a static object
-    public static GameObject getDeleteTrapMenu
+    public static GameObject DeleteTrapMenu
     {
         get { return instance.deleteTrapMenu; }
     }
@@ -127,7 +127,7 @@ public class UpgradeTower : MonoBehaviour
         TrapDeleter.currentlyOpenedTrapWindow = trap;
 
         // Set the upgrade tower menu as active
-        getDeleteTrapMenu.SetActive(true);
+        DeleteTrapMenu.SetActive(true);
 
         // Pause the game
         GameAdvancement.gamePaused = true;
@@ -152,7 +152,7 @@ public class UpgradeTower : MonoBehaviour
     private GameObject upgradeTowerMenu;
 
     // The method used to access to the upgrade tower menu as a static object
-    public static GameObject getUpgradeTowerMenu
+    public static GameObject UpgradeTowerMenu
     {
         get { return instance.upgradeTowerMenu; }
     }
@@ -162,16 +162,24 @@ public class UpgradeTower : MonoBehaviour
     private TMP_Text towerTypeField;
 
     // The method used to access to the tower type field as a static object
-    public static TMP_Text getTowerTypeField
+    public static TMP_Text TowerTypeField
     {
         get { return instance.towerTypeField; }
+    }
+
+    [SerializeField]
+    private TMP_Text towerLevelField;
+
+    public static TMP_Text TowerLevelField
+    {
+        get => instance.towerLevelField;
     }
 
     [SerializeField]
     private TMP_Text towerDamageField;
 
     // The method used to access to the tower damage field as a static object
-    public static TMP_Text getTowerDamageField
+    public static TMP_Text TowerDamageField
     {
         get { return instance.towerDamageField; }
     }
@@ -180,7 +188,7 @@ public class UpgradeTower : MonoBehaviour
     private TMP_Text towerAttackCooldownField;
 
     // The method used to access to the tower attack cooldown field as a static object
-    public static TMP_Text getTowerAttackCooldownField
+    public static TMP_Text TowerAttackCooldownField
     {
         get { return instance.towerAttackCooldownField; }
     }
@@ -189,7 +197,7 @@ public class UpgradeTower : MonoBehaviour
     private TMP_Text towerRangeField;
 
     // The method used to access to the tower range field as a static object
-    public static TMP_Text getTowerRangeField
+    public static TMP_Text TowerRangeField
     {
         get { return instance.towerRangeField; }
     }
@@ -198,7 +206,7 @@ public class UpgradeTower : MonoBehaviour
     private TMP_Text additionalField1;
 
     // The method used to access to the additional field 1 as a static object
-    public static TMP_Text getAdditionalField1
+    public static TMP_Text AdditionalField1
     {
         get { return instance.additionalField1; }
     }
@@ -207,7 +215,7 @@ public class UpgradeTower : MonoBehaviour
     private TMP_Text additionalField2;
 
     // The method used to access to the additional field 2 as a static object
-    public static TMP_Text getAdditionalField2
+    public static TMP_Text AdditionalField2
     {
         get { return instance.additionalField2; }
     }
@@ -216,7 +224,7 @@ public class UpgradeTower : MonoBehaviour
     private TMP_Text upgradeCostField;
 
     // The method used to access to the upgrade cost field as a static object
-    public static TMP_Text getUpgradeCostField
+    public static TMP_Text UpgradeCostField
     {
         get { return instance.upgradeCostField; }
     }
@@ -226,7 +234,7 @@ public class UpgradeTower : MonoBehaviour
     private Button upgradeTowerButton;
 
     // The method used to access to the upgrade tower button as a static object
-    public static Button getUpgradeTowerButton
+    public static Button UpgradeTowerButton
     {
         get { return instance.upgradeTowerButton; }
     }
@@ -240,7 +248,7 @@ public class UpgradeTower : MonoBehaviour
     private Button currencyDisplay;
 
     // The method used to access to the currency display button as a static object
-    public static Button getCurrencyDisplay
+    public static Button CurrencyDisplay
     {
         get { return instance.currencyDisplay; }
     }
@@ -250,7 +258,7 @@ public class UpgradeTower : MonoBehaviour
     private Button waveDisplay;
 
     // The method used to access to the wave display button as a static object
-    public static Button getWaveDisplay
+    public static Button WaveDisplay
     {
         get { return instance.waveDisplay; }
     }
@@ -260,7 +268,7 @@ public class UpgradeTower : MonoBehaviour
     private Button startNextWave;
 
     // The method used to access to the start next wave button as a static object
-    public static Button getStartNextWave
+    public static Button StartNextWave
     {
         get { return instance.startNextWave; }
     }
@@ -297,16 +305,16 @@ public class UpgradeTower : MonoBehaviour
     public static void ActivateGameOverlay()
     {
         // Activate the currency display button
-        getCurrencyDisplay.gameObject.SetActive(true);
+        CurrencyDisplay.gameObject.SetActive(true);
 
         // Activate the wave display button
-        getWaveDisplay.gameObject.SetActive(true);
+        WaveDisplay.gameObject.SetActive(true);
 
         // Check if the wave is currently ongoing
         if(LevelInfo.waveOngoing == false)
         {
             // If it is not the case, activate the start next wave button
-            getStartNextWave.gameObject.SetActive(true);
+            StartNextWave.gameObject.SetActive(true);
         }
     }
 
@@ -314,13 +322,13 @@ public class UpgradeTower : MonoBehaviour
     public static void DeactivateGameOverlay()
     {
         // Deactivate the currency display button
-        getCurrencyDisplay.gameObject.SetActive(false);
+        CurrencyDisplay.gameObject.SetActive(false);
 
         // Deactivate the wave display button
-        getWaveDisplay.gameObject.SetActive(false);
+        WaveDisplay.gameObject.SetActive(false);
 
         // Deactivate the start next wave button
-        getStartNextWave.gameObject.SetActive(false);
+        StartNextWave.gameObject.SetActive(false);
     }
 
 
@@ -340,10 +348,10 @@ public class UpgradeTower : MonoBehaviour
             GameAdvancement.gamePaused = true;
 
             // Set the upgrade tower menu as active
-            getUpgradeTowerMenu.SetActive(true);
+            UpgradeTowerMenu.SetActive(true);
 
             // Write the right tower type as heading
-            getTowerTypeField.text = tower.TowerType.ToString();
+            TowerTypeField.text = tower.TowerType.ToString();
 
             // Initialize the upgrade cost integer
             int upgradeCost = 0;
@@ -353,43 +361,43 @@ public class UpgradeTower : MonoBehaviour
             {
                 case TowerType.Lightning:
                     // Enable the two additional fields for the lightning tower
-                    getAdditionalField1.gameObject.SetActive(true);
-                    getAdditionalField2.gameObject.SetActive(true);
+                    AdditionalField1.gameObject.SetActive(true);
+                    AdditionalField2.gameObject.SetActive(true);
                     // Fill the aditional fields
-                    getAdditionalField1.text = "Number of jumps: " + tower.NumberOfEffect + " > " + (tower.NumberOfEffect + 1);
-                    getAdditionalField2.text = "Jump range: " + tower.EffectRange + " > " + (tower.EffectRange * lightningJumpRangeEnhancer);
+                    AdditionalField1.text = "Number of jumps: " + tower.NumberOfEffect + " > " + (tower.NumberOfEffect + 1);
+                    AdditionalField2.text = "Jump range: " + tower.EffectRange + " > " + (tower.EffectRange * lightningJumpRangeEnhancer);
                     // Calculate the cost of upgrading this tower
                     upgradeCost = (int)(lightningTowerUpgradeBaseCost * Mathf.Pow(lightningTowerUpgradeCostMultiplicator, tower.Level - 1));          
                 break;
                 case TowerType.Earth:
                     // Enable one of the additional fields for the earth tower
-                    getAdditionalField1.gameObject.SetActive(true);
-                    getAdditionalField2.gameObject.SetActive(false);
+                    AdditionalField1.gameObject.SetActive(true);
+                    AdditionalField2.gameObject.SetActive(false);
                     // Fill the aditional field
-                    getAdditionalField1.text = "Projectile size: " + tower.EffectRange + " > " + (tower.EffectRange * earthSizeEnhancer);
+                    AdditionalField1.text = "Projectile size: " + tower.EffectRange + " > " + (tower.EffectRange * earthSizeEnhancer);
                     // Calculate the cost of upgrading this tower
                     upgradeCost = (int)(earthTowerUpgradeBaseCost * Mathf.Pow(earthTowerUpgradeCostMultiplicator, tower.Level - 1));
                 break;
                 case TowerType.Wind:
                     // Enable one of the additional fields for the wind tower
-                    getAdditionalField1.gameObject.SetActive(true);
-                    getAdditionalField2.gameObject.SetActive(false);
+                    AdditionalField1.gameObject.SetActive(true);
+                    AdditionalField2.gameObject.SetActive(false);
                     // Fill the aditional fields
-                    getAdditionalField1.text = "Drop back distance: " + tower.EffectRange + " > " + (tower.EffectRange * windDropBackEnhancer);
+                    AdditionalField1.text = "Drop back distance: " + tower.EffectRange + " > " + (tower.EffectRange * windDropBackEnhancer);
                     // Calculate the cost of upgrading this tower
                     upgradeCost = (int)(windTowerUpgradeBaseCost * Mathf.Pow(windTowerUpgradeCostMultiplicator, tower.Level - 1));        
                 break;
                 case TowerType.Archer:
                     // Disable the two additinal fields for the archer tower
-                    getAdditionalField1.gameObject.SetActive(false);
-                    getAdditionalField2.gameObject.SetActive(false);
+                    AdditionalField1.gameObject.SetActive(false);
+                    AdditionalField2.gameObject.SetActive(false);
                     // Calculate the cost of upgrading this tower
                     upgradeCost = (int)(archerTowerUpgradeBaseCost * Mathf.Pow(archerTowerUpgradeCostMultiplicator, tower.Level - 1));
                 break;
                 case TowerType.Fire:
                     // Disable the two additinal fields for the fire tower
-                    getAdditionalField1.gameObject.SetActive(false);
-                    getAdditionalField2.gameObject.SetActive(false);
+                    AdditionalField1.gameObject.SetActive(false);
+                    AdditionalField2.gameObject.SetActive(false);
                     // Calculate the cost of upgrading this tower
                     upgradeCost = (int)(fireTowerUpgradeBaseCost * Mathf.Pow(fireTowerUpgradeCostMultiplicator, tower.Level - 1));
                 break;
@@ -404,23 +412,23 @@ public class UpgradeTower : MonoBehaviour
         float damageEnhancer = GetDamageEnhancer(tower.TowerType);
         float cooldownEnhancer = GetCooldownEnhancer(tower.TowerType);
         float rangeEnhancer = GetRangeEnhancer(tower.TowerType);
-        getTowerDamageField.text = "Damage " + tower.Damage + " > " + (tower.Damage * damageEnhancer);
-        getTowerAttackCooldownField.text = "Attack cooldown " + tower.AttackCooldown + " > " + (tower.AttackCooldown * cooldownEnhancer);
-        getTowerRangeField.text = "Range " + tower.AttackRange + " > " + (tower.AttackRange * rangeEnhancer);
+        TowerDamageField.text = "Damage " + tower.Damage + " > " + (tower.Damage * damageEnhancer);
+        TowerAttackCooldownField.text = "Attack cooldown " + tower.AttackCooldown + " > " + (tower.AttackCooldown * cooldownEnhancer);
+        TowerRangeField.text = "Range " + tower.AttackRange + " > " + (tower.AttackRange * rangeEnhancer);
 
         // Write this cost in the upgrade cost field
-        getUpgradeCostField.text = "Upgrade cost: " + upgradeCost;
+        UpgradeCostField.text = "Upgrade cost: " + upgradeCost;
 
         // Disable or enable the upgrade button depending on if the player has enough currency for it
         if (GameAdvancement.currencyPoints >= upgradeCost)
         {
             // Can upgrade, so enable the button
-            getUpgradeTowerButton.interactable = true;
+            UpgradeTowerButton.interactable = true;
         }
         else
         {
             // Cannot upgrade, so disable the button
-            getUpgradeTowerButton.interactable = false;
+            UpgradeTowerButton.interactable = false;
         }
     }
 
@@ -476,7 +484,7 @@ public class UpgradeTower : MonoBehaviour
         // GameAdvancement.currentlyBuildingOrUpgrading = false;
 
         // Set the upgrade tower menu as inactive
-        getUpgradeTowerMenu.SetActive(false);
+        UpgradeTowerMenu.SetActive(false);
 
         // Unpause the game
         GameAdvancement.gamePaused = false;
@@ -490,7 +498,7 @@ public class UpgradeTower : MonoBehaviour
 
         // Disable the game overlay
         DeactivateGameOverlay();
-
+        Debug.Log(TowerEnhancer.currentlyEnhancedTower.Level);
         ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered((int)(TowerEnhancer.currentlyEnhancedTower.Level + 2 / 2));
         Debug.Log("The number of questions that need to be answered that was added was: " + (int)(TowerEnhancer.currentlyEnhancedTower.Level / 2));
 
@@ -511,7 +519,7 @@ public class UpgradeTower : MonoBehaviour
         // ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered((int)(1));
 
         // Save the content of the get tower type field
-        string towerTypeText = getTowerTypeField.text;
+        string towerTypeText = TowerTypeField.text;
 
         // Close the menu
         upgradeTowerMenu.SetActive(false);
@@ -602,7 +610,7 @@ public class UpgradeTower : MonoBehaviour
         GameSetup.UpdateCurrencyDisplay();
 
         // Set the upgrade tower menu as inactive
-        getUpgradeTowerMenu.SetActive(false);
+        UpgradeTowerMenu.SetActive(false);
 
         // Unpause the game
         GameAdvancement.gamePaused = false;
