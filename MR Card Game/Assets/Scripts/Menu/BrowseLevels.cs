@@ -351,7 +351,7 @@ public class BrowseLevels : MonoBehaviour
                     lastIndex = currentPage * 5 - 1;
                 }
 
-                for (int currentIndex = initialIndex; currentIndex <= lastIndex; currentIndex = currentIndex + 1)
+                for (int currentIndex = initialIndex; currentIndex <= lastIndex; currentIndex++)
                 {
                     // Get the directory path
                     string dir = directoriesArray[currentIndex];
@@ -361,7 +361,6 @@ public class BrowseLevels : MonoBehaviour
 
                     //Activate the delete button
                     deleteButtons[currentDirectoryNumber - 1].gameObject.SetActive(true);
-
                     // Print the directory name on the right button
                     switch (currentDirectoryNumber)
                     {
@@ -392,18 +391,17 @@ public class BrowseLevels : MonoBehaviour
                     }
 
                     // Increase the current directory number by one
-                    currentDirectoryNumber = currentDirectoryNumber + 1;
+                    currentDirectoryNumber++;
                 }
             }
 
             // If there are no more directories, make sure the rest of the buttons are empty and not interactable
-            if (currentDirectoryNumber != 5)
+            if (currentDirectoryNumber <= 5)
             {
-                for (int counter = numberOfDirectories; counter <= lastEmptyIndex; counter = counter + 1)
+                for (int counter = numberOfDirectories; counter <= lastEmptyIndex; counter++)
                 {
                     //Deactivate the delete button
                     deleteButtons[currentDirectoryNumber - 1].gameObject.SetActive(false);
-
                     switch (currentDirectoryNumber)
                     {
                         case 1:
@@ -441,7 +439,7 @@ public class BrowseLevels : MonoBehaviour
     // Method that is activated when pressing next (change the other directories)
     public void NextPage()
     {
-        currentPage = currentPage + 1;
+        currentPage++;
         DisableOrEnableButtons();
         RenameButtons(currentPathBrowse);
         GameObject.Find("HeadingTextBrowseDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
@@ -450,7 +448,7 @@ public class BrowseLevels : MonoBehaviour
     // Method that is activated when pressing previous (change the other directories)
     public void PreviousPage()
     {
-        currentPage = currentPage - 1;
+        currentPage--;
         DisableOrEnableButtons();
         RenameButtons(currentPathBrowse);
         GameObject.Find("HeadingTextBrowseDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
@@ -496,7 +494,7 @@ public class BrowseLevels : MonoBehaviour
         if (flagVariable == true)
         {
             // Increase the browsing depth
-            depth = depth + 1;
+            depth++;
 
             // Get the name of the directory selected
             string directory = button.GetComponentInChildren<TMP_Text>().text;
@@ -579,6 +577,7 @@ public class BrowseLevels : MonoBehaviour
         // First I update the directories array and number
         directoriesArray = GetDirectoriesArray();
         numberOfDirectories = GetNumberOfDirectories(directoriesArray);
+        //DisableDirectoryButton(numberOfDirectories);
 
         // Update the page heading
         currentPage = 1;
@@ -605,14 +604,14 @@ public class BrowseLevels : MonoBehaviour
         mainMenu.SetActive(true);
 
         // First reset the globals so that everything is reset the next time the user enters the menu
-        resetBrowseDirectories();
+        ResetBrowseDirectories();
 
         // Disable the menu
         browseDirectoriesMenu.SetActive(false);
     }
 
     // Method that resets the brows directories menu
-    public void resetBrowseDirectories()
+    public void ResetBrowseDirectories()
     {
         currentPathBrowse = rootDirectoryPathBrowse;
         depth = 1;
@@ -777,5 +776,30 @@ public class BrowseLevels : MonoBehaviour
     {
         directoryToBeDeleted = null;
         deletionWindow.SetActive(false);
+    }
+
+    private void DisableDirectoryButton(int numberOfDirectory)
+    {
+        switch (numberOfDirectories)
+        {
+            case 1:
+                directory2.gameObject.SetActive(false);
+                directory3.gameObject.SetActive(false);
+                directory4.gameObject.SetActive(false);
+                directory5.gameObject.SetActive(false);
+                break;
+            case 2:
+                directory3.gameObject.SetActive(false);
+                directory4.gameObject.SetActive(false);
+                directory5.gameObject.SetActive(false);
+                break;
+            case 3:
+                directory4.gameObject.SetActive(false);
+                directory5.gameObject.SetActive(false);
+                break;
+            case 4:
+                directory5.gameObject.SetActive(false);
+                break;
+        }
     }
 }

@@ -1062,7 +1062,7 @@ public class ActivateQuestions : MonoBehaviour
             // Get the button that correspond to the index
             Button currentButton = GetQuestionButtonFromIndex(index, question.numberOfAnswers);
 
-            Debug.Log(AnswerShouldBeCorrect(index, question));
+            //Debug.Log(AnswerShouldBeCorrect(index, question));
 
             // Check if the answer should be correct and was selected
             if(AnswerShouldBeCorrect(index, question) == true)
@@ -1726,7 +1726,7 @@ public class ActivateQuestions : MonoBehaviour
     //     imageTarget1Visible = true;
     // }
 
-    public void imageTarget2BecameVisible()
+    public void ImageTarget2BecameVisible()
     {
         imageTarget2Visible = true;
     }

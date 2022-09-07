@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine.Windows.Speech;
 
 // List of spell cards:     Status:     Comments:               Tested:
-// - SpellType.Meteor                 Done        animation done!         working
+// - Meteor                 Done        animation done!         working
 // - Arrow rain             Done        animation done!         working
 // - Thunder strike         Done        animation done!         working
 // - Armor                  Done        display is there        working

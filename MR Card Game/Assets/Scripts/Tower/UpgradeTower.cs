@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using build;
 
 public class UpgradeTower : MonoBehaviour
 {
@@ -301,37 +302,6 @@ public class UpgradeTower : MonoBehaviour
     private static float lightningTowerUpgradeCostMultiplicator = 1.85f;
     private static float windTowerUpgradeCostMultiplicator = 1.4f;
 
-    // Method that activates the components of the game overlay
-    public static void ActivateGameOverlay()
-    {
-        // Activate the currency display button
-        CurrencyDisplay.gameObject.SetActive(true);
-
-        // Activate the wave display button
-        WaveDisplay.gameObject.SetActive(true);
-
-        // Check if the wave is currently ongoing
-        if(LevelInfo.waveOngoing == false)
-        {
-            // If it is not the case, activate the start next wave button
-            StartNextWave.gameObject.SetActive(true);
-        }
-    }
-
-    // Method that deactivates the components of the game overlay
-    public static void DeactivateGameOverlay()
-    {
-        // Deactivate the currency display button
-        CurrencyDisplay.gameObject.SetActive(false);
-
-        // Deactivate the wave display button
-        WaveDisplay.gameObject.SetActive(false);
-
-        // Deactivate the start next wave button
-        StartNextWave.gameObject.SetActive(false);
-    }
-
-
     // Method used to open the upgrade menu
     public static void OpenUpgradeTowerMenu(Tower tower)
     {
@@ -419,6 +389,8 @@ public class UpgradeTower : MonoBehaviour
         // Write this cost in the upgrade cost field
         UpgradeCostField.text = "Upgrade cost: " + upgradeCost;
 
+        TowerLevelField.text = $"Lv{(int)tower.Level}";
+
         // Disable or enable the upgrade button depending on if the player has enough currency for it
         if (GameAdvancement.currencyPoints >= upgradeCost)
         {
@@ -497,8 +469,8 @@ public class UpgradeTower : MonoBehaviour
         Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
 
         // Disable the game overlay
-        DeactivateGameOverlay();
-        Debug.Log(TowerEnhancer.currentlyEnhancedTower.Level);
+        GameSceneManager.DeactivateGameOverlay();
+        Debug.Log("Current Tower Level: " + TowerEnhancer.currentlyEnhancedTower.Level);
         ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered((int)(TowerEnhancer.currentlyEnhancedTower.Level + 2 / 2));
         Debug.Log("The number of questions that need to be answered that was added was: " + (int)(TowerEnhancer.currentlyEnhancedTower.Level / 2));
 
@@ -548,11 +520,11 @@ public class UpgradeTower : MonoBehaviour
 
         // Wait until the number of questions that need to be answered is 0
         yield return new WaitUntil(NoMoreQuestionsNeeded);
-
         // Check what is written in the tower type field and call the right upgrade function
+        // type = TowerType.ToString()
         switch(type)
         {
-            case "Archer Tower":
+            case "Archer":
 
                 // Calculate the cost of upgrading this tower
                 upgradeCost = (int)(archerTowerUpgradeBaseCost * Mathf.Pow(archerTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.Level - 1));
@@ -562,7 +534,7 @@ public class UpgradeTower : MonoBehaviour
 
             break;
 
-            case "Fire Tower":
+            case "Fire":
 
                 // Calculate the cost of upgrading this tower
                 upgradeCost = (int)(fireTowerUpgradeBaseCost * Mathf.Pow(fireTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.Level - 1));
@@ -572,7 +544,7 @@ public class UpgradeTower : MonoBehaviour
 
             break;
 
-            case "Earth Tower":
+            case "Earth":
 
                 // Calculate the cost of upgrading this tower
                 upgradeCost = (int)(earthTowerUpgradeBaseCost * Mathf.Pow(earthTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.Level - 1));
@@ -582,7 +554,7 @@ public class UpgradeTower : MonoBehaviour
 
             break;
 
-            case "Lightning Tower":
+            case "Lightning":
 
                 // Calculate the cost of upgrading this tower
                 upgradeCost = (int)(lightningTowerUpgradeBaseCost * Mathf.Pow(lightningTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.Level - 1));
@@ -592,7 +564,7 @@ public class UpgradeTower : MonoBehaviour
 
             break;
 
-            case "Wind Tower":
+            case "Wind":
 
                 // Calculate the cost of upgrading this tower
                 upgradeCost = (int)(windTowerUpgradeBaseCost * Mathf.Pow(windTowerUpgradeCostMultiplicator, TowerEnhancer.currentlyEnhancedTower.Level - 1));
@@ -616,6 +588,6 @@ public class UpgradeTower : MonoBehaviour
         GameAdvancement.gamePaused = false;
 
         // Enable the game overlay
-        ActivateGameOverlay();
+        GameSceneManager.ActivateGameOverlay();
     }
 }

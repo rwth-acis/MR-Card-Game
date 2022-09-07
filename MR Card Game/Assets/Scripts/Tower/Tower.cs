@@ -156,6 +156,7 @@ public class Tower : MonoBehaviour
     {
         // Set the can attack flag to true
         canAttack = true;
+        level = 1;
 
         // From the attack speed, extract the actual attack cooldown
         // // Get the vector scale of the parent object
@@ -343,10 +344,10 @@ public class Tower : MonoBehaviour
             // Projectile spawnedProjectile = SpawnProjectileForTower(towerType).GetComponent<Projectile>();
             if (towerProjectile == null)
             {
-                i5Debug.LogError($"No projectile given for tower of type {GetTowerType}", this);
+                i5Debug.LogError($"No projectile given for tower of type {TowerType}", this);
                 return;
             }
-            Projectile spawnedProjectile = SpawnProjectileForTower(towerType, towerProjectile, projectileSpawner, GetEffectRange);
+            Projectile spawnedProjectile = SpawnProjectileForTower(towerType, towerProjectile, projectileSpawner, EffectRange);
 
             // Initialize the projectile object, so that it knows what his parent is
             spawnedProjectile.Initialize(this);
@@ -524,16 +525,16 @@ public class Tower : MonoBehaviour
     public void UpgradeArcherTower(float damageMultiplicator, float attackCooldownMultiplicator, float attackRangeMultiplicator)
     {
         // Increase the tower level by one
-        level = level + 1;
+        level++;
 
         // Increase the damage by the multiplicator
         damage = (int)(damage * damageMultiplicator);
 
         // Increase the attack cooldown by the multiplicator
-        attackCooldown = attackCooldown * attackCooldownMultiplicator;
+        attackCooldown *= attackCooldownMultiplicator;
 
         // Increase the range cooldown by the multiplicator
-        attackRange = attackRange * attackRangeMultiplicator;
+        attackRange *= attackRangeMultiplicator;
 
         // Adjust the attack range
         AdjustTowerRange();
@@ -543,42 +544,42 @@ public class Tower : MonoBehaviour
     public void UpgradeFireTower(float damageMultiplicator, float attackCooldownMultiplicator)
     {
         // Increase the tower level by one
-        level = level + 1;
+        level++;
 
         // Increase the damage by the multiplicator
         damage = (int)(damage * damageMultiplicator);
 
         // Increase the attack cooldown by the multiplicator
-        attackCooldown = attackCooldown * attackCooldownMultiplicator;
+        attackCooldown *= attackCooldownMultiplicator;
     }
 
     // Method used to upgrade an earth tower
     public void UpgradeEarthTower(float damageMultiplicator, float sizeMultiplicator)
     {
         // Increase the tower level by one
-        level = level + 1;
+        level++;
 
         // Increase the damage by the multiplicator
         damage = (int)(damage * damageMultiplicator);
 
         // Increase the effect range by the multiplicator
-        effectRange = effectRange * sizeMultiplicator;
+        effectRange *= sizeMultiplicator;
     }
 
     // Method used to upgrade a lightning tower
     public void UpgradeLightningTower(float damageMultiplicator, float jumpRangeMultiplicator, float attackRangeMultiplicator)
     {
         // Increase the tower level by one
-        level = level + 1;
+        level++;
 
         // Increase the damage by the multiplicator
         damage = (int)(damage * damageMultiplicator);
 
         // Increase the effect range by the multiplicator
-        effectRange = effectRange * jumpRangeMultiplicator;
+        effectRange *= jumpRangeMultiplicator;
 
         // Increase the attack range of the lightning tower
-        attackRange = attackRange * attackRangeMultiplicator;
+        attackRange *= attackRangeMultiplicator;
 
         // Adjust the attack range
         AdjustTowerRange();
@@ -588,13 +589,13 @@ public class Tower : MonoBehaviour
     public void UpgradeWindTower(float attackCooldownMultiplicator, float dropBackRangeMultiplicator)
     {
         // Increase the tower level by one
-        level = level + 1;
+        level++;
 
         // Increase the attack cooldown by the multiplicator
-        attackCooldown = attackCooldown * attackCooldownMultiplicator;
+        attackCooldown *= attackCooldownMultiplicator;
 
         // Increase the effect range by the multiplicator
-        effectRange = effectRange * dropBackRangeMultiplicator;
+        effectRange *= dropBackRangeMultiplicator;
     }
 
     // Method used to adjust the tower range (size of the light blue collider)

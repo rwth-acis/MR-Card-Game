@@ -8,6 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameSceneManager : MonoBehaviour
 {
@@ -17,15 +18,98 @@ public class GameSceneManager : MonoBehaviour
 
     [SerializeField] private GameObject planeFinder;
 
+    [Header("Game Overlay")]
     [SerializeField] private TextMeshProUGUI toggleGameboardButtonText;
+
+    [SerializeField]
+    private Button currencyDisplay;
+
+    // Define the wave display button
+    [SerializeField]
+    private Button waveDisplay;
+
+    [SerializeField]
+    private Button enemyDisplay;
+
+    [SerializeField]
+    private Button toggleGameboard;
+    // Define the start next wave button
+    [SerializeField]
+    private Button startNextWave;
+
+    public static GameSceneManager Instance;
 
     private bool firstImport = true;
 
     private bool gameBoardLocked = false;
 
+    // The method used to access to the currency display button as a static object
+    public static Button CurrencyDisplay
+    {
+        get { return Instance.currencyDisplay; }
+    }
+    // The method used to access to the wave display button as a static object
+    public static Button WaveDisplay
+    {
+        get { return Instance.waveDisplay; }
+    }
+
+    public static Button EnemyDisplay
+    {
+        get => Instance.enemyDisplay;
+    }
+
+    public static Button ToogleGameboard
+    {
+        get { return Instance.toggleGameboard; }
+    }
+    // The method used to access to the start next wave button as a static object
+    public static Button StartNextWave
+    {
+        get { return Instance.startNextWave; }
+    }
+
+
     private void Awake()
     {
         ImportAllModels();
+        Instance = this;
+    }
+
+    public static void ActivateGameOverlay()
+    {
+        // Activate the currency display button
+        CurrencyDisplay.gameObject.SetActive(true);
+
+        // Activate the wave display button
+        WaveDisplay.gameObject.SetActive(true);
+
+        // Check if the wave is currently ongoing
+        if (LevelInfo.waveOngoing == false)
+        {
+            // If it is not the case, activate the start next wave button
+            StartNextWave.gameObject.SetActive(true);
+        }
+
+        ToogleGameboard.gameObject.SetActive(true);
+
+        EnemyDisplay.gameObject.SetActive(true);
+    }
+
+    public static void DeactivateGameOverlay()
+    {
+        // Deactivate the currency display button
+        CurrencyDisplay.gameObject.SetActive(false);
+
+        // Deactivate the wave display button
+        WaveDisplay.gameObject.SetActive(false);
+
+        // Deactivate the start next wave button
+        StartNextWave.gameObject.SetActive(false);
+
+        ToogleGameboard.gameObject.SetActive(false);
+
+        EnemyDisplay.gameObject.SetActive(false);
     }
 
     public void LoadIntroSceneAsync()

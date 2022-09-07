@@ -217,44 +217,6 @@ namespace build
             buildHole.transform.Find("Cost").GetComponent<TextMeshProUGUI>().text = $"Cost:{holeCost}";
             buildSwamp.transform.Find("Cost").GetComponent<TextMeshProUGUI>().text = $"Cost:{swampCost}";
         }
-        // Method that activates the components of the game overlay
-        public static void ActivateGameOverlay()
-        {
-            // Activate the currency display button
-            CurrencyDisplay.gameObject.SetActive(true);
-
-            // Activate the wave display button
-            WaveDisplay.gameObject.SetActive(true);
-
-            // Check if the wave is currently ongoing
-            if(LevelInfo.waveOngoing == false)
-            {
-                // If it is not the case, activate the start next wave button
-                StartNextWave.gameObject.SetActive(true);
-            }
-
-            ToogleGameboard.gameObject.SetActive(true);
-
-            EnemyDisplay.gameObject.SetActive(true);
-        }
-
-        // Method that deactivates the components of the game overlay
-        public static void DeactivateGameOverlay()
-        {
-            // Deactivate the currency display button
-            CurrencyDisplay.gameObject.SetActive(false);
-
-            // Deactivate the wave display button
-            WaveDisplay.gameObject.SetActive(false);
-
-            // Deactivate the start next wave button
-            StartNextWave.gameObject.SetActive(false);
-
-            ToogleGameboard.gameObject.SetActive(false);
-
-            EnemyDisplay.gameObject.SetActive(false);
-        }
-
         // The method that opens the build tower menu
         public static void OpenBuildTowerMenu()
         {
@@ -454,7 +416,7 @@ namespace build
             Questions.questionRequestingImageTarget = TowerImageTarget.currentImageTarget;
 
             // Disable the game overlay
-            DeactivateGameOverlay();
+            GameSceneManager.DeactivateGameOverlay();
 
             // Enable the answer question menu
             answerQuestions.SetActive(true);
@@ -567,7 +529,7 @@ namespace build
         private void UpdateGameAdvancementAfterBuilding(int cost)
         {
             // Enable the game overlay
-            ActivateGameOverlay();
+            GameSceneManager.ActivateGameOverlay();
 
             // Reduce the current currency by the cost of the tower
             GameAdvancement.currencyPoints -= cost;
