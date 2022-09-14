@@ -1529,7 +1529,7 @@ public class ActivateQuestions : MonoBehaviour
 
         foreach(GameObject spellCard in spellArray)
         {
-            spellCard.GetComponent<SpellCard>().ResetSpellCard();
+            spellCard.GetComponent<SpellController>().ResetSpellCard();
         }
     }
 

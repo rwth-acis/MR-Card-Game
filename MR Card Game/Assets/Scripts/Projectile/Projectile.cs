@@ -38,12 +38,13 @@ public class Projectile : MonoBehaviour
     private Vector3 lastPosition;
 
     // The list of colliders that enter the range of the tower
-    public List<Collider> colliders = new List<Collider>();
+    private List<Collider> colliders = new List<Collider>();
 
     // The method used to access the list of colliders
-    public List<Collider> GetColliders()
+    public List<Collider> Colliders
     {
-        return colliders;
+        get => colliders;
+        set => colliders = value;
     }
 
     // Start is called before the first frame update
@@ -201,7 +202,7 @@ public class Projectile : MonoBehaviour
         List<Collider> listOfDead = new List<Collider>();
 
         // For each enemy in the collider, calculate the damage they should take
-        foreach(var targetEnemy in GetColliders())
+        foreach(var targetEnemy in colliders)
         {
             Debug.Log("Currently, the target enemy is null is: " + (targetEnemy == null));
             // Debug.Log("The enemy " + targetEnemy.gameObject.name + " was in the range of " + getProjectileType + " and was hit with the projectile that can hit multiple enemies");

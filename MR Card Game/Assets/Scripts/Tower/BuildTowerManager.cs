@@ -13,7 +13,7 @@ public static class TowerImageTarget
     public static GameObject currentImageTarget;
 }
 
-public class BuildTower : MonoBehaviour
+public class BuildTowerManager : MonoBehaviour
 {
     [Tooltip("The minimum distance between the image target and buildings for the build menu to appear")]
     public float minimumDistanceBase = 0.1f;
@@ -41,13 +41,10 @@ public class BuildTower : MonoBehaviour
 
     private Renderer[] indicatorRenderers;
     private float[] initialAlphas;
-    private List<Material> gameBoardMaterials;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Make sure the box collider is enabled
-        GetComponent<BoxCollider>().enabled = true;
         indicatorRenderers = buildPositionIndicator.GetComponentsInChildren<Renderer>();
         initialAlphas = new float[indicatorRenderers.Length];
         for(int i = 0; i < indicatorRenderers.Length; i++)
@@ -62,8 +59,6 @@ public class BuildTower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Make sure the box collider is enabled
-        GetComponent<BoxCollider>().enabled = true;
         //onBoard check
         if (visible && !GameAdvancement.gamePaused)
         {
@@ -127,7 +122,6 @@ public class BuildTower : MonoBehaviour
             buildPositionIndicator.transform.localPosition = projectedPos;
             buildPositionIndicator.transform.rotation = Quaternion.identity;
         }
-
     }
 
     private void FixedUpdate()
@@ -142,12 +136,14 @@ public class BuildTower : MonoBehaviour
     public void ImageTargetVisible()
     {
         visible = true;
+
     }
 
     // Methods activated when the image target leaves the field
     public void ImageTargetLost()
     {
         visible = false;
+        buildPositionIndicator.GetComponentInChildren<BuildTowerIndicator>().OverlapWithTowerOrTrap = false;
     }
 
     // The method that adds entering enemies to the collider list

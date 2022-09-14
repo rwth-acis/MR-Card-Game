@@ -408,24 +408,24 @@ public class SpellImages : MonoBehaviour
         // Check what the image target name is, and return the right image object
         switch(imageTarget.name)
         {
-            case "LocationSpell1":
+            case "ImageTargetSpell1":
                 return GetSpellAppearanceImageTarget1;
 
-            case "LocationSpell2":
+            case "ImageTargetSpell2":
                 return GetSpellAppearanceImageTarget2;
 
-            case "LocationSpell3":
+            case "ImageTargetSpell3":
                 return GetSpellAppearanceImageTarget3;
 
-            case "LocationSpell4":
+            case "ImageTargetSpell4":
                 return GetSpellAppearanceImageTarget4;
 
-            case "LocationSpell5":
+            case "ImageTargetSpell5":
                 return GetSpellAppearanceImageTarget5;
 
-            case "LocationSpell6":
+            case "ImageTargetSpell6":
                 return GetSpellAppearanceImageTarget6;
-            case "LocationSpell7":
+            case "ImageTargetSpell7":
                 return GetSpellAppearanceImageTarget7;
         }
 

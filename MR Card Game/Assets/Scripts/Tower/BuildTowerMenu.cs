@@ -435,17 +435,11 @@ namespace build
             BuildTowerWindow.SetActive(false);
         }
 
-        // Function that is used to test when all questions that were needed to be answered were answered correctly
-        private bool NoMoreQuestionsNeeded()
-        {
-            return Questions.numberOfQuestionsNeededToAnswer == 0;
-        }
-
         // The method that builds an archer tower over the image target
         IEnumerator BuildArcherTower()
         {
             // Wait until the number of questions that need to be answered is 0
-            yield return new WaitUntil(NoMoreQuestionsNeeded);
+            yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
             // Spawn the archer tower or extract it from the object pool
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Archer);
             // Ground the building
@@ -458,7 +452,7 @@ namespace build
         IEnumerator BuildFireTower()
         {
             // Wait until the number of questions that need to be answered is 0
-            yield return new WaitUntil(NoMoreQuestionsNeeded);
+            yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
             // Spawn the fire tower or extract it from the object pool
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Fire);
             // Ground the building
@@ -470,7 +464,7 @@ namespace build
         IEnumerator BuildEarthTower()
         {
             // Wait until the number of questions that need to be answered is 0
-            yield return new WaitUntil(NoMoreQuestionsNeeded);
+            yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
             // Spawn the earth tower or extract it from the object pool
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Earth);
             // Ground the building
@@ -482,7 +476,7 @@ namespace build
         IEnumerator BuildLightningTower()
         {
             // Wait until the number of questions that need to be answered is 0
-            yield return new WaitUntil(NoMoreQuestionsNeeded);
+            yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
             // Spawn the lightning tower or extract it from the object pool
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Lightning);
             // Ground the building
@@ -494,7 +488,7 @@ namespace build
         IEnumerator BuildWindTower()
         {
             // Wait until the number of questions that need to be answered is 0
-            yield return new WaitUntil(NoMoreQuestionsNeeded);
+            yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
             // Spawn the wind tower or extract it from the object pool
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Wind);
             // Ground the building
@@ -506,7 +500,7 @@ namespace build
         IEnumerator BuildHole()
         {
             // Wait until the number of questions that need to be answered is 0
-            yield return new WaitUntil(NoMoreQuestionsNeeded);
+            yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
             // Spawn the archer tower or extract it from the object pool
             Trap trap = SpawnTrap.SpawnHole(TowerImageTarget.currentImageTarget);
             // Ground the building
@@ -518,7 +512,7 @@ namespace build
         IEnumerator BuildSwamp()
         {
             // Wait until the number of questions that need to be answered is 0
-            yield return new WaitUntil(NoMoreQuestionsNeeded);
+            yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
             // Spawn the archer tower or extract it from the object pool
             Trap trap = SpawnTrap.SpawnSwamp(TowerImageTarget.currentImageTarget);
             // Ground the building

@@ -76,6 +76,14 @@ public class GameSceneManager : MonoBehaviour
         Instance = this;
     }
 
+    /// <summary>
+    /// when all questions that were needed to be answered were answered correctly
+    /// </summary>
+    public static bool NoMoreQuestionsNeeded()
+    {
+        return Questions.numberOfQuestionsNeededToAnswer == 0;
+    }
+
     public static void ActivateGameOverlay()
     {
         // Activate the currency display button
@@ -307,14 +315,12 @@ public class GameSceneManager : MonoBehaviour
                 ObjectPools.ReleaseTrap(trap.GetComponent<Trap>());
             }
         }
-
-        // Reset all spell cards so that they are not drawn
-        GameObject[] spellArray = GameObject.FindGameObjectsWithTag("Spell Card");
-
-        foreach (GameObject spellCard in spellArray)
+        GameObject[] spellCards = GameObject.FindGameObjectsWithTag("Spell Card");
+        foreach (GameObject spell in spellCards)
         {
-            spellCard.GetComponent<SpellCard>().ResetSpellCard();
+            spell.GetComponent<SpellController>().ResetSpellCard();
         }
+
     }
 }
 /// <summary>

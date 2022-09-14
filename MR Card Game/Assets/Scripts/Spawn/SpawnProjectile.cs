@@ -122,7 +122,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
             projectileObject.gameObject.transform.localPosition = new Vector3(0, 0, 0);
 
             // Reset the colliders list of the projectile
-            projectileObject.colliders = new List<Collider>();
+            projectileObject.Colliders = new List<Collider>();
 
             if(type == TowerType.Archer)
             {

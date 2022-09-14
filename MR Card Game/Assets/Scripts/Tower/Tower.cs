@@ -31,7 +31,7 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private float cost;
 
-    // The attack range of the tower
+    [Tooltip("The attack range (radius) of the tower in cm")]
     [SerializeField]
     private float attackRange;
 

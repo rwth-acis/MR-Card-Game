@@ -280,17 +280,17 @@ public class Enemy : MonoBehaviour
                 GameAdvancement.castleCurrentAP = 0;
 
                 // Reduce the castle health by the additional amount of damage the unit does
-                GameAdvancement.castlecurrentHP -= additionalDamage;
+                GameAdvancement.castleCurrentHP -= additionalDamage;
             }
             
         } else {
 
             // Reduce the castle health by the amount of damage the unit does
-            GameAdvancement.castlecurrentHP -= damage;
+            GameAdvancement.castleCurrentHP -= damage;
         }
 
         // Display the lost health points on the castle
-        GameSetup.ActualizeCastleHealthPoints();
+        GameSetup.UpdateCastleHealthPoints();
     }
 
     // Method that makes enemies take damage

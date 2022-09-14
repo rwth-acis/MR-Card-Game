@@ -133,7 +133,7 @@ public class Level : MonoBehaviour
     void Update()
     {
         // Check if the health points of the castle reach 0 health points
-        if(GameAdvancement.castlecurrentHP <= 0 && LevelInfo.newLevelStarted == false)
+        if(GameAdvancement.castleCurrentHP <= 0 && LevelInfo.newLevelStarted == false)
         {
             ActivateDefeatScreen();
         }
@@ -1334,14 +1334,14 @@ public class Level : MonoBehaviour
 
         foreach(GameObject spellCard in spellArray)
         {
-            spellCard.GetComponent<SpellCard>().ResetSpellCard();
+            spellCard.GetComponent<SpellController>().ResetSpellCard();
         }
 
         // Reset the activate question class to disable the question menus and reset the number of questions that need to be answered
         ActivateQuestions.ResetQuestionMenuWindows();
 
         // Reset the spell card deck
-        SpellCard.ResetSpellCardDeck();
+        SpellCardManager.ResetSpellCardDeck();
 
         // Activate the victory screen
         victoryScreen.SetActive(true);
@@ -1350,12 +1350,12 @@ public class Level : MonoBehaviour
         if(GameAdvancement.castleCurrentAP > 0)
         {
             // Write how many health points and armor points the castle had at the end
-            castleHealthCounter.text = "Castle health bar:  " + GameAdvancement.castlecurrentHP + " / " + GameAdvancement.castleMaxHP + " + " + GameAdvancement.castleCurrentAP + " armor points";
+            castleHealthCounter.text = "Castle health bar:  " + GameAdvancement.castleCurrentHP + " / " + GameAdvancement.castleMaxHP + " + " + GameAdvancement.castleCurrentAP + " armor points";
         
         } else {
 
             // Write how many health points the castle had at the end
-            castleHealthCounter.text = "Castle health bar:  " + GameAdvancement.castlecurrentHP + " / " + GameAdvancement.castleMaxHP;
+            castleHealthCounter.text = "Castle health bar:  " + GameAdvancement.castleCurrentHP + " / " + GameAdvancement.castleMaxHP;
         }
 
         // Get the number of enemies in all waves
@@ -1535,14 +1535,14 @@ public class Level : MonoBehaviour
 
         foreach(GameObject spellCard in spellArray)
         {
-            spellCard.GetComponent<SpellCard>().ResetSpellCard();
+            spellCard.GetComponent<SpellController>().ResetSpellCard();
         }
 
         // Reset the activate question class to disable the question menus and reset the number of questions that need to be answered
         ActivateQuestions.ResetQuestionMenuWindows();
 
         // Reset the spell card deck
-        SpellCard.ResetSpellCardDeck();
+        SpellCardManager.ResetSpellCardDeck();
 
         // Activate the victory screen
         defeatScreen.SetActive(true);

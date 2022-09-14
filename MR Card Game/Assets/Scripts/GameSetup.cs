@@ -10,7 +10,7 @@ public static class GameAdvancement
 {
     // The maximum and current health point of the castle
     public static int castleMaxHP;
-    public static int castlecurrentHP;
+    public static int castleCurrentHP;
 
     // The current armor points of the castle
     public static int castleCurrentAP;
@@ -226,13 +226,13 @@ public class GameSetup : MonoBehaviour
     }
 
     // Method used to actualize the current health points of the castle
-    public static void ActualizeCastleHealthPoints()
+    public static void UpdateCastleHealthPoints()
     {
         // Actualize the value of the castle health bar
-        GameAdvancement.castleHealthBar.value = (float)((float)GameAdvancement.castlecurrentHP / (float)GameAdvancement.castleMaxHP);
+        GameAdvancement.castleHealthBar.value = (float)((float)GameAdvancement.castleCurrentHP / (float)GameAdvancement.castleMaxHP);
 
         // Change the text field that displayed current HP / max HP
-        GameAdvancement.castleHealthCounter.text = GameAdvancement.castlecurrentHP + " / " + GameAdvancement.castleMaxHP;
+        GameAdvancement.castleHealthCounter.text = GameAdvancement.castleCurrentHP + " / " + GameAdvancement.castleMaxHP;
 
         // Actualize the value of the castle armor bar
         GameAdvancement.castleArmorBar.value = (float)((float)GameAdvancement.castleCurrentAP / (float)GameAdvancement.castleMaxHP);
@@ -269,7 +269,7 @@ public class GameSetup : MonoBehaviour
         // GameAdvancement.castleMaxHP = getCastleHP;
 
         // Set the castle current health points to their maximum
-        GameAdvancement.castlecurrentHP = GameAdvancement.castleMaxHP;
+        GameAdvancement.castleCurrentHP = GameAdvancement.castleMaxHP;
 
         // Set the armor points to 0
         GameAdvancement.castleCurrentAP = 0;
@@ -305,7 +305,7 @@ public class GameSetup : MonoBehaviour
         UpdateCurrencyDisplay();
 
         // Actualize the castle health points
-        ActualizeCastleHealthPoints();
+        UpdateCastleHealthPoints();
     }
 
     // The method used to set the max number of buildings correctly

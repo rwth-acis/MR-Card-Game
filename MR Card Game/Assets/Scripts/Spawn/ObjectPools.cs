@@ -3,19 +3,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using i5.Toolkit.Core.Utilities;
 
-// The class of the castle game object
-static class EnemyPools
-{
-    // The maximum and current health point of the castle
-    public static int[] enemyPoolIds;
-}
 
 public class ObjectPools : MonoBehaviour
 {
+
+    private static int numberOfEnemyTypes = 9;
+    private static int numberOfProjectileTypes = 3;
+    private static int numberOfDumpingEnemies = 1;
+    private static int numberOfTowerTypes = 5;
+    private static int numberOfSpellTypes = 4;
+    private static int numberOfTrapTypes = 2;
+
+    public static ArrayList PoolIDs = new();
+    public static ObjectPools Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        // Create all enemy pools
+        for (int i = 0; i < numberOfEnemyTypes; i++)
+        {
+            PoolIDs.Add(ObjectPool<Enemy>.CreateNewPool());
+        }
+        for(int i = 0; i < numberOfProjectileTypes; i++)
+        {
+            PoolIDs.Add(ObjectPool<Projectile>.CreateNewPool());
+        }
+        for(int i = 0; i < numberOfDumpingEnemies; i++)
+        {
+            PoolIDs.Add(ObjectPool<Enemy>.CreateNewPool());
+        }
+        for(var i = 0; i < numberOfTowerTypes; i++)
+        {
+            PoolIDs.Add(ObjectPool<GameObject>.CreateNewPool());
+        }
+        for(int i = 0; i < numberOfSpellTypes; i++)
+        {
+            PoolIDs.Add(ObjectPool<GameObject>.CreateNewPool());
+        }
+        for(int i = 0; i < numberOfTrapTypes; i++)
+        {
+            PoolIDs.Add(ObjectPool<Trap>.CreateNewPool());
+        }
+
+/*        // Create all enemy pools
         int poolId1 = ObjectPool<Enemy>.CreateNewPool(); // Pool for normal enemies
         int poolId2 = ObjectPool<Enemy>.CreateNewPool(); // Pool for fast enemies
         int poolId3 = ObjectPool<Enemy>.CreateNewPool(); // Pool for super fast enemies
@@ -41,11 +76,12 @@ public class ObjectPools : MonoBehaviour
         int poolId19 = ObjectPool<GameObject>.CreateNewPool(); // Pool for arrow rain
         int poolId20 = ObjectPool<GameObject>.CreateNewPool(); // Pool for meteor impact
         int poolId21 = ObjectPool<GameObject>.CreateNewPool(); // Pool for lightning strike
+        int poolId22 = ObjectPool<GameObject>.CreateNewPool(); // Space Distortion
 
         int poolId22 = ObjectPool<Trap>.CreateNewPool(); // Pool for hole
-        int poolId23 = ObjectPool<Trap>.CreateNewPool(); // Pool for swamp
+        int poolId23 = ObjectPool<Trap>.CreateNewPool(); // Pool for swamp*/
 
-        // Store the pool ids so that they are not lost
+/*        // Store the pool ids so that they are not lost
         EnemyPools.enemyPoolIds = new int[23];
         EnemyPools.enemyPoolIds[0] = poolId1;
         EnemyPools.enemyPoolIds[1] = poolId2;
@@ -74,7 +110,7 @@ public class ObjectPools : MonoBehaviour
         EnemyPools.enemyPoolIds[20] = poolId21;
 
         EnemyPools.enemyPoolIds[21] = poolId22;
-        EnemyPools.enemyPoolIds[22] = poolId23;
+        EnemyPools.enemyPoolIds[22] = poolId23;*/
 
     }
 
@@ -117,16 +153,16 @@ public class ObjectPools : MonoBehaviour
     {
         return type switch
         {
-            EnemyType.Normal => EnemyPools.enemyPoolIds[0],
-            EnemyType.Fast => EnemyPools.enemyPoolIds[1],
-            EnemyType.SuperFast => EnemyPools.enemyPoolIds[2],
-            EnemyType.Flying => EnemyPools.enemyPoolIds[3],
-            EnemyType.Tank => EnemyPools.enemyPoolIds[4],
-            EnemyType.Slow => EnemyPools.enemyPoolIds[5],
-            EnemyType.Berzerker => EnemyPools.enemyPoolIds[6],
-            EnemyType.BerzerkerFlying => EnemyPools.enemyPoolIds[7],
-            EnemyType.BerzerkerTank => EnemyPools.enemyPoolIds[8],
-            _ => EnemyPools.enemyPoolIds[12],// Case the enemy does not have a correct type
+            EnemyType.Normal => (int)PoolIDs[0],
+            EnemyType.Fast => (int)PoolIDs[1],
+            EnemyType.SuperFast => (int)PoolIDs[2],
+            EnemyType.Flying => (int)PoolIDs[3],
+            EnemyType.Tank => (int)PoolIDs[4],
+            EnemyType.Slow => (int)PoolIDs[5],
+            EnemyType.Berzerker => (int)PoolIDs[6],
+            EnemyType.BerzerkerFlying => (int)PoolIDs[7],
+            EnemyType.BerzerkerTank => (int)PoolIDs[8],
+            _ => (int)PoolIDs[12],// Case the enemy does not have a correct type
         };
     }
 
@@ -146,14 +182,15 @@ public class ObjectPools : MonoBehaviour
     // Method that returns the correct object pool index given the tower type
     public static int GetTowerPoolIndex(TowerType type)
     {
+        int towerPoolStartIndex = numberOfEnemyTypes + numberOfProjectileTypes + numberOfDumpingEnemies;
         return type switch
         {
-            TowerType.Archer => EnemyPools.enemyPoolIds[13],
-            TowerType.Fire => EnemyPools.enemyPoolIds[14],
-            TowerType.Earth => EnemyPools.enemyPoolIds[15],
-            TowerType.Lightning => EnemyPools.enemyPoolIds[16],
-            TowerType.Wind => EnemyPools.enemyPoolIds[17],
-            _ => EnemyPools.enemyPoolIds[12],
+            TowerType.Archer => (int)PoolIDs[towerPoolStartIndex],
+            TowerType.Fire => (int)PoolIDs[towerPoolStartIndex + 1],
+            TowerType.Earth => (int)PoolIDs[towerPoolStartIndex + 2],
+            TowerType.Lightning => (int)PoolIDs[towerPoolStartIndex + 3],
+            TowerType.Wind => (int)PoolIDs[towerPoolStartIndex + 4],
+            _ => (int)PoolIDs[towerPoolStartIndex],
         };
     }
 
@@ -175,19 +212,20 @@ public class ObjectPools : MonoBehaviour
     // Method that returns the correct object pool index given the projectile type
     public static int GetProjectilePoolIndex(TowerType type)
     {
+        int projectilePoolStartIndex = numberOfEnemyTypes;
         // Return the right projectile pool index given the projectile type
         switch(type)
         {
             case TowerType.Archer:
-                return EnemyPools.enemyPoolIds[9];
+                return (int)PoolIDs[projectilePoolStartIndex];
             case TowerType.Fire:
-                return EnemyPools.enemyPoolIds[10];
+                return (int)PoolIDs[projectilePoolStartIndex + 1];
             case TowerType.Earth:
-                return EnemyPools.enemyPoolIds[11];
+                return (int)PoolIDs[projectilePoolStartIndex + 2];
         }
 
         // In case the name is incorrect return an arrow
-        return EnemyPools.enemyPoolIds[9];
+        return (int)PoolIDs[9];
     }
 
     // The method that releses the projectile game objects
@@ -206,13 +244,15 @@ public class ObjectPools : MonoBehaviour
     // Method that returns the correct object pool index given the spell type
     public static int GetSpellEffectPoolIndex(SpellType type)
     {
+        int spellPoolStartIndex = numberOfEnemyTypes + numberOfProjectileTypes + numberOfDumpingEnemies + numberOfTowerTypes;
         // Return the right spell effect pool index given the spell effect type
         return type switch
         {
-            SpellType.ArrowRain => EnemyPools.enemyPoolIds[18],
-            SpellType.Meteor => EnemyPools.enemyPoolIds[19],
-            SpellType.ThunderStrike => EnemyPools.enemyPoolIds[20],
-            _ => EnemyPools.enemyPoolIds[20],
+            SpellType.ArrowRain => (int)PoolIDs[spellPoolStartIndex],
+            SpellType.Meteor => (int)PoolIDs[spellPoolStartIndex + 1],
+            SpellType.ThunderStrike => (int)PoolIDs[spellPoolStartIndex + 2],
+            SpellType.SpaceDistortion => (int)PoolIDs[spellPoolStartIndex + 3],
+            _ => (int)PoolIDs[spellPoolStartIndex],
         };
     }
 
@@ -232,13 +272,14 @@ public class ObjectPools : MonoBehaviour
      // Method that returns the correct object pool index given the trap type
     public static int GetTrapPoolIndex(TrapType type)
     {
+        int trapPoolStartIndex = numberOfEnemyTypes + numberOfProjectileTypes + numberOfDumpingEnemies + numberOfTowerTypes + numberOfSpellTypes;
         // Return the right trap pool index given the trap type
         return type switch
         {
-            TrapType.Hole => EnemyPools.enemyPoolIds[21],
-            TrapType.Swamp => EnemyPools.enemyPoolIds[22],
+            TrapType.Hole => (int)PoolIDs[trapPoolStartIndex],
+            TrapType.Swamp => (int)PoolIDs[trapPoolStartIndex + 1],
             // In case the name is incorrect return a hole
-            _ => EnemyPools.enemyPoolIds[21],
+            _ => (int)PoolIDs[trapPoolStartIndex],
         };
     }
 

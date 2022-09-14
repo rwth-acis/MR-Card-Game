@@ -506,12 +506,6 @@ public class UpgradeTower : MonoBehaviour
         answerQuestions.SetActive(true);
     }
 
-    // Function that is used to test when all questions that were needed to be answered were answered correctly
-    private bool NoMoreQuestionsNeeded()
-    {
-        return Questions.numberOfQuestionsNeededToAnswer == 0;
-    }
-
     // Method used to upgrade a tower
     IEnumerator UpgradeTowerMethod(string type)
     {
@@ -519,7 +513,7 @@ public class UpgradeTower : MonoBehaviour
         int upgradeCost = 0;
 
         // Wait until the number of questions that need to be answered is 0
-        yield return new WaitUntil(NoMoreQuestionsNeeded);
+        yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
         // Check what is written in the tower type field and call the right upgrade function
         // type = TowerType.ToString()
         switch(type)

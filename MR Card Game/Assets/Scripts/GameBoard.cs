@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 // The class for flags of the anchor points of the game board
 static class Board
@@ -20,6 +21,11 @@ static class Board
 
     // Define the dimension of the longer side of the board
     public static float greatestBoardDimension;
+
+    /// <summary>
+    /// How much is the board scaled regarding its original scale on X dimension.
+    /// </summary>
+    public static float boardScalingFactor;
 
     // Define the height of the board
     public static float boardHeight;
@@ -81,6 +87,7 @@ public class GameBoard : MonoBehaviour
     [SerializeField]
     private Button startNextWave;
 
+    private readonly float originalXScale = 0.03f;
     //private bool gameBoardTracked = false;
 
     // public static GameObject GetGameBoard()
@@ -219,7 +226,7 @@ public class GameBoard : MonoBehaviour
         SetBoardScalingCorrectly();*/
 
         Board.greatestBoardDimension = 0.03f;
-        
+        Board.boardScalingFactor = gameBoard.transform.localScale.x / originalXScale;
     }
 
     public void SetBoardScalingCorrectly()

@@ -128,7 +128,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
                 } else {
 
                     // Get a new enemy from the object pool 1
-                    Enemy enemy1 = ObjectPool<Enemy>.RequestResource(EnemyPools.enemyPoolIds[9], () => {return Instantiate(NormalEnemy);});
+                    Enemy enemy1 = ObjectPool<Enemy>.RequestResource((int)ObjectPools.PoolIDs[9], () => {return Instantiate(NormalEnemy);});
 
                     // Set the enemy as active
                     enemy1.gameObject.SetActive(true);
