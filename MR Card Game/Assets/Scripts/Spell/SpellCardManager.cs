@@ -357,7 +357,7 @@ public class SpellCardManager : MonoBehaviour
 
         foreach(GameObject card in spellcards)
         {
-            if(card.GetComponent<SpellController>().CardDrawn == true)
+            if(card.GetComponent<SpellCardController>().CardDrawn == true)
             {
                 // Count one up
                 count++;
@@ -791,5 +791,19 @@ public class SpellCardManager : MonoBehaviour
 
         // Set the number of drawn spells on the board to 0
         DrawnSpellsOnBoard = 0;
+    }
+
+    // Method that is activated when the spell image target enters the camera field
+    public void SpellCardEnteredCameraField(ImageTargetBehaviour imageTargetBehaviour)
+    {
+        SpellCardController controller = imageTargetBehaviour.gameObject.GetComponent<SpellCardController>();
+        controller.SpellCardEnteredCameraField(imageTargetBehaviour);
+    }
+
+    // Method that is activated when the spell image target leaves the camera field
+    public void SpellCardLeftCameraField(ImageTargetBehaviour imageTargetBehaviour)
+    {
+        SpellCardController controller = imageTargetBehaviour.gameObject.GetComponent<SpellCardController>();
+        controller.SpellCardLeftCameraField();
     }
 }

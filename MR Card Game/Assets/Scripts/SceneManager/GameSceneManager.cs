@@ -318,7 +318,7 @@ public class GameSceneManager : MonoBehaviour
         GameObject[] spellCards = GameObject.FindGameObjectsWithTag("Spell Card");
         foreach (GameObject spell in spellCards)
         {
-            spell.GetComponent<SpellController>().ResetSpellCard();
+            spell.GetComponent<SpellCardController>().ResetSpellCard();
         }
 
     }

@@ -13,18 +13,18 @@ MonoBehaviour:
   m_Name: VuforiaConfiguration
   m_EditorClassIdentifier: 
   vuforia:
-    vuforiaLicenseKey: AUBvRpD/////AAABmah8ygH/HEc/o/p5OUjxNAMF7JIsMLkWfoptCYrTZpadbl1hxWYy8SovR+s0+ah2kEdzoynrbm0uSRXk0IswYgB0nEFD2bzOvWqMX7dOk1q6p6aOMR+1qDOaRXUkJ6AjfDLBuEVMu7/PnrG7AnhbjEPTSGsBlmH93vUD5Mu7TFCfoRHeuNrrjqvKgqUjV+Nq7v3h5SQOCfsd1XsTsOIr308xC3DLFQdutkXUVadOjctkNl9EBJUEFql6VFbTr9QrzMPJ/jZu6FhWKQr0FPQU/IZtMRSn4IOJIp8Y3NqME3eUId2//PlTlHmjn/XzAJwbuuMZ4jhUjRNsjLPQzd0pnPx/dGtf2SUpWrJBQND5Zz61
-    ufoLicenseKey: QVQvOFM1WC8vLy8vQUFBQUtGRmJueEUvL2tTTWxySEVXR0N0UmR3Q2RmVnoreG9Ib2NLOGFnYlRRNk1FbFVJVG1GdXlaT0JnZHFZeVFOekpUeUNtYW5RcVNoS2k1NjRaemlPOWVGM3QxZTRLWDlEL3AxWm5KZ1JodHc5VjN4eEIrUk9tVURSS213QnZLcVVuZk1ZdENhWUlpZFBsVTBQcEZDRWRTbmNtU0tQQ3BWcjhGVXRyZ3RLUU5IRnYzT2ROSkE2L0NLaEJLL0dlcUZZVmZqdDlCUnFZU0pIQjlSNVMrNW1NQ0w2S21MMk1JQzFnRXBmWm1XY25nSEp0M044MksraC9oSmI2UTRMV2l2dmw1Q2kydlZjd1dmQXN6ampEc0RpNVRKdHRTNjVnTEZDTDNOUnVVY3l3NGtaeVFXMGFSaFZOU255WlEvcGxRUE1SN29YbGtEZjd5RG5jMjVQdFA1NFJ6TXlPMGEzWkRsb1JEVzlvdTBwQjhnUU4=
+    vuforiaLicenseKey: AVt6MGf/////AAABmTZI/G7KakRTtjoJe89aTfNga58VL/QCm6kX7wjo8zzM6Vbqgll7/y6UlE24mDOne4osDhZzs0AwaM+82Xzsk+UCTyArNy20LT83/CWJTPsT8Xk7MUb4pr3zd05XsMWGD66ih5wmw7s+84gxb6WkXb4e0dhUrCj+3KFL7j/EZHiBkG9e1Ln2EcP25SO1ftxwm7ODb8pRVPa3K9cGyre5Y+ZbvJ1oFNXREnGqcIOSGS7I/uutA9zf1SrFgOFRqbX5sWPQ5RSMhWcIQp8Aelqtp4r7NDN60xmLDiGv6z8JSwKV5Uo41/01pnnW6DX9jr2hnhv0V4uPdBrSNpu/tYRKst+gt9j29Q47Qx48N2OmWY51
+    ufoLicenseKey: QVV4L2Rnei8vLy8vQUFBQUtQWWxlQjIwNVVZaWtpZ2UybFBMRUtON3hHWHluajJlSlg0ZXhBM1pTRmhLaTluNmpva0NCR2JpUTV0TlFHeGs0aUxVV01ZNkVYUGswMGRjcW11N0hJVlRIQyt6RExGVml6TU5NKzJaa1ZWc0ZtQmdFQ0FndUFWeHBENFpPdC9GZTJFMVcxcVd1TlBDRm5LZ3ovWjJRUXprOWd3ejFpWkc5RVFrNkhLQitvOXJIMURWTVBWRUF2V0ZyenRNRzRRcmpIb080aXpJaDAzRUpFMW1FR3pidUZ6dHpKT0xpenJ6QXlHV2lPUHhuanRnYkw2WUNZV0I3a3RISFhmS0NoclBjN3hCcU42ZUx1ZE1HMWZFT3ZTL0VyMmZNS1BLdkVwWTlpNkFqekdHUnBXRkxLcVZnRWpGUXpmY2h3cVBSUGNPbjlGdXB0QkZJQ25UTWw2STZvYU5IS3JqOUdvVDJFdVNtQ3dMdHEwOUNnSTQ=
     delayedInitialization: 0
+    cameraFocusModeSetting: 2
     cameraDeviceModeSetting: -1
-    maxSimultaneousImageTargets: 13
-    maxSimultaneousObjectTargets: 13
+    maxSimultaneousImageTargets: 3
     virtualSceneScaleFactor: 1
-    useDelayedLoadingObjectTargets: 0
     modelTargetRecoWhileExtendedTracked: 1
     shareRecordingsInITunes: 0
-    version: 9.8.8
-    eulaAcceptedVersions: '{"Values":["9.8","0.0","8.3","8.1","7.2","7.5","8.0","8.6","8.5","9.3","9.4","9.6","9.7","9.5","10.6"]}'
+    logLevel: 0
+    version: 10.10.2
+    eulaAcceptedVersions: '{"Values":["9.8","0.0","8.3","8.1","7.2","7.5","8.0","8.6","8.5","9.3","9.4","9.6","9.7","9.5","10.6","10.10"]}'
   database:
     disableModelExtraction: 0
   shaders:
@@ -38,6 +38,7 @@ MonoBehaviour:
     autoStartTracker: 1
     arcoreRequirement: 1
     autoImportArcore: 1
+    thirdPartyARCoreClientDetected: 0
   playmode:
     mSequencePath: 
     playModeType: 0

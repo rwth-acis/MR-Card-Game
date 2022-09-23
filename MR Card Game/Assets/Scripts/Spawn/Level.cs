@@ -1334,7 +1334,7 @@ public class Level : MonoBehaviour
 
         foreach(GameObject spellCard in spellArray)
         {
-            spellCard.GetComponent<SpellController>().ResetSpellCard();
+            spellCard.GetComponent<SpellCardController>().ResetSpellCard();
         }
 
         // Reset the activate question class to disable the question menus and reset the number of questions that need to be answered
@@ -1535,7 +1535,7 @@ public class Level : MonoBehaviour
 
         foreach(GameObject spellCard in spellArray)
         {
-            spellCard.GetComponent<SpellController>().ResetSpellCard();
+            spellCard.GetComponent<SpellCardController>().ResetSpellCard();
         }
 
         // Reset the activate question class to disable the question menus and reset the number of questions that need to be answered

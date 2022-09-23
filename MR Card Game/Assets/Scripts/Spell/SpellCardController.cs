@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Vuforia;
 
-public class SpellController : MonoBehaviour
+public class SpellCardController : MonoBehaviour
 {
     [SerializeField]
     private GameObject spellCardCanvas;
@@ -184,8 +184,8 @@ public class SpellController : MonoBehaviour
     // Method that is activated when the spell image target enters the camera field
     public void SpellCardEnteredCameraField(ImageTargetBehaviour imageTargetBehaviour)
     {
-        Debug.Log(imageTargetBehaviour.TrackableName);
-        spellType = GetSpellTypeWithImageTargetName(imageTargetBehaviour.TrackableName);
+        Debug.Log(imageTargetBehaviour.TargetName);
+        spellType = GetSpellTypeWithImageTargetName(imageTargetBehaviour.TargetName);
         // Set the flag that the card is now visible
         visible = true;
 
@@ -400,9 +400,8 @@ public class SpellController : MonoBehaviour
 
         foreach (GameObject card in spellcards)
         {
-            if (card.GetComponent<SpellController>().cardDrawn == true)
+            if (card.GetComponent<SpellCardController>().cardDrawn == true)
             {
-                // Count one up
                 count++;
             }
         }
