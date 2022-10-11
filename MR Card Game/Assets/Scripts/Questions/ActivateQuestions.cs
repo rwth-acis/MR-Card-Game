@@ -133,34 +133,41 @@ public class ActivateQuestions : MonoBehaviour
     // The begin of the url to the .obj object downloaded in the created examples
     public string urlBegin;
 
-    // The method used to access to the view model (so view activate question) menu as a static object
+    /// <summary>
+    /// the view model (so view activate question) menu as a static object
+    /// </summary>
     public static GameObject ViewModel
     {
         get { return instance.viewModel; }
     }
 
-    // The method used to access to the view multiple choice question menu as a static object
+    /// <summary>
+    /// the view multiple choice question menu as a static object
+    /// </summary>
     public static GameObject ViewMultipleChoiceQuestion
     {
         get { return instance.viewMultipleChoiceQuestion; }
     }
 
-    // The method used to access to the view input question menu as a static object
+    /// <summary>
+    /// the view input question menu as a static object
+    /// </summary>
     public static GameObject ViewInputQuestion
     {
         get { return instance.viewInputQuestion; }
     }
 
-    // The method used to access to the additional field 2 as a static object
+    /// <summary>
+    /// the additional field 2 as a static object
+    /// </summary>
     public static Button NumberOfQuestionsThatNeedToBeAnsweredDisplay
     {
         get { return instance.numberOfQuestionsThatNeedToBeAnsweredDisplay; }
     }
 
-    // // The path to the question
-    // public string questionPath;
-
-    // The JSON Serialization for the input questions
+    /// <summary>
+    /// The JSON Serialization for the input questions
+    /// </summary>
     [Serializable]
     public class InputQuestion
     {
@@ -176,7 +183,9 @@ public class ActivateQuestions : MonoBehaviour
         public string model5Name;
     }
 
-    // The JSON Serialization for the multiple choice questions
+    /// <summary>
+    /// The JSON Serialization for the multiple choice questions
+    /// </summary>
     [Serializable]
     public class MultipleChoiceQuestion
     {
@@ -233,20 +242,7 @@ public class ActivateQuestions : MonoBehaviour
         // The number of models
         Questions.numberOfModels = 5;
 
-        // The number of models that have finished to load
         Questions.numberOfModelsLoaded = 0;
-
-        // // Check if it is editor testing or android boot
-        // if(Globals.androidBoot == true)
-        // {
-        //     // Android case
-        //     Questions.pathToLevel = Application.persistentDataPath;
-
-        // } else {
-
-        //     // Editor case
-        //     levelDirectoryPath = Questions.pathToLevel;
-        // }
 
         // Since the path to level is set in browse level, it is the same in android and not android boot
         levelDirectoryPath = Questions.pathToLevel;
@@ -271,7 +267,9 @@ public class ActivateQuestions : MonoBehaviour
         }
     }
 
-    // Method that import the .obj models of the current question and renders them on the image targets accordingly to their number
+    /// <summary>
+    /// Import the .obj models of the current question and renders them on the image targets accordingly to their number
+    /// </summary>
     public void DisplayModels()
     {
         // Get the current question path
@@ -293,41 +291,41 @@ public class ActivateQuestions : MonoBehaviour
             if(question.numberOfModels == 1)
             {
                 // Display one model
-                AddModelOverTargetImage1(question.model1Name, questionPath);
+                AddModelOverTargetImage(question.model1Name, questionPath, Questions.questionRequestingImageTarget);
                 Debug.Log("one model added");
 
             } else if(question.numberOfModels == 2)
             {
                 // Display two models
-                AddModelOverTargetImage1(question.model1Name, questionPath);
-                AddModelOverTargetImage2(question.model2Name, questionPath);
+                AddModelOverTargetImage(question.model1Name, questionPath, Questions.questionRequestingImageTarget);
+                AddModelOverTargetImage(question.model2Name, questionPath, imageTarget2);
                 Debug.Log("two models added");
 
             } else if(question.numberOfModels == 3)
             {
                 // Display three models
-                AddModelOverTargetImage1(question.model1Name, questionPath);
-                AddModelOverTargetImage2(question.model2Name, questionPath);
-                AddModelOverTargetImage3(question.model3Name, questionPath);
+                AddModelOverTargetImage(question.model1Name, questionPath, Questions.questionRequestingImageTarget);
+                AddModelOverTargetImage(question.model2Name, questionPath, imageTarget2);
+                AddModelOverTargetImage(question.model3Name, questionPath, imageTarget3);
                 Debug.Log("three models added");
 
             } else if(question.numberOfModels == 4)
             {
                 // Display four models
-                AddModelOverTargetImage1(question.model1Name, questionPath);
-                AddModelOverTargetImage2(question.model2Name, questionPath);
-                AddModelOverTargetImage3(question.model3Name, questionPath);
-                AddModelOverTargetImage4(question.model4Name, questionPath);
+                AddModelOverTargetImage(question.model1Name, questionPath, Questions.questionRequestingImageTarget);
+                AddModelOverTargetImage(question.model2Name, questionPath, imageTarget2);
+                AddModelOverTargetImage(question.model3Name, questionPath, imageTarget3);
+                AddModelOverTargetImage(question.model4Name, questionPath, imageTarget4);
                 Debug.Log("four models added");
 
             } else if(question.numberOfModels == 5)
             {
                 // Display five models
-                AddModelOverTargetImage1(question.model1Name, questionPath);
-                AddModelOverTargetImage2(question.model2Name, questionPath);
-                AddModelOverTargetImage3(question.model3Name, questionPath);
-                AddModelOverTargetImage4(question.model4Name, questionPath);
-                AddModelOverTargetImage5(question.model5Name, questionPath);
+                AddModelOverTargetImage(question.model1Name, questionPath, Questions.questionRequestingImageTarget);
+                AddModelOverTargetImage(question.model2Name, questionPath, imageTarget2);
+                AddModelOverTargetImage(question.model3Name, questionPath, imageTarget3);
+                AddModelOverTargetImage(question.model4Name, questionPath, imageTarget4);
+                AddModelOverTargetImage(question.model5Name, questionPath, imageTarget5);
                 Debug.Log("five models added");
             }
 
@@ -337,44 +335,48 @@ public class ActivateQuestions : MonoBehaviour
             MultipleChoiceQuestion question = JsonUtility.FromJson<MultipleChoiceQuestion>(json);
 
             // Check how many models there are
-            if(question.numberOfModels == 1)
+            if (question.numberOfModels == 1)
             {
                 // Display one model
-                AddModelOverTargetImage1(question.model1Name, questionPath);
+                AddModelOverTargetImage(question.model1Name, questionPath, Questions.questionRequestingImageTarget);
                 Debug.Log("one model added");
 
-            } else if(question.numberOfModels == 2)
+            }
+            else if (question.numberOfModels == 2)
             {
                 // Display two models
-                AddModelOverTargetImage1(question.model1Name, questionPath);
-                AddModelOverTargetImage2(question.model2Name, questionPath);
+                AddModelOverTargetImage(question.model1Name, questionPath, Questions.questionRequestingImageTarget);
+                AddModelOverTargetImage(question.model2Name, questionPath, imageTarget2);
                 Debug.Log("two models added");
 
-            } else if(question.numberOfModels == 3)
+            }
+            else if (question.numberOfModels == 3)
             {
                 // Display three models
-                AddModelOverTargetImage1(question.model1Name, questionPath);
-                AddModelOverTargetImage2(question.model2Name, questionPath);
-                AddModelOverTargetImage3(question.model3Name, questionPath);
+                AddModelOverTargetImage(question.model1Name, questionPath, Questions.questionRequestingImageTarget);
+                AddModelOverTargetImage(question.model2Name, questionPath, imageTarget2);
+                AddModelOverTargetImage(question.model3Name, questionPath, imageTarget3);
                 Debug.Log("three models added");
 
-            } else if(question.numberOfModels == 4)
+            }
+            else if (question.numberOfModels == 4)
             {
                 // Display four models
-                AddModelOverTargetImage1(question.model1Name, questionPath);
-                AddModelOverTargetImage2(question.model2Name, questionPath);
-                AddModelOverTargetImage3(question.model3Name, questionPath);
-                AddModelOverTargetImage4(question.model4Name, questionPath);
+                AddModelOverTargetImage(question.model1Name, questionPath, Questions.questionRequestingImageTarget);
+                AddModelOverTargetImage(question.model2Name, questionPath, imageTarget2);
+                AddModelOverTargetImage(question.model3Name, questionPath, imageTarget3);
+                AddModelOverTargetImage(question.model4Name, questionPath, imageTarget4);
                 Debug.Log("four models added");
 
-            } else if(question.numberOfModels == 5)
+            }
+            else if (question.numberOfModels == 5)
             {
                 // Display five models
-                AddModelOverTargetImage1(question.model1Name, questionPath);
-                AddModelOverTargetImage2(question.model2Name, questionPath);
-                AddModelOverTargetImage3(question.model3Name, questionPath);
-                AddModelOverTargetImage4(question.model4Name, questionPath);
-                AddModelOverTargetImage5(question.model5Name, questionPath);
+                AddModelOverTargetImage(question.model1Name, questionPath, Questions.questionRequestingImageTarget);
+                AddModelOverTargetImage(question.model2Name, questionPath, imageTarget2);
+                AddModelOverTargetImage(question.model3Name, questionPath, imageTarget3);
+                AddModelOverTargetImage(question.model4Name, questionPath, imageTarget4);
+                AddModelOverTargetImage(question.model5Name, questionPath, imageTarget5);
                 Debug.Log("five models added");
             }
         }
@@ -384,7 +386,9 @@ public class ActivateQuestions : MonoBehaviour
     // Method that delete and imports the model and displays them on the target images
     //-------------------------------------------------------------------------------------------------------------------------------------------
 
-    // The method that deletes all children (models) of the image target
+    /// <summary>
+    /// Deletes all children (models) of the image target
+    /// </summary>
     public void RemoveAllModels()
     {
         // Get the array of all models
@@ -398,8 +402,7 @@ public class ActivateQuestions : MonoBehaviour
         }
     }
 
-    // Import the first model and bind it to the first image target
-    public void AddModelOverTargetImage1(string name, string pathToQuestion)
+    public void AddModelOverTargetImage(string name, string pathToQuestion, GameObject target)
     {
         // Access the model gameobject
         string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
@@ -420,201 +423,31 @@ public class ActivateQuestions : MonoBehaviour
 
         Debug.Log("The model: " + obj.name + " was found.");
 
-        // // Find the child object of the model
-        // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
-
-        // Access the box collider information of the child object
         BoxCollider m_Collider = obj.GetComponentInChildren<BoxCollider>();
-
-        // Get the position of the target image
-        Vector3 position = Questions.questionRequestingImageTarget.transform.position;
-
-        // Get the scale
+        Vector3 position = target.transform.position;
         Vector3 scaleVector = obj.transform.localScale;
 
         // Find the position over the target image where the model should be
-        position = position + Questions.questionRequestingImageTarget.transform.up * m_Collider.size.y * scaleVector.x;
+        position += target.transform.up * m_Collider.size.y * scaleVector.x;
 
         // Change the position of the model so that it stands over the marker
         obj.transform.position = position;
 
         // Set the model as child of the marker
-        obj.transform.parent = Questions.questionRequestingImageTarget.transform;
+        obj.transform.parent = target.transform;
 
         Debug.Log("The model object " + obj.name + "was set as child of " + imageTarget2.name);
-    }
-
-    // Import the second model and bind it to the second image target
-    public void AddModelOverTargetImage2(string name, string pathToQuestion)
-    {
-        // Access the model gameobject
-        string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
-        string json = File.ReadAllText(path);
-
-        // Extract the gameobject
-        Model model = JsonUtility.FromJson<Model>(json);
-
-        // Get the name of the imported model (delete the ending '.json')
-        string modelName = "Model_" + model.modelName.Substring(0, model.modelName.Length - 4);
-
-        Debug.Log("Searching for game object: " + modelName);
-
-        // Find the model in the children of the save model object
-        GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
-
-        Debug.Log("The model: " + obj.name + " was found.");
-
-        // // Find the child object of the model
-        // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
-
-        // Access the box collider information of the child object
-        BoxCollider m_Collider = obj.GetComponentInChildren<BoxCollider>();
-
-        // Get the position of the target image
-        Vector3 position = imageTarget2.transform.position;
-
-        // Get the scale
-        Vector3 scaleVector = obj.transform.localScale;
-
-        // Find the position over the target image where the model should be
-        position = position + imageTarget2.transform.up * m_Collider.size.y * scaleVector.x;
-
-        // Change the position of the model so that it stands over the marker
-        obj.transform.position = position;
-
-        // Set the model as child of the marker
-        obj.transform.parent = imageTarget2.transform;
-
-        Debug.Log("The model object " + obj.name + "was set as child of " + imageTarget2.name);
-    }
-
-    // Import the third model and bind it to the third image target
-    public void AddModelOverTargetImage3(string name, string pathToQuestion)
-    {
-        // Access the model gameobject
-        string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
-        string json = File.ReadAllText(path);
-
-        // Extract the gameobject
-        Model model = JsonUtility.FromJson<Model>(json);
-
-        // Get the name of the imported model (delete the ending '.json')
-        string modelName = "Model_" + model.modelName.Substring(0, model.modelName.Length - 4);
-
-        Debug.Log("Searching for game object: " + modelName);
-
-        // Find the model in the children of the save model object
-        GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
-
-        // // Find the child object of the model
-        // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
-
-        // Access the box collider information of the child object
-        BoxCollider m_Collider = obj.GetComponentInChildren<BoxCollider>();
-
-        // Get the position of the target image
-        Vector3 position = imageTarget3.transform.position;
-
-        /// Get the scale
-        Vector3 scaleVector = obj.transform.localScale;
-
-        // Find the position over the target image where the model should be
-        position = position + imageTarget3.transform.up * m_Collider.size.y * scaleVector.x;
-
-        // Change the position of the model so that it stands over the marker
-        obj.transform.position = position;
-
-        // Set the model as child of the marker
-        obj.transform.parent = imageTarget3.transform;
-    }
-
-    // Import the fourth model and bind it to the fourth image target
-    public void AddModelOverTargetImage4(string name, string pathToQuestion)
-    {
-        // Access the model gameobject
-        string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
-        string json = File.ReadAllText(path);
-
-        // Extract the gameobject
-        Model model = JsonUtility.FromJson<Model>(json);
-
-        // Get the name of the imported model (delete the ending '.json')
-        string modelName = "Model_" + model.modelName.Substring(0, model.modelName.Length - 4);
-
-        Debug.Log("Searching for game object: " + modelName);
-
-        // Find the model in the children of the save model object
-        GameObject obj = saveModelObject.transform.Find(modelName).gameObject; 
-
-        // // Find the child object of the model
-        // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
-
-        // Access the box collider information of the child object
-        BoxCollider m_Collider = obj.GetComponentInChildren<BoxCollider>();
-
-        // Get the position of the target image
-        Vector3 position = imageTarget4.transform.position;
-
-        // Get the scale
-        Vector3 scaleVector = obj.transform.localScale;
-
-        // Find the position over the target image where the model should be
-        position = position + imageTarget4.transform.up * m_Collider.size.y * scaleVector.x;
-
-        // Change the position of the model so that it stands over the marker
-        obj.transform.position = position;
-
-        // Set the model as child of the marker
-        obj.transform.parent = imageTarget4.transform;
-    }
-
-    // Import the fifth model and bind it to the fifth image target
-    public void AddModelOverTargetImage5(string name, string pathToQuestion)
-    {
-        // Access the model gameobject
-        string path = Path.Combine(Path.GetDirectoryName(pathToQuestion), name);
-        string json = File.ReadAllText(path);
-
-        // Extract the gameobject
-        Model model = JsonUtility.FromJson<Model>(json);
-
-        // Get the name of the imported model (delete the ending '.json')
-        string modelName = "Model_" + model.modelName.Substring(0, model.modelName.Length - 4);
-
-        Debug.Log("Searching for game object: " + modelName);
-
-        // Find the model in the children of the save model object
-        GameObject obj = saveModelObject.transform.Find(modelName).gameObject;
-
-        Debug.Log("The model: " + obj.name + " was found.");
-
-        // // Find the child object of the model
-        // GameObject childGameObject = obj.transform.GetChild(0).gameObject;
-
-        // Access the box collider information of the child object
-        BoxCollider m_Collider = obj.GetComponentInChildren<BoxCollider>();
-
-        // Get the position of the target image
-        Vector3 position = imageTarget5.transform.position;
-
-        // Get the scale
-        Vector3 scaleVector = obj.transform.localScale;
-
-        // Find the position over the target image where the model should be
-        position = position +  imageTarget5.transform.up * m_Collider.size.y * scaleVector.x;
-
-        // Change the position of the model so that it stands over the marker
-        obj.transform.position = position;
-
-        // Set the model as child of the marker
-        obj.transform.parent = imageTarget5.transform;
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
     // Helper methods for the method that activate the question interfaces depending on the current question
     //-------------------------------------------------------------------------------------------------------------------------------------------
 
-    // Method that initializes the model, creates a box collider, resizes it, and sets it to the right position, sets the model as child of the parent
+    /// <summary>
+    /// Initializes the model, creates a box collider, resizes it, and sets it to the right position, sets the model as child of the parent
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <param name="parent"></param>
     public void InitializeModel(GameObject obj, GameObject parent)
     {
         // Get the child gamobject (there should always be one)
@@ -628,9 +461,8 @@ public class ActivateQuestions : MonoBehaviour
         // Access the box collider information
         BoxCollider m_Collider = childGameObject1.GetComponent<BoxCollider>();
 
-        childGameObject1.gameObject.layer = 10;
+        childGameObject1.layer = 10;
 
-        // Get the greatest size of the sizes of the box collider
         float greatest = ReturnGreatestFloat(m_Collider.size.x, m_Collider.size.y, m_Collider.size.z);
         
         // Get the down scale factor you want
@@ -639,25 +471,20 @@ public class ActivateQuestions : MonoBehaviour
         // Down scale the model
         obj.transform.localScale = new Vector3(scale * 0.3f, scale * 0.3f, scale * 0.3f);
 
-        // // Get the position on which the model should be
-        // Vector3 position = parent.transform.position;
-        // position = position + new Vector3(0, m_Collider.size.y/2 * scale, 0);
-
-        // // Change the position of the model so that it stands over the marker
-        // obj.transform.position = position;
-
         // Set the model as child of the marker
         obj.transform.parent = parent.transform;
     }
 
-    // Method that returns the greatest number of the three floats given
+    /// <summary>
+    /// Returns the greatest number of the three floats given
+    /// </summary>
     public float ReturnGreatestFloat(float size1, float size2, float size3)
     {
         // Initialize a size variable
-        float greater = 0;
+        float greater;
 
         // Check which one is greater from the two first sizes
-        if(size1 >= size2)
+        if (size1 >= size2)
         {
             greater = size1;
         } else {
@@ -677,7 +504,9 @@ public class ActivateQuestions : MonoBehaviour
     // Method that activate the question interfaces depending on the current question
     //-------------------------------------------------------------------------------------------------------------------------------------------
 
-    // Method that is executed when a user presses the "view question" button in the model view
+    /// <summary>
+    /// Executed when a user presses the "view question" button in the model view
+    /// </summary>
     public void ActivateQuestion()
     {
         // Get the current question path
@@ -715,13 +544,10 @@ public class ActivateQuestions : MonoBehaviour
 
             // Set the right typing color to the input field
             GameObject.Find("TextAnswerInput").GetComponent<TMP_Text>().color = typingColor;
-
-            // Empty the input field
             answerFieldInput.text = "";
             
         } else {
 
-            // Extract the object
             MultipleChoiceQuestion question = JsonUtility.FromJson<MultipleChoiceQuestion>(json);
 
             // Enable the menu
@@ -882,7 +708,9 @@ public class ActivateQuestions : MonoBehaviour
     // Method that give a visual feedback on the correct and incorrect answers and correct or incorrect given answers
     //-------------------------------------------------------------------------------------------------------------------------------------------
 
-    // Method that displays the correct or incorrect answer when clicking on the selection confirmation button after solving an input question
+    /// <summary>
+    /// Displays the correct or incorrect answer when clicking on the selection confirmation button after solving an input question
+    /// </summary>
     public void DisplayRestultInput()
     {
         // Get the current question path
@@ -901,11 +729,8 @@ public class ActivateQuestions : MonoBehaviour
             // Case it is the correct answer, change the color of the text of the input field to green
             GameObject.Find("TextAnswerInput").GetComponent<TMP_Text>().color = correctColor;
 
-            // Activate the close button and deactivate the confirm button
             closeQuestionInput.gameObject.SetActive(true);
             confirmAnswerInput.gameObject.SetActive(false);
-
-            // Deactivate the input field (make it un-interactable)
             answerFieldInput.interactable = false;
             
 
@@ -922,11 +747,8 @@ public class ActivateQuestions : MonoBehaviour
                 // Change the text so that it has the capitalization of the answer
                 answerFieldInput.text = question.answer;
 
-                // Activate the close button and deactivate the confirm button
                 closeQuestionInput.gameObject.SetActive(true);
                 confirmAnswerInput.gameObject.SetActive(false);
-
-                // Deactivate the input field (make it un-interactable)
                 answerFieldInput.interactable = false;
 
             } else {
@@ -940,11 +762,8 @@ public class ActivateQuestions : MonoBehaviour
                 yourWrongAnswer.text = answerFieldInput.text;
                 theCorrectAnswer.text = question.answer;
 
-                // Activate the close button and deactivate the confirm button
                 closeQuestionInput.gameObject.SetActive(true);
                 confirmAnswerInput.gameObject.SetActive(false);
-
-                // Set the boolean that tells that the answer was correct or not to false
                 answeredCorrectly = false;
             }
         }
@@ -952,7 +771,6 @@ public class ActivateQuestions : MonoBehaviour
         // Check if the question was answered correctly or not and give visual feedback
         DisplayFeedbackButton(feedbackInput, answeredCorrectly);
 
-        // If the question was answered correctly, reduce the number of questions that need to be answered by one
         if(answeredCorrectly == true)
         {
             lastQuestionWasAnsweredCorrectly = true;
@@ -963,7 +781,9 @@ public class ActivateQuestions : MonoBehaviour
         }
     }
 
-    // Method that checks if both strings begin with or without capital letter, if not check if it is the same letter
+    /// <summary>
+    /// Checks if both strings begin with or without capital letter, if not check if it is the same letter
+    /// </summary>
     public bool CheckIfBothOrNoneStartWithCapitalLetter(string firstWord, string secondWord)
     {
         // Check if the first characters are digits or letters
@@ -991,12 +811,9 @@ public class ActivateQuestions : MonoBehaviour
                     // Check if the capitalized word is identical to the other
                     if(capitalizedFirstWord == secondWord)
                     {
-                        // Case both words are identical except for first character capitalization
                         return true;
 
                     } else {
-
-                        // Case both words are different, return false
                         return false;
                     }
 
@@ -1008,12 +825,9 @@ public class ActivateQuestions : MonoBehaviour
                     // Check if the capitalized word is identical to the other
                     if(capitalizedSecondWord == firstWord)
                     {
-                        // Case both words are identical except for first character capitalization
                         return true;
 
                     } else {
-
-                        // Case both words are different, return false
                         return false;
                     }
                 }
@@ -1026,13 +840,12 @@ public class ActivateQuestions : MonoBehaviour
         }
     }
 
-    // Method that takes a word, and returns it with a capital letter as first letter
+    /// <summary>
+    /// Takes a word, and returns it with a capital letter as first letter
+    /// </summary>
     public string WriteFirstLetterCapital(string word)
     {
-        // Extract the first letter
         string firstLetter = word.Substring(0, 1);
-
-        // Make it a capital letter
         firstLetter = firstLetter.ToUpper();
 
         // Get the end of the word
@@ -1043,7 +856,9 @@ public class ActivateQuestions : MonoBehaviour
 
     }
 
-    // Method that displays the correct or incorrect answer when clicking on the selection confirmation button after solving an multiple choice question
+    /// <summary>
+    /// Displays the correct or incorrect answer when clicking on the selection confirmation button after solving an multiple choice question
+    /// </summary>
     public void DisplayRestultMC()
     {
         // Get the current question path
@@ -1062,8 +877,6 @@ public class ActivateQuestions : MonoBehaviour
             // Get the button that correspond to the index
             Button currentButton = GetQuestionButtonFromIndex(index, question.numberOfAnswers);
 
-            //Debug.Log(AnswerShouldBeCorrect(index, question));
-
             // Check if the answer should be correct and was selected
             if(AnswerShouldBeCorrect(index, question) == true)
             {
@@ -1075,7 +888,6 @@ public class ActivateQuestions : MonoBehaviour
 
                 // Answer was correct, give the button a greenish tint
                 currentButton.GetComponent<Image>().color = correctButtonColor;
-                // make the text green
                 currentButton.GetComponentInChildren<TMP_Text>().color = correctColor;
 
             }
@@ -1114,7 +926,9 @@ public class ActivateQuestions : MonoBehaviour
         }
     }
 
-    // Method that displays the correctly or incorrectly answered question
+    /// <summary>
+    /// Displays the correctly or incorrectly answered question
+    /// </summary>
     public void DisplayFeedbackButton(Button button, bool answer)
     {
         // Enable the button
@@ -1123,23 +937,19 @@ public class ActivateQuestions : MonoBehaviour
         // Check if the question was answered correctly or not
         if(answer == true)
         {
-            // Set the answer correct text
             button.GetComponentInChildren<TMP_Text>().text = "Your answer was correct!";
-
-            // Set the correct color
             button.GetComponentInChildren<TMP_Text>().color = correctColor;
 
         } else {
 
-            // Set the answer incorrect text
             button.GetComponentInChildren<TMP_Text>().text = "Your answer was incorrect.";
-
-            // Set the incorrect color
             button.GetComponentInChildren<TMP_Text>().color = incorrectColor;
         }
     }
 
-    // Method that returns if the answer with given index should be true or not
+    /// <summary>
+    /// Returns if the answer with given index should be true or not
+    /// </summary>
     public bool AnswerShouldBeCorrect(int index, MultipleChoiceQuestion question)
     {
         // Return the right boolean value depending on the index
@@ -1161,7 +971,9 @@ public class ActivateQuestions : MonoBehaviour
         return question.answer5Correct;
     }
 
-    // Method that returns you the right button given the index
+    /// <summary>
+    /// Returns you the right button given the index
+    /// </summary>
     public Button GetQuestionButtonFromIndex(int index, int numberOfAnswers)
     {
         // Check what is the number of answers
@@ -1262,58 +1074,22 @@ public class ActivateQuestions : MonoBehaviour
     // Method that creates the question array (not shuffled)
     public void InitializeQuestionArray()
     {
-        // // GetJsonFiles("/Level2/Description.json");
-
-        // // ReadJson("/Level2/Description.json");
-
-
-        // // Get the path to the description file
-        // string pathToDescription = Path.Combine(Questions.pathToLevel, "Description.json");
-
-        // // Initialize the string 
-        // string myText = "";
-
-        // // Get the data
-        // UnityWebRequest data = new UnityWebRequest.Get(pathToDescription);
-
-        // // If the string is not empty, get the string
-        // if(string.IsNullOrEmpty(data.error))
-        // {
-        //     myText = data.text;
-        // }
-
-        // // Extract the description object
-        // Log description = JsonUtility.FromJson<Log>(myText);
-        
-        // // Write the number of questions on the button
-        // startButton.GetComponentInChildren<TMP_Text>().text = description.numberOfQuestions.ToString();
-
-        
-
-        // Get the array of question files
         string[] questions = Directory.GetFiles(Questions.pathToLevel, "Question*", SearchOption.TopDirectoryOnly);
-        
-        // Set the Questions.questionArray right
         Questions.questionArray = questions;
-
-        // Set the last question index
         Questions.lastQuestionIndex = Questions.questionArray.Length - 1;
-
-        // Set the current question index to 0
         Questions.currentQuestionIndex = 0;
     }
 
     // Initialize random number generator
     private readonly System.Random random = new System.Random();
 
-    // Method that shuffles an array
+    /// <summary>
+    /// Shuffles an array
+    /// </summary>
     public string[] ShuffleQuestionArray(string[] array)
     {
         // Get the length of the question array
         int length = array.Length;
-
-        // Initialize the swap index
-        int swapIndex = 0;
 
         // Initialize the loop index
         int index = length - 1;
@@ -1322,7 +1098,7 @@ public class ActivateQuestions : MonoBehaviour
         while(index >= 0)
         {
             // Get a random number
-            swapIndex = random.Next(0, index);
+            int swapIndex = random.Next(0, index);
 
             // Copy entry at swapIndex to the entry index of the array
             string value = array[swapIndex];
@@ -1340,81 +1116,14 @@ public class ActivateQuestions : MonoBehaviour
     // Method that initializes everything when a level is started
     public void InitializeRound()
     {
-        // // ---------------------------------------------------------------------------------
-        // // Used to create and save dummy questions:
-        // // ---------------------------------------------------------------------------------
-
-        // File.Delete(Path.Combine(Questions.pathToLevel, "Question000.json"));
-        // File.Delete(Path.Combine(Questions.pathToLevel, "Question001.json"));
-        // File.Delete(Path.Combine(Questions.pathToLevel, "Description.json"));
-
-        // // Create a dummy input question
-        // InputQuestion inputQuestion = new InputQuestion();
-        // inputQuestion.exerciseType = "input question";
-        // inputQuestion.name = "Input question name";
-        // inputQuestion.question = "What is the result of 1 + 4?";
-        // inputQuestion.answer = "5";
-        // inputQuestion.numberOfModels = 0;
-        // inputQuestion.model1Name = "";
-        // inputQuestion.model2Name = "";
-        // inputQuestion.model3Name = "";
-        // inputQuestion.model4Name = "";
-        // inputQuestion.model5Name = "";
-
-        // // Create a dummy multiple choice question
-        // MultipleChoiceQuestion mCQuestion = new MultipleChoiceQuestion();
-        // mCQuestion.exerciseType = "multiple choice question";
-        // mCQuestion.name = "Multiple choice question name";
-        // mCQuestion.question = "What is the result of 1 + 4?";
-        // mCQuestion.answer1 = "1";
-        // mCQuestion.answer2 = "7";
-        // mCQuestion.answer3 = "14";
-        // mCQuestion.answer4 = "5";
-        // mCQuestion.answer5 = "6";
-        // mCQuestion.answer1Correct = false;
-        // mCQuestion.answer2Correct = false;
-        // mCQuestion.answer3Correct = false;
-        // mCQuestion.answer4Correct = true;
-        // mCQuestion.answer5Correct = false;
-        // mCQuestion.numberOfModels = 0;
-        // mCQuestion.model1Name = "";
-        // mCQuestion.model2Name = "";
-        // mCQuestion.model3Name = "";
-        // mCQuestion.model4Name = "";
-        // mCQuestion.model5Name = "";
-
-        // // Create a dummy description
-        // Log description = new Log();
-        // description.numberOfQuestions = 2;
-        // description.numberOfModels = 0;
-        // description.heading = "This is the descriptions heading";
-        // description.description = "This is a fabulous description";
-
-        // // Convert the objects to json
-        // string inputQuestionJson = JsonUtility.ToJson(inputQuestion);
-        // string mCQuestionJson = JsonUtility.ToJson(mCQuestion);
-        // string descriptionJson = JsonUtility.ToJson(description);
-
-        // // Save it
-        // File.WriteAllText(Path.Combine(Questions.pathToLevel, "Question000.json"), inputQuestionJson);
-        // File.WriteAllText(Path.Combine(Questions.pathToLevel, "Question001.json"), mCQuestionJson);
-        // File.WriteAllText(Path.Combine(Questions.pathToLevel, "Description.json"), descriptionJson);
-
-        // ---------------------------------------------------------------------------------
-
-        // Initialize the question array
         InitializeQuestionArray();
-
-        // Shuffle the question array
         Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
-
-        // Load all models
         ImportAllModels();
-
-        // Debug.Log("The current question is: " + Questions.questionArray[Questions.currentQuestionIndex]);
     }
 
-    // Method that returns the array of files in a directory
+    /// <summary>
+    /// Get the array of files in a directory
+    /// </summary>
     static string[] GetFilesArray(string path) 
     {
         string[] files = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly);
@@ -1433,14 +1142,9 @@ public class ActivateQuestions : MonoBehaviour
         foreach(string file in levelFiles)
         {
             startButton.GetComponentInChildren<TMP_Text>().text = "copying data";
-            // Read the data
             string loadData = File.ReadAllText(file);
-
-            // Get the fileName
             string name = Path.GetFileName(file);
             Debug.Log("Current File name: " + name);
-
-            // Save it
             File.WriteAllText(Path.Combine(Path.Combine(levelDirectoryPath,"Test"), name), loadData);
         }
     }
@@ -1448,21 +1152,16 @@ public class ActivateQuestions : MonoBehaviour
     // Test function to test the saving of files on the android device
     public void TestFunction()
     {
-        // Get the path
         string filePath = Path.Combine(Application.persistentDataPath, "Description.json");
-
-        // Read the data
         string loadData = File.ReadAllText(filePath);
-
-        // Get the gameobject
         Log description = JsonUtility.FromJson<Log>(loadData);
-
-        // Print the description on the button
         startButton.GetComponentInChildren<TMP_Text>().text = description.description;
 
     }
 
-    // Method that activates the view model menu and enables the user to open the first question
+    /// <summary>
+    /// Activates the view model menu and enables the user to open the first question
+    /// </summary>
     public void ActivateViewModels()
     {
         // After waiting, enable the view model menu
@@ -1472,13 +1171,16 @@ public class ActivateQuestions : MonoBehaviour
         DisplayModels();
     }
 
-    // The method used to access the information of if the game overlay is active
+    /// <summary>
+    /// if the game overlay is active
+    /// </summary>
+    /// <returns></returns>
     public bool GameOverlayActivated()
     {
         return gameOverlay.activeSelf == true;
     }
 
-    // Method that activates the view model menu and enables the user to open the first question
+    // Activates the view model menu and enables the user to open the first question
     IEnumerator ActivateGame()
     {
         // After waiting, enable the view model menu
@@ -1490,9 +1192,6 @@ public class ActivateQuestions : MonoBehaviour
 
         Debug.Log("Here, the game setup should be reset");
 
-        // GameAdvancement.needToReset = true;
-
-        // Reset the game setup
         GameSetup.ResetGameSetup();
 
         // Make sure all towers are released
@@ -1502,10 +1201,8 @@ public class ActivateQuestions : MonoBehaviour
         // Disable all towers
         foreach(GameObject tower in towerArray)
         {
-            // Check if the tower is active
             if(tower.activeSelf == true)
-            {
-                // Release the tower object
+            { 
                 ObjectPools.ReleaseTower(tower);
             }
         }
@@ -1519,7 +1216,6 @@ public class ActivateQuestions : MonoBehaviour
             // Check if the trap is active
             if(trap.activeSelf == true)
             {
-                // Release the trap object
                 ObjectPools.ReleaseTrap(trap.GetComponent<Trap>());
             }
         }
@@ -1535,17 +1231,18 @@ public class ActivateQuestions : MonoBehaviour
 
     private bool lastQuestionWasAnsweredCorrectly = false;
 
-    // Method that closes the current question, and changes the current question index
+    /// <summary>
+    /// Closes the current question, and changes the current question index
+    /// </summary>
     public void GoToNextQuestion()
     {
-        // Set the flag that the user finished answering the last question
         Questions.currentlyAnsweringQuestion = false;
 
         // Check if the last question was answered correctly
         if(lastQuestionWasAnsweredCorrectly == true)
         {
             // Reduce the number of questions that need to be answered by one
-            Questions.numberOfQuestionsNeededToAnswer = Questions.numberOfQuestionsNeededToAnswer - 1;
+            Questions.numberOfQuestionsNeededToAnswer--;
             UpdateNumberOfQuestionsThatNeedToBeAnsweredDisplay();
         }
 
@@ -1566,19 +1263,12 @@ public class ActivateQuestions : MonoBehaviour
         feedbackInput.gameObject.SetActive(false);
         feedbackMC.gameObject.SetActive(false);
 
-        // // After waiting, enable the view model menu
-        // viewModel.SetActive(true);
-
         // Check if any question still need to be answered
         if(Questions.numberOfQuestionsNeededToAnswer > 0)
         {
-            // Display the models of the current questions
             DisplayModels();
-
         } else {
-            // Display the models of the current questions
             DisplayModels();
-
             viewModel.SetActive(false);
         }
     }
@@ -1592,7 +1282,9 @@ public class ActivateQuestions : MonoBehaviour
     // Flag that states if this is the first import or not
     private bool firstImport = true;
 
-    // Method that imports all models, and sets them invisible. Is done at the begining of a round so that no wait time is needed while playing.
+    /// <summary>
+    /// Imports all models, and sets them invisible. Is done at the begining of a round so that no wait time is needed while playing.
+    /// </summary>
     public async void ImportAllModels()
     {
         // Check if this is the first time something is imported, and if it is needed to initialize the object importer
@@ -1625,10 +1317,7 @@ public class ActivateQuestions : MonoBehaviour
             string url = modelObject.modelUrl;
             GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(url);
 
-            // Rename the object in the model object name
             obj.name = "Model_" + modelObject.modelName.Substring(0, modelObject.modelName.Length-4);
-
-            // Add the model tag
             obj.tag = "Model";
 
             Debug.Log("Model renamed in: " + "Model_" + modelObject.modelName.Substring(0, modelObject.modelName.Length-4));
@@ -1641,39 +1330,9 @@ public class ActivateQuestions : MonoBehaviour
 
             Debug.Log("The current number of models that are loaded is: " + Questions.numberOfModelsLoaded);
             Debug.Log("Currently we have: " + Questions.numberOfModelsLoaded + " >= "  + Questions.numberOfModels);
-
-            // ------------------------------------------
-            // Under here from local disc, over from url
-            // ------------------------------------------
-            
-            // // Access the model gameobject
-            // string json = File.ReadAllText(model);
-
-            // // Extract the gameobject
-            // Model modelObject = JsonUtility.FromJson<Model>(json);
-
-            // // From the model name and the current path, get the path to the real model object
-            // string modelPath = Path.Combine(Questions.pathToLevel, modelObject.modelName);
-
-            // Debug.Log("Trying to import: " + modelPath);
-
-            // // Import the first model
-            // GameObject obj = await ServiceManager.GetService<ObjImporter>().ImportAsync(modelPath);
-
-            // // Initialize the model (resize it correctly) and set it as the child of the same model object
-            // InitializeModel(obj, saveModelObject);
-
-            // // When the model finished loading, increase the loaded model counter
-            // Questions.numberOfModelsLoaded = Questions.numberOfModelsLoaded + 1;
-
-            // Debug.Log("The current number of models that are loaded is: " + Questions.numberOfModelsLoaded);
-            // Debug.Log("Currently we have: " + Questions.numberOfModelsLoaded + " >= "  + Questions.numberOfModels);
         }
         
         Debug.Log("The number of models is: " + Questions.numberOfModels);
-
-        // // Activate the view model menu, where questions can be answered
-        // ActivateViewModels();
 
         // Disable the background
         background.SetActive(false);
@@ -1684,7 +1343,6 @@ public class ActivateQuestions : MonoBehaviour
         Board.activateGameBoard = false;
     }
 
-    // Method used to increase the number of questions that need to be answered
     public static void IncreaseNumberOfQuestionsThatNeedToBeAnswered(int number)
     {
         // Increase the number of questions that need to be answered by the number given
@@ -1693,14 +1351,12 @@ public class ActivateQuestions : MonoBehaviour
         UpdateNumberOfQuestionsThatNeedToBeAnsweredDisplay();
     }
 
-    // Method that actualizes the button that displays the number of questions that need to be answered
     public static void UpdateNumberOfQuestionsThatNeedToBeAnsweredDisplay()
     {
         // Change the number displayed to the global variables
         NumberOfQuestionsThatNeedToBeAnsweredDisplay.GetComponentInChildren<TMP_Text>().text = Questions.numberOfQuestionsNeededToAnswer.ToString();
     }
 
-    // Method that resets the question menu windows
     public static void ResetQuestionMenuWindows()
     {
         // Disable the view input question menu
@@ -1715,16 +1371,6 @@ public class ActivateQuestions : MonoBehaviour
         // Reset the number of questions needed to be answered
         Questions.numberOfQuestionsNeededToAnswer = 0;
     }
-
-    //------------------------------------------------------------------------------------------------------------------
-    // Helper functions that set the flags of if an image target is visible or not
-    //------------------------------------------------------------------------------------------------------------------
-
-    // public void ImageTarget1BecameVisible()
-    // {
-    //     // Need to check if it is the right image target
-    //     imageTarget1Visible = true;
-    // }
 
     public void ImageTarget2BecameVisible()
     {
@@ -1745,12 +1391,6 @@ public class ActivateQuestions : MonoBehaviour
     {
         imageTarget5Visible = true;
     }
-
-    // //
-    // public void ImageTarget1Lost()
-    // {
-    //     imageTarget1Visible = false;
-    // }
 
     public void ImageTarget2Lost()
     {

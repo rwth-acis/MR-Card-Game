@@ -442,7 +442,7 @@ public class SpellImages : MonoBehaviour
             SpellType.ArrowRain => ArrowRainSpellCardImage,
             SpellType.ThunderStrike => ThunderStrikeSpellCardImage,
             SpellType.Armor => ArmorSpellCardImage,
-            SpellType.Heal => HealSpellCardImage,
+            SpellType.Healing => HealSpellCardImage,
             SpellType.Obliteration => ObliterationSpellCardImage,
             SpellType.Draw => DrawSpellCardImage,
             SpellType.Teleport => TeleportSpellCardImage,

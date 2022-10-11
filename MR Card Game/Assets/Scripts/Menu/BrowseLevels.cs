@@ -12,6 +12,16 @@ using System.Linq;
 
 public class BrowseLevels : MonoBehaviour
 {
+    // The log, which will become the Description.json file
+    [Serializable]
+    public class Log
+    {
+        public int numberOfQuestions; // The number of already existing questions in the folder so that the new ones can be renamed
+        public int numberOfModels; // The number of already existing model files in the folder so that the new ones can be renamed
+        public string heading; // Heading of the description, name that users can give
+        public string description; // The description text of the content / concepts that are needed for solving the exercises
+    }
+
     // The path to the root directory where all levels are saved locally
     private string rootDirectoryPathBrowse;
 
@@ -23,9 +33,6 @@ public class BrowseLevels : MonoBehaviour
 
     // The directories array
     private string[] directoriesArray;
-
-    // The current browsing depth
-    private int depth;
 
     // The number of pages that can be displayed in this direcory
     private int numberOfPages;
@@ -79,16 +86,6 @@ public class BrowseLevels : MonoBehaviour
     public TMP_Text levelHeading;
     public TMP_Text levelDescription;
 
-    // The log, which will become the Description.json file
-    [Serializable]
-    public class Log
-    {
-        public int numberOfQuestions; // The number of already existing questions in the folder so that the new ones can be renamed
-        public int numberOfModels; // The number of already existing model files in the folder so that the new ones can be renamed
-        public string heading; // Heading of the description, name that users can give
-        public string description; // The description text of the content / concepts that are needed for solving the exercises
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -96,27 +93,13 @@ public class BrowseLevels : MonoBehaviour
         if (androidBoot == true)
         {
             rootDirectoryPathBrowse = Application.persistentDataPath;
-
         }
         else
         {
-
             // First I initialize the Global paths
             string scriptPath = GetCurrentFilePath();
             rootDirectoryPathBrowse = GetPathToRootDirectory(scriptPath);
         }
-
-        // currentPathBrowse = rootDirectoryPathBrowse;
-        // depth = 1;
-
-        // // Then I update in a function the directories, page numbers, heading
-        // UpdateGlobals();
-
-        // // Then I disable / enable the previous and next button based on the number of pages
-        // DisableOrEnableButtons();
-
-        // // Then I rename / delete the name of the predefined buttons and disable those that have no name
-        // RenameButtons(currentPathBrowse);
     }
 
     public void EnterBrowseDirectory()
@@ -124,15 +107,9 @@ public class BrowseLevels : MonoBehaviour
         Debug.Log("The rootDirectoryPathBrowse is: " + rootDirectoryPathBrowse);
         // Set the current path to the root directory path
         currentPathBrowse = rootDirectoryPathBrowse;
-        depth = 1;
 
-        // Then I update in a function the directories, page numbers, heading
         UpdateGlobals();
-
-        // Then I disable / enable the previous and next button based on the number of pages
         DisableOrEnableButtons();
-
-        // Then I rename / delete the name of the predefined buttons and disable those that have no name
         RenameButtons(currentPathBrowse);
     }
 
@@ -142,14 +119,13 @@ public class BrowseLevels : MonoBehaviour
         return fileName;
     }
 
-    // Method that returns you the path to this script
     private string GetCurrentFilePath()
     {
         string scriptPath = GetCurrentFileName();
         return scriptPath;
     }
 
-    // Method that returns you the path to the root directory of the directory structure saved in the back end
+    // Get the path to the root directory of the directory structure saved in the back end
     private string GetPathToRootDirectory(string scriptPath)
     {
         string rootPath = Path.GetFullPath(Path.Combine(scriptPath, @"..\..\..\..\..\"));
@@ -157,7 +133,7 @@ public class BrowseLevels : MonoBehaviour
         return rootDirectoryPath;
     }
 
-    // Method that returns the array of directories in the current directory
+    // Get the array of directories in the current directory
     public string[] GetDirectoriesArray()
     {
         string[] dirs = Directory.GetDirectories(currentPathBrowse, "*", SearchOption.TopDirectoryOnly)
@@ -165,7 +141,7 @@ public class BrowseLevels : MonoBehaviour
         return dirs;
     }
 
-    // Method that returns the array of files in the given path to a directory
+    // Get the array of files in the given path to a directory
     public string[] GetFilesArray()
     {
         string[] files = Directory.GetFiles(currentPathBrowse, "Question*");
@@ -181,9 +157,9 @@ public class BrowseLevels : MonoBehaviour
             int length = 0;
             foreach (string file in files)
             {
-                length = length + 1;
+                length++;
             }
-            length = length + 1;
+            length++;
 
             // Create a new array that can contain all files
             string[] array = new string[length];
@@ -196,33 +172,28 @@ public class BrowseLevels : MonoBehaviour
             foreach (string file in files)
             {
                 array[index] = file;
-                index = index + 1;
+                index++;
             }
-
-            // Return the array that contains the description and the questions
             return array;
-
         }
         else
         {
-
-            // Case the description file does not exist
             return files;
         }
     }
 
-    // Method that returns the number of directories in the current directory
+    // Get the number of directories in the current directory
     public int GetNumberOfDirectories(string[] dirs)
     {
         int number = 0;
         foreach (string dir in dirs)
         {
-            number = number + 1;
+            number++;
         }
         return number;
     }
 
-    // Method that returns the number of directories in the current directory
+    // Get the number of directories in the current directory
     public int GetNumberOfFiles(string[] files)
     {
         int number = 0;
@@ -283,21 +254,17 @@ public class BrowseLevels : MonoBehaviour
         switchImage = returnOneUp.image;
         if (currentPathBrowse != rootDirectoryPathBrowse)
         {
-            //returnButtonOn.interactable = true;
             returnOneUp.interactable = true;
             switchImage.sprite = switchSprites[1];
-
         }
         else
         {
-
-            //returnButtonOff.interactable = false;
             returnOneUp.interactable = false;
             switchImage.sprite = switchSprites[0];
         }
     }
 
-    // Method that creates the buttons depending of the directory we are currently in
+    // Create the buttons depending of the directory we are currently in
     public void RenameButtons(string path)
     {
 
@@ -341,7 +308,7 @@ public class BrowseLevels : MonoBehaviour
             if (numberOfDirectories != 0)
             {
                 // Value for the end of the for loop (for the renaming loop)
-                int lastIndex = 0;
+                int lastIndex;
                 if (numberOfDirectories <= (currentPage) * 5)
                 {
                     lastIndex = numberOfDirectories - 1;
@@ -436,7 +403,7 @@ public class BrowseLevels : MonoBehaviour
         }
     }
 
-    // Method that is activated when pressing next (change the other directories)
+    // Activated when pressing next (change the other directories)
     public void NextPage()
     {
         currentPage++;
@@ -445,7 +412,7 @@ public class BrowseLevels : MonoBehaviour
         GameObject.Find("HeadingTextBrowseDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
     }
 
-    // Method that is activated when pressing previous (change the other directories)
+    // Activated when pressing previous (change the other directories)
     public void PreviousPage()
     {
         currentPage--;
@@ -474,11 +441,7 @@ public class BrowseLevels : MonoBehaviour
     {
         // Print the time of when the function is first called.
         flagVariable = false;
-
-        // Yield on a new YieldInstruction that waits for 0.5 seconds.
         yield return new WaitForSeconds(0.500F);
-
-        //After we have waited 5 seconds print the time again.
         flagVariable = true;
     }
 
@@ -493,8 +456,6 @@ public class BrowseLevels : MonoBehaviour
 
         if (flagVariable == true)
         {
-            // Increase the browsing depth
-            depth++;
 
             // Get the name of the directory selected
             string directory = button.GetComponentInChildren<TMP_Text>().text;
@@ -517,33 +478,6 @@ public class BrowseLevels : MonoBehaviour
         string[] questions = Directory.GetFiles(path, "Model*", SearchOption.TopDirectoryOnly);
         return questions;
     }
-
-    // // Method that returns you the right model preview button given the index
-    // public Button GetRightModelPreviewButton(int index)
-    // {
-    //     switch(index)
-    //     {
-    //         case 0:
-    //             return previewModel1;
-    //         break;
-    //         case 1:
-    //             return previewModel2;
-    //         break;
-    //         case 2:
-    //             return previewModel3;
-    //         break;
-    //         case 3:
-    //             return previewModel4;
-    //         break;
-    //         case 4:
-    //             return previewModel5;
-    //         break;
-    //         default:
-    //             return previewModel5;
-    //         break;
-    //     }
-    // }
-
     // Get the index that the button gives
     public int GetIndexFromButtonName(string buttonName)
     {
@@ -571,7 +505,9 @@ public class BrowseLevels : MonoBehaviour
         return indexOnPage;
     }
 
-    // Method that updates the global variables (when going deeper or shallower in directory structures)
+    /// <summary>
+    /// Updates the global variables (when going deeper or shallower in directory structures)
+    /// </summary>
     public void UpdateGlobals()
     {
         // First I update the directories array and number
@@ -581,7 +517,7 @@ public class BrowseLevels : MonoBehaviour
 
         // Update the page heading
         currentPage = 1;
-        double value = (double)numberOfDirectories / (double)5;
+        double value = (double)numberOfDirectories / 5;
         numberOfPages = System.Convert.ToInt32(System.Math.Ceiling(value));
 
         // Check if the number of pages is 0
@@ -595,9 +531,12 @@ public class BrowseLevels : MonoBehaviour
         currentPageText.text = "Page " + currentPage + "/" + numberOfPages;
     }
 
-    // Method for the back button 
-    // It should change the menu to the previous menu (main menu or creator)
-    // The distinction is done with the fact that the "select" button is enabled or not
+    /// <summary>
+    /// Method for the back button 
+    /// It should change the menu to the previous menu (main menu or creator)
+    /// The distinction is done with the fact that the "select" button is enabled or not
+    /// </summary>
+
     public void Back()
     {
         // Then display the main menu
@@ -605,24 +544,15 @@ public class BrowseLevels : MonoBehaviour
 
         // First reset the globals so that everything is reset the next time the user enters the menu
         ResetBrowseDirectories();
-
-        // Disable the menu
         browseDirectoriesMenu.SetActive(false);
     }
 
-    // Method that resets the brows directories menu
     public void ResetBrowseDirectories()
     {
         currentPathBrowse = rootDirectoryPathBrowse;
-        depth = 1;
 
-        // Then I update in a function the directories, page numbers, heading
         UpdateGlobals();
-
-        // Then I disable / enable the previous and next button based on the number of pages
         DisableOrEnableButtons();
-
-        // Then I rename / delete the name of the predefined buttons and disable those that have no name
         RenameButtons(currentPathBrowse);
     }
 

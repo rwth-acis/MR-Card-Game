@@ -21,7 +21,6 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private ResistenceAndWeaknessType weakness;
 
-    // The maximum and current health point of the enemy unit
     [SerializeField]
     private int maximumHP;
 
@@ -32,11 +31,10 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float size;
 
-    // The movement speed of the enemy unit
     [SerializeField]
     private float movingSpeed;
 
-    // The damage that the enemy unit deals to the castle if it is reached
+    [Tooltip("The damage that the enemy unit deals to the castle if it is reached.")] 
     [SerializeField]
     private int damage;
 
@@ -48,28 +46,28 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float flyingHeight;
 
-    // The personal slow factor of the enemy
+    [Tooltip("The personal slow factor of the enemy")]
     public float enemySlowFactor = 1;
 
     [Header("Control")]
     [SerializeField]
     private GameObject healthBarUI;
 
-    // The health bar slider
+    [Tooltip("The health bar slider")] 
     [SerializeField]
     private Slider healthBar;
 
-    // The current waypoint index so that enemies go from waypoint to waypoint
-    public int waypointIndex = 0;
+    [Tooltip("The current waypoint index so that enemies go from waypoint to waypoint")] 
+    [SerializeField] private int waypointIndex = 0;
 
-    // The flag that tells if the enemy is currently alive or not
-    public bool isAlive = true;
+    // if the enemy is currently alive or not
+    [SerializeField] private bool isAlive = true;
 
-    // The flag that states if an enemy is wet or not
-    public bool isWet = false;
+    [Tooltip("if an enemy is wet or not")] 
+    [SerializeField] private bool isWet = false;
 
     [Tooltip(" The flag that states if the enemy need its position to be reset or not")]
-    public int firstLife = 0;
+    [SerializeField] private int firstLife = 0;
 
     public int numberOfTrapsIn = 0;
 
@@ -109,18 +107,40 @@ public class Enemy : MonoBehaviour
         get { return flightHeight; }
     }
 
-    // Method used to get the restistance of the enemy
     public ResistenceAndWeaknessType Resistance
     {
         get => resistance;
         set => resistance = value;
     }
 
-    // Method used to get the weakness of the enemy
     public ResistenceAndWeaknessType Weakness
     {
         get => weakness;
         set => weakness = value;
+    }
+
+    public int WaypointIndex
+    {
+        get => waypointIndex;
+        set => waypointIndex = value;
+    }
+
+    public bool IsAlive
+    {
+        get => isAlive;
+        set => isAlive = value;
+    }
+
+    public bool IsWet
+    {
+        get => isWet;
+        set => isWet = value;
+    }
+
+    public int FirstLife
+    {
+        get => firstLife;
+        set => firstLife = value;
     }
 
     #endregion
@@ -135,7 +155,7 @@ public class Enemy : MonoBehaviour
     void Update()
     {
         // If the game is not paused, update
-        if(GameAdvancement.gamePaused == false && isAlive == true)
+        if(GameAdvancement.gamePaused == false && IsAlive == true)
         {
             // If the current health of the unit is not at its maximum, activate the health bar
             if(currentHP < maximumHP)
@@ -144,79 +164,48 @@ public class Enemy : MonoBehaviour
             }
 
             // Kill the enemy if it its health points reach zero
-            if(currentHP <= 0 && isAlive == true)
+            if(currentHP <= 0 && IsAlive == true)
             {
-                // Set the enemy as dead
-                isAlive = false;
-
-                // Make the player win the currency points
-                WinPoints();
-
+                IsAlive = false;
+                GetCurrencyPoints();
                 // Reset the current waypoint index so that enemies walk toward the first waypoint upon respawn
-                waypointIndex = 0;
-
-                // Increase the number of enemies defeated by one
-                LevelInfo.numberOfEnemiesDefeated = LevelInfo.numberOfEnemiesDefeated + 1;
-
-                // Make the enemy die
+                WaypointIndex = 0;
+                LevelInfo.numberOfEnemiesDefeated++;
                 StartCoroutine(Die());
             }
 
-            // Check if the game is stopped
             if(GameAdvancement.timeStopped == false)
             {
-                // Make the enemy mode
                 Move();
             }
         }
     }
 
-    // Method that make the enemy walk
     private void Move()
     {
         // If the last waypoint was not reached, move the enemy
-        if(waypointIndex <= waypoints.Length - 1)
+        if(WaypointIndex <= waypoints.Length - 1)
         {
             // Get the current goal that is the position of the next waypoint, added with a height
-            Vector3 currentGoal = waypoints[waypointIndex].transform.position + transform.up * flightHeight;
+            Vector3 currentGoal = waypoints[WaypointIndex].transform.position + transform.up * flightHeight;
 
             // Move the enemy toward the next waypoint
             transform.position = Vector3.MoveTowards(transform.position, currentGoal, movingSpeed * GameAdvancement.globalSlow * enemySlowFactor * Time.deltaTime * gameBoard.transform.localScale.x);
             transform.LookAt(currentGoal);
-            // // Make the enemy face the direction it is moving
-            // transform.LookAt(waypoints[waypointIndex].transform.position);
 
             // If the enemy reached the position of a waypoint, increase the waypoint index by one
             if(ReachPosition(currentGoal))
-            // if(transform.position.x == waypoints[waypointIndex].transform.position.x && transform.position.z == waypoints[waypointIndex].transform.position.z)
             {
-                // // Set the passed waypoint as last waypoint
-                // lastWaypoint = waypoints[waypointIndex].transform.position;
-
-                // Increase the waypoint index by one
-                waypointIndex++;
-
-                if(waypointIndex <= waypoints.Length - 1)
-                {
-                    // // Make the enemy face the direction it is moving
-                    // transform.LookAt(waypoints[waypointIndex].transform.position + this.transform.up * flightHeight);
-                }
+                WaypointIndex++;
             }
         }
 
-        // Check if the enemy reached the castle
-        if(waypointIndex == waypoints.Length)
+        // if the enemy reached the castle
+        if(WaypointIndex == waypoints.Length)
         {
-            // Set the enemy as dead
-            isAlive = false;
-
-            // Return the enemy to the object pool
+            IsAlive = false;
             ReturnEnemyToObjectPool();
-
-            // Increase the number of enemies that reached the castle by one point
-            LevelInfo.numberOfEnemiesThatReachedTheCastle = LevelInfo.numberOfEnemiesThatReachedTheCastle + 1;
-
-            // Reduce the health of the castle
+            LevelInfo.numberOfEnemiesThatReachedTheCastle++;
             ReduceCastleHealth();
         }
     }
@@ -233,23 +222,26 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // Method that calculates the health value
     public float UpdateHealth()
     {
         return (float)currentHP / maximumHP;
     }
 
-    // Method that rewards the player with currency points if an enemy is defeated
-    public void WinPoints()
+    /// <summary>
+    /// Rewards the player with currency points if an enemy is defeated
+    /// </summary>
+    public void GetCurrencyPoints()
     {
         // Add the enemy value to the currency points of the player
-        GameAdvancement.currencyPoints = GameAdvancement.currencyPoints + currencyPoints;
+        GameAdvancement.currencyPoints += currencyPoints;
 
         // Actualize the currency display so that the player can see that he won currency points
         GameSetup.UpdateCurrencyDisplay();
     }
 
-    // Method that reduces the health points of the castle if an enemy reaches it
+    /// <summary>
+    /// reduces the health points of the castle if an enemy reaches it
+    /// </summary>
     public void ReduceCastleHealth()
     {
         // Reduce the number of undefeated enemies of the wave by one
@@ -269,49 +261,33 @@ public class Enemy : MonoBehaviour
                 GameAdvancement.castleCurrentAP -= damage;
 
             } else {
-
-                // Initialize the additional damage variable
-                int additionalDamage = 0;
-
-                // Set the additional damage to the damage reduced by the castle armor points
-                additionalDamage = damage - GameAdvancement.castleCurrentAP;
-
-                // Set the armor points of the castle to 0
+                int additionalDamage = damage - GameAdvancement.castleCurrentAP;
                 GameAdvancement.castleCurrentAP = 0;
-
-                // Reduce the castle health by the additional amount of damage the unit does
                 GameAdvancement.castleCurrentHP -= additionalDamage;
             }
             
         } else {
-
-            // Reduce the castle health by the amount of damage the unit does
             GameAdvancement.castleCurrentHP -= damage;
         }
-
-        // Display the lost health points on the castle
         GameSetup.UpdateCastleHealthPoints();
     }
 
-    // Method that makes enemies take damage
+    /// <summary>
+    /// Enemy takes damage
+    /// </summary>
     public void TakeDamage(int damage)
     {
-        // Reduce the current health points of the monster by the damage
         if(currentHP - damage >= 0)
         {
             currentHP -= damage;
         } else {
             currentHP = 0;
         }
-
-        // Set the health value correctly
         healthBar.value = UpdateHealth();
     }
 
-    // Method used to return the enemy to the right object pool uppn death
     public void ReturnEnemyToObjectPool()
     {
-        // Call the release enemy of the object pool class
         ObjectPools.ReleaseEnemy(this);
     }
 
@@ -320,13 +296,9 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        // Set the gameboard object
         gameBoard = Board.gameBoard;
-
-        // Set the waypoints that apply to this map
         waypoints = Waypoints.mapWaypoints;
-        waypointIndex = 0;
-        // Set the flight height and standing size
+        WaypointIndex = 0;
         flightHeight = flyingHeight * Board.greatestBoardDimension * 0.6f + 0.2f * size * Board.greatestBoardDimension;
 
         // Deactivate the health bar since it is full
@@ -336,42 +308,19 @@ public class Enemy : MonoBehaviour
         transform.localScale = new Vector3(0.25f * size, 0.25f * size, 0.25f * size);
 
         // Set it to the position of the first waypoint on spawn
-        transform.position = (waypoints[waypointIndex].transform.position + transform.up * flightHeight);
-        isAlive = true;
+        transform.position = (waypoints[WaypointIndex].transform.position + transform.up * flightHeight);
+        IsAlive = true;
         currentHP = MaximumHP;
 
         healthBar.value = UpdateHealth();
     }
 
-    // The coroutine that spawns an oponent and waits for a time before the next spawn
     IEnumerator Die()
     {
-        // Reduce the number of undefeated enemies of the wave by one
         LevelInfo.numberOfUndefeatedEnemies--;
-
         LevelInfo.numberOfEnemiesDefeatedOrReachedCastleCurrentWave++;
-
         Level.Instance.UpdateEnemyNumberDisplay();
-
-        // Wait for 0.5 second
         yield return new WaitForSeconds(0.5f);
-
-        // Return the enemy to the object pool
         ReturnEnemyToObjectPool();
     }
-
-
-    // // Method that sets the resistance of this enemy
-    // public static void SetResistance(string type)
-    // {
-    //     // Set the resistance to type
-    //     resistance = type;
-    // }
-
-    // // Method that sets the weakness of this enemy
-    // public static void SetWeakness(string type)
-    // {
-    //     // Set the weakness to type
-    //     weakness = type;
-    // }
 }

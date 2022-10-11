@@ -57,7 +57,7 @@ public class Trap : MonoBehaviour
             if(trapType == TrapType.Swamp)
             {
                 // Make the enemy wet since this is a swamp
-                other.GetComponent<Enemy>().isWet = true;
+                other.GetComponent<Enemy>().IsWet = true;
             }
         }
     }
@@ -75,7 +75,7 @@ public class Trap : MonoBehaviour
             if(trapType == TrapType.Swamp)
             {
                 // Remove the enemy wetness
-                other.GetComponent<Enemy>().isWet = false;
+                other.GetComponent<Enemy>().IsWet = false;
             }
         }
     }

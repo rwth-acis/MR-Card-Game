@@ -183,7 +183,7 @@ namespace i5.Toolkit.Core.Examples.Spawners
             // // Set the position of the child to the position of the parent object
             // enemy.transform.position = Waypoints.enemySpawn.transform.position  - enemy.transform.up * enemy.GetFlightHeight;
 
-            enemy.firstLife = enemy.firstLife + 1;
+            enemy.FirstLife = enemy.FirstLife + 1;
 
             // Set the health points to max and make it alive again
             enemy.Initialize();

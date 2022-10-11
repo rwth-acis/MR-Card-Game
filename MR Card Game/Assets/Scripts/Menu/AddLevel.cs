@@ -11,19 +11,29 @@ using UnityEngine.SceneManagement;
 
 static class Globals
 {
-    // Save the current path
     public static string currentPath;
-
     public static bool resetAddLevelMenu;
-
-    // The flag that states if this is an android boot or not
     public static bool androidBoot;
-
     public static string rootDirectoryPath;
 }
 
 public class AddLevel : MonoBehaviour
 {
+
+    // The log, which will become the Description.json file
+    [Serializable]
+    public class Log
+    {
+        // The number of already existing questions in the folder so that the new ones can be renamed
+        public int numberOfQuestions;
+        // The number of already existing model files in the folder so that the new ones can be renamed
+        public int numberOfModels;
+        // Heading of the description, name that users can give
+        public string heading;
+        // The description text of the content / concepts that are needed for solving the exercises
+        public string description;
+    }
+
     // The number of directories in the folder
     private int numberOfDirectories;
 
@@ -42,7 +52,7 @@ public class AddLevel : MonoBehaviour
     // The flag that must be risen if a user want to click on a directory, to ensure the user doesn't go more than one directory per click
     private bool flagVariable = true;
 
-    // Here menus and buttons are defined
+    [Header("UI Elements")]
     [SerializeField]
     private GameObject mainMenu;
     [SerializeField]
@@ -91,15 +101,18 @@ public class AddLevel : MonoBehaviour
     public TMP_Text levelHeading;
     public TMP_Text levelDescription;
 
-    // The log, which will become the Description.json file
-    [Serializable]
-    public class Log
-    {
-        public int numberOfQuestions; // The number of already existing questions in the folder so that the new ones can be renamed
-        public int numberOfModels; // The number of already existing model files in the folder so that the new ones can be renamed
-        public string heading; // Heading of the description, name that users can give
-        public string description; // The description text of the content / concepts that are needed for solving the exercises
-    }
+    // Define the input field, the error text and window so that they can get disabled / enabled when needed
+    [SerializeField]
+    private TMP_InputField mainInputField; // The input field to create directories
+
+    [SerializeField]
+    private TextMeshProUGUI errorText;
+
+    [SerializeField]
+    private GameObject createDirectoryWindow;
+
+    [SerializeField]
+    private Button deleteDirectoryButton;
 
     // Start is called before the first frame update
     void Start()
@@ -115,7 +128,7 @@ public class AddLevel : MonoBehaviour
             Globals.rootDirectoryPath = Application.persistentDataPath;
             
         } else {
-            // First I initialize the Global paths
+            // First initialize the Global paths
             string scriptPath = GetCurrentFilePath();
             Globals.rootDirectoryPath = GetPathToRootDirectory(scriptPath);
         }
@@ -124,13 +137,8 @@ public class AddLevel : MonoBehaviour
         Globals.currentPath = Globals.rootDirectoryPath;
         depth = 1;
 
-        // Then I actualize in a function the directories, page numbers, heading
-        ActualizeGlobals();
-
-        // Then I disable / enable the previous and next button based on the number of pages
+        UpdateGlobals();
         DisableOrEnableButtons();
-
-        // Then I rename / delete the name of the predefined buttons and disable those that have no name
         RenameButtons(Globals.currentPath);
     }
 
@@ -148,13 +156,13 @@ public class AddLevel : MonoBehaviour
         }
     }
 
-    // Helper method to get the path to this script file
-    string GetCurrentFileName([System.Runtime.CompilerServices.CallerFilePath] string fileName = null)
+    // Get the path to this script file
+    private string GetCurrentFileName([System.Runtime.CompilerServices.CallerFilePath] string fileName = null)
     {
         return fileName;
     }
 
-    // Method that returns you the path to this script
+    // Return the path to this script
     private string GetCurrentFilePath()
     {
         string scriptPath = GetCurrentFileName();
@@ -162,7 +170,7 @@ public class AddLevel : MonoBehaviour
         
     }
 
-    // Method that returns you the path to the root directory of the directory structure saved in the back end
+    // Get the path to the root directory of the directory structure saved in the back end
     private string GetPathToRootDirectory(string scriptPath)
     {
         string rootPath = Path.GetFullPath(Path.Combine(scriptPath, @"..\..\..\..\..\"));
@@ -170,14 +178,18 @@ public class AddLevel : MonoBehaviour
         return rootDirectoryPath;
     }
 
-    // Method that returns the array of directories in the current directory
+    /// <summary>
+    /// Get the array of directories in the current directory
+    /// </summary>
     public string[] GetDirectoriesArray() 
     {
         string[] dirs = Directory.GetDirectories(Globals.currentPath, "*", SearchOption.TopDirectoryOnly);
         return dirs;
     }
 
-    // Method that returns the array of files in the given path to a directory
+    /// <summary>
+    /// Get the array of files in the given path to a directory
+    /// </summary>
     public string[] GetFilesArray()
     {
         string[] files = Directory.GetFiles(Globals.currentPath, "Question*");
@@ -197,22 +209,19 @@ public class AddLevel : MonoBehaviour
             }
             length = length + 1;
 
-            // Create a new array that can contain all files
-            string[] array = new string[length];
+            string[] fileArray = new string[length];
 
             // Copy the description in the first slot
-            array[0] = description[0];
+            fileArray[0] = description[0];
             int index = 1;
 
             // Append all elements in the files array to the description array
             foreach(string file in files)
             {
-                array[index] = file;
+                fileArray[index] = file;
                 index = index + 1;
             }
-
-            // Return the array that contains the description and the questions
-            return array;
+            return fileArray;
 
         } else {
 
@@ -221,7 +230,7 @@ public class AddLevel : MonoBehaviour
         }
     }
 
-    // Method that returns the number of directories in the current directory
+    // Get the number of directories in the current directory
     public int GetNumberOfDirectories(string[] dirs) 
     {
        int number = 0;
@@ -231,7 +240,7 @@ public class AddLevel : MonoBehaviour
        return number;
     }
 
-    // Method that returns the number of directories in the current directory
+    // Get the number of directories in the current directory
     public int GetNumberOfFiles(string[] files) 
     {
        int number = 0;
@@ -241,8 +250,6 @@ public class AddLevel : MonoBehaviour
        return number;
     }
 
-    [SerializeField]
-    private Button deleteDirectoryButton;
 
     // Disabling or enabling of the buttons
     public void DisableOrEnableButtons()
@@ -270,11 +277,9 @@ public class AddLevel : MonoBehaviour
         imageSwitch = returnOneUp.image;
         if(Globals.currentPath != Globals.rootDirectoryPath)
         {
-            //returnButtonOn.interactable = true;
             returnOneUp.interactable = true;
             imageSwitch.sprite = spriteSwitch[1];
         } else {
-            //returnButtonOff.interactable = false;
             returnOneUp.interactable = false;
             imageSwitch.sprite = spriteSwitch[0];
         }
@@ -285,10 +290,7 @@ public class AddLevel : MonoBehaviour
             // Make the select directory button interactable and make it blue
             selectDirectory.interactable = true;
             deleteDirectoryButton.interactable = true;
-
-
         } else {
-
             // Make sure the select directory button is not interactable and make it grey
             selectDirectory.interactable = false;
             deleteDirectoryButton.interactable = false;
@@ -296,19 +298,18 @@ public class AddLevel : MonoBehaviour
         }
     }
 
-    // Method that creates the buttons depending of the directory we are currently in
+    /// <summary>
+    /// Creates the buttons depending of the directory we are currently in
+    /// </summary>
     public void RenameButtons(string path)
     {
         // Check if there are no new directories and a description file (== level inside)
         if(numberOfDirectories == 0 && File.Exists(Path.Combine(Globals.currentPath, "Description.json")))
         {
-            // Enable the level description menu
             levelDescriptionMenu.SetActive(true);
 
             // Set the level description and heading correctly
-            SetUpLevelDescription();
-
-            // Disable the add level menu
+            SetupLevelDescription();
             addLevelMenu.SetActive(false);
 
         // Case there is at least one directory, then display the numbers 5*x + 1 to 5*x + 5 (x is number of the page)
@@ -340,10 +341,7 @@ public class AddLevel : MonoBehaviour
 
                 for(int currentIndex = initialIndex; currentIndex <= lastIndex; currentIndex = currentIndex + 1)
                 {
-                    // Get the directory path
                     string dir = directoriesArray[currentIndex];
-
-                    // Get the name
                     string lastFolderName = Path.GetFileName(dir);
 
                     // Print the directory name on the right button
@@ -382,15 +380,7 @@ public class AddLevel : MonoBehaviour
 
             // If there are no more directory, make sure the rest of the buttons are empty and not interactable
             if(currentDirectoryNumber != 5)
-            {
-
-                // // Check if there are no directories
-                // if(currentDirectoryNumber == 1)
-                // {
-                //     // Enable the delete directory button
-                //     deleteDirectoryButton.gameObject.SetActive(true);
-                // }
-                
+            {   
                 for(int counter = numberOfDirectories; counter <= lastEmptyIndex; counter = counter + 1)
                 {
                     switch (currentDirectoryNumber)
@@ -423,7 +413,6 @@ public class AddLevel : MonoBehaviour
         }
     }
 
-    // Method that is activated when pressing next (change the other directories)
     public void NextPage(){
         currentPage = currentPage + 1;
         DisableOrEnableButtons();
@@ -431,7 +420,6 @@ public class AddLevel : MonoBehaviour
         GameObject.Find("HeadingTextBrowseDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
     }
 
-    // Method that is activated when pressing previous (change the other directories)
     public void PreviousPage(){
         currentPage = currentPage - 1;
         DisableOrEnableButtons();
@@ -439,18 +427,14 @@ public class AddLevel : MonoBehaviour
         GameObject.Find("HeadingTextBrowseDirectories").GetComponent<TMP_Text>().text = "Page " + currentPage + "/" + numberOfPages;
     }
 
-    // Method that is activated when pressing the return arrow (get to the parent directory)
+    // Activated when pressing the return arrow (get to the parent directory)
     public void ReturnOneUp()
     {
-        // First we need to actualize the current path
-        // Globals.currentPath = Path.GetFullPath(Path.Combine(Globals.currentPath, @"..\"));
-
         System.IO.DirectoryInfo parentDirectory = Directory.GetParent(Globals.currentPath);
 
         Globals.currentPath = parentDirectory.FullName;
         
-        // Then we can actualize everything
-        ActualizeGlobals();
+        UpdateGlobals();
         DisableOrEnableButtons();
         RenameButtons(Globals.currentPath);
     }
@@ -459,16 +443,12 @@ public class AddLevel : MonoBehaviour
     {
         // Print the time of when the function is first called.
         flagVariable = false;
-
-        // Yield on a new YieldInstruction that waits for 0.5 seconds.
         yield return new WaitForSeconds(0.500F);
-
-        //After we have waited 5 seconds print the time again.
         flagVariable = true;
     }
 
     // Method used to navigate in directories, when clicking on one visible directory
-    public void NavigateDirectories()
+    public void NavigateInDirectories()
     {
         // get the name of the button that was pressed and the button
         string name = EventSystem.current.currentSelectedGameObject.name;
@@ -477,24 +457,22 @@ public class AddLevel : MonoBehaviour
 
         if(flagVariable == true)
         {
-            // Increase the browsing depth
             depth = depth + 1;
 
             // Get the name of the directory selected
             string directory = button.GetComponentInChildren<TMP_Text>().text;
 
-            // Actualize the path
+            // Update the path
             Globals.currentPath = Path.Combine(Globals.currentPath, directory);
 
-            // Actualize the other globals (directories array, number, page number, etc)
-            ActualizeGlobals();
+            UpdateGlobals();
             DisableOrEnableButtons();
             StartCoroutine(FreezeCoroutine());
             RenameButtons(Globals.currentPath);
         }
     }
 
-    // Method that returns the array of models (json files) in the given path
+    // Get the array of models (json files) in the given path
     static string[] GetModelsArray(string path) 
     {
         Debug.Log("The model array was created");
@@ -502,33 +480,9 @@ public class AddLevel : MonoBehaviour
         return questions;
     }
 
-    // // Method that returns you the right model preview button given the index
-    // public Button GetRightModelPreviewButton(int index)
-    // {
-    //     switch(index)
-    //     {
-    //         case 0:
-    //             return previewModel1;
-    //         break;
-    //         case 1:
-    //             return previewModel2;
-    //         break;
-    //         case 2:
-    //             return previewModel3;
-    //         break;
-    //         case 3:
-    //             return previewModel4;
-    //         break;
-    //         case 4:
-    //             return previewModel5;
-    //         break;
-    //         default:
-    //             return previewModel5;
-    //         break;
-    //     }
-    // }
-
-    // Get the index that the button gives
+    /// <summary>
+    /// Get the index that the button gives
+    /// </summary>
     public int GetIndexFromButtonName(string buttonName)
     {
         // First get the index inside the page
@@ -555,16 +509,18 @@ public class AddLevel : MonoBehaviour
         return indexOnPage;
     }
 
-    // Method that actualizes the global variables (when going deeper or shallower in directory structures)
-    public void ActualizeGlobals()
+    /// <summary>
+    /// Update the global variables (when going deeper or shallower in directory structures)
+    /// </summary>
+    public void UpdateGlobals()
     {
-        // First I actualize the directories array and number
+        // Update the directories array and number
         directoriesArray = GetDirectoriesArray();
         numberOfDirectories = GetNumberOfDirectories(directoriesArray);
 
-        // Actualize the page heading
+        // Update the page heading
         currentPage = 1;
-        double value = (double)numberOfDirectories/(double)5;
+        double value = (double)numberOfDirectories/5;
 
         // Get the number of pages
         int pageNumber = System.Convert.ToInt32(System.Math.Ceiling(value));
@@ -576,7 +532,6 @@ public class AddLevel : MonoBehaviour
             numberOfPages = 1;
 
         } else {
-
             // If no, set the number of pages correctly
             numberOfPages = pageNumber;
         }
@@ -585,34 +540,32 @@ public class AddLevel : MonoBehaviour
         currentPageText.text = "Page " + currentPage + "/" + numberOfPages;
     }
 
-    // Method for the back button 
-    // It should change the menu to the previous menu (main menu or creator)
-    // The distinction is done with the fact that the "select" button is enabled or not
+    /// <summary>
+    /// Method for the back button 
+    /// It should change the menu to the previous menu (main menu or creator)
+    /// The distinction is done with the fact that the "select" button is enabled or not
+    /// </summary>
     public void Back()
     {
         // Then display the main menu
         mainMenu.SetActive(true);
 
         // First reset the globals so that everything is reset the next time the user enters the menu
-        resetAddLevelMenu();
+        ResetAddLevelMenu();
 
         // Disable the menu
         addLevelMenu.SetActive(false);
     }
 
-    // Method that resets the brows directories menu
-    public void resetAddLevelMenu()
+    /// <summary>
+    /// Reset the brows directories menu
+    /// </summary>
+    public void ResetAddLevelMenu()
     {
         Globals.currentPath = Globals.rootDirectoryPath;
         depth = 1;
-
-        // Then I actualize in a function the directories, page numbers, heading
-        ActualizeGlobals();
-
-        // Then I disable / enable the previous and next button based on the number of pages
+        UpdateGlobals();
         DisableOrEnableButtons();
-
-        // Then I rename / delete the name of the predefined buttons and disable those that have no name
         RenameButtons(Globals.currentPath);
     }
 
@@ -620,8 +573,10 @@ public class AddLevel : MonoBehaviour
     // Displaying the level description window of the add level menu
     //-----------------------------------------------------------------------------------------------------------
 
-    // Method that does the level description setup
-    public void SetUpLevelDescription()
+    /// <summary>
+    /// setup level description 
+    /// </summary>
+    public void SetupLevelDescription()
     {
         // First access the description file
         string json = File.ReadAllText(Path.Combine(Globals.currentPath, "Description.json"));
@@ -633,11 +588,7 @@ public class AddLevel : MonoBehaviour
             // Give the level the name of the folder that it contains
             levelHeading.text = Path.GetFileName(Path.GetDirectoryName(Globals.currentPath));
 
-            // NOT WORKING TODO!!!!
-
         } else {
-
-            // Set the title to the heading of the description object
             levelHeading.text = descriptionObject.heading;
         }
 
@@ -648,45 +599,39 @@ public class AddLevel : MonoBehaviour
             levelDescription.text = "The creator of theses questions did not give a description for this level.";
 
         } else {
-
-            // Set the description to the description of the description object
             levelDescription.text = descriptionObject.description;
         }
     }
 
-    // Method used to exit the level description and return to the browse directories
+    /// <summary>
+    /// Exit the level description and return to the browse directories
+    /// </summary>
     public void LeaveLevelDescription()
     {
-        // Enable the browse directories menu
         addLevelMenu.SetActive(true);
-
-        // Disable the level description
         levelDescriptionMenu.SetActive(false);
 
         // Set the current path to one layer up
         string currentPath= Path.GetFullPath(Path.Combine(Globals.currentPath, @"..\"));
         Globals.currentPath = currentPath.Remove(currentPath.Length - 1, 1); 
 
-        // Then we can actualize everything
-        ActualizeGlobals();
+        //Update
+        UpdateGlobals();
         DisableOrEnableButtons();
         RenameButtons(Globals.currentPath);
     }
 
-    // Method used to delete a level by pressing the delete button in the level description window
+    /// <summary>
+    /// Delete a level by pressing the delete button in the level description window
+    /// </summary>
     public void DeleteLevel()
     {
         // Get the array of all files in the current path directory
         string[] filePaths = Directory.GetFiles(Globals.currentPath);
-
-        // Go through all files in the directory
         foreach (string filePath in filePaths)
         {
-            // Delete file
             File.Delete(filePath); 
         }
-        
-        // Leave the level description
         LeaveLevelDescription();
     }
 
@@ -694,17 +639,6 @@ public class AddLevel : MonoBehaviour
     // Creating directories
     //-----------------------------------------------------------------------------------------------------------
 
-    // Define the input field, the error text and window so that they can get disabled / enabled when needed
-    [SerializeField]
-    private TMP_InputField mainInputField; // The input field to create directories
-
-    [SerializeField]
-    private TextMeshProUGUI errorText;
-
-    [SerializeField]
-    private GameObject createDirectoryWindow;
-
-    // Method used to open the create directory menu
     public void OpenCreateDirectory()
     {
         Debug.Log("The create directory button was clicked!");
@@ -720,7 +654,6 @@ public class AddLevel : MonoBehaviour
         Debug.Log("The status of the create directory menu is: " + createDirectoryWindow.activeSelf);
     }
 
-    // Method used to create a directory
     public void AddDirectory(TMP_InputField input)
     {
         if (input.text.Length > 0) 
@@ -734,20 +667,15 @@ public class AddLevel : MonoBehaviour
             // Create the new directory if it does not already exist
             if (!Directory.Exists(newPath))
             {
-                // Create directory
                 Directory.CreateDirectory(newPath);
-
-                // Disable the window
                 createDirectoryWindow.SetActive(false);
-
-                // Enable the menu
                 addLevelMenu.SetActive(true);
 
-                // Save the page you were on
+                // Save the page
                 int oldPageNumber = currentPage;
 
-                // Since a new directory was created, it is needed to actualize it
-                ActualizeGlobals();
+                // Since a new directory was created, it is needed to update it
+                UpdateGlobals();
                 currentPage = oldPageNumber;
                 DisableOrEnableButtons();
                 RenameButtons(Globals.currentPath);
@@ -758,13 +686,14 @@ public class AddLevel : MonoBehaviour
                 errorText.gameObject.SetActive(true);
 
             }
-
-            // Reset the text after you used it
+            // Reset the text
             mainInputField.text = "";
 		}
     }
 
-    // Method used to delete a directory
+    /// <summary>
+    /// Dlete the directory under Globals.currentPath
+    /// </summary>
     public void DeleteDirectory()
     {
         Debug.Log("Trying to delete the directory with path: " + Globals.currentPath);
@@ -772,28 +701,17 @@ public class AddLevel : MonoBehaviour
         if(Directory.Exists(Globals.currentPath))
         {
             Debug.Log("Deleting directory with path: " + Globals.currentPath);
-            // Delete directory
             Directory.Delete(Globals.currentPath);
-
-            // Return one up
             ReturnOneUp();
         }
     }
 
-    // Method used to exit the level description and return to the browse directories
+    // Exit the level description and return to the browse directories
     public void LeaveCreateDirectory()
     {
-        // Enable the browse directories menu
         addLevelMenu.SetActive(true);
-
-        // Disable the level description
         createDirectoryWindow.SetActive(false);
-
-        // // Set the current path to one layer up
-        // Globals.currentPath = Path.GetFullPath(Path.Combine(Globals.currentPath, @"..\"));
-
-        // Then we can actualize everything
-        ActualizeGlobals();
+        UpdateGlobals();
         DisableOrEnableButtons();
         RenameButtons(Globals.currentPath);
     }
@@ -815,10 +733,7 @@ public class AddLevel : MonoBehaviour
     // The method used to leave the enter code menu when pressing the cancel button
     public void OpenEnterCodeMenu()
     {
-        // Enable the enter code menu
         enterCodeMenu.SetActive(true);
-
-        // Disable the add level menu
         addLevelMenu.SetActive(false);
     }
 
@@ -830,11 +745,7 @@ public class AddLevel : MonoBehaviour
 
         // Disable the error message
         errorTextCodeNotValid.gameObject.SetActive(false);
-
-        // Disable the enter code menu
         enterCodeMenu.SetActive(false);
-
-        // Enable the add level menu
         addLevelMenu.SetActive(true);
     }
 }

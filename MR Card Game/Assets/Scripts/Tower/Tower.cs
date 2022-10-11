@@ -191,7 +191,7 @@ public class Tower : MonoBehaviour
         foreach(Collider coll in colliders)
         {
             // Check if there are any dead enemies in the colliders list
-            if(coll.GetComponent<Enemy>().isAlive == false)
+            if(coll.GetComponent<Enemy>().IsAlive == false)
             {
                 // Add theses enemies to the list of dead enemies
                 listOfDead.Add(coll);
@@ -276,7 +276,7 @@ public class Tower : MonoBehaviour
         }
 
         // Check if there is a current target
-        if(target != null && target.GetComponent<Enemy>().isAlive == true)
+        if(target != null && target.GetComponent<Enemy>().IsAlive == true)
         {
             // Check if the can attack flag is set to true
             if(canAttack == true)

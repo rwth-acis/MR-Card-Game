@@ -199,7 +199,7 @@ public class SpellCardManager : MonoBehaviour
             { SpellType.ArrowRain, 5 },
             { SpellType.ThunderStrike, 4 },
             { SpellType.Armor, 4 },
-            { SpellType.Heal, 4 },
+            { SpellType.Healing, 4 },
             { SpellType.Obliteration, 1 },
             { SpellType.Draw, 1 },
             { SpellType.Teleport, 3 },
@@ -271,8 +271,8 @@ public class SpellCardManager : MonoBehaviour
                     PlayArmor();
                     break;
 
-                case SpellType.Heal:
-                    PlayHeal();
+                case SpellType.Healing:
+                    PlayHealing();
                     break;
 
                 case SpellType.Obliteration:
@@ -460,7 +460,7 @@ public class SpellCardManager : MonoBehaviour
     }
 
     // The method used to make the heal spell card take effect
-    private void PlayHeal()
+    private void PlayHealing()
     {
         // Check if the plus five health points heal would exceed the castle's maximum health points
         if(GameAdvancement.castleCurrentHP + 5 > GameAdvancement.castleMaxHP)
@@ -538,7 +538,7 @@ public class SpellCardManager : MonoBehaviour
                 enemy.transform.position = Waypoints.enemySpawn.transform.position;
 
                 // Set the waypoint index of the enemy to 0
-                enemy.GetComponent<Enemy>().waypointIndex = 0;
+                enemy.GetComponent<Enemy>().WaypointIndex = 0;
             }
         }
     }
@@ -786,11 +786,9 @@ public class SpellCardManager : MonoBehaviour
     // The method used to reset the spell card deck
     public static void ResetSpellCardDeck()
     {
-        // Reset the number of free draws
         FreeDraws = 0;
-
-        // Set the number of drawn spells on the board to 0
         DrawnSpellsOnBoard = 0;
+        Instance.InitializeCardDeck();
     }
 
     // Method that is activated when the spell image target enters the camera field

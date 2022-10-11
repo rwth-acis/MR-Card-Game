@@ -161,7 +161,6 @@ public class DownloadLevels : MonoBehaviour
                     Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
-                    //Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
                     switch(typeOfRequest)
                     {
                         case 0:

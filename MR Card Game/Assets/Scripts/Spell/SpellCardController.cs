@@ -429,14 +429,21 @@ public class SpellCardController : MonoBehaviour
 
     private SpellType GetSpellTypeWithImageTargetName(string imageTargetName)
     {
-        switch (imageTargetName)
+        return imageTargetName switch
         {
-            case "Spell3":
-                return SpellType.Meteor;
-            case "Spell4":
-                return SpellType.ArrowRain;
-            default:
-                return SpellType.ThunderStrike;
-        }
+            "Draw" => SpellType.Draw,
+            "Armor" => SpellType.Armor,
+            "ArrowRain" => SpellType.ArrowRain,
+            "Healing" => SpellType.Healing,
+            "Meteor" => SpellType.Meteor,
+            "Obliteration" => SpellType.Obliteration,
+            "Rain" => SpellType.Rain,
+            "SlowTime" => SpellType.SlowTime,
+            "SpaceDistortion" => SpellType.SpaceDistortion,
+            "StopTime" => SpellType.StopTime,
+            "ThunderStrike" => SpellType.ThunderStrike,
+            "Teleport" => SpellType.Teleport,
+            _ => SpellType.ArrowRain
+        };
     }
 }

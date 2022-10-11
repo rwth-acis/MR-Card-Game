@@ -9,7 +9,7 @@ public enum SpellType
     ArrowRain,
     ThunderStrike,
     Armor,
-    Heal,
+    Healing,
     Obliteration,
     Draw,
     Teleport,
