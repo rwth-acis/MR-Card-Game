@@ -5,44 +5,38 @@ using i5.Toolkit.Core.Utilities;
 
 public class SpawnSpellEffect : MonoBehaviour
 {
-    // The instance of this class so that the static prefabs can be accessed
-    public static SpawnSpellEffect Instance;
-
-    // The game object under which the spell effects will be put in
+    [Header("Spell Effect Prefabs")]
     [SerializeField]
     private GameObject spellEffectParent;
-
     [SerializeField]
     private GameObject arrowRain;
-
     [SerializeField]
     private GameObject meteorImpact;
-
     [SerializeField]
     private GameObject thunderStrike;
-
     [SerializeField]
     private GameObject spaceDistortion;
 
-    // The method used to access to the spell effect parent object as a static object
+    /// <summary>
+    /// The instance of this class so that the static prefabs can be accessed
+    /// </summary>
+    public static SpawnSpellEffect Instance;
+
     public static GameObject SpellEffectParent
     {
         get { return Instance.spellEffectParent; }
     }
 
-    // The method used to access to the arrow rain prefab as a static object
     public static GameObject ArrowRain
     {
         get { return Instance.arrowRain; }
     }
 
-    // The method used to access to the meteor impact prefab as a static object
     public static GameObject MeteorImpact
     {
         get { return Instance.meteorImpact; }
     }
 
-    // The method used to access to the lightning strike prefab as a static object
     public static GameObject ThunderStrike
     {
         get { return Instance.thunderStrike; }
@@ -53,20 +47,15 @@ public class SpawnSpellEffect : MonoBehaviour
         get => Instance.spaceDistortion;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        // Set instance to this class
         Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public static GameObject SpawnSpell(SpellType spell)
+    /// <summary>
+    /// Get a spell effect from the pool with the given type
+    /// </summary>
+    public static GameObject SpawnSpellFromPool(SpellType spell)
     {
         int poolIndex;
         GameObject spellEffect;
@@ -93,10 +82,8 @@ public class SpawnSpellEffect : MonoBehaviour
                 break;
         }
         spellEffect.SetActive(true);
-        // Set the spell effect under the object that hold the script
         spellEffect.transform.parent = SpellEffectParent.transform;
         spellEffect.transform.localScale = new Vector3(1, 1, 1);
         return spellEffect;
     }
-
 }

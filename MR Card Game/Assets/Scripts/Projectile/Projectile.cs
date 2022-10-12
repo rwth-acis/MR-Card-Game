@@ -23,13 +23,13 @@ public class Projectile : MonoBehaviour
     private Vector3 lastPosition;
 
     // The list of colliders that enter the range of the tower
-    private List<Collider> colliders = new List<Collider>();
+    private List<Collider> enemyColliders = new List<Collider>();
 
     // Access the list of colliders
-    public List<Collider> Colliders
+    public List<Collider> EnemyColliders
     {
-        get => colliders;
-        set => colliders = value;
+        get => enemyColliders;
+        set => enemyColliders = value;
     }
 
     // Start is called before the first frame update
@@ -145,7 +145,7 @@ public class Projectile : MonoBehaviour
         List<Collider> listOfDeadEnemies = new List<Collider>();
 
         // For each enemy in the collider, calculate the damage they should take
-        foreach(var targetEnemy in colliders)
+        foreach(var targetEnemy in enemyColliders)
         {
             Debug.Log("Currently, the target enemy is null is: " + (targetEnemy == null));
             if(targetEnemy != null)
@@ -177,7 +177,7 @@ public class Projectile : MonoBehaviour
             foreach(var enemy in listOfDeadEnemies)
             {
                 // Remove the enemies that are dead from the colliders list
-                colliders.Remove(enemy);
+                enemyColliders.Remove(enemy);
             }
         }
     }
@@ -275,17 +275,17 @@ public class Projectile : MonoBehaviour
     public void ClearCollidersList()
     {
         // Reinitialize colliders list as a new list
-        colliders = new List<Collider>();
+        enemyColliders = new List<Collider>();
     }
 
     // The method that adds entering enemies to the collider list
     private void OnTriggerEnter(Collider other)
     {
         // Check if the collider is already in the list or not
-        if(!colliders.Contains(other))
+        if(!enemyColliders.Contains(other))
         {
             // Add colliders that enter the projectile collider
-            colliders.Add(other);
+            enemyColliders.Add(other);
         }
     }
 
@@ -293,7 +293,7 @@ public class Projectile : MonoBehaviour
     private void OnTriggerExit (Collider other)
     {
         // Remove colliders that leave the collider of the projectile collider
-        colliders.Remove(other);
+        enemyColliders.Remove(other);
     }
 
     public void ReturnProjectileToObjectPool()

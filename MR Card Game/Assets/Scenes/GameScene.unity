@@ -368,7 +368,7 @@ GameObject:
   - component: {fileID: 6122412}
   - component: {fileID: 6122411}
   m_Layer: 0
-  m_Name: LocationSpell3
+  m_Name: Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -520,7 +520,7 @@ GameObject:
   - component: {fileID: 18451425}
   - component: {fileID: 18451424}
   m_Layer: 5
-  m_Name: CanvasSpell7
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -699,7 +699,7 @@ GameObject:
   - component: {fileID: 35868712}
   - component: {fileID: 35868711}
   m_Layer: 5
-  m_Name: AppearanceSpell
+  m_Name: Appearance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9043,7 +9043,7 @@ GameObject:
   - component: {fileID: 377064971}
   - component: {fileID: 377064970}
   m_Layer: 5
-  m_Name: CanvasSpell4
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9874,7 +9874,7 @@ GameObject:
   - component: {fileID: 401821004}
   - component: {fileID: 401821003}
   m_Layer: 5
-  m_Name: CanvasSpell2
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12153,7 +12153,7 @@ GameObject:
   - component: {fileID: 460122475}
   - component: {fileID: 460122474}
   m_Layer: 0
-  m_Name: LocationSpell7
+  m_Name: Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12681,12 +12681,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21b132cca928bd246b2e1757d8f0ca35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfAdditionalEnemiesPerWave: 5
   startNextWave: {fileID: 1387493002}
   pauseButton: {fileID: 586499544}
   continueButton: {fileID: 828643120}
   enemyNumberDisplay: {fileID: 1910170790}
-  timeBetweenSpawns: 2.5
+  numberOfAdditionalEnemiesPerWave: 5
   victoryScreen: {fileID: 151199041}
   enemiesDefeatedVictory: {fileID: 873317920}
   enemiesMissedVictory: {fileID: 882495068}
@@ -12695,6 +12694,7 @@ MonoBehaviour:
   enemiesDefeatedDefeat: {fileID: 1512963002}
   enemiesMissedDefeat: {fileID: 755467729}
   returnMainMenuWindow: {fileID: 1006043454}
+  timeBetweenSpawns: 2.5
 --- !u!1 &484381608
 GameObject:
   m_ObjectHideFlags: 0
@@ -13114,7 +13114,7 @@ GameObject:
   - component: {fileID: 504641167}
   - component: {fileID: 504641166}
   m_Layer: 0
-  m_Name: LocationSpell5
+  m_Name: Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13177,7 +13177,7 @@ GameObject:
   - component: {fileID: 521983249}
   - component: {fileID: 521983248}
   m_Layer: 5
-  m_Name: AppearanceSpell7
+  m_Name: Appearance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14431,7 +14431,7 @@ GameObject:
   - component: {fileID: 592900205}
   - component: {fileID: 592900204}
   m_Layer: 0
-  m_Name: LocationSpell7
+  m_Name: Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14789,7 +14789,7 @@ GameObject:
   - component: {fileID: 607552794}
   - component: {fileID: 607552793}
   m_Layer: 5
-  m_Name: CanvasSpell7
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15502,7 +15502,7 @@ GameObject:
   - component: {fileID: 631365814}
   - component: {fileID: 631365813}
   m_Layer: 5
-  m_Name: AppearanceSpell3
+  m_Name: Appearance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16032,7 +16032,7 @@ GameObject:
   - component: {fileID: 659164787}
   - component: {fileID: 659164786}
   m_Layer: 5
-  m_Name: AppearanceSpell6
+  m_Name: Appearance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17584,7 +17584,7 @@ GameObject:
   - component: {fileID: 717601185}
   - component: {fileID: 717601184}
   m_Layer: 0
-  m_Name: LocationSpell1
+  m_Name: Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19148,7 +19148,7 @@ GameObject:
   - component: {fileID: 825983466}
   - component: {fileID: 825983465}
   m_Layer: 5
-  m_Name: AppearanceSpell5
+  m_Name: Appearance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20384,8 +20384,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hole: {fileID: 5494333844620924843, guid: edc39d7bd375ce945827fbbb921a7be2, type: 3}
-  holeSize: 0.06
   swamp: {fileID: 1698571093740059359, guid: b5d10c11a8c87bc4881ba1fe254bbe96, type: 3}
+  holeSize: 0.06
   swampSize: 0.12
 --- !u!114 &868698480
 MonoBehaviour:
@@ -20407,17 +20407,22 @@ MonoBehaviour:
   slowTimeSpellCardImage: {fileID: 21300000, guid: 9df112c285fdad34ebfd197db2e36c7e, type: 3}
   spaceDistortionSpellCardImage: {fileID: 21300000, guid: 5a7a6eae0da2246409ddd9b9e8519c3a, type: 3}
   rainSpellCardImage: {fileID: 21300000, guid: c88093b9ff4ef2642bc2e6eb87ad189f, type: 3}
-  healSpellCardImage: {fileID: 21300000, guid: 69fa076ae4a95ed4c86da8071a32e545, type: 3}
+  healingSpellCardImage: {fileID: 21300000, guid: 69fa076ae4a95ed4c86da8071a32e545, type: 3}
   armorSpellCardImage: {fileID: 21300000, guid: 9a02df5b0e911ab429ef2ecf8cb0943c, type: 3}
   drawSpellCardImage: {fileID: 21300000, guid: 6f87a9db25354c747b8edbeaa75fb51f, type: 3}
   teleportSpellCardImage: {fileID: 21300000, guid: ab143af334995a449b77ca711485093d, type: 3}
-  spellAppearanceImageTarget1: {fileID: 35868709}
-  spellAppearanceImageTarget2: {fileID: 1953424439}
-  spellAppearanceImageTarget3: {fileID: 631365812}
-  spellAppearanceImageTarget4: {fileID: 2055609240}
-  spellAppearanceImageTarget5: {fileID: 825983464}
-  spellAppearanceImageTarget6: {fileID: 659164785}
-  spellAppearanceImageTarget7: {fileID: 1553055113}
+  meteorAppearance: {fileID: 825983464}
+  arrorRainAppearance: {fileID: 631365812}
+  thunderStrikeAppearance: {fileID: 1801846993}
+  obliterationAppearance: {fileID: 659164785}
+  stopTimeAppearance: {fileID: 1005297004}
+  slowTimeAppearance: {fileID: 521983247}
+  spaceDistortionAppearance: {fileID: 1758694000}
+  rainAppearance: {fileID: 1553055113}
+  healingAppearance: {fileID: 2055609240}
+  armorAppearance: {fileID: 35868709}
+  drawAppearance: {fileID: 1953424439}
+  teleportAppearance: {fileID: 1010895646}
 --- !u!114 &868698482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20904,7 +20909,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0009765625, y: -0.4985199}
+  m_AnchoredPosition: {x: -0.0009765625, y: -0.49853516}
   m_SizeDelta: {x: 0.75, y: -0.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &901333104
@@ -22327,7 +22332,7 @@ GameObject:
   - component: {fileID: 1005297006}
   - component: {fileID: 1005297005}
   m_Layer: 5
-  m_Name: AppearanceSpell7
+  m_Name: Appearance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22656,7 +22661,7 @@ GameObject:
   - component: {fileID: 1010866958}
   - component: {fileID: 1010866957}
   m_Layer: 5
-  m_Name: CanvasSpell5
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22758,7 +22763,7 @@ GameObject:
   - component: {fileID: 1010895648}
   - component: {fileID: 1010895647}
   m_Layer: 5
-  m_Name: AppearanceSpell7
+  m_Name: Appearance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24901,7 +24906,7 @@ GameObject:
   - component: {fileID: 1137798147}
   - component: {fileID: 1137798146}
   m_Layer: 0
-  m_Name: LocationSpell7
+  m_Name: Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25716,7 +25721,7 @@ GameObject:
   - component: {fileID: 1165394077}
   - component: {fileID: 1165394076}
   m_Layer: 5
-  m_Name: CanvasSpell1
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27083,7 +27088,7 @@ GameObject:
   - component: {fileID: 1211893009}
   - component: {fileID: 1211893008}
   m_Layer: 5
-  m_Name: CanvasSpell7
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31334,7 +31339,7 @@ GameObject:
   - component: {fileID: 1426906093}
   - component: {fileID: 1426906092}
   m_Layer: 0
-  m_Name: LocationSpell7
+  m_Name: Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32732,7 +32737,7 @@ GameObject:
   - component: {fileID: 1477094591}
   - component: {fileID: 1477094590}
   m_Layer: 0
-  m_Name: LocationSpell4
+  m_Name: Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33489,7 +33494,7 @@ GameObject:
   - component: {fileID: 1553055115}
   - component: {fileID: 1553055114}
   m_Layer: 5
-  m_Name: AppearanceSpell7
+  m_Name: Appearance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33982,7 +33987,7 @@ GameObject:
   - component: {fileID: 1573318146}
   - component: {fileID: 1573318145}
   m_Layer: 5
-  m_Name: CanvasSpell3
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35066,7 +35071,7 @@ GameObject:
   - component: {fileID: 1629562158}
   - component: {fileID: 1629562157}
   m_Layer: 5
-  m_Name: CanvasSpell7
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37762,7 +37767,7 @@ GameObject:
   - component: {fileID: 1758694002}
   - component: {fileID: 1758694001}
   m_Layer: 5
-  m_Name: AppearanceSpell7
+  m_Name: Appearance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38829,7 +38834,7 @@ GameObject:
   - component: {fileID: 1801846995}
   - component: {fileID: 1801846994}
   m_Layer: 5
-  m_Name: AppearanceSpell7
+  m_Name: Appearance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39014,7 +39019,10 @@ MonoBehaviour:
   slowTimeDuration: 15
   slowTimeFactor: 0.8
   rainDuration: 10
-  rainFactor: 0.9
+  rainSlowingFactor: 0.9
+  armorPointAmount: 3
+  healingAmount: 5
+  drawAmount: 3
   answerQuestions: {fileID: 897248710}
   groundPlane: {fileID: 1522942611}
   gameBoard: {fileID: 1050655252}
@@ -39033,9 +39041,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e127522552b7049b128b459751cfa6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  minimumDistanceBase: 10
-  onBoard: 0
-  visible: 0
   groundPlane: {fileID: 1522942611}
   towerImageTarget: {fileID: 1306641124}
   gameBoard: {fileID: 1050655252}
@@ -39597,7 +39602,7 @@ GameObject:
   - component: {fileID: 1872260836}
   - component: {fileID: 1872260835}
   m_Layer: 5
-  m_Name: CanvasSpell7
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41431,7 +41436,7 @@ GameObject:
   - component: {fileID: 1953424441}
   - component: {fileID: 1953424440}
   m_Layer: 5
-  m_Name: AppearanceSpell2
+  m_Name: Appearance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41507,7 +41512,7 @@ GameObject:
   - component: {fileID: 1960594952}
   - component: {fileID: 1960594951}
   m_Layer: 0
-  m_Name: LocationSpell2
+  m_Name: Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42366,7 +42371,7 @@ GameObject:
   - component: {fileID: 2018804322}
   - component: {fileID: 2018804321}
   m_Layer: 0
-  m_Name: LocationSpell7
+  m_Name: Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42588,7 +42593,7 @@ GameObject:
   - component: {fileID: 2024226589}
   - component: {fileID: 2024226588}
   m_Layer: 0
-  m_Name: LocationSpell6
+  m_Name: Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42689,7 +42694,7 @@ GameObject:
   - component: {fileID: 2028803889}
   - component: {fileID: 2028803888}
   m_Layer: 5
-  m_Name: CanvasSpell7
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43579,7 +43584,7 @@ GameObject:
   - component: {fileID: 2054639513}
   - component: {fileID: 2054639512}
   m_Layer: 5
-  m_Name: CanvasSpell6
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43681,7 +43686,7 @@ GameObject:
   - component: {fileID: 2055609242}
   - component: {fileID: 2055609241}
   m_Layer: 5
-  m_Name: AppearanceSpell4
+  m_Name: Appearance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45398,7 +45403,7 @@ GameObject:
   - component: {fileID: 2102349124}
   - component: {fileID: 2102349123}
   m_Layer: 0
-  m_Name: LocationSpell7
+  m_Name: Location
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

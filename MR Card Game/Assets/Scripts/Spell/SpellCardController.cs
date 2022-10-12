@@ -7,18 +7,16 @@ using Vuforia;
 
 public class SpellCardController : MonoBehaviour
 {
+    [Header("UI Components")]
     [SerializeField]
     private GameObject spellCardCanvas;
 
-    // The draw spell button 
     [SerializeField]
     private Button drawSpellButton;
 
-    // The play spell button 
     [SerializeField]
     private Button playSpellButton;
 
-    // The spell image
     [SerializeField]
     private UnityEngine.UI.Image spellImage;
 
@@ -41,6 +39,9 @@ public class SpellCardController : MonoBehaviour
 
     private GameObject gameBoard;
 
+    /// <summary>
+    /// If the card is drawn
+    /// </summary>
     public bool CardDrawn
     {
         get => cardDrawn;
@@ -59,19 +60,15 @@ public class SpellCardController : MonoBehaviour
         // Check if the wave is not ongoing anymore
         if (LevelInfo.waveOngoing == false)
         {
-            // Hide the play spell button
             HideSpellCanvas();
-
         }
         else
         {
             // Check if there is at least one drawn spell card on the game board
             if (SpellCardManager.DrawnSpellsOnBoard > 0 && !cardDrawn)
             {
-                // Hide the reveal spell menu
                 HideSpellCanvas();
             }
-
             if (visible)
             {
                 projectedPos = ProjectPositionOnGroundPlane();
@@ -94,23 +91,17 @@ public class SpellCardController : MonoBehaviour
             // Check if the card is visible but not drawn while the game is not paused and no other spell card is beeing drawn
             if (visible && !cardDrawn && !GameAdvancement.gamePaused && Questions.numberOfQuestionsNeededToAnswer == 0)
             {
-                // Display the reveal spell menu
                 DisplayDrawSpell();
             }
-
             // Make drawn spells appear if the wave is ongoing
             if (visible && cardDrawn)
             {
                 if (onBoard)
                 {
-                    // Display the reveal spell menu
                     DisplayPlaySpell();
-
                 }
                 else
                 {
-
-                    // Display the reveal spell menu
                     DisplaySpellImage();
                 }
             }
@@ -181,26 +172,25 @@ public class SpellCardController : MonoBehaviour
     // Drawing spell cards
     //---------------------------------------------------------------------------------------------------------------
 
-    // Method that is activated when the spell image target enters the camera field
+    /// <summary>
+    /// Activated when the spell image target enters the camera field
+    /// </summary>
+    /// <param name="imageTargetBehaviour">The ImageTargetBehaviour script, should be passed in the inspector</param>
     public void SpellCardEnteredCameraField(ImageTargetBehaviour imageTargetBehaviour)
     {
         Debug.Log(imageTargetBehaviour.TargetName);
         spellType = GetSpellTypeWithImageTargetName(imageTargetBehaviour.TargetName);
-        // Set the flag that the card is now visible
         visible = true;
-
         // Check if that card was already drawn
         if (cardDrawn)
         {
             if (onBoard)
             {
-                // Increase the number of drawn spells on the board by one
                 SpellCardManager.DrawnSpellsOnBoard++;
                 DisplayPlaySpell();
             }
             else
             {
-                // Display the drawn spell card
                 DisplaySpellImage();
             }
         }
@@ -209,88 +199,60 @@ public class SpellCardController : MonoBehaviour
             // Check that the game is not paused
             if (GameAdvancement.gamePaused == false && LevelInfo.waveOngoing == true && Questions.numberOfQuestionsNeededToAnswer == 0)
             {
-                // Display the reveal spell menu
                 DisplayDrawSpell();
-
             }
         }
     }
 
-    // Method that is activated when the spell image target leaves the camera field
+    /// <summary>
+    /// Activated when the spell image target leaves the camera field
+    /// </summary>
     public void SpellCardLeftCameraField()
     {
-        // Set the flag that the card is not visible anymore
         visible = false;
-
-        // Hide the reveal spell menu
         HideSpellCanvas();
-
-        // Check if the card was drawn
         if (cardDrawn && onBoard)
         {
-            // Decrease the number of drawn spells on the game board by one
             SpellCardManager.DrawnSpellsOnBoard--;
         }
     }
 
-    // The method that activates the canvas on which the reveal spell button is
+    // Display the canvas on which the draw spell button is
     private void DisplayDrawSpell()
     {
-        // Enable the spell card canvas
         spellCardCanvas.SetActive(true);
-
-        // Enable the draw spell button
         drawSpellButton.gameObject.SetActive(true);
-
-        // Disable the play spell button
         playSpellButton.gameObject.SetActive(false);
-
-        // Make sure the spell image is disabled
         spellImage.gameObject.SetActive(false);
     }
 
-    // The method that deactivates the canvas on which the reveal spell button is
+    // Deactivates the canvas on which the draw spell button is
     private void HideSpellCanvas()
     {
         spellCardCanvas.SetActive(false);
     }
 
-    // The method that is activated when the user clicks on the draw spell button
+    /// <summary>
+    /// Activated when click on the draw spell button
+    /// </summary>
     public void InitiateDrawSpell()
     {
         GameAdvancement.gamePaused = true;
         // Check if the player has free draws
         if (SpellCardManager.FreeDraws == 0)
         {
-            // Set the question requesting image target correctly
-            Questions.questionRequestingImageTarget = this.gameObject;
-
-            // Disable the game overlay
+            Questions.questionRequestingImageTarget = gameObject;
             GameSceneManager.DeactivateGameOverlay();
-
-            // Enable the answer question menu
             SpellCardManager.AnswerQuestions.SetActive(true);
-
-            // Set the number of questions that are needed to answer to 1
             ActivateQuestions.IncreaseNumberOfQuestionsThatNeedToBeAnswered(1);
-
-            // Make the canvas disappear
             HideSpellCanvas();
-
-            // Start the routine that waits for the questions to be answered
             StartCoroutine(DrawSpell());
-
         }
         else
         {
-
             // Reduce the number of free draws by one
             SpellCardManager.FreeDraws--;
-
-            // Set the flag that states that the card was drawn
             cardDrawn = true;
-
-            // Reveal the spell card
             RevealSpell();
         }
     }
@@ -298,41 +260,26 @@ public class SpellCardController : MonoBehaviour
     // The method that builds an archer tower over the image target
     IEnumerator DrawSpell()
     {
-        // Wait until the number of questions that need to be answered is 0
+        // Wait until no questions left
         yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
-
-        // Enable the game overlay
         GameSceneManager.ActivateGameOverlay();
-
-        // Set the flag that states that the card was drawn
         cardDrawn = true;
-
-        // Reveal the spell card
         RevealSpell();
     }
 
-    // The method that reveals the spell card that was just drawn
+    // Reveals the spell card
     private void RevealSpell()
     {
         // Set the right sprite to the image target image component
         SpellImages.DisplaySpell(gameObject, spellType);
-
-        // Display the spell image
         DisplaySpellImage();
-
         // Check if the spell card is on the game board
         if (onBoard)
         {
-            // Increase the number of drawn spells that are on the board by one
             SpellCardManager.DrawnSpellsOnBoard++;
-
-            // Display the play spell button
             DisplayPlaySpell();
-
-            // Pause the game
             GameAdvancement.gamePaused = true;
         }
-
         Debug.Log("The spell card that was drawn was: " + spellType);
     }
 
@@ -340,16 +287,11 @@ public class SpellCardController : MonoBehaviour
     // Displaying spell on target image
     //---------------------------------------------------------------------------------------------------------------
 
-    // The method that activates the canvas on which the reveal spell button is
+    // Show the spell image after revealing the spell
     private void DisplaySpellImage()
     {
-        // Enable the spell card canvas
         spellCardCanvas.SetActive(true);
-
-        // Enable the draw spell button
         drawSpellButton.gameObject.SetActive(false);
-
-        // Make sure the spell image is disabled
         spellImage.gameObject.SetActive(true);
     }
 
@@ -357,22 +299,15 @@ public class SpellCardController : MonoBehaviour
     // Playing spell cards
     //---------------------------------------------------------------------------------------------------------------
 
-    // The method that displays the spell card canvas correctly so that the play spell button is enabled
+    // Displays the spell card canvas correctly so that the play spell button is enabled
     private void DisplayPlaySpell()
     {
         // Check that the wave is ongoing and the card was already drawn
         if (LevelInfo.waveOngoing == true && cardDrawn == true)
         {
-            // Debug.Log("Currently, the wave is ongoing is: " + LevelInfo.waveOngoing + " and the card was drawn is: " + cardDrawn);
-            // Enable the spell card canvas game object
             spellCardCanvas.SetActive(true);
-
-            // Debug.Log("Spell card canvas should be active");
-
-            // Enable the play spell button
             playSpellButton.gameObject.SetActive(true);
-
-            // Rename the button accordingly to the current spell
+            // Check if there are still this type of card in card deck
             if (SpellCardManager.CardDeck[spellType] > 0)
             {
                 playSpellButton.GetComponentInChildren<TMP_Text>().text = $"Play {spellType} ({SpellCardManager.CardDeck[spellType]})";
@@ -380,24 +315,20 @@ public class SpellCardController : MonoBehaviour
             else
             {
                 playSpellButton.GetComponentInChildren<TMP_Text>().text = "No Card In Deck";
-                // Directly play the spell to reset.
                 PlaySpell();
             }
-             
-            // Disable the draw spell button
             drawSpellButton.gameObject.SetActive(false);
         }
     }
 
-    // Method used to check how many spell cards are currently drawn
+    /// <summary>
+    /// Check how many spell cards are currently drawn
+    /// </summary>
     public int DrawnSpellCards()
     {
         // Get all spell cards with tag
         GameObject[] spellcards = GameObject.FindGameObjectsWithTag("Spell Card");
-
-        // Initialize the count
         int count = 0;
-
         foreach (GameObject card in spellcards)
         {
             if (card.GetComponent<SpellCardController>().cardDrawn == true)
@@ -405,25 +336,19 @@ public class SpellCardController : MonoBehaviour
                 count++;
             }
         }
-
         return count;
     }
 
     //---------------------------------------------------------------------------------------------------------------
     // The spell card helper methods
     //---------------------------------------------------------------------------------------------------------------
-    // The method used to make the damage in radius effect take place
+
     public void ResetSpellCard()
     {
-        // Reset the spell card so that it was not drawn and cannot be played
         cardDrawn = false;
         visible = false;
         onBoard = false;
-
-        // Reset the spell type
         spellType = 0;
-
-        // Hide the play spell button
         HideSpellCanvas();
     }
 
