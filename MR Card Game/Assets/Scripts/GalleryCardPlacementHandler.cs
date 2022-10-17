@@ -9,8 +9,6 @@ public class GalleryCardPlacementHandler : MonoBehaviour
     private float range = Screen.width - Screen.width / 3.25f;
     [SerializeField] private float offset = 0;
 
-    private Vector2 screen_res = new Vector2(Screen.width, Screen.height);
-
     // Start is called before the first frame update
     void Start()
     {
