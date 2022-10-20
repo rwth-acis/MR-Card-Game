@@ -13,8 +13,6 @@ static class Board
     /// </summary>
     public static float overlayLength = 0.1f;
 
-    public static float boardAngle;
-
     /// <summary>
     /// the dimension of the longer side of the board
     /// </summary>
@@ -57,6 +55,16 @@ static class Board
     public static bool singleImageTarget = true;
 
     public static bool activateGameBoard;
+
+    /// <summary>
+    /// The width of the board in meter.
+    /// </summary>
+    public static float boardWidth;
+
+    /// <summary>
+    /// The length of the board in meter.
+    /// </summary>
+    public static float boardLength;
 }
 
 public class GameBoard : MonoBehaviour
@@ -85,6 +93,14 @@ public class GameBoard : MonoBehaviour
     [SerializeField]
     private Button startNextWave;
 
+    [Tooltip("The real length of the board in meter")]
+    [SerializeField]
+    private float boardLength;
+
+    [Tooltip("The real height of the board in meter")]
+    [SerializeField]
+    private float boardWidth;
+
     [SerializeField]
     private float greatestBoardDimension = 0.03f;
 
@@ -100,6 +116,8 @@ public class GameBoard : MonoBehaviour
         Board.camera = arCamera;
         Board.buildingStorage = buildingStorage;
         Board.castle = castle;
+        Board.boardLength = boardLength;
+        Board.boardWidth = boardWidth;
     }
 
     // Update is called once per frame

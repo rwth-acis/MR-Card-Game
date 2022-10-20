@@ -27,25 +27,25 @@ public class SpellCardManager : MonoBehaviour
     [SerializeField]
     private float timeBeforeSpellLaunch;
 
-    [Tooltip("radius in cm")]
+    [Tooltip("radius in meter")]
     [SerializeField]
     private float meteorRadius;
 
     [SerializeField]
     private int meteorDamage;
 
-    [Tooltip("The arrow rain radius")] 
+    [Tooltip("The arrow rain radius in meter")] 
     [SerializeField]
     private float arrowRainRadius;
 
     [SerializeField]
     private int arrowRainDamage;
 
-    [Tooltip("The teleport radius")] 
+    [Tooltip("The teleport radius in meter")] 
     [SerializeField]
     private float teleportRadius;
 
-    [Tooltip("The space distortion radius")]
+    [Tooltip("The space distortion radius in meter")]
     [SerializeField]
     private float spaceDistortionRadius;
 
@@ -108,6 +108,9 @@ public class SpellCardManager : MonoBehaviour
     [SerializeField]
     private Button startNextWaveButton;
 
+    [Tooltip("The spell range indicator which has a size of (1,1,1), i.e. 1 meter, originally, needs to be scaled")]
+    [SerializeField]
+    private GameObject spellRangeIndicator;
     #endregion
 
     #region Non-Serializable Fields
@@ -176,6 +179,14 @@ public class SpellCardManager : MonoBehaviour
     public static Dictionary<SpellType, int> CardDeck
     {
         get => Instance.cardDeck;
+    }
+
+    /// <summary>
+    /// A sphere whose size is 1m*1m*1m
+    /// </summary>
+    public static GameObject SpellRangeIndicator
+    {
+        get => Instance.spellRangeIndicator;
     }
 
     #endregion
@@ -348,6 +359,7 @@ public class SpellCardManager : MonoBehaviour
                 timeWaited += 0.1f;
             }
         }
+        //Debug.Log(spellEffect.GetComponent<SphereCollider>().bounds.size);
         ObjectPools.ReleaseSpellEffect(spellEffect, spellType);     
     }
 
@@ -446,7 +458,7 @@ public class SpellCardManager : MonoBehaviour
     private void PlayTeleport(Vector3 spellPosition)
     {
         // Initialize the maximum distance where the meteor damage should still happen
-        float greatestDistance = teleportRadius * Board.greatestBoardDimension;
+        float greatestDistance = teleportRadius;
         List<GameObject> enemiesInRange = EnemiesInRange(spellPosition, greatestDistance);
         // Check that the enemies in range list is not empty
         if(enemiesInRange != null)
@@ -468,11 +480,12 @@ public class SpellCardManager : MonoBehaviour
     private IEnumerator SpaceDistortion(Vector3 spellPosition)
     {
         float timer = 0f;
-        float range = spaceDistortionRadius * Board.greatestBoardDimension;
+        float range = spaceDistortionRadius;
         StartCoroutine(ActivateSpellAnimationAndEffect(SpellType.SpaceDistortion, spellPosition, spaceDistortionDuration));
         while (timer < spaceDistortionDuration)
         {
             List<GameObject> enemiesInRange = EnemiesInRange(spellPosition, range);
+            Debug.Log(enemiesInRange.Count);
             if (enemiesInRange != null)
             {
                 foreach (GameObject enemy in enemiesInRange)
@@ -594,7 +607,7 @@ public class SpellCardManager : MonoBehaviour
     private void PlaySpellDamageInRadius(Vector3 center, float radius, int damage)
     {
         // Initialize the maximum distance where the meteor damage should still happen
-        float closestDistance = radius * Board.greatestBoardDimension;
+        float closestDistance = radius;
         List<GameObject> enemiesInRange = EnemiesInRange(center, closestDistance);
         if(enemiesInRange != null)
         {
@@ -633,5 +646,27 @@ public class SpellCardManager : MonoBehaviour
     {
         SpellCardController controller = imageTargetBehaviour.gameObject.GetComponent<SpellCardController>();
         controller.SpellCardLeftCameraField();
+    }
+
+    /// <summary>
+    /// Get the radius of the spell with the given type
+    /// If the given type doesn't have a radius property, return 0.
+    /// </summary>
+    public static float GetSpellRadiusWithType(SpellType spellType)
+    {
+        switch (spellType)
+        {
+            case SpellType.Meteor:
+                return Instance.meteorRadius;
+            case SpellType.ArrowRain:
+                return Instance.arrowRainRadius;
+            case SpellType.SpaceDistortion:
+                return Instance.spaceDistortionRadius;
+            case SpellType.Teleport:
+                return Instance.teleportRadius;
+            default:
+                Debug.Log("The given spell type doesn't have a radius property.");
+                return 0;
+        }
     }
 }

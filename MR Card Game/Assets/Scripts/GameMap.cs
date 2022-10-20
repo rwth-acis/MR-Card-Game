@@ -22,7 +22,6 @@ namespace map
 
         void Start()
         {
-            Debug.Log(gameObject.GetComponent<Collider>().bounds.size);
             SetMapWaypoints();
             Debug.Log("The map waypoints and enemy spawn were set.");
         }

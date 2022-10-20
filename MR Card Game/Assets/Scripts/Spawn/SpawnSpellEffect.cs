@@ -17,6 +17,11 @@ public class SpawnSpellEffect : MonoBehaviour
     [SerializeField]
     private GameObject spaceDistortion;
 
+    private Vector3 arrowRainOriginalScale;
+    private Vector3 meteorOriginalScale;
+    private Vector3 thunderStrikeOriginalScale;
+    private Vector3 spaceDistortionOriginalScale;
+
     /// <summary>
     /// The instance of this class so that the static prefabs can be accessed
     /// </summary>
@@ -50,6 +55,10 @@ public class SpawnSpellEffect : MonoBehaviour
     void Start()
     {
         Instance = this;
+        arrowRainOriginalScale = arrowRain.transform.localScale;
+        meteorOriginalScale = meteorImpact.transform.localScale;
+        thunderStrikeOriginalScale = thunderStrike.transform.localScale;
+        spaceDistortionOriginalScale = spaceDistortion.transform.localScale;
     }
 
     /// <summary>
@@ -82,8 +91,34 @@ public class SpawnSpellEffect : MonoBehaviour
                 break;
         }
         spellEffect.SetActive(true);
-        spellEffect.transform.parent = SpellEffectParent.transform;
-        spellEffect.transform.localScale = new Vector3(1, 1, 1);
+        float diameter = SpellCardManager.GetSpellRadiusWithType(spell) * 2;
+        Vector3 scale = new Vector3(diameter, diameter, diameter);
+        if(diameter > 0)
+        {
+            spellEffect.transform.localScale = GetSpellEffectOriginalScale(spell).x / 1 * scale;
+        }
+        else
+        {
+            spellEffect.transform.localScale = new Vector3(1, 1, 1);
+        }
         return spellEffect;
+    }
+
+    public static Vector3 GetSpellEffectOriginalScale(SpellType spellType)
+    {
+        switch (spellType)
+        {
+            case SpellType.ArrowRain:
+                return Instance.arrowRainOriginalScale;
+            case SpellType.Meteor:
+                return Instance.meteorOriginalScale;
+            case SpellType.ThunderStrike:
+                return Instance.thunderStrikeOriginalScale;
+            case SpellType.SpaceDistortion:
+                return Instance.spaceDistortionOriginalScale;
+            default:
+                Debug.Log("The given spell has no visual effect");
+                return Vector3.zero;
+        }
     }
 }

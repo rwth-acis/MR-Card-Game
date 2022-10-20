@@ -14,7 +14,9 @@ public static class TowerEnhancer
 {
     public static Tower currentlyEnhancedTower;
 
-    // The position where the tower / trap building was initialized
+    /// <summary>
+    /// The position where the tower / trap building was initialized
+    /// </summary>
     public static Vector3 buildPosition;
 }
 
@@ -33,7 +35,7 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private float cost;
 
-    [Tooltip("The attack range (radius) of the tower in cm")]
+    [Tooltip("The attack range (radius) of the tower in meter")]
     [SerializeField]
     private float attackRange;
 
@@ -43,11 +45,11 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private float attackCooldown;
 
-    [Tooltip(" The fyling speed of the projectiles of this tower in cm/s")]
+    [Tooltip(" The fyling speed of the projectiles of this tower in m/s")]
     [SerializeField]
     private float projectileSpeed;
 
-    [Tooltip("The effect range of the projectiles of this tower in cm")] 
+    [Tooltip("The effect range of the projectiles of this tower in meter")] 
     [SerializeField]
     private float effectRange;
 
@@ -102,7 +104,7 @@ public class Tower : MonoBehaviour
     }
 
     /// <summary>
-    /// Projectile speed in cm/s
+    /// Projectile speed in m/s
     /// </summary>
     public float ProjectileSpeed
     {
@@ -339,7 +341,7 @@ public class Tower : MonoBehaviour
         damage = (int)(damage * damageMultiplicator);
         attackCooldown *= attackCooldownMultiplicator;
         attackRange *= attackRangeMultiplicator;
-        AdjustTowerRange();
+        AdjustTowerRange(attackRangeMultiplicator);
     }
 
     /// <summary>
@@ -371,7 +373,7 @@ public class Tower : MonoBehaviour
         damage = (int)(damage * damageMultiplicator);
         effectRange *= jumpRangeMultiplicator;
         attackRange *= attackRangeMultiplicator;
-        AdjustTowerRange();
+        AdjustTowerRange(attackRangeMultiplicator);
     }
 
     /// <summary>
@@ -385,10 +387,10 @@ public class Tower : MonoBehaviour
     }
 
     // Adjust the tower range (size of the light blue collider)
-    private void AdjustTowerRange()
+    private void AdjustTowerRange(float attackRangeMultiplier)
     {
         // Set the radius of the sphere collider on the tower range component with the tower script to the attack range
-        gameObject.transform.localScale = new Vector3(AttackRange, AttackRange, AttackRange);
+        gameObject.transform.localScale *= attackRangeMultiplier;
     }
 
     public void ResetTowerProperties(Tower towerPrefab)

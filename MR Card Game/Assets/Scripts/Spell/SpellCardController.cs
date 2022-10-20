@@ -162,6 +162,7 @@ public class SpellCardController : MonoBehaviour
         {
             Invoke(nameof(ResetCardDrawn), 2f);
         }
+        HideSpellRange();
     }
     private void ResetCardDrawn()
     {
@@ -211,6 +212,7 @@ public class SpellCardController : MonoBehaviour
     {
         visible = false;
         HideSpellCanvas();
+        HideSpellRange();
         if (cardDrawn && onBoard)
         {
             SpellCardManager.DrawnSpellsOnBoard--;
@@ -270,6 +272,7 @@ public class SpellCardController : MonoBehaviour
     // Reveals the spell card
     private void RevealSpell()
     {
+        ShowSpellRange();
         // Set the right sprite to the image target image component
         SpellImages.DisplaySpell(gameObject, spellType);
         DisplaySpellImage();
@@ -370,5 +373,38 @@ public class SpellCardController : MonoBehaviour
             "Teleport" => SpellType.Teleport,
             _ => SpellType.ArrowRain
         };
+    }
+
+    // If the spell has a "range" property, used to determine whether the spell range prefab should be displayed
+    private bool HasRangeProperty()
+    {
+        if(spellType == SpellType.Meteor || spellType == SpellType.ArrowRain || spellType == SpellType.Teleport || spellType == SpellType.SpaceDistortion)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    // Show the spell range, need to be scaled according to the "range" property of the spell type.
+    private void ShowSpellRange()
+    {
+        float diameter = SpellCardManager.GetSpellRadiusWithType(spellType) * 2;
+        Vector3 scale = new Vector3(diameter, diameter, diameter);
+        if(diameter != 0)
+        {
+            SpellCardManager.SpellRangeIndicator.SetActive(true);
+            SpellCardManager.SpellRangeIndicator.transform.localScale = scale;
+            SpellCardManager.SpellRangeIndicator.transform.position = spellCardCanvas.transform.position;
+            SpellCardManager.SpellRangeIndicator.transform.parent = spellCardCanvas.transform;
+        }   
+    }
+
+    private void HideSpellRange()
+    {
+        SpellCardManager.SpellRangeIndicator.SetActive(false);
+        SpellCardManager.SpellRangeIndicator.transform.parent = null;
     }
 }

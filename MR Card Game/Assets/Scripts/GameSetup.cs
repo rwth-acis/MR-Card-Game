@@ -127,7 +127,8 @@ public class GameSetup : MonoBehaviour
     [SerializeField]
     private Button waveDisplay;
 
-    [Tooltip("The button, not interactable, on which the current currency is displayed\r\n    [SerializeField]")] 
+    [Tooltip("The button, not interactable, on which the current currency is displayed")]
+    [SerializeField]
     private Button currencyDisplay;
 
     [Tooltip("The health bar slider of the castle")] 
