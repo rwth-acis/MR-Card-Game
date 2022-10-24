@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Vuforia;
+using System;
 
 // List of spell cards:     Status:     Comments:               Tested:
 // - Meteor                 Done        animation done!         working
@@ -26,6 +27,30 @@ public class SpellCardManager : MonoBehaviour
     [Header("Spell Properties")]
     [SerializeField]
     private float timeBeforeSpellLaunch;
+
+    [Tooltip("number of jumps of thunder strike")]
+    [SerializeField]
+    private int thunderStrikeJumps;
+
+    [Tooltip("searching radius in meter when thunder strike is jumping in meter")]
+    [SerializeField] 
+    private float thunderStrikeRadius;
+
+    [Tooltip("the multiplying factor of the radius when it is raining")]
+    [SerializeField]
+    private float thunderStrikeRadiusRainingMultiplier;
+
+    [Tooltip("the initial damage of thunderStrike")]
+    [SerializeField]
+    private float thunderStrikeDamage;
+
+    [Tooltip("the multiplying factor of the damage when it is raining")]
+    [SerializeField]
+    private float thunderStrikeDamageRainingMultiplier;
+
+    [Tooltip("the percentage of damage that is reduced after a jump")]
+    [SerializeField]
+    private float thunderStrikeDamageReducingFactor;
 
     [Tooltip("radius in meter")]
     [SerializeField]
@@ -162,7 +187,6 @@ public class SpellCardManager : MonoBehaviour
     {
         get { return Instance.startNextWaveButton; }
     }
-
     public static GameObject GroundPlane
     {
         get => Instance.groundPlane;
@@ -359,7 +383,6 @@ public class SpellCardManager : MonoBehaviour
                 timeWaited += 0.1f;
             }
         }
-        //Debug.Log(spellEffect.GetComponent<SphereCollider>().bounds.size);
         ObjectPools.ReleaseSpellEffect(spellEffect, spellType);     
     }
 
@@ -382,27 +405,41 @@ public class SpellCardManager : MonoBehaviour
     private void PlayThunderStrike(Vector3 spellPosition)
     {
         // Initialize and fill the enemies array
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-
+        List<GameObject> enemies = new(GameObject.FindGameObjectsWithTag("Enemy"));
         // Check that there are enemies on the board
-        if(enemies != null)
+        if(enemies.Count > 0)
         {
-            // Need A better initialization (range)
-            float closestDistance = 1000;
-            GameObject closestEnemy = null;
-            // Find the enemy that is the closest to the spell card
-            foreach(GameObject enemy in enemies)
+            float radius = GameAdvancement.raining ? thunderStrikeRadiusRainingMultiplier * thunderStrikeRadius : thunderStrikeRadius;
+            float initialDamage = GameAdvancement.raining ? thunderStrikeDamageRainingMultiplier * thunderStrikeDamage : thunderStrikeDamage;
+            Vector3 thunderStrikePosition = spellPosition;
+            // Find the enemy that is the closest to the thunder strike position
+            for (int i = 0; i < thunderStrikeJumps; i++)
             {
-                float distance = Vector3.Distance(spellPosition, enemy.transform.position);
-                if(distance < closestDistance)
+                // initialize the closestEnemy to null to check whether there is an enemy in the range later.
+                GameObject closestEnemy = null;
+                float closestDistance = radius;
+                foreach (GameObject enemy in enemies)
                 {
-                    closestDistance = distance;
-                    closestEnemy = enemy;            
+                    float distance = Vector3.Distance(thunderStrikePosition, enemy.transform.position);
+                    if (distance < closestDistance)
+                    {
+                        closestDistance = distance;
+                        closestEnemy = enemy;
+                    }
                 }
-            }
-            // Kill this enemy by making it take more damage than the maximum number of health points that exist
-            closestEnemy.GetComponent<Enemy>().TakeDamage(1000);
-            StartCoroutine(ActivateSpellAnimationAndEffect(SpellType.ThunderStrike, closestEnemy.transform.position, 0.5f));
+                Debug.Log(closestEnemy);    
+                if(closestEnemy != null)
+                {
+                    thunderStrikePosition = closestEnemy.transform.position;
+                    closestEnemy.GetComponent<Enemy>().TakeDamage((int)(initialDamage * Mathf.Pow(thunderStrikeDamageReducingFactor, i)));
+                    StartCoroutine(ActivateSpellAnimationAndEffect(SpellType.ThunderStrike, closestEnemy.transform.position, 0.5f));
+                    enemies.Remove(closestEnemy);
+                }
+                else
+                {
+                    return;
+                }
+            }       
         }
     }
 
@@ -485,7 +522,6 @@ public class SpellCardManager : MonoBehaviour
         while (timer < spaceDistortionDuration)
         {
             List<GameObject> enemiesInRange = EnemiesInRange(spellPosition, range);
-            Debug.Log(enemiesInRange.Count);
             if (enemiesInRange != null)
             {
                 foreach (GameObject enemy in enemiesInRange)
@@ -664,8 +700,10 @@ public class SpellCardManager : MonoBehaviour
                 return Instance.spaceDistortionRadius;
             case SpellType.Teleport:
                 return Instance.teleportRadius;
+            case SpellType.ThunderStrike:
+                return GameAdvancement.raining ? Instance.thunderStrikeRadius * Instance.thunderStrikeRadiusRainingMultiplier : Instance.thunderStrikeRadius;
             default:
-                Debug.Log("The given spell type doesn't have a radius property.");
+                Debug.LogWarning("The given spell type doesn't have a radius property.");
                 return 0;
         }
     }

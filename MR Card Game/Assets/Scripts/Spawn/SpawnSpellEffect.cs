@@ -92,7 +92,8 @@ public class SpawnSpellEffect : MonoBehaviour
         }
         spellEffect.SetActive(true);
         float diameter = SpellCardManager.GetSpellRadiusWithType(spell) * 2;
-        Vector3 scale = new Vector3(diameter, diameter, diameter);
+        // For thunder strike, we use a specific scale, i.e. (0.03,0.03,0.03)
+        Vector3 scale = spell == SpellType.ThunderStrike ? new Vector3(0.03f, 0.03f, 0.03f) : new Vector3(diameter, diameter, diameter);
         if(diameter > 0)
         {
             spellEffect.transform.localScale = GetSpellEffectOriginalScale(spell).x / 1 * scale;

@@ -61,6 +61,15 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private float weaknessMultiplier;
 
+    [Tooltip("The damage multiplier when it is raining, especially for lightning tower and fire tower")]
+    [SerializeField]
+    private float damageRainingMultiplier = 1f;
+
+    [Tooltip("The damage reducing factor when the tower can attack more than one enemy at the same time")]
+    [SerializeField]
+    private float damageReducingFactor = 1f;
+
+
     private int level;
     private bool canAttack;
     // The attack timer that is counted up after an attack
@@ -68,10 +77,7 @@ public class Tower : MonoBehaviour
     private Collider target;
 
     // The list of enemy colliders that enter the range of the tower
-    private List<Collider> colliders = new List<Collider>();
-
-    // The list of enemies that can still be targeted by the lightning tower
-    private List<Collider> enemies = new List<Collider>();
+    private List<Collider> enemyColliders = new List<Collider>();
 
     public TowerType TowerType
     {
@@ -135,13 +141,9 @@ public class Tower : MonoBehaviour
     /// </summary>
     public List<Collider> Colliders
     {
-        get => colliders;
+        get => enemyColliders;
     }
-    // The method used to access the list of enemies that can be targeted by the lightning tower
-    public List<Collider> Enemies
-    {
-        get => enemies;
-    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -163,7 +165,7 @@ public class Tower : MonoBehaviour
     {
         // Create a new list that contains the same colliders as the colliders list
         List<Collider> listOfDeadEnemies = new List<Collider>();
-        foreach(Collider coll in colliders)
+        foreach(Collider coll in enemyColliders)
         {
             if(coll.GetComponent<Enemy>().IsAlive == false)
             {
@@ -176,7 +178,7 @@ public class Tower : MonoBehaviour
         {
             foreach(Collider coll in listOfDeadEnemies)
             {
-                colliders.Remove(coll);
+                enemyColliders.Remove(coll);
             }
         }
 
@@ -198,7 +200,7 @@ public class Tower : MonoBehaviour
         }
 
         // Check if the tower needs a new target and if there are any enemies in range
-        if(target == null && colliders.Count > 0)
+        if(target == null && enemyColliders.Count > 0)
         {
             target = Colliders[0];
         }
@@ -220,15 +222,13 @@ public class Tower : MonoBehaviour
     {
         if(TowerType == TowerType.Lightning)
         {
-            // Set the list of targets to the list of colliders
-            enemies = new List<Collider>(colliders);
-            // Remove the current target form the list
-            enemies.Remove(target);
             LightningStrikeEffect(NumberOfEffect, target.gameObject.GetComponent<Enemy>());
-        } else if(TowerType == TowerType.Wind)
+        } 
+        else if(TowerType == TowerType.Wind)
         {
             WindGustEffect();
-        } else {
+        } 
+        else {
             if (towerProjectile == null)
             {
                 i5Debug.LogError($"No projectile given for tower of type {TowerType}", this);
@@ -247,9 +247,9 @@ public class Tower : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // Make sure it is a game object with enemy tag
-        if(other.gameObject.CompareTag("Enemy") && !colliders.Contains(other) )
+        if(other.gameObject.CompareTag("Enemy") && !enemyColliders.Contains(other) )
         {
-            colliders.Add(other);
+            enemyColliders.Add(other);
         }
     }
 
@@ -261,7 +261,7 @@ public class Tower : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Enemy"))
         {
-            colliders.Remove(other);
+            enemyColliders.Remove(other);
         }
     }
 
@@ -272,37 +272,39 @@ public class Tower : MonoBehaviour
     // Produces the effect of a lightning strike arriving at destination
     private void LightningStrikeEffect(int numberOfStrikes, Enemy targetEnemy)
     {
+
         // Do the damage
         int damage = Projectile.CalculateDamage(Damage, WeaknessMultiplier, TowerType, targetEnemy);
-        targetEnemy.TakeDamage(damage);
-
-        // Check if the lightning strike should jump
-        if(numberOfStrikes > 0)
+        if (GameAdvancement.raining)
         {
-            // Check if there is another enemy in the range of the tower
-            if(Enemies.Count >= 1)
+            damage = (int)(damage * damageRainingMultiplier);
+        }
+        targetEnemy.TakeDamage(damage);
+        List<GameObject> enemies = new(GameObject.FindGameObjectsWithTag("Enemy"));
+        enemies.Remove(targetEnemy.gameObject);
+        for (int i = 0; i < numberOfStrikes; i++)
+        {
+            // initialize the closestEnemy to null to check whether there is an enemy in the range later.
+            GameObject closestEnemy = null;
+            float closestDistance = EffectRange;
+            foreach (GameObject enemy in enemies)
             {
-                Collider nearestEnemyCollider = null;
-                // Initialize the shortest distance
-                float shortestDistance = EffectRange * Board.greatestBoardDimension;
-
-                // Go through all other enemies, so skip the first index of the array
-                for(int counter = 0; counter < Enemies.Count; counter++)
+                float distance = Vector3.Distance(targetEnemy.gameObject.transform.position, enemy.transform.position);
+                if (distance < closestDistance)
                 {
-                    float distance = Vector3.Distance(targetEnemy.transform.position, Enemies[counter].GetComponent<Enemy>().transform.position);
-                    if(distance <= shortestDistance)
-                    {
-                        nearestEnemyCollider = Enemies[counter];
-                        shortestDistance = distance;
-                    }
+                    closestDistance = distance;
+                    closestEnemy = enemy;
                 }
-                if(nearestEnemyCollider != null)
-                {
-                    // Remove the nearest enemy from the list
-                    enemies.Remove(nearestEnemyCollider);
-                    // Call the method recursively with a smaller number of jumps
-                    LightningStrikeEffect((numberOfStrikes - 1), nearestEnemyCollider.GetComponent<Enemy>());
-                }
+            }
+            if (closestEnemy != null)
+            {
+                closestEnemy.GetComponent<Enemy>().TakeDamage((int)(damage * Mathf.Pow(damageReducingFactor, i + 1)));
+                enemies.Remove(closestEnemy);
+                targetEnemy = closestEnemy.GetComponent<Enemy>();
+            }
+            else
+            {
+                return;
             }
         }
     }
