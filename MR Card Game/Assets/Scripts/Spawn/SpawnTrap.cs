@@ -7,48 +7,56 @@ using Unity.Android.Types;
 public class SpawnTrap : MonoBehaviour
 {
     // The instance, needed to access the static versions of the tower prefabs
-    public static SpawnTrap instance;
+    public static SpawnTrap Instance;
 
     [Header("Trap Prefabs")]
     [SerializeField]
-    private Trap hole;
+    private GameObject hole;
     [SerializeField]
-    private Trap swamp;
+    private GameObject swamp;
 
     [Header("Trap Properties")]
 
-    [Tooltip("Radius of the hole in cm")]
+    [Tooltip("Radius of the hole in meter")]
     [SerializeField]
-    private float holeSize;
+    private float holeRadius;
 
-    [Tooltip("Radius of the swamp in cm")]
+    [Tooltip("Radius of the swamp in meter")]
     [SerializeField]
-    private float swampSize;
+    private float swampRadius;
 
-    public static Trap Hole
+    [Tooltip("The original radius of both trap prefabs in meter")]
+    [SerializeField]
+    private float trapPrefabOrignialRadius = 2.5f;
+    public static GameObject Hole
     {
-        get { return instance.hole; }
+        get { return Instance.hole; }
     }
 
-    public static float HoleSize
+    public static float HoleRadius
     {
-        get { return instance.holeSize; }
+        get { return Instance.holeRadius; }
     }
 
-    public static Trap Swamp
+    public static GameObject Swamp
     {
-        get { return instance.swamp; }
+        get { return Instance.swamp; }
     }
 
-    public static float SwampSize
+    public static float SwampRadius
     {
-        get { return instance.swampSize; }
+        get { return Instance.swampRadius; }
+    }
+
+    public static float TrapPrefabOriginalRadius
+    {
+        get => Instance.trapPrefabOrignialRadius;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        instance = this;
+        Instance = this;
     }
 
     /// <summary>
@@ -56,26 +64,29 @@ public class SpawnTrap : MonoBehaviour
     /// </summary>
     /// <param name="parent"></param>
     /// <returns></returns>
-    public static Trap SpawnTrapFromPool(TrapType trapType, GameObject parent)
+    public static GameObject SpawnTrapFromPool(GameObject parent, TrapType trapType)
     {
         int poolIndex = ObjectPools.GetTrapPoolIndex(trapType);
-        Trap trap = ObjectPool<Trap>.RequestResource(poolIndex, () => { return GetTrapOfType(trapType); });
-        trap.gameObject.SetActive(true);
-        trap.gameObject.transform.parent = parent.transform;
-        trap.transform.localScale = new Vector3(Board.greatestBoardDimension * GetTrapSizeWithType(trapType) * 3, Board.greatestBoardDimension * 3, Board.greatestBoardDimension * GetTrapSizeWithType(trapType) * 3);
-        trap.gameObject.transform.localPosition = new Vector3(0, 0, 0);
+        GameObject trap = ObjectPool<GameObject>.RequestResource(poolIndex, () => { return GetTrapOfType(trapType); });
+        trap.SetActive(true);
+        trap.transform.parent = parent.transform;
+        // Here, the prefab should have a scale of (1,1,1).
+        float scale = GetTrapRadiusWithType(trapType) / TrapPrefabOriginalRadius;
+        Debug.Log(scale);
+        trap.transform.localScale = new Vector3(scale, scale, scale);
+        trap.transform.localPosition = new Vector3(0, 0, 0);
         return trap;
     }
 
     /// <summary>
     /// Get the radius of the size with the given type
     /// </summary>
-    public static float GetTrapSizeWithType(TrapType trapType)
+    public static float GetTrapRadiusWithType(TrapType trapType)
     {
         return trapType switch
         {
-            TrapType.Hole => HoleSize,
-            TrapType.Swamp => SwampSize,
+            TrapType.Hole => HoleRadius,
+            TrapType.Swamp => SwampRadius,
             _ => 0
         };
     }
@@ -83,13 +94,13 @@ public class SpawnTrap : MonoBehaviour
     /// <summary>
     /// Get the trap with the given type
     /// </summary>
-    public static Trap GetTrapOfType(TrapType trapType)
+    public static GameObject GetTrapOfType(TrapType trapType)
     {
         return trapType switch
         {
-            TrapType.Hole => Hole,
-            TrapType.Swamp => Swamp,
-            _ => Hole
+            TrapType.Hole => Instantiate(Hole),
+            TrapType.Swamp => Instantiate(Swamp),
+            _ => Instantiate(Hole)
         };
     }
 }

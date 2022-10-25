@@ -31,6 +31,7 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float size;
 
+    [Tooltip("The initial speed of the enemy in m/s")]
     [SerializeField]
     private float movingSpeed;
 
@@ -42,7 +43,7 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private int currencyPoints;
 
-    [Tooltip("The height of fly, if zero then the unit cannot fly")]
+    [Tooltip("The height of fly in meter, if zero then the unit cannot fly")]
     [SerializeField]
     private float flyingHeight;
 
@@ -78,9 +79,6 @@ public class Enemy : MonoBehaviour
     // Waypoints placed on the path that enemies have to travel
     private Transform[] waypoints;
 
-    // Initialize the flight height variable
-    private float flightHeight = 0;
-
     // The gameboard game object
     private GameObject gameBoard;
     #endregion
@@ -102,9 +100,9 @@ public class Enemy : MonoBehaviour
         get { return currentHP; }
     }
 
-    public float FlightHeight
+    public float FlyingHeight
     {
-        get { return flightHeight; }
+        get => flyingHeight;
     }
 
     public ResistenceAndWeaknessType Resistance
@@ -187,10 +185,10 @@ public class Enemy : MonoBehaviour
         if(WaypointIndex <= waypoints.Length - 1)
         {
             // Get the current goal that is the position of the next waypoint, added with a height
-            Vector3 currentGoal = waypoints[WaypointIndex].transform.position + transform.up * flightHeight;
+            Vector3 currentGoal = waypoints[WaypointIndex].transform.position + transform.up * flyingHeight;
 
             // Move the enemy toward the next waypoint
-            transform.position = Vector3.MoveTowards(transform.position, currentGoal, movingSpeed * GameAdvancement.globalSlow * enemySlowFactor * Time.deltaTime * gameBoard.transform.localScale.x);
+            transform.position = Vector3.MoveTowards(transform.position, currentGoal, movingSpeed * GameAdvancement.globalSlow * enemySlowFactor * Time.deltaTime);
             transform.LookAt(currentGoal);
 
             // If the enemy reached the position of a waypoint, increase the waypoint index by one
@@ -234,8 +232,6 @@ public class Enemy : MonoBehaviour
     {
         // Add the enemy value to the currency points of the player
         GameAdvancement.currencyPoints += currencyPoints;
-
-        // Actualize the currency display so that the player can see that he won currency points
         GameSetup.UpdateCurrencyDisplay();
     }
 
@@ -299,7 +295,6 @@ public class Enemy : MonoBehaviour
         gameBoard = Board.gameBoard;
         waypoints = Waypoints.mapWaypoints;
         WaypointIndex = 0;
-        flightHeight = flyingHeight * Board.greatestBoardDimension * 0.6f + 0.2f * size * Board.greatestBoardDimension;
 
         // Deactivate the health bar since it is full
         healthBarUI.SetActive(false);
@@ -308,7 +303,7 @@ public class Enemy : MonoBehaviour
         transform.localScale = new Vector3(0.25f * size, 0.25f * size, 0.25f * size);
 
         // Set it to the position of the first waypoint on spawn
-        transform.position = (waypoints[WaypointIndex].transform.position + transform.up * flightHeight);
+        transform.position = (waypoints[WaypointIndex].transform.position + transform.up * flyingHeight);
         IsAlive = true;
         currentHP = MaximumHP;
 

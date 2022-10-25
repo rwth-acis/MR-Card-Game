@@ -73,6 +73,9 @@ namespace i5.Toolkit.Core.Examples.Spawners
             int poolIndex = ObjectPools.GetTowerPoolIndex(type);
             GameObject tower = ObjectPool<GameObject>.RequestResource(poolIndex, () => { return Instantiate(GetTowerPrefabOfType(type)); });
             tower.SetActive(true);
+            // Here, the tower prefabs must have a scale of (1,1,1).
+            float scale = tower.GetComponentInChildren<Tower>().AttackRange / tower.GetComponentInChildren<Tower>().OriginalAttackRange;
+            tower.transform.localScale = new Vector3(scale, scale, scale);
             tower.transform.parent = parent.transform;
             return tower;
         }

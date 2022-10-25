@@ -375,7 +375,7 @@ namespace build
             yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
             // Spawn the archer tower or extract it from the object pool
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Archer);
-            GroundBuilding(tower, TowerImageTarget.currentImageTarget);
+            GroundBuilding(tower);
             UpdateGameAdvancementAfterBuilding(ArcherTowerCost);
         }
 
@@ -383,14 +383,14 @@ namespace build
         {
             yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Fire);
-            GroundBuilding(tower, TowerImageTarget.currentImageTarget);
+            GroundBuilding(tower);
             UpdateGameAdvancementAfterBuilding(FireTowerCost);
         }
         private IEnumerator BuildEarthTower()
         {
             yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Earth);
-            GroundBuilding(tower, TowerImageTarget.currentImageTarget);
+            GroundBuilding(tower);
             UpdateGameAdvancementAfterBuilding(EarthTowerCost);
         }
 
@@ -398,7 +398,7 @@ namespace build
         {
             yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Lightning);
-            GroundBuilding(tower, TowerImageTarget.currentImageTarget);
+            GroundBuilding(tower);
             UpdateGameAdvancementAfterBuilding(LightningTowerCost);
         }
 
@@ -406,23 +406,23 @@ namespace build
         {
             yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
             GameObject tower = SpawnTowerFromPool(TowerImageTarget.currentImageTarget, TowerType.Wind);
-            GroundBuilding(tower, TowerImageTarget.currentImageTarget);
+            GroundBuilding(tower);
             UpdateGameAdvancementAfterBuilding(WindTowerCost);
         }
 
         private IEnumerator BuildHole()
         {
             yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
-            Trap trap = SpawnTrap.SpawnTrapFromPool(TrapType.Hole, TowerImageTarget.currentImageTarget);
-            GroundBuilding(trap.gameObject, TowerImageTarget.currentImageTarget);
+            GameObject trap = SpawnTrap.SpawnTrapFromPool(TowerImageTarget.currentImageTarget, TrapType.Hole);
+            GroundBuilding(trap);
             UpdateGameAdvancementAfterBuilding(HoleCost);
         }
 
         private IEnumerator BuildSwamp()
         {
             yield return new WaitUntil(GameSceneManager.NoMoreQuestionsNeeded);
-            Trap trap = SpawnTrap.SpawnTrapFromPool(TrapType.Swamp, TowerImageTarget.currentImageTarget);
-            GroundBuilding(trap.gameObject, TowerImageTarget.currentImageTarget);
+            GameObject trap = SpawnTrap.SpawnTrapFromPool(TowerImageTarget.currentImageTarget, TrapType.Swamp);
+            GroundBuilding(trap);
             UpdateGameAdvancementAfterBuilding(SwampCost);
         }
 
@@ -438,13 +438,13 @@ namespace build
         }
 
         // Ground buildings on the game board
-        public void GroundBuilding(GameObject building, GameObject imageTarget)
+        public void GroundBuilding(GameObject building)
         {
             building.transform.parent = Board.buildingStorage.transform;
             // Set the position of the building to the position of the image target/building position, the rotation, and scale
             building.transform.localPosition = TowerEnhancer.buildPosition;
             building.transform.rotation = Board.gameBoard.transform.rotation;
-            building.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
+            //building.transform.localScale = new Vector3(0.2f, 0.2f, 0.2f);
 
             // Make sure the y position of the tower is at 0.1 for a safety offset
             Vector3 newPosition = building.transform.localPosition;

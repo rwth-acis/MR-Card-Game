@@ -266,7 +266,7 @@ public class Level : MonoBehaviour
                 enemySpawnNumber--;
                 enemy.transform.parent = Waypoints.enemySpawn.transform;
                 enemy.transform.rotation = Board.gameBoard.transform.rotation;
-                enemy.transform.position = Waypoints.mapWaypoints[0].transform.position + enemy.transform.up * enemy.FlightHeight;
+                enemy.transform.position = Waypoints.mapWaypoints[0].transform.position + enemy.transform.up * enemy.FlyingHeight;
             }
 
             float timeWaited = 0;

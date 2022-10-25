@@ -141,43 +141,6 @@ public class BuildTowerManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Checks the distance between the towers and the image target to see if a tower can be built here or not
-    /// </summary>
-    public bool IsDistanceToTowerEnoughForBuilding()
-    {
-        // Get the tower and trap array
-        GameObject[] towerArray = GameObject.FindGameObjectsWithTag("Tower");
-        GameObject[] trapArray = GameObject.FindGameObjectsWithTag("Trap");
-        float minimumDistance = 1f * Board.greatestBoardDimension;
-
-        bool distanceOK = true;
-        float distance;
-
-        // Check if a tower is too close to the image target
-        foreach (GameObject tower in towerArray)
-        {
-            // Get the distance between the image target and the tower
-            distance = Vector3.Distance(GetRelativePosition(groundPlane.transform, tower.transform.position), projectedPos);
-            if (distance < minimumDistance)
-            {
-                distanceOK = false;
-            }
-        }
-
-        // Check if a trap is too close to the image target
-        foreach (GameObject trap in trapArray)
-        {
-            // Get the distance between the image target and the trap
-            distance = Vector3.Distance(GetRelativePosition(groundPlane.transform, trap.transform.position), projectedPos);
-            if (distance < minimumDistance)
-            {
-                distanceOK = false;
-            }
-        }
-        return distanceOK;
-    }
-
-    /// <summary>
     /// Begin to build a tower on an image target when pressing on the build tower button
     /// </summary>
     public void BeginBuildingTower()

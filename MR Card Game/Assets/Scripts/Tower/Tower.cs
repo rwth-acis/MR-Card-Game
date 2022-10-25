@@ -39,17 +39,25 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private float attackRange;
 
+    [Tooltip("The original range (radius) of the tower prefab in meter, assume the tower prefab has a scale of (1,1,1)")]
+    [SerializeField]
+    private float originalAttackRange = 7.5f;
+
     [SerializeField]
     private int damage;
 
+    [Tooltip("The attack CD in second.")]
     [SerializeField]
     private float attackCooldown;
 
-    [Tooltip(" The fyling speed of the projectiles of this tower in m/s")]
+    [Tooltip("The fyling speed of the projectiles of this tower in m/s. 0 means no projectile (projectile flys infinitely fast)")]
     [SerializeField]
     private float projectileSpeed;
 
-    [Tooltip("The effect range of the projectiles of this tower in meter")] 
+    [Tooltip("The effect range of the projectiles of this tower in meter. Exact meaning is depending on tower type." +
+        "\n Fire and Earth tower: range of the projectiles." +
+        "\n Lightning tower: the range for jumping of the attack between enemies." +
+        "\n Wind tower: the distance that enemies are blowed away")] 
     [SerializeField]
     private float effectRange;
 
@@ -61,9 +69,9 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private float weaknessMultiplier;
 
-    [Tooltip("The damage multiplier when it is raining, especially for lightning tower and fire tower")]
+    [Tooltip("The damage multiplier when it is raining or isWet (in the swamp trap), especially for lightning tower and fire tower")]
     [SerializeField]
-    private float damageRainingMultiplier = 1f;
+    private float damageWetMultiplier = 1f;
 
     [Tooltip("The damage reducing factor when the tower can attack more than one enemy at the same time")]
     [SerializeField]
@@ -82,6 +90,11 @@ public class Tower : MonoBehaviour
     public TowerType TowerType
     {
         get { return towerType; }
+    }
+
+    public float OriginalAttackRange
+    {
+        get => originalAttackRange;
     }
 
     public float Level
@@ -130,6 +143,11 @@ public class Tower : MonoBehaviour
     public float WeaknessMultiplier
     {
         get { return weaknessMultiplier; }
+    }
+
+    public float DamageRainingMultiplier
+    {
+        get => damageWetMultiplier;
     }
 
     public Collider Target
@@ -274,11 +292,7 @@ public class Tower : MonoBehaviour
     {
 
         // Do the damage
-        int damage = Projectile.CalculateDamage(Damage, WeaknessMultiplier, TowerType, targetEnemy);
-        if (GameAdvancement.raining)
-        {
-            damage = (int)(damage * damageRainingMultiplier);
-        }
+        int damage = Projectile.CalculateDamage(Damage, WeaknessMultiplier, TowerType, targetEnemy, damageWetMultiplier);
         targetEnemy.TakeDamage(damage);
         List<GameObject> enemies = new(GameObject.FindGameObjectsWithTag("Enemy"));
         enemies.Remove(targetEnemy.gameObject);
@@ -313,10 +327,10 @@ public class Tower : MonoBehaviour
     private void WindGustEffect()
     {
         Enemy targetEnemy = target.GetComponent<Enemy>();
-        int damage = Projectile.CalculateDamage(Damage, WeaknessMultiplier, TowerType, targetEnemy);
+        int damage = Projectile.CalculateDamage(Damage, WeaknessMultiplier, TowerType, targetEnemy, damageWetMultiplier);
         targetEnemy.TakeDamage(damage);
         // blow the enemy
-        targetEnemy.transform.position = targetEnemy.transform.position - Board.greatestBoardDimension * EffectRange * targetEnemy.transform.forward;
+        targetEnemy.transform.position = targetEnemy.transform.position - EffectRange * targetEnemy.transform.forward;
     }
 
     /// <summary>

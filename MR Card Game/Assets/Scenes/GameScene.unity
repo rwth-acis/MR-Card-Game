@@ -4674,7 +4674,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.8888527}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -55.04132, y: 2.645813}
+  m_AnchoredPosition: {x: -55.04126, y: 2.645813}
   m_SizeDelta: {x: -122.7745, y: -16.3719}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &162097194
@@ -5079,7 +5079,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.59800005}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -49.00006, y: -1}
+  m_AnchoredPosition: {x: -49, y: -1}
   m_SizeDelta: {x: -127.6754, y: -38.923}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &180254865
@@ -20216,10 +20216,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6f7c0a4f8c0a71499d5f8260a091858, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hole: {fileID: 5494333844620924843, guid: edc39d7bd375ce945827fbbb921a7be2, type: 3}
-  swamp: {fileID: 1698571093740059359, guid: b5d10c11a8c87bc4881ba1fe254bbe96, type: 3}
-  holeSize: 0.06
-  swampSize: 0.12
+  hole: {fileID: 5494333844620924842, guid: edc39d7bd375ce945827fbbb921a7be2, type: 3}
+  swamp: {fileID: 1698571093740059358, guid: b5d10c11a8c87bc4881ba1fe254bbe96, type: 3}
+  holeRadius: 0.03
+  swampRadius: 0.05
+  trapPrefabOrignialRadius: 5
 --- !u!114 &868698480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -40241,7 +40242,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 38.85
+  m_fontSize: 34.25
   m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 1

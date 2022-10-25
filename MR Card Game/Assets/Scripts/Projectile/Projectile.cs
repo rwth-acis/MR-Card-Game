@@ -5,18 +5,20 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     // A projectile instance needed to access non static variables in a static way
-    public static Projectile instance;
+    public static Projectile Instance;
 
-    // The target of the projectile
+    // The target enemy of the projectile
     private Enemy target;
 
     // The parent tower of the projectile
     private Tower parent;
 
-    // Method used to get the type of the tower
-    public static Tower GetParent
+    /// <summary>
+    /// Get the tower, which is the parent of the projectile
+    /// </summary>
+    public static Tower Parent
     {
-        get { return instance.parent; }
+        get { return Instance.parent; }
     }
 
     // The last position of the target is saved so that the projectile can continue travelling after the enemy is dead
@@ -25,7 +27,9 @@ public class Projectile : MonoBehaviour
     // The list of colliders that enter the range of the tower
     private List<Collider> enemyColliders = new List<Collider>();
 
-    // Access the list of colliders
+    /// <summary>
+    /// The list of enemies' colliders
+    /// </summary>
     public List<Collider> EnemyColliders
     {
         get => enemyColliders;
@@ -35,13 +39,12 @@ public class Projectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        instance = this;
+        Instance = this;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // If the game is not paused, update and make the projectile move
         if(GameAdvancement.gamePaused == false)
         {
             // If a projectile was created, it should move to the target
@@ -70,7 +73,7 @@ public class Projectile : MonoBehaviour
             lastPosition = target.transform.position;
 
             // If the target is not null and alive, move the projectile in the direction of the target
-            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.deltaTime * parent.ProjectileSpeed * 14 * Board.greatestBoardDimension);
+            transform.position = Vector3.MoveTowards(transform.position, target.transform.position, Time.deltaTime * parent.ProjectileSpeed);
             if(parent.TowerType == TowerType.Archer)
             {
                 transform.LookAt(target.transform.position);
@@ -81,14 +84,11 @@ public class Projectile : MonoBehaviour
             {
 
                 // Here, depending on the tower type, the enemy or enemies need to take damage depending on the type of projectile of the tower
+                // Wind tower and lightning tower don't have projectiles.
                 if(parent.TowerType == TowerType.Archer)
                 {
-                    // Make a single enemy take damage
                     ArrowEffect();
-
                 } else {
-                    
-                    // Make all enemies inside the projectile collider take damage
                     ProjectileThatCanHitMultipleEnemiesEffect();
                 }
                 ObjectPools.ReleaseProjectile(this, parent);
@@ -131,15 +131,14 @@ public class Projectile : MonoBehaviour
     private void ArrowEffect()
     {
         // Calculate the damage
-        int damage = CalculateDamage(parent.Damage, parent.WeaknessMultiplier, parent.TowerType, target.GetComponent<Enemy>());
+        int damage = CalculateDamage(parent.Damage, parent.WeaknessMultiplier, parent.TowerType, target.GetComponent<Enemy>(), parent.DamageRainingMultiplier);
         target.TakeDamage(damage);
     }
 
-    // The method that produces the effect of a fire ball and rock arriving at destination
+    // Produces the effect of a fire ball and rock arriving at destination
+    // Wind and lightning tower don't have projectiles
     private void ProjectileThatCanHitMultipleEnemiesEffect()
     {
-        // Initialize the damage variable
-        int damage = 0;
 
         // Initialize the list of dead enemies
         List<Collider> listOfDeadEnemies = new List<Collider>();
@@ -150,11 +149,12 @@ public class Projectile : MonoBehaviour
             Debug.Log("Currently, the target enemy is null is: " + (targetEnemy == null));
             if(targetEnemy != null)
             {
+                // Initialize the damage variable
                 // Calculate the damage
-                damage = CalculateDamage(parent.Damage, parent.WeaknessMultiplier, parent.TowerType, targetEnemy.GetComponent<Enemy>());
+                int damage = CalculateDamage(parent.Damage, parent.WeaknessMultiplier, parent.TowerType, targetEnemy.GetComponent<Enemy>(), parent.DamageRainingMultiplier);
 
-                // Check that the damage is not null
-                if(damage != 0)
+                // Check that the damage is not 0
+                if (damage != 0)
                 {
                     // Check if the enemy will die from this attack
                     if(targetEnemy != null && damage >= targetEnemy.GetComponent<Enemy>().CurrentHP)
@@ -170,20 +170,20 @@ public class Projectile : MonoBehaviour
             }
         }
 
-        // Check that the list of dead enemies is not empty
+        // Remove the dead enemies, if any
         if(listOfDeadEnemies != null)
         {
-            // Go over the list of dead enemies
             foreach(var enemy in listOfDeadEnemies)
             {
-                // Remove the enemies that are dead from the colliders list
                 enemyColliders.Remove(enemy);
             }
         }
     }
 
-    // The method that calculates the damage a unit should take depending on the enemy, tower and tower attack type
-    public static int CalculateDamage(int damage, float weaknessMultiplier, TowerType towerType, Enemy target)
+    /// <summary>
+    /// Calculates the damage a unit should take depending on the enemy, tower and tower attack type
+    /// </summary>
+    public static int CalculateDamage(int damage, float weaknessMultiplier, TowerType towerType, Enemy target, float damageWetMultiplier)
     {
 
         Debug.Log("The enemy for which damage is calculated is: " + (target == null));
@@ -219,25 +219,10 @@ public class Projectile : MonoBehaviour
                 case TowerType.Lightning:
                     if(target.Weakness == ResistenceAndWeaknessType.Lighting)
                     {
-                        if(GameAdvancement.raining == true || target.IsWet == true)
-                        {
-                            additionalDamageMultiplier = 2;
-                        } else {
-                            additionalDamageMultiplier = 1;
-                        }
+                        additionalDamageMultiplier = 1;
                     } else if(target.Resistance == ResistenceAndWeaknessType.Lighting)
                     {
-                        if(GameAdvancement.raining == true)
-                        {
-                            additionalDamageMultiplier = 0;
-                        } else {
-                            additionalDamageMultiplier = -1;
-                        }
-                    } else {
-                        if(GameAdvancement.raining == true || target.IsWet == true)
-                        {
-                            additionalDamageMultiplier = 1;
-                        }
+                        additionalDamageMultiplier = -1;
                     }
                 break;
 
@@ -263,22 +248,31 @@ public class Projectile : MonoBehaviour
             }
 
             // Return the damage with a bonus, a malus or flat depending on if a weakness or resistance was found
-            return (int) (damage + additionalDamageMultiplier * damage * weaknessMultiplier);
-
+            // Also adapt the damageWetMultiplier
+            if (GameAdvancement.raining || target.IsWet)
+            {
+                return (int)((damage + additionalDamageMultiplier * damage * weaknessMultiplier) * damageWetMultiplier);
+            }
+            else
+            {
+                return (int)(damage + additionalDamageMultiplier * damage * weaknessMultiplier);
+            }
         } else {
 
             return 0;
         }
     }
 
-    // Reinitialize the colliders list
+    /// <summary>
+    /// Reinitialize the colliders list
+    /// </summary>
     public void ClearCollidersList()
     {
         // Reinitialize colliders list as a new list
         enemyColliders = new List<Collider>();
     }
 
-    // The method that adds entering enemies to the collider list
+    // Adds entering enemies to the collider list
     private void OnTriggerEnter(Collider other)
     {
         // Check if the collider is already in the list or not
@@ -289,7 +283,7 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    // The method that removes exiting enemies of the collider list
+    // Removes exiting enemies of the collider list
     private void OnTriggerExit (Collider other)
     {
         // Remove colliders that leave the collider of the projectile collider

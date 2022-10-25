@@ -25,11 +25,11 @@ namespace i5.Toolkit.Core.Examples.Spawners
 
             if(towerType == TowerType.Archer)
             {
-                projectileObject.transform.localScale = new Vector3(1, 1, 1);
+                projectileObject.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
 
             } else {
                 // Calculate the projectile scale
-                float projectileSize = size * Board.greatestBoardDimension * towerDownScaleCounter;
+                float projectileSize = size * towerDownScaleCounter;
                 projectileObject.transform.localScale = new Vector3(projectileSize, projectileSize, projectileSize);
             }
             Debug.Log("Projectile was just scaled down.");

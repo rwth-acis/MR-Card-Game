@@ -52,7 +52,7 @@ public class ObjectPools : MonoBehaviour
 
         for(int i = 0; i < numberOfTrapTypes; i++)
         {
-            PoolIDs.Add(ObjectPool<Trap>.CreateNewPool());
+            PoolIDs.Add(ObjectPool<GameObject>.CreateNewPool());
         }
     }
 

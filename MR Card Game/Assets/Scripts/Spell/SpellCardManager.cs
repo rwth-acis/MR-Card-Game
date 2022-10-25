@@ -431,7 +431,12 @@ public class SpellCardManager : MonoBehaviour
                 if(closestEnemy != null)
                 {
                     thunderStrikePosition = closestEnemy.transform.position;
-                    closestEnemy.GetComponent<Enemy>().TakeDamage((int)(initialDamage * Mathf.Pow(thunderStrikeDamageReducingFactor, i)));
+                    int finalDamage = (int)(initialDamage * Mathf.Pow(thunderStrikeDamageReducingFactor, i));
+                    if(GameAdvancement.raining == false && closestEnemy.GetComponent<Enemy>().IsWet)
+                    {
+                        finalDamage = (int) (finalDamage * thunderStrikeDamageRainingMultiplier);
+                    }
+                    closestEnemy.GetComponent<Enemy>().TakeDamage(finalDamage);
                     StartCoroutine(ActivateSpellAnimationAndEffect(SpellType.ThunderStrike, closestEnemy.transform.position, 0.5f));
                     enemies.Remove(closestEnemy);
                 }

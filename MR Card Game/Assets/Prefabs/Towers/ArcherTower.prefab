@@ -160,12 +160,15 @@ MonoBehaviour:
   towerProjectile: {fileID: 7521511443799096600, guid: 5030cca6afc90a84aabb8f273d17113d, type: 3}
   cost: 50
   attackRange: 0.045
+  originalAttackRange: 7.5
   damage: 40
   attackCooldown: 1.25
-  projectileSpeed: 1
+  projectileSpeed: 0.4
   effectRange: 0
   numberOfEffect: 0
   weaknessMultiplier: 0.5
+  damageRainingMultiplier: 1
+  damageReducingFactor: 1
 --- !u!1 &3410284235519912160
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,7 +328,7 @@ Transform:
   m_GameObject: {fileID: 3410284236846270869}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -1.97, y: -0.68, z: 1.63}
-  m_LocalScale: {x: 0.19999997, y: 0.19999997, z: 0.19999997}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5982317250598279342}

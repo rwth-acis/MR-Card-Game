@@ -14,11 +14,6 @@ static class Board
     public static float overlayLength = 0.1f;
 
     /// <summary>
-    /// the dimension of the longer side of the board
-    /// </summary>
-    public static float greatestBoardDimension;
-
-    /// <summary>
     /// How much is the board scaled regarding its original scale on X dimension.
     /// </summary>
     public static float boardScalingFactor;
@@ -51,8 +46,6 @@ static class Board
     /// if the game board is visible or not
     /// </summary>
     public static bool boardVisible;
-
-    public static bool singleImageTarget = true;
 
     public static bool activateGameBoard;
 
@@ -120,12 +113,6 @@ public class GameBoard : MonoBehaviour
         Board.boardWidth = boardWidth;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     /// <summary>
     /// Enable the start next wave button while the game board is in view
     /// </summary>
@@ -190,25 +177,12 @@ public class GameBoard : MonoBehaviour
     {
         gameBoard.SetActive(true);
         Board.boardVisible = true;
-        Board.greatestBoardDimension = greatestBoardDimension;
-        Board.boardScalingFactor = gameBoard.transform.localScale.x / originalXScale;
     }
 
     public void SetBoardScalingCorrectly()
     {
-        if(Board.singleImageTarget == false)
-        {
-            float distance = 0.5f * Vector3.Distance(topLeftCorner.transform.position, bottomRightCorner.transform.position);
-
-            gameBoard.transform.localScale = new Vector3(distance * 0.1f, distance * 0.1f, distance * 0.1f);
-
-        } else {
-
-            gameBoard.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
-
-            Board.greatestBoardDimension = greatestBoardDimension;
-        }
-
+        // Set the board to a proper scale, a little bit magic
+        gameBoard.transform.localScale = new Vector3(0.03f, 0.03f, 0.03f);
     }
 
     /// <summary>
@@ -232,28 +206,11 @@ public class GameBoard : MonoBehaviour
     /// </summary>
     public void SetBoardPositionCorrectly()
     {
+        Vector3 positionTopLeftCorner = topLeftCorner.transform.position;
 
-        if(Board.singleImageTarget == false)
-        {
-            // Get the position of the two corners
-            Vector3 positionTopLeftCorner = topLeftCorner.transform.position;
-            Vector3 positionBottomRightCorner = bottomRightCorner.transform.position;
+        // Set the position of the game board
+        gameBoard.transform.position = positionTopLeftCorner + Camera.main.transform.forward * 0.01f;
 
-            Vector3 positionBoard = new Vector3();
-
-            // Change the values to the middle of both corners
-            positionBoard.x = 0.5f *(positionTopLeftCorner.x + positionBottomRightCorner.x);
-            positionBoard.y = 0.5f *(positionTopLeftCorner.y + positionBottomRightCorner.y) + 0.9f * 0.1f;
-            positionBoard.z = 0.5f *(positionTopLeftCorner.z + positionBottomRightCorner.z);
-            // Set the position of the game board
-            gameBoard.transform.position = positionBoard;
-        } else {
-            // Get the position of the image target
-            Vector3 positionTopLeftCorner = topLeftCorner.transform.position;
-
-            // Set the position of the game board
-            gameBoard.transform.position = positionTopLeftCorner + Camera.main.transform.forward * 0.01f;
-        }
     }
 
     public void SetRotationCorrectly()
