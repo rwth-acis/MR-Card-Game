@@ -194,6 +194,7 @@ public class SpellCardController : MonoBehaviour
             {
                 DisplaySpellImage();
             }
+            ShowSpellRange();
         }
         else
         {

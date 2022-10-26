@@ -50,7 +50,7 @@ public class SpellCardManager : MonoBehaviour
 
     [Tooltip("the percentage of damage that is reduced after a jump")]
     [SerializeField]
-    private float thunderStrikeDamageReducingFactor;
+    private float thunderStrikeDamageAttenuationFactor;
 
     [Tooltip("radius in meter")]
     [SerializeField]
@@ -431,7 +431,7 @@ public class SpellCardManager : MonoBehaviour
                 if(closestEnemy != null)
                 {
                     thunderStrikePosition = closestEnemy.transform.position;
-                    int finalDamage = (int)(initialDamage * Mathf.Pow(thunderStrikeDamageReducingFactor, i));
+                    int finalDamage = (int)(initialDamage * Mathf.Pow(thunderStrikeDamageAttenuationFactor, i));
                     if(GameAdvancement.raining == false && closestEnemy.GetComponent<Enemy>().IsWet)
                     {
                         finalDamage = (int) (finalDamage * thunderStrikeDamageRainingMultiplier);

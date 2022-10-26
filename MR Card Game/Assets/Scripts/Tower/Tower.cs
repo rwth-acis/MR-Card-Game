@@ -73,9 +73,9 @@ public class Tower : MonoBehaviour
     [SerializeField]
     private float damageWetMultiplier = 1f;
 
-    [Tooltip("The damage reducing factor when the tower can attack more than one enemy at the same time")]
+    [Tooltip("The damage attenuation factor when the tower can attack more than one enemy at the same time")]
     [SerializeField]
-    private float damageReducingFactor = 1f;
+    private float damageAttenuationFactor = 1f;
 
 
     private int level;
@@ -290,7 +290,6 @@ public class Tower : MonoBehaviour
     // Produces the effect of a lightning strike arriving at destination
     private void LightningStrikeEffect(int numberOfStrikes, Enemy targetEnemy)
     {
-
         // Do the damage
         int damage = Projectile.CalculateDamage(Damage, WeaknessMultiplier, TowerType, targetEnemy, damageWetMultiplier);
         targetEnemy.TakeDamage(damage);
@@ -312,7 +311,7 @@ public class Tower : MonoBehaviour
             }
             if (closestEnemy != null)
             {
-                closestEnemy.GetComponent<Enemy>().TakeDamage((int)(damage * Mathf.Pow(damageReducingFactor, i + 1)));
+                closestEnemy.GetComponent<Enemy>().TakeDamage((int)(damage * Mathf.Pow(damageAttenuationFactor, i + 1)));
                 enemies.Remove(closestEnemy);
                 targetEnemy = closestEnemy.GetComponent<Enemy>();
             }
