@@ -17,6 +17,14 @@ public class SpawnSpellEffect : MonoBehaviour
     [SerializeField]
     private GameObject spaceDistortion;
 
+    [Header("Spell Animation Duration")]
+    [Tooltip("The duration of the meteor in seconds, including the idle time, in which the meteor already fallen.")]
+    [SerializeField]
+    private float meteorAnimationDuration = 2;
+
+    [SerializeField]
+    private float arrowRainAnimationDuration = 2;
+
     private Vector3 arrowRainOriginalScale;
     private Vector3 meteorOriginalScale;
     private Vector3 thunderStrikeOriginalScale;
@@ -50,6 +58,16 @@ public class SpawnSpellEffect : MonoBehaviour
     public static GameObject SpaceDistortion
     {
         get => Instance.spaceDistortion;
+    }
+
+    public static float MeteorAnimationDuration
+    {
+        get => Instance.meteorAnimationDuration;
+    }
+
+    public static float ArrowRainAnimationDuration
+    {
+        get => Instance.arrowRainAnimationDuration;
     }
 
     void Start()

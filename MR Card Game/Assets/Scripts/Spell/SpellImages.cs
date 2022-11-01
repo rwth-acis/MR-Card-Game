@@ -206,7 +206,9 @@ public class SpellImages : MonoBehaviour
         Instance = this;
     }
 
-    // Method used to display the meteor image on spell cards
+    /// <summary>
+    /// Display the spell image on spell cards
+    /// </summary>
     public static void DisplaySpell(GameObject imageTarget, SpellType type)
     {
         // Get the right image to change depending on the current image target

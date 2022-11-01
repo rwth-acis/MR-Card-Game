@@ -39,6 +39,8 @@ public class SpellCardController : MonoBehaviour
 
     private GameObject gameBoard;
 
+    private GameObject spellRepresentation;
+
     /// <summary>
     /// If the card is drawn
     /// </summary>
@@ -194,7 +196,11 @@ public class SpellCardController : MonoBehaviour
             {
                 DisplaySpellImage();
             }
-            ShowSpellRange();
+            if (HasRangeProperty())
+            {
+                ShowSpellRange();
+            }
+
         }
         else
         {
@@ -223,10 +229,26 @@ public class SpellCardController : MonoBehaviour
     // Display the canvas on which the draw spell button is
     private void DisplayDrawSpell()
     {
+        spellImage.gameObject.SetActive(true);
         spellCardCanvas.SetActive(true);
         drawSpellButton.gameObject.SetActive(true);
         playSpellButton.gameObject.SetActive(false);
-        spellImage.gameObject.SetActive(false);
+        int cost = SpellCardManager.GetSpellCost(spellType);
+        if (SpellCardManager.CardDeck[spellType] > 0 && GameAdvancement.currencyPoints >= cost)
+        {
+            drawSpellButton.GetComponent<Button>().interactable = true;
+            drawSpellButton.GetComponentInChildren<TMP_Text>().text = $"Draw {spellType} (In Deck: {SpellCardManager.CardDeck[spellType]}) \n Cost: {cost}";
+        }
+        else if(SpellCardManager.CardDeck[spellType] <= 0)
+        {
+            drawSpellButton.GetComponent<Button>().interactable = false;
+            drawSpellButton.GetComponentInChildren<TMP_Text>().text = $"No {spellType} In Deck";
+        }
+        else
+        {
+            drawSpellButton.GetComponent<Button>().interactable = false;
+            drawSpellButton.GetComponentInChildren<TMP_Text>().text = $"Currency Not Enough\n Cost: {cost}";
+        }
     }
 
     // Deactivates the canvas on which the draw spell button is
@@ -244,6 +266,8 @@ public class SpellCardController : MonoBehaviour
         // Check if the player has free draws
         if (SpellCardManager.FreeDraws == 0)
         {
+            GameAdvancement.currencyPoints -= SpellCardManager.GetSpellCost(spellType);
+            GameSetup.UpdateCurrencyDisplay();
             Questions.questionRequestingImageTarget = gameObject;
             GameSceneManager.DeactivateGameOverlay();
             SpellCardManager.AnswerQuestions.SetActive(true);
@@ -260,7 +284,6 @@ public class SpellCardController : MonoBehaviour
         }
     }
 
-    // The method that builds an archer tower over the image target
     IEnumerator DrawSpell()
     {
         // Wait until no questions left
@@ -273,9 +296,10 @@ public class SpellCardController : MonoBehaviour
     // Reveals the spell card
     private void RevealSpell()
     {
-        ShowSpellRange();
-        // Set the right sprite to the image target image component
-        SpellImages.DisplaySpell(gameObject, spellType);
+        if (HasRangeProperty())
+        {
+            ShowSpellRange();
+        }
         DisplaySpellImage();
         // Check if the spell card is on the game board
         if (onBoard)
@@ -314,11 +338,11 @@ public class SpellCardController : MonoBehaviour
             // Check if there are still this type of card in card deck
             if (SpellCardManager.CardDeck[spellType] > 0)
             {
-                playSpellButton.GetComponentInChildren<TMP_Text>().text = $"Play {spellType} ({SpellCardManager.CardDeck[spellType]})";
+                playSpellButton.GetComponentInChildren<TMP_Text>().text = $"Play {spellType} (In Deck: {SpellCardManager.CardDeck[spellType]})";
             }
             else
             {
-                playSpellButton.GetComponentInChildren<TMP_Text>().text = "No Card In Deck";
+                playSpellButton.GetComponentInChildren<TMP_Text>().text = $"No {spellType} In Deck";
                 PlaySpell();
             }
             drawSpellButton.gameObject.SetActive(false);

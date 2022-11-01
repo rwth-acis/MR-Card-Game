@@ -114,6 +114,47 @@ public class SpellCardManager : MonoBehaviour
     [SerializeField]
     private int drawAmount;
 
+    [Header("Spell Costs")]
+
+    [SerializeField]
+    private int spellDeckRefillCost;
+
+    [SerializeField]
+    private int meteorCost;
+
+    [SerializeField]
+    private int arrowRainCost;
+
+    [SerializeField]
+    private int thunderStrikeCost;
+
+    [SerializeField]
+    private int teleportCost;
+
+    [SerializeField]
+    private int armorCost;
+
+    [SerializeField]
+    private int drawCost;
+
+    [SerializeField]
+    private int obliterationCost;
+
+    [SerializeField]
+    private int stopTimeCost;
+
+    [SerializeField]
+    private int slowTimeCost;
+
+    [SerializeField]
+    private int rainCost;
+
+    [SerializeField]
+    private int spaceDistortionCost;
+
+    [SerializeField]
+    private int healingCost;
+
     [Header("UI Components")]
     [SerializeField]
     private GameObject answerQuestions;
@@ -132,6 +173,15 @@ public class SpellCardManager : MonoBehaviour
 
     [SerializeField]
     private Button startNextWaveButton;
+
+    [SerializeField]
+    private GameObject refillSpellDeckWindow;
+
+    [SerializeField]
+    private TMP_Text refillSpellDeckWindowText;
+
+    [SerializeField]
+    private GameObject refillSpellDeckFailedWindow;
 
     [Tooltip("The spell range indicator which has a size of (1,1,1), i.e. 1 meter, originally, needs to be scaled")]
     [SerializeField]
@@ -222,7 +272,7 @@ public class SpellCardManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InitializeCardDeck();
+        InitializeSpellDeck();
     }
 
     //---------------------------------------------------------------------------------------------------------------
@@ -230,7 +280,7 @@ public class SpellCardManager : MonoBehaviour
     //---------------------------------------------------------------------------------------------------------------
 
     // Put the right amount of cards in the deck of cards
-    private void InitializeCardDeck()
+    private void InitializeSpellDeck()
     {
         cardDeck = new Dictionary<SpellType, int>
         {
@@ -250,6 +300,30 @@ public class SpellCardManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Called when the "Yes" button of the refill spell deck window is clicked.
+    /// </summary>
+    public void RefillSpellDeck()
+    {
+        if(GameAdvancement.currencyPoints >= spellDeckRefillCost)
+        {
+            GameAdvancement.currencyPoints -= spellDeckRefillCost;
+            GameSetup.UpdateCurrencyDisplay();
+            InitializeSpellDeck();
+        }
+        else
+        {
+            refillSpellDeckFailedWindow.SetActive(true);
+        }
+
+    }
+
+    public void OpenRefillSpellDeckWindow()
+    {
+        refillSpellDeckWindow.SetActive(true);
+        refillSpellDeckWindowText.text = $"Do you want to pay {spellDeckRefillCost} currency to refill the spell deck? You will not get additional spell cards even if you still have some in the deck.";
+    }
+
+    /// <summary>
     /// Try to play spell with the given type. If there is no such spell cards, return false and do nothing, else return true and play the spell.
     /// </summary>
     /// <param name="spellType"> type of the spell to play</param>
@@ -260,72 +334,58 @@ public class SpellCardManager : MonoBehaviour
         if (cardDeck[spellType] > 0)
         {
             cardDeck[spellType]--;
+            DrawnSpellsOnBoard--;
+            Debug.Log("The number of drawn card spells that are on the board is: " + DrawnSpellsOnBoard);
+            // Check if no spell card is drawn
+            if (NumberDrawnSpellCards() == 0)
+            {
+                GameAdvancement.gamePaused = false;
+            }
+
+            // Check if the number of drawn spell cards that are on the board is 0
+            if (DrawnSpellsOnBoard <= 0)
+            {
+                GameAdvancement.gamePaused = false;
+            }
             // Depending on the type of card that is next in the card deck, make the right overlay appear and set the spell type variable to the right type
             switch (spellType)
             {
                 case SpellType.Meteor:
                     PlayMeteor(position);
                     break;
-
                 case SpellType.ArrowRain:
                     PlayArrowRain(position);
                     break;
-
                 case SpellType.ThunderStrike:
                     PlayThunderStrike(position);
                     break;
-
                 case SpellType.Armor:
                     PlayArmor();
                     break;
-
                 case SpellType.Healing:
                     PlayHealing();
                     break;
-
                 case SpellType.Obliteration:
                     PlayObliteration();
                     break;
-
                 case SpellType.Draw:
                     PlayDraw();
                     break;
-
                 case SpellType.Teleport:
                     PlayTeleport(position);
                     break;
-
                 case SpellType.SpaceDistortion:
                     PlaySpaceDistortion(position);
                     break;
-
                 case SpellType.SlowTime:
                     PlaySlowTime();
                     break;
-
                 case SpellType.StopTime:
                     PlayStopTime();
                     break;
-
                 case SpellType.Rain:
                     PlayRain();
                     break;
-            }
-            DrawnSpellsOnBoard--;
-
-            Debug.Log("The number of drawn card spells that are on the board is: " + DrawnSpellsOnBoard);
-
-            // Check if the number of drawn spell cards that are on the board is 0
-            if (DrawnSpellsOnBoard <= 0)
-            {
-                Debug.Log("The game is being unpaused after a spell card has been played");
-                GameAdvancement.gamePaused = false;
-            }
-
-            // Check if no spell card is drawn
-            if (NumberDrawnSpellCards() == 0)
-            {
-                GameAdvancement.gamePaused = false;
             }
             return true;
         }
@@ -335,7 +395,6 @@ public class SpellCardManager : MonoBehaviour
             // Check if the number of drawn spell cards that are on the board is 0
             if (DrawnSpellsOnBoard <= 0)
             {
-                Debug.Log("The game is being unpaused after a spell card has been played");
                 GameAdvancement.gamePaused = false;
             }
             // Check if no spell card is drawn
@@ -371,35 +430,30 @@ public class SpellCardManager : MonoBehaviour
 
     private IEnumerator ActivateSpellAnimationAndEffect(SpellType spellType, Vector3 position, float effectiveTimer)
     {
+        GameAdvancement.gamePaused = true;
         GameObject spellEffect = SpawnSpellEffect.SpawnSpellFromPool(spellType);
         spellEffect.transform.position = position;
-        float timeWaited = 0;
-        // Wait until the effective timer is reached
-        while (timeWaited <= effectiveTimer)
-        {
-            yield return new WaitForSeconds(0.1f);
-            if (GameAdvancement.gamePaused == false)
-            {
-                timeWaited += 0.1f;
-            }
-        }
-        ObjectPools.ReleaseSpellEffect(spellEffect, spellType);     
+        // Wait for the animation to play, if any.
+        yield return new WaitForSeconds(effectiveTimer);
+        //PlaySpellDamageInRadius(position, meteorRadius, meteorDamage);
+        ObjectPools.ReleaseSpellEffect(spellEffect, spellType);
+        GameAdvancement.gamePaused = false;
     }
 
     // Play the meteor effect
     private void PlayMeteor(Vector3 spellPosition)
     {
         // Make the damage in radius take effect in the meteor radius and with the meteor damage
-        PlaySpellDamageInRadius(spellPosition, meteorRadius, meteorDamage);
-        StartCoroutine(ActivateSpellAnimationAndEffect(SpellType.Meteor, spellPosition, 1f));
+        StartCoroutine(PlaySpellDamageInRadiusDelayed(spellPosition, meteorRadius, meteorDamage, SpawnSpellEffect.MeteorAnimationDuration));
+        StartCoroutine(ActivateSpellAnimationAndEffect(SpellType.Meteor, spellPosition, SpawnSpellEffect.MeteorAnimationDuration + 1f));
     }
 
     // Play the arrow rain effect
     private void PlayArrowRain(Vector3 spellPosition)
     {
         // Make the damage in radius take effect in the meteor radius and with the meteor damage
-        PlaySpellDamageInRadius(spellPosition, arrowRainRadius, arrowRainDamage);
-        StartCoroutine(ActivateSpellAnimationAndEffect(SpellType.ArrowRain, spellPosition, 1f));
+        StartCoroutine(PlaySpellDamageInRadiusDelayed(spellPosition, arrowRainRadius, arrowRainDamage, SpawnSpellEffect.ArrowRainAnimationDuration));
+        StartCoroutine(ActivateSpellAnimationAndEffect(SpellType.ArrowRain, spellPosition, SpawnSpellEffect.ArrowRainAnimationDuration + 0.5f));
     }
 
     private void PlayThunderStrike(Vector3 spellPosition)
@@ -659,6 +713,13 @@ public class SpellCardManager : MonoBehaviour
         }
     }
 
+    // Play spell damage with a time delay, used especially for spells that have an animation.
+    private IEnumerator PlaySpellDamageInRadiusDelayed(Vector3 center, float radius, int damage, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        PlaySpellDamageInRadius(center, radius, damage);
+    }
+
     /// <summary>
     /// Reset the spell card deck
     /// </summary>
@@ -666,7 +727,7 @@ public class SpellCardManager : MonoBehaviour
     {
         FreeDraws = 0;
         DrawnSpellsOnBoard = 0;
-        Instance.InitializeCardDeck();
+        Instance.InitializeSpellDeck();
     }
 
     /// <summary>
@@ -711,5 +772,25 @@ public class SpellCardManager : MonoBehaviour
                 Debug.LogWarning("The given spell type doesn't have a radius property.");
                 return 0;
         }
+    }
+
+    public static int GetSpellCost(SpellType spellType)
+    {
+        return spellType switch
+        {
+            SpellType.Armor => Instance.armorCost,
+            SpellType.Draw => Instance.drawCost,
+            SpellType.Rain => Instance.rainCost,
+            SpellType.Healing => Instance.healingCost,
+            SpellType.ArrowRain => Instance.arrowRainCost,
+            SpellType.SpaceDistortion => Instance.spaceDistortionCost,
+            SpellType.Teleport => Instance.teleportCost,
+            SpellType.ThunderStrike => Instance.teleportCost,
+            SpellType.StopTime => Instance.stopTimeCost,
+            SpellType.SlowTime => Instance.slowTimeCost,
+            SpellType.Meteor => Instance.meteorCost,
+            SpellType.Obliteration => Instance.obliterationCost,
+            _ => 0
+        };
     }
 }

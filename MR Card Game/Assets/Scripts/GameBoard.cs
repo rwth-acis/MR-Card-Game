@@ -94,11 +94,6 @@ public class GameBoard : MonoBehaviour
     [SerializeField]
     private float boardWidth;
 
-    [SerializeField]
-    private float greatestBoardDimension = 0.03f;
-
-    private readonly float originalXScale = 0.03f;
-
     // Start is called before the first frame update
     void Start()
     {

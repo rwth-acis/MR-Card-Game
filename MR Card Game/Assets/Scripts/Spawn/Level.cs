@@ -248,12 +248,8 @@ public class Level : MonoBehaviour
                 // Choose a new type of enemy that should be spawned
                 int spawnNumber = SetNextEnemyType(LevelInfo.normalEnemies[GameAdvancement.currentWave - 1], LevelInfo.fastEnemies[GameAdvancement.currentWave - 1], LevelInfo.superFastEnemies[GameAdvancement.currentWave - 1], LevelInfo.flyingEnemies[GameAdvancement.currentWave - 1], LevelInfo.tankEnemies[GameAdvancement.currentWave - 1], LevelInfo.slowEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerFlyingEnemies[GameAdvancement.currentWave - 1], LevelInfo.berzerkerTankEnemies[GameAdvancement.currentWave - 1]);
                 enemySpawnNumber = spawnNumber;
-                Debug.Log("The enemy spawn number was set to: " + spawnNumber);
-                Debug.Log("The new enemy type was set to: " + enemyType);
+                Debug.Log("The new enemy's type was set to: " + enemyType);
             }
-
-            Debug.Log("The enemy spawn number is: " + enemySpawnNumber);
-
             // Check if currently a group of enemy should be spawned
             if(enemySpawnNumber > 0)
             {

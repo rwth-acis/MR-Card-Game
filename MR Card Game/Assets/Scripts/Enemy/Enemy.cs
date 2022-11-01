@@ -210,7 +210,7 @@ public class Enemy : MonoBehaviour
 
     private bool ReachPosition(Vector3 position)
     {
-        if(Vector3.Magnitude(transform.position - position) <= 0.002f)
+        if(Vector3.Magnitude(transform.position - position) <= 0.005f)
         {
             return true;
         }
