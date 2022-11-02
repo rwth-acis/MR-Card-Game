@@ -78,9 +78,6 @@ public class Enemy : MonoBehaviour
 
     // Waypoints placed on the path that enemies have to travel
     private Transform[] waypoints;
-
-    // The gameboard game object
-    private GameObject gameBoard;
     #endregion
 
     #region Properties
@@ -152,31 +149,36 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // If the game is not paused, update
-        if(GameAdvancement.gamePaused == false && IsAlive == true)
+
+        if (IsAlive)
         {
             // If the current health of the unit is not at its maximum, activate the health bar
-            if(currentHP < maximumHP)
+            if (currentHP < maximumHP)
             {
                 healthBarUI.SetActive(true);
             }
-
-            // Kill the enemy if it its health points reach zero
-            if(currentHP <= 0 && IsAlive == true)
+            // If the game is not paused, update
+            if (GameAdvancement.gamePaused == false)
             {
-                IsAlive = false;
-                GetCurrencyPoints();
-                // Reset the current waypoint index so that enemies walk toward the first waypoint upon respawn
-                WaypointIndex = 0;
-                LevelInfo.numberOfEnemiesDefeated++;
-                StartCoroutine(Die());
-            }
+                // Kill the enemy if it its health points reach zero
+                if (currentHP <= 0 && IsAlive == true)
+                {
+                    IsAlive = false;
+                    GetCurrencyPoints();
+                    // Reset the current waypoint index so that enemies walk toward the first waypoint upon respawn
+                    WaypointIndex = 0;
+                    LevelInfo.numberOfEnemiesDefeated++;
+                    StartCoroutine(Die());
+                }
 
-            if(GameAdvancement.timeStopped == false)
-            {
-                Move();
+                if (GameAdvancement.timeStopped == false)
+                {
+                    Move();
+                }
             }
         }
+
+        
     }
 
     private void Move()
@@ -292,7 +294,6 @@ public class Enemy : MonoBehaviour
     /// </summary>
     public void Initialize()
     {
-        gameBoard = Board.gameBoard;
         waypoints = Waypoints.mapWaypoints;
         WaypointIndex = 0;
 

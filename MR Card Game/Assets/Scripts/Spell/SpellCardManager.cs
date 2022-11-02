@@ -428,14 +428,15 @@ public class SpellCardManager : MonoBehaviour
     // The spell cards effect
     //---------------------------------------------------------------------------------------------------------------
 
-    private IEnumerator ActivateSpellAnimationAndEffect(SpellType spellType, Vector3 position, float effectiveTimer)
+    // Get an spell effect object from the pool, and return it to the pool after the effectiveTimer.
+    // Do not do damage.
+    private IEnumerator SpwanSpellAnimationEffect(SpellType spellType, Vector3 position, float effectiveTimer)
     {
         GameAdvancement.gamePaused = true;
         GameObject spellEffect = SpawnSpellEffect.SpawnSpellFromPool(spellType);
         spellEffect.transform.position = position;
         // Wait for the animation to play, if any.
         yield return new WaitForSeconds(effectiveTimer);
-        //PlaySpellDamageInRadius(position, meteorRadius, meteorDamage);
         ObjectPools.ReleaseSpellEffect(spellEffect, spellType);
         GameAdvancement.gamePaused = false;
     }
@@ -445,7 +446,7 @@ public class SpellCardManager : MonoBehaviour
     {
         // Make the damage in radius take effect in the meteor radius and with the meteor damage
         StartCoroutine(PlaySpellDamageInRadiusDelayed(spellPosition, meteorRadius, meteorDamage, SpawnSpellEffect.MeteorAnimationDuration));
-        StartCoroutine(ActivateSpellAnimationAndEffect(SpellType.Meteor, spellPosition, SpawnSpellEffect.MeteorAnimationDuration + 1f));
+        StartCoroutine(SpwanSpellAnimationEffect(SpellType.Meteor, spellPosition, SpawnSpellEffect.MeteorAnimationDuration + 1f));
     }
 
     // Play the arrow rain effect
@@ -453,10 +454,15 @@ public class SpellCardManager : MonoBehaviour
     {
         // Make the damage in radius take effect in the meteor radius and with the meteor damage
         StartCoroutine(PlaySpellDamageInRadiusDelayed(spellPosition, arrowRainRadius, arrowRainDamage, SpawnSpellEffect.ArrowRainAnimationDuration));
-        StartCoroutine(ActivateSpellAnimationAndEffect(SpellType.ArrowRain, spellPosition, SpawnSpellEffect.ArrowRainAnimationDuration + 0.5f));
+        StartCoroutine(SpwanSpellAnimationEffect(SpellType.ArrowRain, spellPosition, SpawnSpellEffect.ArrowRainAnimationDuration + 0.5f));
     }
 
     private void PlayThunderStrike(Vector3 spellPosition)
+    {
+        StartCoroutine(PlayThunderStrikeCoro(spellPosition));
+    }
+
+    private IEnumerator PlayThunderStrikeCoro(Vector3 spellPosition)
     {
         // Initialize and fill the enemies array
         List<GameObject> enemies = new(GameObject.FindGameObjectsWithTag("Enemy"));
@@ -491,12 +497,15 @@ public class SpellCardManager : MonoBehaviour
                         finalDamage = (int) (finalDamage * thunderStrikeDamageRainingMultiplier);
                     }
                     closestEnemy.GetComponent<Enemy>().TakeDamage(finalDamage);
-                    StartCoroutine(ActivateSpellAnimationAndEffect(SpellType.ThunderStrike, closestEnemy.transform.position, 0.5f));
+                    // Let the thunder strike prefab show 0.5 seconds.
+                    StartCoroutine(SpwanSpellAnimationEffect(SpellType.ThunderStrike, closestEnemy.transform.position, 0.5f));
                     enemies.Remove(closestEnemy);
+                    // Play the thunder strike effect separately, so that players can better see the jump effect.
+                    yield return new WaitForSeconds(0.5f);
                 }
                 else
                 {
-                    return;
+                    yield return null;
                 }
             }       
         }
@@ -577,7 +586,7 @@ public class SpellCardManager : MonoBehaviour
     {
         float timer = 0f;
         float range = spaceDistortionRadius;
-        StartCoroutine(ActivateSpellAnimationAndEffect(SpellType.SpaceDistortion, spellPosition, spaceDistortionDuration));
+        StartCoroutine(SpwanSpellAnimationEffect(SpellType.SpaceDistortion, spellPosition, spaceDistortionDuration));
         while (timer < spaceDistortionDuration)
         {
             List<GameObject> enemiesInRange = EnemiesInRange(spellPosition, range);

@@ -11964,8 +11964,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d0586d4775d3034fae3797c2ca0b5eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  topLeftCorner: {fileID: 0}
-  bottomRightCorner: {fileID: 0}
   gameBoard: {fileID: 1050655252}
   gameBoardGroundObject: {fileID: 479760043}
   castle: {fileID: 0}
@@ -14163,7 +14161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &608392552
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27296,7 +27294,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 481719537}
         m_TargetAssemblyTypeName: GameBoard, Assembly-CSharp
-        m_MethodName: TopLeftBecameVisible
+        m_MethodName: GameBoardPlaced
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -29804,7 +29802,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1387493003}
   m_OnClick:
     m_PersistentCalls:
@@ -29832,6 +29830,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 608392551}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1387493003
 MonoBehaviour:
