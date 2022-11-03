@@ -330,6 +330,7 @@ public class Tower : MonoBehaviour
         targetEnemy.TakeDamage(damage);
         // blow the enemy
         targetEnemy.transform.position = targetEnemy.transform.position - EffectRange * targetEnemy.transform.forward;
+        gameObject.GetComponentInChildren<ParticleSystem>().Play();
     }
 
     /// <summary>

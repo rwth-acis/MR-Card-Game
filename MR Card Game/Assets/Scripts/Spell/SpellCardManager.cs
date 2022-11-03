@@ -166,6 +166,18 @@ public class SpellCardManager : MonoBehaviour
     private GameObject gameBoard;
 
     [SerializeField]
+    private DurationDisplay rainDurationDisplay;
+
+    [SerializeField]
+    private DurationDisplay stopTimeDurationDisplay;
+
+    [SerializeField]
+    private DurationDisplay slowTimeDurationDisplay;
+
+    [SerializeField]
+    private DurationDisplay spaceDistortionDurationDisplay;
+
+    [SerializeField]
     private Button currencyDisplay;
 
     [SerializeField]
@@ -186,6 +198,9 @@ public class SpellCardManager : MonoBehaviour
     [Tooltip("The spell range indicator which has a size of (1,1,1), i.e. 1 meter, originally, needs to be scaled")]
     [SerializeField]
     private GameObject spellRangeIndicator;
+
+    [SerializeField]
+    private GameObject healingEffect;
     #endregion
 
     #region Non-Serializable Fields
@@ -430,9 +445,9 @@ public class SpellCardManager : MonoBehaviour
 
     // Get an spell effect object from the pool, and return it to the pool after the effectiveTimer.
     // Do not do damage.
-    private IEnumerator SpwanSpellAnimationEffect(SpellType spellType, Vector3 position, float effectiveTimer)
+    private IEnumerator SpwanSpellAnimationEffect(SpellType spellType, Vector3 position, float effectiveTimer, bool pauseGame)
     {
-        GameAdvancement.gamePaused = true;
+        GameAdvancement.gamePaused = pauseGame;
         GameObject spellEffect = SpawnSpellEffect.SpawnSpellFromPool(spellType);
         spellEffect.transform.position = position;
         // Wait for the animation to play, if any.
@@ -446,7 +461,7 @@ public class SpellCardManager : MonoBehaviour
     {
         // Make the damage in radius take effect in the meteor radius and with the meteor damage
         StartCoroutine(PlaySpellDamageInRadiusDelayed(spellPosition, meteorRadius, meteorDamage, SpawnSpellEffect.MeteorAnimationDuration));
-        StartCoroutine(SpwanSpellAnimationEffect(SpellType.Meteor, spellPosition, SpawnSpellEffect.MeteorAnimationDuration + 1f));
+        StartCoroutine(SpwanSpellAnimationEffect(SpellType.Meteor, spellPosition, SpawnSpellEffect.MeteorAnimationDuration + 1f, true));
     }
 
     // Play the arrow rain effect
@@ -454,7 +469,7 @@ public class SpellCardManager : MonoBehaviour
     {
         // Make the damage in radius take effect in the meteor radius and with the meteor damage
         StartCoroutine(PlaySpellDamageInRadiusDelayed(spellPosition, arrowRainRadius, arrowRainDamage, SpawnSpellEffect.ArrowRainAnimationDuration));
-        StartCoroutine(SpwanSpellAnimationEffect(SpellType.ArrowRain, spellPosition, SpawnSpellEffect.ArrowRainAnimationDuration + 0.5f));
+        StartCoroutine(SpwanSpellAnimationEffect(SpellType.ArrowRain, spellPosition, SpawnSpellEffect.ArrowRainAnimationDuration + 0.5f, true));
     }
 
     private void PlayThunderStrike(Vector3 spellPosition)
@@ -498,7 +513,7 @@ public class SpellCardManager : MonoBehaviour
                     }
                     closestEnemy.GetComponent<Enemy>().TakeDamage(finalDamage);
                     // Let the thunder strike prefab show 0.5 seconds.
-                    StartCoroutine(SpwanSpellAnimationEffect(SpellType.ThunderStrike, closestEnemy.transform.position, 0.5f));
+                    StartCoroutine(SpwanSpellAnimationEffect(SpellType.ThunderStrike, closestEnemy.transform.position, 0.5f, true));
                     enemies.Remove(closestEnemy);
                     // Play the thunder strike effect separately, so that players can better see the jump effect.
                     yield return new WaitForSeconds(0.5f);
@@ -529,6 +544,14 @@ public class SpellCardManager : MonoBehaviour
             GameAdvancement.castleCurrentHP += healingAmount;
         }
         GameSetup.UpdateCastleHealthPoints();
+        StartCoroutine(ActivateHealingEffectOnCastle(1f));
+    }
+
+    private IEnumerator ActivateHealingEffectOnCastle(float duration)
+    {
+        healingEffect.SetActive(true);
+        yield return new WaitForSeconds(duration);
+        healingEffect.SetActive(false);
     }
 
     private void PlayObliteration()
@@ -579,6 +602,7 @@ public class SpellCardManager : MonoBehaviour
     private void PlaySpaceDistortion(Vector3 spellPosition)
     {
         StartCoroutine(SpaceDistortion(spellPosition));
+        spaceDistortionDurationDisplay.StartCountDown(spaceDistortionDuration);
     }
 
     // Slow enemies in a certain area
@@ -586,7 +610,7 @@ public class SpellCardManager : MonoBehaviour
     {
         float timer = 0f;
         float range = spaceDistortionRadius;
-        StartCoroutine(SpwanSpellAnimationEffect(SpellType.SpaceDistortion, spellPosition, spaceDistortionDuration));
+        StartCoroutine(SpwanSpellAnimationEffect(SpellType.SpaceDistortion, spellPosition, spaceDistortionDuration, false));
         while (timer < spaceDistortionDuration)
         {
             List<GameObject> enemiesInRange = EnemiesInRange(spellPosition, range);
@@ -611,6 +635,7 @@ public class SpellCardManager : MonoBehaviour
     private void PlaySlowTime()
     {
         StartCoroutine(SlowTime());
+        slowTimeDurationDisplay.StartCountDown(slowTimeDuration);
     }
 
     // Coroutine that makes the slow time spell card take effect
@@ -634,6 +659,7 @@ public class SpellCardManager : MonoBehaviour
     private void PlayStopTime()
     {
         StartCoroutine(StopTime());
+        stopTimeDurationDisplay.StartCountDown(stopTimeDuration);
     }
 
     // Coroutine that makes the stop time spell card take effect
@@ -657,6 +683,7 @@ public class SpellCardManager : MonoBehaviour
     private void PlayRain()
     {
         StartCoroutine(Rain());
+        rainDurationDisplay.StartCountDown(rainDuration);
     }
 
     private IEnumerator Rain()

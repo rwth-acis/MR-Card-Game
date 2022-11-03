@@ -234,10 +234,19 @@ public class SpellCardController : MonoBehaviour
         drawSpellButton.gameObject.SetActive(true);
         playSpellButton.gameObject.SetActive(false);
         int cost = SpellCardManager.GetSpellCost(spellType);
-        if (SpellCardManager.CardDeck[spellType] > 0 && GameAdvancement.currencyPoints >= cost)
+        if (SpellCardManager.CardDeck[spellType] > 0)
         {
-            drawSpellButton.GetComponent<Button>().interactable = true;
-            drawSpellButton.GetComponentInChildren<TMP_Text>().text = $"Draw {spellType} (In Deck: {SpellCardManager.CardDeck[spellType]}) \n Cost: {cost}";
+            if (SpellCardManager.FreeDraws > 0)
+            {
+                drawSpellButton.GetComponent<Button>().interactable = true;
+                drawSpellButton.GetComponentInChildren<TMP_Text>().text = $"Draw {spellType} (In Deck: {SpellCardManager.CardDeck[spellType]}) \n FreeDraws: {SpellCardManager.FreeDraws}";
+            }
+            else if (GameAdvancement.currencyPoints >= cost)
+            {
+
+                drawSpellButton.GetComponent<Button>().interactable = true;
+                drawSpellButton.GetComponentInChildren<TMP_Text>().text = $"Draw {spellType} (In Deck: {SpellCardManager.CardDeck[spellType]}) \n Cost: {cost}";
+            }
         }
         else if(SpellCardManager.CardDeck[spellType] <= 0)
         {
