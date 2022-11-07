@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using TMPro;
+using UnityEditor.Timeline;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.SceneManagement;
@@ -24,7 +25,6 @@ public class GameSceneManager : MonoBehaviour
     [SerializeField]
     private Button currencyDisplay;
 
-    // Define the wave display button
     [SerializeField]
     private Button waveDisplay;
 
@@ -33,9 +33,12 @@ public class GameSceneManager : MonoBehaviour
 
     [SerializeField]
     private Button toggleGameboard;
-    // Define the start next wave button
+
     [SerializeField]
     private Button startNextWave;
+
+    [SerializeField]
+    private Button moreOptionsButton;
 
     public static GameSceneManager Instance;
 
@@ -69,7 +72,10 @@ public class GameSceneManager : MonoBehaviour
         get { return Instance.startNextWave; }
     }
 
-
+    public static Button MoreOptionButton
+    {
+        get => Instance.moreOptionsButton;
+    }
     private void Awake()
     {
         ImportAllModels();
@@ -84,40 +90,35 @@ public class GameSceneManager : MonoBehaviour
         return Questions.numberOfQuestionsNeededToAnswer == 0;
     }
 
+    /// <summary>
+    /// Activate buttons on the game overlay
+    /// </summary>
     public static void ActivateGameOverlay()
     {
-        // Activate the currency display button
         CurrencyDisplay.gameObject.SetActive(true);
-
-        // Activate the wave display button
         WaveDisplay.gameObject.SetActive(true);
-
         // Check if the wave is currently ongoing
         if (LevelInfo.waveOngoing == false)
         {
             // If it is not the case, activate the start next wave button
             StartNextWave.gameObject.SetActive(true);
         }
-
         ToogleGameboard.gameObject.SetActive(true);
-
         EnemyDisplay.gameObject.SetActive(true);
+        MoreOptionButton.gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// Deactivate buttons on the game overlay
+    /// </summary>
     public static void DeactivateGameOverlay()
     {
-        // Deactivate the currency display button
         CurrencyDisplay.gameObject.SetActive(false);
-
-        // Deactivate the wave display button
         WaveDisplay.gameObject.SetActive(false);
-
-        // Deactivate the start next wave button
         StartNextWave.gameObject.SetActive(false);
-
         ToogleGameboard.gameObject.SetActive(false);
-
         EnemyDisplay.gameObject.SetActive(false);
+        MoreOptionButton.gameObject.SetActive(false);
     }
 
     public void LoadIntroSceneAsync()
