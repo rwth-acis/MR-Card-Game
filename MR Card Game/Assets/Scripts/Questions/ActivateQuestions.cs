@@ -91,6 +91,7 @@ public class ActivateQuestions : MonoBehaviour
     public Button answer2WithoutPictureMC;
     public Button answer3WithoutPictureMC;
     public Button answer4WithoutPictureMC;
+    public Button answer5WithoutPictureMC;
 
     // Define two questions for correct and incorrect answers
     public Color correctColor;
@@ -544,7 +545,7 @@ public class ActivateQuestions : MonoBehaviour
             // Activate the confirm button and deactivate the close button
             closeQuestionWithoutPictureMC.gameObject.SetActive(false);
             confirmAnswerWithoutPictureMC.gameObject.SetActive(true);
-
+            DeactivateButtonsWithoutPictureMC();
             // Display the correct question name
             questionNameMC.text = question.name;
          
@@ -554,6 +555,8 @@ public class ActivateQuestions : MonoBehaviour
             switch (question.numberOfAnswers)
             {
                 case 2:
+                    answer1WithoutPictureMC.gameObject.SetActive(true);
+                    answer2WithoutPictureMC.gameObject.SetActive(true);
                     // Display the correct question and ansers
                     answer1WithoutPictureMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
                     answer2WithoutPictureMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
@@ -571,6 +574,9 @@ public class ActivateQuestions : MonoBehaviour
                     answer2WithoutPictureMC.GetComponentInChildren<TMP_Text>().color = typingColor;
                     break;
                 case 3:
+                    answer1WithoutPictureMC.gameObject.SetActive(true);
+                    answer2WithoutPictureMC.gameObject.SetActive(true);
+                    answer3WithoutPictureMC.gameObject.SetActive(true);
                     // Display the correct question and ansers
                     answer1WithoutPictureMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
                     answer2WithoutPictureMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
@@ -592,6 +598,10 @@ public class ActivateQuestions : MonoBehaviour
                     answer3WithoutPictureMC.GetComponentInChildren<TMP_Text>().color = typingColor;
                     break;
                 case 4:
+                    answer1WithoutPictureMC.gameObject.SetActive(true);
+                    answer2WithoutPictureMC.gameObject.SetActive(true);
+                    answer3WithoutPictureMC.gameObject.SetActive(true);
+                    answer4WithoutPictureMC.gameObject.SetActive(true);
                     // Display the correct question and ansers
                     answer1WithoutPictureMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
                     answer2WithoutPictureMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
@@ -616,11 +626,54 @@ public class ActivateQuestions : MonoBehaviour
                     answer3WithoutPictureMC.GetComponentInChildren<TMP_Text>().color = typingColor;
                     answer4WithoutPictureMC.GetComponentInChildren<TMP_Text>().color = typingColor;
                     break;
+                case 5:
+                    answer1WithoutPictureMC.gameObject.SetActive(true);
+                    answer2WithoutPictureMC.gameObject.SetActive(true);
+                    answer3WithoutPictureMC.gameObject.SetActive(true);
+                    answer4WithoutPictureMC.gameObject.SetActive(true);
+                    answer5WithoutPictureMC.gameObject.SetActive(true);
+                    // Display the correct question and ansers
+                    answer1WithoutPictureMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
+                    answer2WithoutPictureMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
+                    answer3WithoutPictureMC.GetComponentInChildren<TMP_Text>().text = question.answer3;
+                    answer4WithoutPictureMC.GetComponentInChildren<TMP_Text>().text = question.answer4;
+                    answer5WithoutPictureMC.GetComponentInChildren<TMP_Text>().text = question.answer5;
+
+                    // Make them interactable
+                    answer1WithoutPictureMC.interactable = true;
+                    answer2WithoutPictureMC.interactable = true;
+                    answer3WithoutPictureMC.interactable = true;
+                    answer4WithoutPictureMC.interactable = true;
+                    answer5WithoutPictureMC.interactable = true;
+
+                    // Set the right button color
+                    answer1WithoutPictureMC.GetComponent<Image>().color = deselectedColor;
+                    answer2WithoutPictureMC.GetComponent<Image>().color = deselectedColor;
+                    answer3WithoutPictureMC.GetComponent<Image>().color = deselectedColor;
+                    answer4WithoutPictureMC.GetComponent<Image>().color = deselectedColor;
+                    answer5WithoutPictureMC.GetComponent<Image>().color = deselectedColor;
+
+                    // Set the right font color
+                    answer1WithoutPictureMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                    answer2WithoutPictureMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                    answer3WithoutPictureMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                    answer4WithoutPictureMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                    answer5WithoutPictureMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                    break;
                 default:
-                    Debug.LogError("A MC question is only allowed to have 2, 3, or 4 choices.");
+                    Debug.LogError("A MC question is only allowed to have at most 5 choices.");
                     break;
             }       
         }
+    }
+
+    private void DeactivateButtonsWithoutPictureMC()
+    {
+        answer1WithoutPictureMC.gameObject.SetActive(false);
+        answer2WithoutPictureMC.gameObject.SetActive(false);
+        answer3WithoutPictureMC.gameObject.SetActive(false);
+        answer4WithoutPictureMC.gameObject.SetActive(false);
+        answer5WithoutPictureMC.gameObject.SetActive(false);
     }
 
     //-------------------------------------------------------------------------------------------------------------------------------------------
@@ -911,6 +964,8 @@ public class ActivateQuestions : MonoBehaviour
                     return answer3WithoutPictureMC;
                 case 3:
                     return answer4WithoutPictureMC;
+                case 4:
+                    return answer5WithoutPictureMC;
                 default:
                     Debug.LogError("A MC question is only allowed to have 2, 3, or 4 choices");
                     return null;
