@@ -1659,7 +1659,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 86.348045, y: 37.821}
+  m_AnchoredPosition: {x: 116.8, y: 37.821}
   m_SizeDelta: {x: 419.27, y: 25.643}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &87259133
@@ -4364,7 +4364,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36.75
+  m_fontSize: 49.25
   m_fontSizeBase: 28
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -18229,25 +18229,25 @@ MonoBehaviour:
   numberOfQuestionsThatNeedToBeAnsweredDisplay: {fileID: 843715920}
   questionNameInput: {fileID: 162097194}
   feedbackInput: {fileID: 426175752}
-  inputWithoutPicturePanel: {fileID: 1104527090}
-  questionTextWithoutPictureInput: {fileID: 91894071}
-  confirmAnswerWithoutPictureInput: {fileID: 1683908738}
-  closeQuestionWithoutPictureInput: {fileID: 701065830}
-  answerFieldWithoutPictureInput: {fileID: 1373583480}
+  inputWithoutImagePanel: {fileID: 1104527090}
+  questionTextWithoutImageInput: {fileID: 91894071}
+  confirmAnswerWithoutImageInput: {fileID: 1683908738}
+  closeQuestionWithoutImageInput: {fileID: 701065830}
+  answerFieldWithoutImageInput: {fileID: 1373583480}
   previewCorrectAnswerInput: {fileID: 1498789290}
-  yourWrongAnswerWithoutPictureInput: {fileID: 87259133}
-  theCorrectAnswerWithoutPictureInput: {fileID: 1296270075}
+  yourWrongAnswerWithoutImageInput: {fileID: 87259133}
+  theCorrectAnswerWithoutImageInput: {fileID: 1296270075}
   questionNameMC: {fileID: 523195397}
   feedbackMC: {fileID: 194127217}
-  multipleChoiceWithoutPicturePanel: {fileID: 1102664712}
-  confirmAnswerWithoutPictureMC: {fileID: 975118263}
-  closeQuestionWithoutPictureMC: {fileID: 647868365}
-  questionWithoutPictureTextMC: {fileID: 1159198743}
-  answer1WithoutPictureMC: {fileID: 1011006810}
-  answer2WithoutPictureMC: {fileID: 1639933970}
-  answer3WithoutPictureMC: {fileID: 1689499004}
-  answer4WithoutPictureMC: {fileID: 2058550180}
-  answer5WithoutPictureMC: {fileID: 2088885082}
+  multipleChoiceWithoutImagePanel: {fileID: 1102664712}
+  confirmAnswerWithoutImageMC: {fileID: 975118263}
+  closeQuestionWithoutImageMC: {fileID: 647868365}
+  questionWithoutImageTextMC: {fileID: 1159198743}
+  answer1WithoutImageMC: {fileID: 1011006810}
+  answer2WithoutImageMC: {fileID: 1639933970}
+  answer3WithoutImageMC: {fileID: 1689499004}
+  answer4WithoutImageMC: {fileID: 2058550180}
+  answer5WithoutImageMC: {fileID: 2088885082}
   correctColor: {r: 0, g: 0.7529412, b: 0, a: 1}
   incorrectColor: {r: 1, g: 0, b: 0, a: 1}
   typingColor: {r: 0, g: 0, b: 0, a: 1}
@@ -18255,16 +18255,6 @@ MonoBehaviour:
   deselectedColor: {r: 1, g: 1, b: 1, a: 1}
   correctButtonColor: {r: 0, g: 0.75294125, b: 0, a: 0.56078434}
   incorrectButtonColor: {r: 1, g: 0, b: 0, a: 0.5254902}
-  imageTarget1: {fileID: 0}
-  imageTarget2: {fileID: 0}
-  imageTarget3: {fileID: 0}
-  imageTarget4: {fileID: 0}
-  imageTarget5: {fileID: 0}
-  imageTarget1Visible: 0
-  imageTarget2Visible: 0
-  imageTarget3Visible: 0
-  imageTarget4Visible: 0
-  imageTarget5Visible: 0
   urlBegin: https://raw.githubusercontent.com/rwth-acis/i5-Toolkit-for-Unity/master/Assets/i5%20Toolkit%20for%20Unity/Samples%7E/Importers/ObjImporter/Obj%20Models/
   levelDirectoryPath: C:\Users\Anna\Desktop\RWTH Aachen\8. Semester\Bachelorarbeit\MR-Card-Game\Backend\RWTH
     Aachen University\Computer Science\Analysis\Level2\Test
@@ -21803,7 +21793,7 @@ GameObject:
   - component: {fileID: 1102664715}
   - component: {fileID: 1102664714}
   m_Layer: 5
-  m_Name: MultipleChoiceWithoutPicturePanel
+  m_Name: MultipleChoiceWithoutImagePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21883,7 +21873,7 @@ GameObject:
   - component: {fileID: 1104527093}
   - component: {fileID: 1104527092}
   m_Layer: 5
-  m_Name: InputWithoutPicturePanel
+  m_Name: InputWithoutImagePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26365,7 +26355,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 116.39802, y: -13.465}
+  m_AnchoredPosition: {x: 87, y: -21}
   m_SizeDelta: {x: 359.17, y: 25.6433}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1296270075
@@ -35395,7 +35385,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -183.35957, y: -13.465}
+  m_AnchoredPosition: {x: -212.75757, y: -21}
   m_SizeDelta: {x: 225.257, y: 25.6433}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1797445471

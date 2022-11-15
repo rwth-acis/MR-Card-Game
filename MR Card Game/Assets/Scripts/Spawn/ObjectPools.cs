@@ -14,7 +14,7 @@ public class ObjectPools : MonoBehaviour
     private static int numberOfSpellTypes = 4;
     private static int numberOfTrapTypes = 2;
 
-    public static ArrayList PoolIDs = new();
+    public static ArrayList PoolIDs;
     public static ObjectPools Instance;
 
     private void Awake()
@@ -25,6 +25,8 @@ public class ObjectPools : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        PoolIDs = new ArrayList();
+        // Create Pools
         for (int i = 0; i < numberOfEnemyTypes; i++)
         {
             PoolIDs.Add(ObjectPool<Enemy>.CreateNewPool());
