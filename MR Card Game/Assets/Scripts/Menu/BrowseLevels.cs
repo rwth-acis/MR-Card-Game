@@ -144,7 +144,7 @@ public class BrowseLevels : MonoBehaviour
     // Get the array of files in the given path to a directory
     public string[] GetFilesArray()
     {
-        string[] files = Directory.GetFiles(currentPathBrowse, "Question*");
+        string[] files = Directory.GetFiles(currentPathBrowse, "Question*.json");
 
         // Check if the description file exists
         if (File.Exists(Path.Combine(currentPathBrowse, "Description.json")))
@@ -471,13 +471,6 @@ public class BrowseLevels : MonoBehaviour
         }
     }
 
-    // Method that returns the array of models (json files) in the given path
-    static string[] GetModelsArray(string path)
-    {
-        Debug.Log("The model array was created");
-        string[] questions = Directory.GetFiles(path, "Model*", SearchOption.TopDirectoryOnly);
-        return questions;
-    }
     // Get the index that the button gives
     public int GetIndexFromButtonName(string buttonName)
     {

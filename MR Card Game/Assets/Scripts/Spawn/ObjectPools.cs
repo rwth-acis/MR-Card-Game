@@ -197,7 +197,7 @@ public class ObjectPools : MonoBehaviour
     public static void ReleaseTrap(Trap trap)
     {
         int objectPoolIndex = GetTrapPoolIndex(trap.TrapType);
-        ObjectPool<Trap>.ReleaseResource(objectPoolIndex, trap);
+        ObjectPool<GameObject>.ReleaseResource(objectPoolIndex, trap.gameObject);
         trap.gameObject.SetActive(false);
     }
 }

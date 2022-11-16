@@ -5,10 +5,6 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 using System.IO;
-using i5.Toolkit.Core.ModelImporters;
-using i5.Toolkit.Core.ProceduralGeometry;
-using i5.Toolkit.Core.ServiceCore;
-using i5.Toolkit.Core.Utilities;
 using UnityEngine.Networking;
 
 
@@ -43,100 +39,6 @@ static class Questions
 
 public class ActivateQuestions : MonoBehaviour
 {
-    // The instance of this script
-    public static ActivateQuestions instance;
-
-    // Define the "menus"
-    public GameObject viewModel;
-    public GameObject viewMultipleChoiceQuestion;
-    public GameObject viewInputQuestion;
-    public GameObject gameOverlay;
-    // Define the button on which the number of questions that need to be answered is written
-    public Button numberOfQuestionsThatNeedToBeAnsweredDisplay;
-
-    [Header("Input Question")]
-
-    // Define the text objects, text field and buttons of the input question interface
-    public TMP_Text questionNameInput;
-    public Button feedbackInput;
-
-    [Tooltip("The panel contains all components for input questions")]
-    public GameObject inputWithoutImagePanel;
-
-    public TMP_Text questionTextWithoutImageInput;
-    public Button confirmAnswerWithoutImageInput;
-    public Button closeQuestionWithoutImageInput;
-    public TMP_InputField answerFieldWithoutImageInput;
-
-    // Define the text elements of the correct answer preview of the input question interface
-    public GameObject previewCorrectAnswerInput;
-    public TMP_Text yourWrongAnswerWithoutImageInput;
-    public TMP_Text theCorrectAnswerWithoutImageInput;
-
-    [Header("Multiple Choice Question")]
-
-    // Define the text objects and button of the multiple choice question interface
-    public TMP_Text questionNameMC;
-
-    public Button feedbackMC;
-
-    [Tooltip("The panel contains all components for multiple choice questions")]
-    public GameObject multipleChoiceWithoutImagePanel;
-    public Button confirmAnswerWithoutImageMC;
-    public Button closeQuestionWithoutImageMC;
-
-    // Define the text objects and buttons of multiple choice questions
-    public TMP_Text questionWithoutImageTextMC;
-    public Button answer1WithoutImageMC;
-    public Button answer2WithoutImageMC;
-    public Button answer3WithoutImageMC;
-    public Button answer4WithoutImageMC;
-    public Button answer5WithoutImageMC;
-
-    // Define two questions for correct and incorrect answers
-    public Color correctColor;
-    public Color incorrectColor;
-    public Color typingColor;
-    public Color selectedColor;
-    public Color deselectedColor;
-    public Color correctButtonColor;
-    public Color incorrectButtonColor;
-
-    // The begin of the url to the .obj object downloaded in the created examples
-    public string urlBegin;
-
-    /// <summary>
-    /// the view model (so view activate question) menu as a static object
-    /// </summary>
-    public static GameObject ViewModel
-    {
-        get { return instance.viewModel; }
-    }
-
-    /// <summary>
-    /// the view multiple choice question menu as a static object
-    /// </summary>
-    public static GameObject ViewMultipleChoiceQuestion
-    {
-        get { return instance.viewMultipleChoiceQuestion; }
-    }
-
-    /// <summary>
-    /// the view input question menu as a static object
-    /// </summary>
-    public static GameObject ViewInputQuestion
-    {
-        get { return instance.viewInputQuestion; }
-    }
-
-    /// <summary>
-    /// the additional field 2 as a static object
-    /// </summary>
-    public static Button NumberOfQuestionsThatNeedToBeAnsweredDisplay
-    {
-        get { return instance.numberOfQuestionsThatNeedToBeAnsweredDisplay; }
-    }
-
     /// <summary>
     /// The JSON Serialization for the input questions
     /// </summary>
@@ -147,7 +49,7 @@ public class ActivateQuestions : MonoBehaviour
         public string name;
         public string question;
         public string answer;
-        public string withImage;
+        public bool withImage;
         public string imageName;
     }
 
@@ -175,15 +77,6 @@ public class ActivateQuestions : MonoBehaviour
         public string imageName;
     }
 
-    // The JSON Serialization for the Models
-    [Serializable]
-    public class Model
-    {
-        public string modelName;
-        public string modelUrl;
-        public int numberOfQuestionsUsedIn;
-    }
-
     // The JSON Serialization for the log file
     [Serializable]
     public class Log
@@ -194,22 +87,128 @@ public class ActivateQuestions : MonoBehaviour
         public string description; // The description text of the content / concepts that are needed for solving the exercises
     }
 
+    // The instance of this script
+    public static ActivateQuestions Instance;
+
+    // Define the "menus"
+    public GameObject viewModel;
+    public GameObject viewMultipleChoiceQuestion;
+    public GameObject viewInputQuestion;
+    public GameObject gameOverlay;
+    // Define the button on which the number of questions that need to be answered is written
+    public Button numberOfQuestionsThatNeedToBeAnsweredDisplay;
+
+    [Header("Input Question")]
+
+    // Define the text objects, text field and buttons of the input question interface
+    public TMP_Text questionNameInput;
+    public Button feedbackInput;
+
+    [Header("Input Question Without Image")]
+    public GameObject inputWithoutImagePanel;
+    public TMP_Text questionTextWithoutImageInput;
+    public Button confirmAnswerWithoutImageInput;
+    public Button closeQuestionWithoutImageInput;
+    public TMP_InputField answerFieldWithoutImageInput;
+    // Define the text elements of the correct answer preview of the input question interface
+    public GameObject previewCorrectAnswerWithoutImageInput;
+    public TMP_Text yourWrongAnswerWithoutImageInput;
+    public TMP_Text theCorrectAnswerWithoutImageInput;
+
+    [Header("Input Question With Image")]
+    public GameObject inputWithImagePanel;
+    public TMP_Text questionTextWithImageInput;
+    public Image imageInput;
+    public Button confirmAnswerWithImageInput;
+    public Button closeQuestionWithImageInput;
+    public TMP_InputField answerFieldWithImageInput;
+    public GameObject previewCorrectAnswerWithImageInput;
+    public TMP_Text yourWrongAnswerWithImageInput;
+    public TMP_Text theCorrectAnswerWithImageInput;
+
+    [Header("Multiple Choice Question")]
+
+    // Define the text objects and button of the multiple choice question interface
+    public TMP_Text questionNameMC;
+    public Button feedbackMC;
+
+    [Header("Multiple Choice Question Without Image")]
+    public GameObject multipleChoiceWithoutImagePanel;
+    public Button confirmAnswerWithoutImageMC;
+    public Button closeQuestionWithoutImageMC;
+    // Define the text objects and buttons of multiple choice questions
+    public TMP_Text questionWithoutImageTextMC;
+    public Button answer1WithoutImageMC;
+    public Button answer2WithoutImageMC;
+    public Button answer3WithoutImageMC;
+    public Button answer4WithoutImageMC;
+    public Button answer5WithoutImageMC;
+
+    [Header("Multiple Choice Question With Image")]
+    public GameObject multipleChoiceWithImagePanel;
+    public Button confirmAnswerWithImageMC;
+    public Button closeQuestionWithImageMC;
+    // Define the text objects and buttons of multiple choice questions
+    public TMP_Text questionWithImageTextMC;
+    public Image imageMC;
+    public Button answer1WithImageMC;
+    public Button answer2WithImageMC;
+    public Button answer3WithImageMC;
+    public Button answer4WithImageMC;
+    public Button answer5WithImageMC;
+
+    [Header("Color")]
+    // Define two questions for correct and incorrect answers
+    public Color correctColor;
+    public Color incorrectColor;
+    public Color typingColor;
+    public Color selectedColor;
+    public Color deselectedColor;
+    public Color correctButtonColor;
+    public Color incorrectButtonColor;
+
+    /// <summary>
+    /// the view model (so view activate question) menu as a static object
+    /// </summary>
+    public static GameObject ViewModel
+    {
+        get { return Instance.viewModel; }
+    }
+
+    /// <summary>
+    /// the view multiple choice question menu as a static object
+    /// </summary>
+    public static GameObject ViewMultipleChoiceQuestion
+    {
+        get { return Instance.viewMultipleChoiceQuestion; }
+    }
+
+    /// <summary>
+    /// the view input question menu as a static object
+    /// </summary>
+    public static GameObject ViewInputQuestion
+    {
+        get { return Instance.viewInputQuestion; }
+    }
+
+    /// <summary>
+    /// the additional field 2 as a static object
+    /// </summary>
+    public static Button NumberOfQuestionsThatNeedToBeAnsweredDisplay
+    {
+        get { return Instance.numberOfQuestionsThatNeedToBeAnsweredDisplay; }
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
-        instance = this;
-
+        Instance = this;
         Questions.currentlyAnsweringQuestion = false;
-
         Questions.numberOfQuestionsNeededToAnswer = 0;
-
         // The number of models
         Questions.numberOfModels = 5;
-
         Questions.numberOfModelsLoaded = 0;
-
-        // Since the path to level is set in browse level, it is the same in android and not android boot
-        levelDirectoryPath = Questions.pathToLevel;
     }
 
     // Update is called once per frame
@@ -265,6 +264,7 @@ public class ActivateQuestions : MonoBehaviour
 
         // Access the json string of the question file
         string json = File.ReadAllText(questionPath);
+        Debug.Log(questionPath);
 
         // Disable the view model menu
         viewModel.SetActive(false);
@@ -274,160 +274,311 @@ public class ActivateQuestions : MonoBehaviour
         {
             // Extract the object
             InputQuestion question = JsonUtility.FromJson<InputQuestion>(json);
-
             // The current question is an input question, open the right question UI
             viewInputQuestion.SetActive(true);
-
             // Display the question information in the right text objects
             questionNameInput.text = question.name;
 
-            // TODO: With / Without picture
-            inputWithoutImagePanel.SetActive(true);
-            questionTextWithoutImageInput.text = question.question;
+            if (question.withImage)
+            {
+                inputWithImagePanel.SetActive(true);
+                questionTextWithImageInput.text = question.question;
+                // Activate the confirm button and deactivate the close button
+                closeQuestionWithImageInput.gameObject.SetActive(false);
+                confirmAnswerWithImageInput.gameObject.SetActive(true);
 
-            // Activate the confirm button and deactivate the close button
-            closeQuestionWithoutImageInput.gameObject.SetActive(false);
-            confirmAnswerWithoutImageInput.gameObject.SetActive(true);
+                // Activate the input field and make it interactable)
+                answerFieldWithImageInput.gameObject.SetActive(true);
+                answerFieldWithImageInput.interactable = true;
 
-            // Activate the input field and make it interactable)
-            answerFieldWithoutImageInput.gameObject.SetActive(true);
-            answerFieldWithoutImageInput.interactable = true;
+                // Disable the correct answer preview
+                previewCorrectAnswerWithImageInput.SetActive(false);
 
-            // Disable the correct answer preview
-            previewCorrectAnswerInput.SetActive(false);
+                // Set the right typing color to the input field
+                GameObject.Find("TextAnswerInputWithImage").GetComponent<TMP_Text>().color = typingColor;
+                answerFieldWithImageInput.text = "";
+                // The image can only be a jpg or a png file.
+                byte[] imageData = File.Exists(questionPath.Split('.')[0] + "_image.jpg") ? File.ReadAllBytes(questionPath.Split('.')[0] + "_image.jpg") : File.ReadAllBytes(questionPath.Split('.')[0] + "_image.png");
+                Texture2D t2d = new((int)imageInput.GetComponent<RectTransform>().rect.width, (int)imageInput.GetComponent<RectTransform>().rect.height);
+                t2d.LoadImage(imageData);
+                imageInput.sprite = Sprite.Create(t2d, new Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
+            }
+            else
+            {
+                inputWithoutImagePanel.SetActive(true);
+                questionTextWithoutImageInput.text = question.question;
+                // Activate the confirm button and deactivate the close button
+                closeQuestionWithoutImageInput.gameObject.SetActive(false);
+                confirmAnswerWithoutImageInput.gameObject.SetActive(true);
 
-            // Set the right typing color to the input field
-            GameObject.Find("TextAnswerInput").GetComponent<TMP_Text>().color = typingColor;
-            answerFieldWithoutImageInput.text = "";
-            
+                // Activate the input field and make it interactable)
+                answerFieldWithoutImageInput.gameObject.SetActive(true);
+                answerFieldWithoutImageInput.interactable = true;
+
+                // Disable the correct answer preview
+                previewCorrectAnswerWithoutImageInput.SetActive(false);
+
+                // Set the right typing color to the input field
+                GameObject.Find("TextAnswerInputWithoutImage").GetComponent<TMP_Text>().color = typingColor;
+                answerFieldWithoutImageInput.text = "";
+            }                       
         } else {
-
             MultipleChoiceQuestion question = JsonUtility.FromJson<MultipleChoiceQuestion>(json);
             viewMultipleChoiceQuestion.SetActive(true);
-            multipleChoiceWithoutImagePanel.SetActive(true);
 
-            // Activate the confirm button and deactivate the close button
-            closeQuestionWithoutImageMC.gameObject.SetActive(false);
-            confirmAnswerWithoutImageMC.gameObject.SetActive(true);
-            DeactivateButtonsWithoutImageMC();
-            // Display the correct question name
-            questionNameMC.text = question.name;
-         
-            //TODO: With/Without Image
-            questionWithoutImageTextMC.text = question.question;
-            // Check how many answers exist
-            switch (question.numberOfAnswers)
+            if (question.withImage)
             {
-                case 2:
-                    answer1WithoutImageMC.gameObject.SetActive(true);
-                    answer2WithoutImageMC.gameObject.SetActive(true);
-                    // Display the correct question and ansers
-                    answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
-                    answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
+                multipleChoiceWithImagePanel.SetActive(true);
+                // Activate the confirm button and deactivate the close button
+                closeQuestionWithImageMC.gameObject.SetActive(false);
+                confirmAnswerWithImageMC.gameObject.SetActive(true);
+                DeactivateButtonsWithImageMC();
+                // Display the correct question name
+                questionNameMC.text = question.name;
+                questionWithImageTextMC.text = question.question;
+                // Check how many answers exist
+                switch (question.numberOfAnswers)
+                {
+                    case 2:
+                        answer1WithImageMC.gameObject.SetActive(true);
+                        answer2WithImageMC.gameObject.SetActive(true);
+                        // Display the correct question and ansers
+                        answer1WithImageMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
+                        answer2WithImageMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
 
-                    // Make them interactable
-                    answer1WithoutImageMC.interactable = true;
-                    answer2WithoutImageMC.interactable = true;
+                        // Make them interactable
+                        answer1WithImageMC.interactable = true;
+                        answer2WithImageMC.interactable = true;
 
-                    // Set the right button color
-                    answer1WithoutImageMC.GetComponent<Image>().color = deselectedColor;
-                    answer2WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+                        // Set the right button color
+                        answer1WithImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer2WithImageMC.GetComponent<Image>().color = deselectedColor;
 
-                    // Set the right font color
-                    answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
-                    answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
-                    break;
-                case 3:
-                    answer1WithoutImageMC.gameObject.SetActive(true);
-                    answer2WithoutImageMC.gameObject.SetActive(true);
-                    answer3WithoutImageMC.gameObject.SetActive(true);
-                    // Display the correct question and ansers
-                    answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
-                    answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
-                    answer3WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer3;
+                        // Set the right font color
+                        answer1WithImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer2WithImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        break;
+                    case 3:
+                        answer1WithImageMC.gameObject.SetActive(true);
+                        answer2WithImageMC.gameObject.SetActive(true);
+                        answer3WithImageMC.gameObject.SetActive(true);
+                        // Display the correct question and ansers
+                        answer1WithImageMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
+                        answer2WithImageMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
+                        answer3WithImageMC.GetComponentInChildren<TMP_Text>().text = question.answer3;
 
-                    // Make them interactable
-                    answer1WithoutImageMC.interactable = true;
-                    answer2WithoutImageMC.interactable = true;
-                    answer3WithoutImageMC.interactable = true;
+                        // Make them interactable
+                        answer1WithImageMC.interactable = true;
+                        answer2WithImageMC.interactable = true;
+                        answer3WithImageMC.interactable = true;
 
-                    // Set the right button color
-                    answer1WithoutImageMC.GetComponent<Image>().color = deselectedColor;
-                    answer2WithoutImageMC.GetComponent<Image>().color = deselectedColor;
-                    answer3WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+                        // Set the right button color
+                        answer1WithImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer2WithImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer3WithImageMC.GetComponent<Image>().color = deselectedColor;
 
-                    // Set the right font color
-                    answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
-                    answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
-                    answer3WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
-                    break;
-                case 4:
-                    answer1WithoutImageMC.gameObject.SetActive(true);
-                    answer2WithoutImageMC.gameObject.SetActive(true);
-                    answer3WithoutImageMC.gameObject.SetActive(true);
-                    answer4WithoutImageMC.gameObject.SetActive(true);
-                    // Display the correct question and ansers
-                    answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
-                    answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
-                    answer3WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer3;
-                    answer4WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer4;
+                        // Set the right font color
+                        answer1WithImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer2WithImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer3WithImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        break;
+                    case 4:
+                        answer1WithImageMC.gameObject.SetActive(true);
+                        answer2WithImageMC.gameObject.SetActive(true);
+                        answer3WithImageMC.gameObject.SetActive(true);
+                        answer4WithImageMC.gameObject.SetActive(true);
+                        // Display the correct question and ansers
+                        answer1WithImageMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
+                        answer2WithImageMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
+                        answer3WithImageMC.GetComponentInChildren<TMP_Text>().text = question.answer3;
+                        answer4WithImageMC.GetComponentInChildren<TMP_Text>().text = question.answer4;
 
-                    // Make them interactable
-                    answer1WithoutImageMC.interactable = true;
-                    answer2WithoutImageMC.interactable = true;
-                    answer3WithoutImageMC.interactable = true;
-                    answer4WithoutImageMC.interactable = true;
+                        // Make them interactable
+                        answer1WithImageMC.interactable = true;
+                        answer2WithImageMC.interactable = true;
+                        answer3WithImageMC.interactable = true;
+                        answer4WithImageMC.interactable = true;
 
-                    // Set the right button color
-                    answer1WithoutImageMC.GetComponent<Image>().color = deselectedColor;
-                    answer2WithoutImageMC.GetComponent<Image>().color = deselectedColor;
-                    answer3WithoutImageMC.GetComponent<Image>().color = deselectedColor;
-                    answer4WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+                        // Set the right button color
+                        answer1WithImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer2WithImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer3WithImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer4WithImageMC.GetComponent<Image>().color = deselectedColor;
 
-                    // Set the right font color
-                    answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
-                    answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
-                    answer3WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
-                    answer4WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
-                    break;
-                case 5:
-                    answer1WithoutImageMC.gameObject.SetActive(true);
-                    answer2WithoutImageMC.gameObject.SetActive(true);
-                    answer3WithoutImageMC.gameObject.SetActive(true);
-                    answer4WithoutImageMC.gameObject.SetActive(true);
-                    answer5WithoutImageMC.gameObject.SetActive(true);
-                    // Display the correct question and ansers
-                    answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
-                    answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
-                    answer3WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer3;
-                    answer4WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer4;
-                    answer5WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer5;
+                        // Set the right font color
+                        answer1WithImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer2WithImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer3WithImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer4WithImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        break;
+                    case 5:
+                        answer1WithImageMC.gameObject.SetActive(true);
+                        answer2WithImageMC.gameObject.SetActive(true);
+                        answer3WithImageMC.gameObject.SetActive(true);
+                        answer4WithImageMC.gameObject.SetActive(true);
+                        answer5WithImageMC.gameObject.SetActive(true);
+                        // Display the correct question and ansers
+                        answer1WithImageMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
+                        answer2WithImageMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
+                        answer3WithImageMC.GetComponentInChildren<TMP_Text>().text = question.answer3;
+                        answer4WithImageMC.GetComponentInChildren<TMP_Text>().text = question.answer4;
+                        answer5WithImageMC.GetComponentInChildren<TMP_Text>().text = question.answer5;
 
-                    // Make them interactable
-                    answer1WithoutImageMC.interactable = true;
-                    answer2WithoutImageMC.interactable = true;
-                    answer3WithoutImageMC.interactable = true;
-                    answer4WithoutImageMC.interactable = true;
-                    answer5WithoutImageMC.interactable = true;
+                        // Make them interactable
+                        answer1WithImageMC.interactable = true;
+                        answer2WithImageMC.interactable = true;
+                        answer3WithImageMC.interactable = true;
+                        answer4WithImageMC.interactable = true;
+                        answer5WithImageMC.interactable = true;
 
-                    // Set the right button color
-                    answer1WithoutImageMC.GetComponent<Image>().color = deselectedColor;
-                    answer2WithoutImageMC.GetComponent<Image>().color = deselectedColor;
-                    answer3WithoutImageMC.GetComponent<Image>().color = deselectedColor;
-                    answer4WithoutImageMC.GetComponent<Image>().color = deselectedColor;
-                    answer5WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+                        // Set the right button color
+                        answer1WithImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer2WithImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer3WithImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer4WithImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer5WithImageMC.GetComponent<Image>().color = deselectedColor;
 
-                    // Set the right font color
-                    answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
-                    answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
-                    answer3WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
-                    answer4WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
-                    answer5WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
-                    break;
-                default:
-                    Debug.LogError("A MC question is only allowed to have at most 5 choices.");
-                    break;
-            }       
+                        // Set the right font color
+                        answer1WithImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer2WithImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer3WithImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer4WithImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer5WithImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        break;
+                    default:
+                        Debug.LogError("A MC question is only allowed to have at most 5 choices.");
+                        break;
+                }
+                // The image can only be a jpg or png file.
+                byte[] imageData = File.Exists(questionPath.Split('.')[0] + "_image.jpg") ? File.ReadAllBytes(questionPath.Split('.')[0] + "_image.jpg") : File.ReadAllBytes(questionPath.Split('.')[0] + "_image.png");
+                Texture2D t2d = new((int)imageMC.GetComponent<RectTransform>().rect.width, (int)imageMC.GetComponent<RectTransform>().rect.height);
+                t2d.LoadImage(imageData);
+                imageMC.sprite = Sprite.Create(t2d, new Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
+            }
+            else
+            {
+                multipleChoiceWithoutImagePanel.SetActive(true);
+                // Activate the confirm button and deactivate the close button
+                closeQuestionWithoutImageMC.gameObject.SetActive(false);
+                confirmAnswerWithoutImageMC.gameObject.SetActive(true);
+                DeactivateButtonsWithoutImageMC();
+                // Display the correct question name
+                questionNameMC.text = question.name;
+                questionWithoutImageTextMC.text = question.question;
+                // Check how many answers exist
+                switch (question.numberOfAnswers)
+                {
+                    case 2:
+                        answer1WithoutImageMC.gameObject.SetActive(true);
+                        answer2WithoutImageMC.gameObject.SetActive(true);
+                        // Display the correct question and ansers
+                        answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
+                        answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
+
+                        // Make them interactable
+                        answer1WithoutImageMC.interactable = true;
+                        answer2WithoutImageMC.interactable = true;
+
+                        // Set the right button color
+                        answer1WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer2WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+
+                        // Set the right font color
+                        answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        break;
+                    case 3:
+                        answer1WithoutImageMC.gameObject.SetActive(true);
+                        answer2WithoutImageMC.gameObject.SetActive(true);
+                        answer3WithoutImageMC.gameObject.SetActive(true);
+                        // Display the correct question and ansers
+                        answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
+                        answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
+                        answer3WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer3;
+
+                        // Make them interactable
+                        answer1WithoutImageMC.interactable = true;
+                        answer2WithoutImageMC.interactable = true;
+                        answer3WithoutImageMC.interactable = true;
+
+                        // Set the right button color
+                        answer1WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer2WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer3WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+
+                        // Set the right font color
+                        answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer3WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        break;
+                    case 4:
+                        answer1WithoutImageMC.gameObject.SetActive(true);
+                        answer2WithoutImageMC.gameObject.SetActive(true);
+                        answer3WithoutImageMC.gameObject.SetActive(true);
+                        answer4WithoutImageMC.gameObject.SetActive(true);
+                        // Display the correct question and ansers
+                        answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
+                        answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
+                        answer3WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer3;
+                        answer4WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer4;
+
+                        // Make them interactable
+                        answer1WithoutImageMC.interactable = true;
+                        answer2WithoutImageMC.interactable = true;
+                        answer3WithoutImageMC.interactable = true;
+                        answer4WithoutImageMC.interactable = true;
+
+                        // Set the right button color
+                        answer1WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer2WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer3WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer4WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+
+                        // Set the right font color
+                        answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer3WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer4WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        break;
+                    case 5:
+                        answer1WithoutImageMC.gameObject.SetActive(true);
+                        answer2WithoutImageMC.gameObject.SetActive(true);
+                        answer3WithoutImageMC.gameObject.SetActive(true);
+                        answer4WithoutImageMC.gameObject.SetActive(true);
+                        answer5WithoutImageMC.gameObject.SetActive(true);
+                        // Display the correct question and ansers
+                        answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer1;
+                        answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer2;
+                        answer3WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer3;
+                        answer4WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer4;
+                        answer5WithoutImageMC.GetComponentInChildren<TMP_Text>().text = question.answer5;
+
+                        // Make them interactable
+                        answer1WithoutImageMC.interactable = true;
+                        answer2WithoutImageMC.interactable = true;
+                        answer3WithoutImageMC.interactable = true;
+                        answer4WithoutImageMC.interactable = true;
+                        answer5WithoutImageMC.interactable = true;
+
+                        // Set the right button color
+                        answer1WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer2WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer3WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer4WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+                        answer5WithoutImageMC.GetComponent<Image>().color = deselectedColor;
+
+                        // Set the right font color
+                        answer1WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer2WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer3WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer4WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        answer5WithoutImageMC.GetComponentInChildren<TMP_Text>().color = typingColor;
+                        break;
+                    default:
+                        Debug.LogError("A MC question is only allowed to have at most 5 choices.");
+                        break;
+                }
+            }      
         }
     }
 
@@ -440,6 +591,15 @@ public class ActivateQuestions : MonoBehaviour
         answer5WithoutImageMC.gameObject.SetActive(false);
     }
 
+    private void DeactivateButtonsWithImageMC()
+    {
+        answer1WithImageMC.gameObject.SetActive(false);
+        answer2WithImageMC.gameObject.SetActive(false);
+        answer3WithImageMC.gameObject.SetActive(false);
+        answer4WithImageMC.gameObject.SetActive(false);
+        answer5WithImageMC.gameObject.SetActive(false);
+    }
+
     //-------------------------------------------------------------------------------------------------------------------------------------------
     // Method that give a visual feedback on the correct and incorrect answers and correct or incorrect given answers
     //-------------------------------------------------------------------------------------------------------------------------------------------
@@ -447,72 +607,104 @@ public class ActivateQuestions : MonoBehaviour
     /// <summary>
     /// Displays the correct or incorrect answer when clicking on the selection confirmation button after solving an input question
     /// </summary>
-    public void DisplayRestultInput()
+    public void DisplayResultWithoutImageInput()
     {
-        // Get the current question path
         string questionPath = Questions.questionArray[Questions.currentQuestionIndex];
-
-        // Extract the question object
         string json = File.ReadAllText(questionPath);
         InputQuestion question = JsonUtility.FromJson<InputQuestion>(json);
-
-        // Initialize the boolean that tells if the given answer was correct or not
         bool answeredCorrectly = true;
-
         // Check if the answer is correct
         if(answerFieldWithoutImageInput.text == question.answer)
         {
             // Case it is the correct answer, change the color of the text of the input field to green
-            GameObject.Find("TextAnswerInput").GetComponent<TMP_Text>().color = correctColor;
-
+            GameObject.Find("TextAnswerInputWithoutImage").GetComponent<TMP_Text>().color = correctColor;
             closeQuestionWithoutImageInput.gameObject.SetActive(true);
             confirmAnswerWithoutImageInput.gameObject.SetActive(false);
             answerFieldWithoutImageInput.interactable = false;
-            
-
         } else {
-
             // Check if it was a spelling mistake (capital letter missing or too much at the begining)
             bool sameExceptCapitalLetter = CheckIfBothOrNoneStartWithCapitalLetter(answerFieldWithoutImageInput.text, question.answer);
-
             if(sameExceptCapitalLetter == true)
             {
                 // Case it is the correct answer except for the first latter that had/missed capitalization, change the color of the text of the input field to green
-                GameObject.Find("TextAnswerInput").GetComponent<TMP_Text>().color = correctColor;
-
+                GameObject.Find("TextAnswerInputWithoutImage").GetComponent<TMP_Text>().color = correctColor;
                 // Change the text so that it has the capitalization of the answer
                 answerFieldWithoutImageInput.text = question.answer;
-
                 closeQuestionWithoutImageInput.gameObject.SetActive(true);
                 confirmAnswerWithoutImageInput.gameObject.SetActive(false);
                 answerFieldWithoutImageInput.interactable = false;
-
             } else {
                 // Case both words are different, open the correct answer preview
-                previewCorrectAnswerInput.SetActive(true);
-
-                // Disable the text input field
+                previewCorrectAnswerWithoutImageInput.SetActive(true);
                 answerFieldWithoutImageInput.gameObject.SetActive(false);
-
                 // Set the text objects on the right string
                 yourWrongAnswerWithoutImageInput.text = answerFieldWithoutImageInput.text;
                 theCorrectAnswerWithoutImageInput.text = question.answer;
-
                 closeQuestionWithoutImageInput.gameObject.SetActive(true);
                 confirmAnswerWithoutImageInput.gameObject.SetActive(false);
                 answeredCorrectly = false;
             }
         }
-
         // Check if the question was answered correctly or not and give visual feedback
         DisplayFeedbackButton(feedbackInput, answeredCorrectly);
-
         if(answeredCorrectly == true)
         {
             lastQuestionWasAnsweredCorrectly = true;
-
         } else {
+            lastQuestionWasAnsweredCorrectly = false;
+        }
+    }
 
+    public void DisplayResultWithImageInput()
+    {
+        string questionPath = Questions.questionArray[Questions.currentQuestionIndex];
+        string json = File.ReadAllText(questionPath);
+        InputQuestion question = JsonUtility.FromJson<InputQuestion>(json);
+        bool answeredCorrectly = true;
+        // Check if the answer is correct
+        if (answerFieldWithImageInput.text == question.answer)
+        {
+            // Case it is the correct answer, change the color of the text of the input field to green
+            GameObject.Find("TextAnswerInputWithImage").GetComponent<TMP_Text>().color = correctColor;
+            closeQuestionWithImageInput.gameObject.SetActive(true);
+            confirmAnswerWithImageInput.gameObject.SetActive(false);
+            answerFieldWithImageInput.interactable = false;
+        }
+        else
+        {
+            // Check if it was a spelling mistake (capital letter missing or too much at the begining)
+            bool sameExceptCapitalLetter = CheckIfBothOrNoneStartWithCapitalLetter(answerFieldWithImageInput.text, question.answer);
+            if (sameExceptCapitalLetter == true)
+            {
+                // Case it is the correct answer except for the first latter that had/missed capitalization, change the color of the text of the input field to green
+                GameObject.Find("TextAnswerInputWithImage").GetComponent<TMP_Text>().color = correctColor;
+                // Change the text so that it has the capitalization of the answer
+                answerFieldWithImageInput.text = question.answer;
+                closeQuestionWithImageInput.gameObject.SetActive(true);
+                confirmAnswerWithImageInput.gameObject.SetActive(false);
+                answerFieldWithImageInput.interactable = false;
+            }
+            else
+            {
+                // Case both words are different, open the correct answer preview
+                previewCorrectAnswerWithImageInput.SetActive(true);
+                answerFieldWithImageInput.gameObject.SetActive(false);
+                // Set the text objects on the right string
+                yourWrongAnswerWithImageInput.text = answerFieldWithImageInput.text;
+                theCorrectAnswerWithImageInput.text = question.answer;
+                closeQuestionWithImageInput.gameObject.SetActive(true);
+                confirmAnswerWithImageInput.gameObject.SetActive(false);
+                answeredCorrectly = false;
+            }
+        }
+        // Check if the question was answered correctly or not and give visual feedback
+        DisplayFeedbackButton(feedbackInput, answeredCorrectly);
+        if (answeredCorrectly == true)
+        {
+            lastQuestionWasAnsweredCorrectly = true;
+        }
+        else
+        {
             lastQuestionWasAnsweredCorrectly = false;
         }
     }
@@ -595,24 +787,17 @@ public class ActivateQuestions : MonoBehaviour
     /// <summary>
     /// Displays the correct or incorrect answer when clicking on the selection confirmation button after solving an multiple choice question
     /// </summary>
-    public void DisplayRestultWithoutImageMC()
+    public void DisplayResultWithoutImageMC()
     {
-        // Get the current question path
         string questionPath = Questions.questionArray[Questions.currentQuestionIndex];
-
-        // Extract the question object
         string json = File.ReadAllText(questionPath);
         MultipleChoiceQuestion question = JsonUtility.FromJson<MultipleChoiceQuestion>(json);
-
-        // Initialize the boolean variable that gives the information if all correct answers were selected and no incorrect answer was selected
         bool answeredCorrectly = true;
-
         // Go over all possible answers, and check if they were selected or not
         for(int index = 0; index < question.numberOfAnswers; index++)
         {
             // Get the button that correspond to the index
             Button currentButton = GetQuestionButtonFromIndex(index, false);
-
             // Check if the answer should be correct and was selected
             if(AnswerShouldBeCorrect(index, question) == true)
             {
@@ -621,26 +806,19 @@ public class ActivateQuestions : MonoBehaviour
                 {
                     answeredCorrectly = false;
                 }
-
                 // Answer was correct, give the button a greenish tint
                 currentButton.GetComponent<Image>().color = correctButtonColor;
                 currentButton.GetComponentInChildren<TMP_Text>().color = correctColor;
-
             }
             else {
-
                 if (currentButton.GetComponent<Image>().color == selectedColor)
                 {
-                    // Did select incorrect answer, question answered incorrectly
                     answeredCorrectly = false;
                 }
-
                 // Answer was incorrect, give the button a reddish tint
                 currentButton.GetComponent<Image>().color = incorrectButtonColor;
                 currentButton.GetComponentInChildren<TMP_Text>().color = incorrectColor;
             }
-
-            // Make the button not interactable
             currentButton.interactable = false;
         }
 
@@ -657,6 +835,62 @@ public class ActivateQuestions : MonoBehaviour
             lastQuestionWasAnsweredCorrectly = true;
 
         } else {
+
+            lastQuestionWasAnsweredCorrectly = false;
+        }
+    }
+
+    public void DisplayResultWithImageMC()
+    {
+        string questionPath = Questions.questionArray[Questions.currentQuestionIndex];
+        string json = File.ReadAllText(questionPath);
+        MultipleChoiceQuestion question = JsonUtility.FromJson<MultipleChoiceQuestion>(json);
+        bool answeredCorrectly = true;
+        // Go over all possible answers, and check if they were selected or not
+        for (int index = 0; index < question.numberOfAnswers; index++)
+        {
+            // Get the button that correspond to the index
+            Button currentButton = GetQuestionButtonFromIndex(index, true);
+            // Check if the answer should be correct and was selected
+            if (AnswerShouldBeCorrect(index, question) == true)
+            {
+                // if the user did not select the right answer
+                if (currentButton.GetComponent<Image>().color != selectedColor)
+                {
+                    answeredCorrectly = false;
+                }
+                // Answer was correct, give the button a greenish tint
+                currentButton.GetComponent<Image>().color = correctButtonColor;
+                currentButton.GetComponentInChildren<TMP_Text>().color = correctColor;
+            }
+            else
+            {
+                if (currentButton.GetComponent<Image>().color == selectedColor)
+                {
+                    answeredCorrectly = false;
+                }
+                // Answer was incorrect, give the button a reddish tint
+                currentButton.GetComponent<Image>().color = incorrectButtonColor;
+                currentButton.GetComponentInChildren<TMP_Text>().color = incorrectColor;
+            }
+            currentButton.interactable = false;
+        }
+
+        // Check if the question was answered correctly or not and give visual feedback
+        DisplayFeedbackButton(feedbackMC, answeredCorrectly);
+
+        // Activate the close button and deactivate the confirm button
+        closeQuestionWithImageMC.gameObject.SetActive(true);
+        confirmAnswerWithImageMC.gameObject.SetActive(false);
+
+        // If the question was answered correctly, reduce the number of questions that need to be answered by one
+        if (answeredCorrectly == true)
+        {
+            lastQuestionWasAnsweredCorrectly = true;
+
+        }
+        else
+        {
 
             lastQuestionWasAnsweredCorrectly = false;
         }
@@ -714,7 +948,22 @@ public class ActivateQuestions : MonoBehaviour
     {
         if (withImage)
         {
-            return null;
+            switch (index)
+            {
+                case 0:
+                    return answer1WithImageMC;
+                case 1:
+                    return answer2WithImageMC;
+                case 2:
+                    return answer3WithImageMC;
+                case 3:
+                    return answer4WithImageMC;
+                case 4:
+                    return answer5WithImageMC;
+                default:
+                    Debug.LogError("A MC question is only allowed to have 2, 3, or 4 choices");
+                    return null;
+            }
         }
         else
         {
@@ -740,11 +989,6 @@ public class ActivateQuestions : MonoBehaviour
     //-------------------------------------------------------------------------------------------------------------------------------------------
     // Method that create the question array, shuffling the questions in the level directory, and that changes question after the current question was answered
     //-------------------------------------------------------------------------------------------------------------------------------------------
-    
-    // The path to the current level directory
-    public string levelDirectoryPath;
-
-    public Button startButton;
 
     private IEnumerator GetJsonFiles(string additionalPath)
     {
@@ -764,19 +1008,6 @@ public class ActivateQuestions : MonoBehaviour
         StreamReader json = new StreamReader(path);
         string input = json.ReadToEnd();
         Log description = JsonUtility.FromJson<Log>(input);
-
-        // Write the number of questions on the button
-        startButton.GetComponentInChildren<TMP_Text>().text = description.numberOfQuestions.ToString();
-    }
-
-
-    // Method that creates the question array (not shuffled)
-    public void InitializeQuestionArray()
-    {
-        string[] questions = Directory.GetFiles(Questions.pathToLevel, "Question*", SearchOption.TopDirectoryOnly);
-        Questions.questionArray = questions;
-        Questions.lastQuestionIndex = Questions.questionArray.Length - 1;
-        Questions.currentQuestionIndex = 0;
     }
 
     // Initialize random number generator
@@ -810,22 +1041,6 @@ public class ActivateQuestions : MonoBehaviour
 
         // Return the shuffled array
         return array;
-    }
-
-    // Method that initializes everything when a level is started
-    public void InitializeRound()
-    {
-        InitializeQuestionArray();
-        Questions.questionArray = ShuffleQuestionArray(Questions.questionArray);
-    }
-
-    /// <summary>
-    /// Get the array of files in a directory
-    /// </summary>
-    static string[] GetFilesArray(string path) 
-    {
-        string[] files = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly);
-        return files;
     }
 
     /// <summary>

@@ -24,6 +24,8 @@ public class DownloadLevels : MonoBehaviour
     [SerializeField] private Button previousPage;
     [SerializeField] private Button nextPage;
 
+    [SerializeField] private string requestBaseURL = "https://raw.githubusercontent.com/rwth-acis/mr-card-game-quizzes/main/";
+
     // The directories array
     private string[] directoriesArray;
 
@@ -51,7 +53,7 @@ public class DownloadLevels : MonoBehaviour
     //Download specific quiz
     private void DownloadQuiz(string quizname)
     {
-        if(!File.Exists(Application.persistentDataPath + "/" + quizname + "/description.json"))
+        if(!File.Exists(Application.persistentDataPath + "/" + quizname + "/Description.json"))
         {
             //Download the description file
             Directory.CreateDirectory(Application.persistentDataPath + "/" + quizname);
@@ -123,14 +125,18 @@ public class DownloadLevels : MonoBehaviour
         nextPage.interactable = (currentPage != numberOfPages);
     }
 
-    // Method that is activated when pressing next (change the other directories)
+    /// <summary>
+    /// Activated when pressing next (change the other directories)
+    /// </summary>
     public void NextPage()
     {
         currentPage = currentPage + 1;
         UpdateButtons();
     }
 
-    // Method that is activated when pressing previous (change the other directories)
+    /// <summary>
+    /// Activated when pressing previous (change the other directories)
+    /// </summary>
     public void PreviousPage()
     {
         currentPage = currentPage - 1;
@@ -141,7 +147,7 @@ public class DownloadLevels : MonoBehaviour
     //Manage the Webrequest
     IEnumerator GetRequest(string uri, int typeOfRequest)
     {
-        string requesturi = "https://raw.githubusercontent.com/rwth-acis/mr-card-game-quizzes/main/" + uri;
+        string requesturi = requestBaseURL + uri;
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(requesturi))
         {
@@ -154,6 +160,8 @@ public class DownloadLevels : MonoBehaviour
             switch (webRequest.result)
             {
                 case UnityWebRequest.Result.ConnectionError:
+                    Debug.LogError("Connection Error");
+                    break;
                 case UnityWebRequest.Result.DataProcessingError:
                     Debug.LogError(pages[page] + ": Error: " + webRequest.error);
                     break;

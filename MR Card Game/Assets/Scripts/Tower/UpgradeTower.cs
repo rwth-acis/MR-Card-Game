@@ -189,27 +189,27 @@ public class UpgradeTower : MonoBehaviour
         {
             case TowerType.Archer:
                 towerprefab = archerTowerPrefab;
-                GameAdvancement.currencyPoints += build.BuildTowerMenu.ArcherTowerCost;
+                GameAdvancement.currencyPoints += build.BuildTowerMenu.ArcherTowerCost / 2;
             break;
 
             case TowerType.Fire:
                 towerprefab = fireTowerPrefab;
-                GameAdvancement.currencyPoints += build.BuildTowerMenu.FireTowerCost;
+                GameAdvancement.currencyPoints += build.BuildTowerMenu.FireTowerCost / 2;
             break;
 
             case TowerType.Earth:
                 towerprefab = earthTowerPrefab;
-                GameAdvancement.currencyPoints += build.BuildTowerMenu.EarthTowerCost;
+                GameAdvancement.currencyPoints += build.BuildTowerMenu.EarthTowerCost / 2;
             break;
 
             case TowerType.Lightning:
                 towerprefab = lightningTowerPrefab;
-                GameAdvancement.currencyPoints += build.BuildTowerMenu.LightningTowerCost;
+                GameAdvancement.currencyPoints += build.BuildTowerMenu.LightningTowerCost / 2;
             break;
 
             case TowerType.Wind:
                 towerprefab = windTowerPrefab;
-                GameAdvancement.currencyPoints += build.BuildTowerMenu.WindTowerCost;
+                GameAdvancement.currencyPoints += build.BuildTowerMenu.WindTowerCost / 2;
             break;
         }
         TowerEnhancer.currentlyEnhancedTower.ResetTowerProperties(towerprefab);
@@ -230,7 +230,7 @@ public class UpgradeTower : MonoBehaviour
             TrapType.Hole => build.BuildTowerMenu.HoleCost,
             TrapType.Swamp => build.BuildTowerMenu.SwampCost,
             _ => build.BuildTowerMenu.HoleCost
-        };
+        } / 2;
         GameSetup.UpdateCurrencyDisplay();
     }
 

@@ -53,7 +53,7 @@ public class IntroSceneManager : MonoBehaviour
     public void InitializeQuestionArray()
     {
         // Get the array of question files
-        string[] questions = Directory.GetFiles(Questions.pathToLevel, "Question*", SearchOption.TopDirectoryOnly);
+        string[] questions = Directory.GetFiles(Questions.pathToLevel, "Question*.json", SearchOption.TopDirectoryOnly);
 
         // Set the Questions.questionArray right
         Questions.questionArray = questions;
