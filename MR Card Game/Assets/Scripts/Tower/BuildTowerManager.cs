@@ -92,6 +92,7 @@ public class BuildTowerManager : MonoBehaviour
             buildUI.GetComponent<Canvas>().enabled = true;
             buildUI.GetComponent<Billboard>().enabled = true;
             buildPositionIndicator.SetActive(true);
+            buildUI.transform.position = buildPositionIndicator.transform.position;
         } else if(!onBoard || BuildingIndicatorOverlap() || !visible)
         {
             buildUI.SetActive(false);

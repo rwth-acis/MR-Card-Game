@@ -1165,7 +1165,7 @@ public class ActivateQuestions : MonoBehaviour
     public static void UpdateNumberOfQuestionsThatNeedToBeAnsweredDisplay()
     {
         // Change the number displayed to the global variables
-        NumberOfQuestionsThatNeedToBeAnsweredDisplay.GetComponentInChildren<TMP_Text>().text = Questions.numberOfQuestionsNeededToAnswer.ToString();
+        NumberOfQuestionsThatNeedToBeAnsweredDisplay.GetComponentInChildren<TMP_Text>().text = "Questions to answer: " + Questions.numberOfQuestionsNeededToAnswer.ToString();
     }
 
     public static void ResetQuestionMenuWindows()
