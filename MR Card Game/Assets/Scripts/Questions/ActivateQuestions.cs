@@ -264,7 +264,6 @@ public class ActivateQuestions : MonoBehaviour
 
         // Access the json string of the question file
         string json = File.ReadAllText(questionPath);
-        Debug.Log(questionPath);
 
         // Disable the view model menu
         viewModel.SetActive(false);
@@ -298,7 +297,19 @@ public class ActivateQuestions : MonoBehaviour
                 GameObject.Find("TextAnswerInputWithImage").GetComponent<TMP_Text>().color = typingColor;
                 answerFieldWithImageInput.text = "";
                 // The image can only be a jpg or a png file.
-                byte[] imageData = File.Exists(questionPath.Split('.')[0] + "_image.jpg") ? File.ReadAllBytes(questionPath.Split('.')[0] + "_image.jpg") : File.ReadAllBytes(questionPath.Split('.')[0] + "_image.png");
+                string pathToQuestionFolder = "";
+#if UNITY_EDITOR
+                string[] folderNames = questionPath.Split('\\');
+#elif UNITY_ANDROID
+                string[] folderNames = questionPath.Split('/');
+#endif
+                for (int i = 0; i< folderNames.Length - 1; i++)
+                {
+                    pathToQuestionFolder += folderNames[i] + "/";
+                }          
+                string questionName = folderNames[^1].Split('.')[0];
+                Debug.Log(pathToQuestionFolder + "/" + questionName + "_image.jpg");
+                byte[] imageData = File.Exists(pathToQuestionFolder + "/" + questionName + "_image.jpg") ? File.ReadAllBytes(pathToQuestionFolder + "/" + questionName + "_image.jpg") : File.ReadAllBytes(pathToQuestionFolder + "/" + questionName + "_image.png");
                 Texture2D t2d = new((int)imageInput.GetComponent<RectTransform>().rect.width, (int)imageInput.GetComponent<RectTransform>().rect.height);
                 t2d.LoadImage(imageData);
                 imageInput.sprite = Sprite.Create(t2d, new Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
@@ -449,8 +460,20 @@ public class ActivateQuestions : MonoBehaviour
                         Debug.LogError("A MC question is only allowed to have at most 5 choices.");
                         break;
                 }
+                string pathToQuestionFolder = "";
+#if UNITY_EDITOR
+                string[] folderNames = questionPath.Split('\\');
+#elif UNITY_ANDROID
+                string[] folderNames = questionPath.Split('/');
+#endif
+                for (int i = 0; i < folderNames.Length - 1; i++)
+                {
+                    pathToQuestionFolder += folderNames[i] + "/";
+                }
+                string questionName = folderNames[^1].Split('.')[0];
+                Debug.Log(pathToQuestionFolder + "/" + questionName + "_image.jpg");
+                byte[] imageData = File.Exists(pathToQuestionFolder + "/" + questionName + "_image.jpg") ? File.ReadAllBytes(pathToQuestionFolder + "/" + questionName + "_image.jpg") : File.ReadAllBytes(pathToQuestionFolder + "/" + questionName + "_image.png");
                 // The image can only be a jpg or png file.
-                byte[] imageData = File.Exists(questionPath.Split('.')[0] + "_image.jpg") ? File.ReadAllBytes(questionPath.Split('.')[0] + "_image.jpg") : File.ReadAllBytes(questionPath.Split('.')[0] + "_image.png");
                 Texture2D t2d = new((int)imageMC.GetComponent<RectTransform>().rect.width, (int)imageMC.GetComponent<RectTransform>().rect.height);
                 t2d.LoadImage(imageData);
                 imageMC.sprite = Sprite.Create(t2d, new Rect(0, 0, t2d.width, t2d.height), Vector2.zero);
@@ -1059,55 +1082,6 @@ public class ActivateQuestions : MonoBehaviour
     public bool GameOverlayActivated()
     {
         return gameOverlay.activeSelf == true;
-    }
-
-    // Activates the view model menu and enables the user to open the first question
-    IEnumerator ActivateGame()
-    {
-        // After waiting, enable the view model menu
-        gameOverlay.SetActive(true);
-
-        Debug.Log("The game overlay should have been enabled");
-
-        yield return new WaitUntil(GameOverlayActivated);
-
-        Debug.Log("Here, the game setup should be reset");
-
-        GameSetup.ResetGameSetup();
-
-        // Make sure all towers are released
-        // Get the array of all tower objects
-        GameObject[] towerArray = GameObject.FindGameObjectsWithTag ("Tower");
- 
-        // Disable all towers
-        foreach(GameObject tower in towerArray)
-        {
-            if(tower.activeSelf == true)
-            { 
-                ObjectPools.ReleaseTower(tower);
-            }
-        }
-
-        // Get the array of all trap objects
-        GameObject[] trapArray = GameObject.FindGameObjectsWithTag ("Trap");
- 
-        // Disable all traps
-        foreach(GameObject trap in trapArray)
-        {
-            // Check if the trap is active
-            if(trap.activeSelf == true)
-            {
-                ObjectPools.ReleaseTrap(trap.GetComponent<Trap>());
-            }
-        }
-
-        // Reset all spell cards so that they are not drawn
-         GameObject[] spellArray = GameObject.FindGameObjectsWithTag ("Spell Card");
-
-        foreach(GameObject spellCard in spellArray)
-        {
-            spellCard.GetComponent<SpellCardController>().ResetSpellCard();
-        }
     }
 
     private bool lastQuestionWasAnsweredCorrectly = false;
