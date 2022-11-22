@@ -9,6 +9,8 @@ using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
+using i5.Toolkit.Core.Utilities.Async;
+using System.Threading.Tasks;
 
 public class DownloadLevels : MonoBehaviour
 {
@@ -174,6 +176,7 @@ public class DownloadLevels : MonoBehaviour
                         case 0:
                             UpdateDirectoriesArray(webRequest.downloadHandler.text);
                             break;
+                        // download description and send download question request
                         case 1:
                             string result = webRequest.downloadHandler.text;
                             File.WriteAllText(Application.persistentDataPath + "/" + uri, result);
@@ -183,16 +186,44 @@ public class DownloadLevels : MonoBehaviour
                             for(int i = 0; i < int.Parse(result);i++)
                             {
                                 if(i < 10)
-                                    StartCoroutine(GetRequest(currentQuizname + "/Question00"+ i +".json", 2));
+                                {
+                                    StartCoroutine(GetRequest(currentQuizname + "/Question00" + i + ".json", 2));
+                                }
                                 else if (i < 100)
+                                {
                                     StartCoroutine(GetRequest(currentQuizname + "/Question0" + i + ".json", 2));
+                                }
                                 else
+                                {
                                     StartCoroutine(GetRequest(currentQuizname + "/Question" + i + ".json", 2));
+                                }
                             }
                             UpdateDirectoriesArray(string.Join(",",directoriesArray));
                             break;
+                        // write json file and eventually send download image request
                         case 2:
-                            File.WriteAllText(Application.persistentDataPath + "/" + uri, webRequest.downloadHandler.text);
+                            string json = webRequest.downloadHandler.text;
+                            File.WriteAllText(Application.persistentDataPath + "/" + uri, json);
+                            if(json.Contains("input question"))
+                            {
+                                InputQuestion question = JsonUtility.FromJson<InputQuestion>(json);
+                                if (question.withImage)
+                                {
+                                    StartCoroutine(GetRequest(currentQuizname + "/" + question.imageName, 3));
+                                }
+                            }
+                            else
+                            {
+                                MultipleChoiceQuestion question = JsonUtility.FromJson<MultipleChoiceQuestion>(json);
+                                if (question.withImage)
+                                {
+                                    StartCoroutine(GetRequest(currentQuizname + "/" + question.imageName, 3));
+                                }
+                            }
+                            break;
+                        // write question image data
+                        case 3:
+                            File.WriteAllBytes(Application.persistentDataPath + "/" + uri, webRequest.downloadHandler.data);
                             break;
                     }
                     break;

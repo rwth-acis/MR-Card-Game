@@ -140,12 +140,16 @@ public class Level : MonoBehaviour
     public int RandomNumber(int min, int max)  
     {  
         return _random.Next(min, max);  
-    }  
+    }
+
+    private void Awake()
+    {
+        ResetLevelInfo();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        ResetLevelInfo();
         Instance = this;
     }
 
@@ -839,6 +843,7 @@ public class Level : MonoBehaviour
 
     private void SetNumberOfWaves()
     {
+        Debug.Log(Questions.lastQuestionIndex);
         // Check how many questions there are
         if(Questions.lastQuestionIndex + 1 <= 7)
         {
@@ -995,7 +1000,7 @@ public class Level : MonoBehaviour
 
     private void ResetLevelInfo()
     {
-
+        
         // Reset all spell cards so that they are not drawn
         GameObject[] enemyArray = GameObject.FindGameObjectsWithTag ("Enemy");
         foreach(GameObject enemy in enemyArray)

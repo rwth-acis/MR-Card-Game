@@ -293,7 +293,11 @@ public class Tower : MonoBehaviour
         // Do the damage
         int damage = Projectile.CalculateDamage(Damage, WeaknessMultiplier, TowerType, targetEnemy, damageWetMultiplier);
         targetEnemy.TakeDamage(damage);
-        List<GameObject> enemies = new(GameObject.FindGameObjectsWithTag("Enemy"));
+        List<GameObject> enemies = new();
+        foreach (Collider enemyCollider in enemyColliders)
+        {
+            enemies.Add(enemyCollider.gameObject);
+        }
         enemies.Remove(targetEnemy.gameObject);
         for (int i = 0; i < numberOfStrikes; i++)
         {

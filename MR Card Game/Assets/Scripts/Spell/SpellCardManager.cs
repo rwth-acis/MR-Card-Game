@@ -501,15 +501,14 @@ public class SpellCardManager : MonoBehaviour
                         closestDistance = distance;
                         closestEnemy = enemy;
                     }
-                }
-                Debug.Log(closestEnemy);    
+                }  
                 if(closestEnemy != null)
                 {
                     thunderStrikePosition = closestEnemy.transform.position;
                     int finalDamage = (int)(initialDamage * Mathf.Pow(thunderStrikeDamageAttenuationFactor, i));
                     if(GameAdvancement.raining == false && closestEnemy.GetComponent<Enemy>().IsWet)
                     {
-                        finalDamage = (int) (finalDamage * thunderStrikeDamageRainingMultiplier);
+                        finalDamage = (int) (finalDamage * thunderStrikeDamageRainingMultiplier);                       
                     }
                     closestEnemy.GetComponent<Enemy>().TakeDamage(finalDamage);
                     // Let the thunder strike prefab show 0.5 seconds.

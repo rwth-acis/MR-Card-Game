@@ -37,56 +37,56 @@ static class Questions
     public static bool currentlyAnsweringQuestion;
 }
 
+/// <summary>
+/// The JSON Serialization for the input questions
+/// </summary>
+[Serializable]
+public class InputQuestion
+{
+    public string exerciseType;
+    public string name;
+    public string question;
+    public string answer;
+    public bool withImage;
+    public string imageName;
+}
+
+/// <summary>
+/// The JSON Serialization for the multiple choice questions
+/// </summary>
+[Serializable]
+public class MultipleChoiceQuestion
+{
+    public string exerciseType;
+    public string name;
+    public string question;
+    public int numberOfAnswers;
+    public string answer1;
+    public string answer2;
+    public string answer3;
+    public string answer4;
+    public string answer5;
+    public bool answer1Correct;
+    public bool answer2Correct;
+    public bool answer3Correct;
+    public bool answer4Correct;
+    public bool answer5Correct;
+    public bool withImage;
+    public string imageName;
+}
+
+// The JSON Serialization for the log file
+[Serializable]
+public class Log
+{
+    public int numberOfQuestions; // The number of already existing questions in the folder so that the new ones can be renamed
+    public int numberOfModels; // The number of already existing model files in the folder so that the new ones can be renamed
+    public string heading; // Heading of the description, name that users can give
+    public string description; // The description text of the content / concepts that are needed for solving the exercises
+}
+
 public class ActivateQuestions : MonoBehaviour
 {
-    /// <summary>
-    /// The JSON Serialization for the input questions
-    /// </summary>
-    [Serializable]
-    public class InputQuestion
-    {
-        public string exerciseType;
-        public string name;
-        public string question;
-        public string answer;
-        public bool withImage;
-        public string imageName;
-    }
-
-    /// <summary>
-    /// The JSON Serialization for the multiple choice questions
-    /// </summary>
-    [Serializable]
-    public class MultipleChoiceQuestion
-    {
-        public string exerciseType;
-        public string name;
-        public string question;
-        public int numberOfAnswers;
-        public string answer1;
-        public string answer2;
-        public string answer3;
-        public string answer4;
-        public string answer5;
-        public bool answer1Correct;
-        public bool answer2Correct;
-        public bool answer3Correct;
-        public bool answer4Correct;
-        public bool answer5Correct;
-        public bool withImage;
-        public string imageName;
-    }
-
-    // The JSON Serialization for the log file
-    [Serializable]
-    public class Log
-    {
-        public int numberOfQuestions; // The number of already existing questions in the folder so that the new ones can be renamed
-        public int numberOfModels; // The number of already existing model files in the folder so that the new ones can be renamed
-        public string heading; // Heading of the description, name that users can give
-        public string description; // The description text of the content / concepts that are needed for solving the exercises
-    }
-
     // The instance of this script
     public static ActivateQuestions Instance;
 

@@ -247,17 +247,18 @@ public class SpellCardController : MonoBehaviour
                 drawSpellButton.GetComponent<Button>().interactable = true;
                 drawSpellButton.GetComponentInChildren<TMP_Text>().text = $"Draw {spellType} (In Deck: {SpellCardManager.CardDeck[spellType]}) \n Cost: {cost}";
             }
-        }
-        else if(SpellCardManager.CardDeck[spellType] <= 0)
-        {
-            drawSpellButton.GetComponent<Button>().interactable = false;
-            drawSpellButton.GetComponentInChildren<TMP_Text>().text = $"No {spellType} In Deck";
+            else
+            {
+                drawSpellButton.GetComponent<Button>().interactable = false;
+                drawSpellButton.GetComponentInChildren<TMP_Text>().text = $"Currency Not Enough\n Cost: {cost}";
+            }
         }
         else
         {
             drawSpellButton.GetComponent<Button>().interactable = false;
-            drawSpellButton.GetComponentInChildren<TMP_Text>().text = $"Currency Not Enough\n Cost: {cost}";
+            drawSpellButton.GetComponentInChildren<TMP_Text>().text = $"No {spellType} In Deck";
         }
+
     }
 
     // Deactivates the canvas on which the draw spell button is
