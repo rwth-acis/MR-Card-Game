@@ -6,118 +6,100 @@ using i5.Toolkit.Core.Utilities;
 public class SpawnTrap : MonoBehaviour
 {
     // The instance, needed to access the static versions of the tower prefabs
-    public static SpawnTrap instance;
+    public static SpawnTrap Instance;
 
-    // The prefab for the hole
+    [Header("Trap Prefabs")]
     [SerializeField]
-    private Trap hole;
+    private GameObject hole;
+    [SerializeField]
+    private GameObject swamp;
 
-    // The method used to access to the hole prefab as a static object
-    public static Trap getHole
+    [Header("Trap Properties")]
+
+    [Tooltip("Radius of the hole in meter")]
+    [SerializeField]
+    private float holeRadius;
+
+    [Tooltip("Radius of the swamp in meter")]
+    [SerializeField]
+    private float swampRadius;
+
+    [Tooltip("The original radius of both trap prefabs in meter")]
+    [SerializeField]
+    private float trapPrefabOrignialRadius = 2.5f;
+    public static GameObject Hole
     {
-        get { return instance.hole; }
+        get { return Instance.hole; }
     }
 
-    // The hole size
-    [SerializeField]
-    private float holeSize;
-
-    // The method used to access to the hole size in a static way
-    public static float getHoleSize
+    public static float HoleRadius
     {
-        get { return instance.holeSize; }
+        get { return Instance.holeRadius; }
     }
 
-    // The prefab for the swamp
-    [SerializeField]
-    private Trap swamp;
-
-    // The method used to access to the swamp prefab as a static object
-    public static Trap getSwamp
+    public static GameObject Swamp
     {
-        get { return instance.swamp; }
+        get { return Instance.swamp; }
     }
 
-    // The swamp size
-    [SerializeField]
-    private float swampSize;
-
-    // The method used to access to the swamp size in a static way
-    public static float getSwampSize
+    public static float SwampRadius
     {
-        get { return instance.swampSize; }
+        get { return Instance.swampRadius; }
+    }
+
+    public static float TrapPrefabOriginalRadius
+    {
+        get => Instance.trapPrefabOrignialRadius;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        instance = this;
+        Instance = this;
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// Spawn a trap with the given parent and trap type
+    /// </summary>
+    /// <param name="parent"></param>
+    /// <returns></returns>
+    public static GameObject SpawnTrapFromPool(GameObject parent, TrapType trapType)
     {
-        
-    }
-
-    // The method used to spawn a hole
-    public static Trap SpawnHole(GameObject parent)
-    {
-        // Get the right object pool index for the trap type
-        int poolIndex = ObjectPools.GetTrapPoolIndex("Swamp");
-
-        // Get a new trap from the object pool of the hole
-        Trap trap = ObjectPool<Trap>.RequestResource(poolIndex, () => {return Instantiate(getHole);});
-
-        // Set the trap as active
-        trap.gameObject.SetActive(true);
-
-        // Set them as children of the parent that was passed
-        trap.gameObject.transform.parent = parent.transform;
-
-        // Scale the trap down
-        trap.transform.localScale = new Vector3(Board.greatestBoardDimension * getHoleSize * 3, Board.greatestBoardDimension * 3, Board.greatestBoardDimension * getHoleSize * 3);
-
-        // Vector3 newPosition =  new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
-
-        // Reset the position of the trap and add the necessary overhead so that the trap is over the ground
-        trap.gameObject.transform.localPosition = new Vector3(0, 0, 0);
-
-        // // Add the reference to this building to the Buildings class so that it can be accessed
-        // AddBuildingReference(tower, parent);
-
+        int poolIndex = ObjectPools.GetTrapPoolIndex(trapType);
+        GameObject trap = ObjectPool<GameObject>.RequestResource(poolIndex, () => { return GetTrapOfType(trapType); });
+        trap.SetActive(true);
+        trap.transform.parent = parent.transform;
+        // Here, the prefab should have a scale of (1,1,1).
+        float scale = GetTrapRadiusWithType(trapType) / TrapPrefabOriginalRadius;
+        Debug.Log(scale);
+        trap.transform.localScale = new Vector3(scale, scale, scale);
+        trap.transform.localPosition = new Vector3(0, 0, 0);
         return trap;
     }
 
-    // The method used to spawn a swamp
-    public static Trap SpawnSwamp(GameObject parent)
+    /// <summary>
+    /// Get the radius of the size with the given type
+    /// </summary>
+    public static float GetTrapRadiusWithType(TrapType trapType)
     {
-        // Get the right object pool index for the trap type
-        int poolIndex = ObjectPools.GetTrapPoolIndex("Swamp");
+        return trapType switch
+        {
+            TrapType.Hole => HoleRadius,
+            TrapType.Swamp => SwampRadius,
+            _ => 0
+        };
+    }
 
-        // Get a new trap from the object pool of the swamp
-        Trap trap = ObjectPool<Trap>.RequestResource(poolIndex, () => {return Instantiate(getSwamp);});
-
-        // Set the trap as active
-        trap.gameObject.SetActive(true);
-
-        // // Scale the trap down
-        // trap.transform.localScale = new Vector3(1, 1, 1);
-
-        // Set them as children of the parent that was passed
-        trap.gameObject.transform.parent = parent.transform;
-
-        // Scale the trap down
-        trap.transform.localScale = new Vector3(Board.greatestBoardDimension * getSwampSize * 3, Board.greatestBoardDimension * 3, Board.greatestBoardDimension * getSwampSize * 3);
-
-        // Vector3 newPosition =  new Vector3(0, towerOverhead * Board.greatestBoardDimension, 0);
-
-        // Reset the position of the trap and add the necessary overhead so that the trap is over the ground
-        trap.gameObject.transform.localPosition = new Vector3(0, 0, 0);
-
-        // // Add the reference to this building to the Buildings class so that it can be accessed
-        // AddBuildingReference(tower, parent);
-
-        return trap;
+    /// <summary>
+    /// Get the trap with the given type
+    /// </summary>
+    public static GameObject GetTrapOfType(TrapType trapType)
+    {
+        return trapType switch
+        {
+            TrapType.Hole => Instantiate(Hole),
+            TrapType.Swamp => Instantiate(Swamp),
+            _ => Instantiate(Hole)
+        };
     }
 }

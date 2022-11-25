@@ -9,24 +9,28 @@ using UnityEngine.Networking;
 
 static class Download
 {
-    // The flag that states if an upload is a success or not
+    /// <summary>
+    /// If an upload is a success or not
+    /// </summary>
     public static bool successful;
 
-    // The number of files that are needed to be downloaded in the level
+    /// <summary>
+    /// The number of files that are needed to be downloaded in the level
+    /// </summary>
     public static int numberOfFilesToDownload;
 }
 
 public class DownloadLevel : MonoBehaviour
 {
-    // Define the add level window
+    [Tooltip("add level window")]
     [SerializeField]
     private GameObject addLevelWindow;
 
-    // Define the level name input field
+    [Tooltip("level name input field")]
     [SerializeField]
     private TMP_InputField levelNameInputField;
 
-    // Define the error messages
+    [Header("Error Messages")]
     [SerializeField]
     private TMP_Text errorDoesNotExist;
     [SerializeField]
@@ -35,18 +39,6 @@ public class DownloadLevel : MonoBehaviour
     private TMP_Text errorSpecialCharacters;
     [SerializeField]
     private TMP_Text errorDownloadFailed;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     //----------------------------------------------------------------------------------------------------
     // The get and post requests
@@ -60,7 +52,6 @@ public class DownloadLevel : MonoBehaviour
         // Send the get request with the base url plus the given path
         UnityWebRequest uwr = UnityWebRequest.Get(Manager.BackendAPIBaseURL + path);
 
-        // Wait for the answer to come
         yield return uwr.SendWebRequest();
 
         // Check if there was a network error
@@ -81,9 +72,8 @@ public class DownloadLevel : MonoBehaviour
             }
 
             // Check if the level name exist there
-            if(isContained(levelArray, levelNameInputField.text) == true)
+            if(IsContainedInArray(levelArray, levelNameInputField.text) == true)
             {
-                // Enable the name already exists error message
                 errorDoesNotExist.gameObject.SetActive(true);
 
                 // Make sure the error message is disabled
@@ -92,8 +82,6 @@ public class DownloadLevel : MonoBehaviour
                 Debug.Log("Level with that name was already contained");
 
             } else {
-
-                // Access the level files and then download it
                 StartCoroutine(AccessLevelFiles(levelNameInputField.text));
             }
         }
@@ -106,11 +94,8 @@ public class DownloadLevel : MonoBehaviour
 
         // Send the get request with the base url plus the given path
         UnityWebRequest uwr = UnityWebRequest.Get(Manager.BackendAPIBaseURL + path);
-
-        // Wait for the answer to come
         yield return uwr.SendWebRequest();
 
-        // Check if there was a network error
         if (!string.IsNullOrEmpty(uwr.error))
         {
             Debug.Log("Error While Sending: " + uwr.error);
@@ -131,38 +116,28 @@ public class DownloadLevel : MonoBehaviour
             }
 
             // Check if the level name exist there
-            if(isContained(levelfilesArray, levelNameInputField.text) == true)
+            if(IsContainedInArray(levelfilesArray, levelNameInputField.text) == true)
             {
-                // Enable the name already exists error message
                 errorDoesNotExist.gameObject.SetActive(true);
-
                 // Make sure the error message is disabled
                 errorDownloadFailed.gameObject.SetActive(false);
 
                 Debug.Log("Level with that name was already contained");
 
             } else {
-
-                // Upload the level and get a truthvalue of if it worked
-                bool downloadWorked = DownloadLevelMethod(levelfilesArray);
-
-                // Wait for all files to be downloaded
+                bool downloadSucessful = DownloadLevelMethod(levelfilesArray);
                 while (Download.numberOfFilesToDownload != 0) 
                 {
                     yield return new WaitForSeconds(0.5f);
                 }
-
-                // Check if the upload did not work
-                if(downloadWorked == false)
+                if(downloadSucessful == false)
                 {
-                    // Enable the error message
                     errorDownloadFailed.gameObject.SetActive(true);
 
                 } else {
 
                     // Make sure the error message is disabled
                     errorDownloadFailed.gameObject.SetActive(false);
-
                     CloseWindow();
                 }
             }
@@ -177,7 +152,6 @@ public class DownloadLevel : MonoBehaviour
         // Send the unity web request
         UnityWebRequest uwr = UnityWebRequest.Get(Manager.BackendAPIBaseURL + path);
 
-        // Wait for the response to come
         yield return uwr.SendWebRequest();
 
         // Check if there was an error
@@ -191,10 +165,6 @@ public class DownloadLevel : MonoBehaviour
         else
         {
             Debug.Log("Received: " + uwr.downloadHandler.text);
-            // byte[] byteArray = (byte[])uwr.downloadHandler.text;
-
-            // // Convert the byte array to string
-            // string data = System.Text.Encoding.UTF8.GetString(uwr.downloadHandler.data);
 
             string realFileName = fileName + ".json";
 
@@ -223,7 +193,9 @@ public class DownloadLevel : MonoBehaviour
         StartCoroutine(SendPingCoroutine());
     }
 
-    // Method used to try downloading a level
+    /// <summary>
+    /// Try downloading a level
+    /// </summary>
     public void TryDownloadingLevel()
     {
         // Check if the input field is empty
@@ -253,26 +225,23 @@ public class DownloadLevel : MonoBehaviour
         }
     }
 
-    // The method used to upload a level
+    /// <summary>
+    /// Download a level
+    /// </summary>
     public bool DownloadLevelMethod(string[] levelFiles)
     {
-        // Read the level name / code in the input field
         string levelName = levelNameInputField.text;
-
-        // Download each file in the level
-        foreach(string fileName in levelFiles)
-        {
-            // Download that file at the right place
-            StartCoroutine(GetRequest(levelName + "/" + fileName, fileName));
-        }
-
         // Make sure the download successful flag is set to true
         Download.successful = true;
 
-        // Check if the process was unsuccessful
+        // Download each file in the level
+        foreach (string fileName in levelFiles)
+        {
+            StartCoroutine(GetRequest(levelName + "/" + fileName, fileName));
+        }
+
         if(Download.successful == false)
         {
-            // Delete everything TODO
             Debug.Log("The download was unsuccessful");
 
             System.IO.DirectoryInfo directory = new DirectoryInfo(Globals.currentPath);
@@ -280,12 +249,9 @@ public class DownloadLevel : MonoBehaviour
             // Go through all files in the current path
             foreach (FileInfo file in directory.GetFiles())
             {
-                // Delete the file
                 file.Delete(); 
             }
         }
-
-        // Return the successful flag
         return Download.successful;
     }
 
@@ -309,7 +275,10 @@ public class DownloadLevel : MonoBehaviour
         public string[] array;
     }
 
-    // Method used to extract an array out of the string passed by the get request
+    /// <summary>
+    /// Extract an array out of the string passed by the get request
+    /// </summary>
+    /// <returns>the level names array</returns>
     public string[] GetTheArray(string data)
     {
         // Check if there are no levels
@@ -320,8 +289,6 @@ public class DownloadLevel : MonoBehaviour
 
             // Initialize an array of the same length as the array
             string[] levelNames = new string[levelDirectories.array.Length];
-
-            // Initialize the current index
             int index = 0;
 
             // Extract the directory names (currently complete paths)
@@ -329,37 +296,30 @@ public class DownloadLevel : MonoBehaviour
             {
                 // Get the name of the file and save it in the level names array
                 levelNames[index] = Path.GetFileName(levelDirectories.array[index]);
-
-                // Increase the index by one
-                index = index + 1;
+                index++;
             }
-
-            // Return the level names array
             return levelNames;
 
         } else {
 
             string[] levelNames = new string[1];
             levelNames[0] = "";
-
-            // Return the level names array
             return levelNames;
         }
     }
 
-    // Method that checks if a string is contained in an array of strings
-    public bool isContained(string[] array, string name)
+    /// <summary>
+    /// If a string is contained in an array of strings
+    /// </summary>
+    public bool IsContainedInArray(string[] array, string name)
     {
-        // Go through all strings of the array
         foreach (string modelName in array)
         {
-            // Check if the current name and the given name are the same
             if(modelName == name)
             {
                 return true;
             }
         }
-
         return false;
     }
 }

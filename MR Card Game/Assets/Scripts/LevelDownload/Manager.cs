@@ -6,7 +6,6 @@ public class Manager : MonoBehaviour
 {
     private static Manager managerInstance;
 
-    // Define the base path
     [SerializeField]
     private string basePath = "template";
 
@@ -15,7 +14,6 @@ public class Manager : MonoBehaviour
         get { return managerInstance.basePath; }
     }
 
-    // Define the backendAddress
     [SerializeField]
     private string backendAddress = "http://192.168.1.39";
 
@@ -24,11 +22,10 @@ public class Manager : MonoBehaviour
         get { return managerInstance.backendAddress; }
     }
 
-    // Define the freed port
     [SerializeField]
     private int port = 8080;
 
-    public static int getPort
+    public static int GetPort
     {
         get { return managerInstance.port; }
     }
@@ -39,19 +36,17 @@ public class Manager : MonoBehaviour
         managerInstance = this;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    // Method used to access the full backend address
+    /// <summary>
+    /// Access the full backend address
+    /// </summary>
     public static string FullBackendAddress
     {
-        get { return getBackendAddress + ":" + getPort; }
+        get { return getBackendAddress + ":" + GetPort; }
     }
 
-    // Method used to access the full backend address followed by the base path
+    /// <summary>
+    /// Access the full backend address followed by the base path
+    /// </summary>
     public static string BackendAPIBaseURL
     {
         get

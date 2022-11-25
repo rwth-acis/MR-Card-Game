@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.IO;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameSceneManager : MonoBehaviour
 {
@@ -16,15 +18,106 @@ public class GameSceneManager : MonoBehaviour
 
     [SerializeField] private GameObject planeFinder;
 
+    [Header("Game Overlay")]
     [SerializeField] private TextMeshProUGUI toggleGameboardButtonText;
+
+    [SerializeField]
+    private Button currencyDisplay;
+
+    [SerializeField]
+    private Button waveDisplay;
+
+    [SerializeField]
+    private Button enemyDisplay;
+
+    [SerializeField]
+    private Button toggleGameboard;
+
+    [SerializeField]
+    private Button startNextWave;
+
+    [SerializeField]
+    private Button moreOptionsButton;
+
+    public static GameSceneManager Instance;
 
     private bool firstImport = true;
 
     private bool gameBoardLocked = false;
 
+    // The method used to access to the currency display button as a static object
+    public static Button CurrencyDisplay
+    {
+        get { return Instance.currencyDisplay; }
+    }
+    // The method used to access to the wave display button as a static object
+    public static Button WaveDisplay
+    {
+        get { return Instance.waveDisplay; }
+    }
+
+    public static Button EnemyDisplay
+    {
+        get => Instance.enemyDisplay;
+    }
+
+    public static Button ToogleGameboard
+    {
+        get { return Instance.toggleGameboard; }
+    }
+    // The method used to access to the start next wave button as a static object
+    public static Button StartNextWave
+    {
+        get { return Instance.startNextWave; }
+    }
+
+    public static Button MoreOptionButton
+    {
+        get => Instance.moreOptionsButton;
+    }
     private void Awake()
     {
         ImportAllModels();
+        Instance = this;
+    }
+
+    /// <summary>
+    /// when all questions that were needed to be answered were answered correctly
+    /// </summary>
+    public static bool NoMoreQuestionsNeeded()
+    {
+        return Questions.numberOfQuestionsNeededToAnswer == 0;
+    }
+
+    /// <summary>
+    /// Activate buttons on the game overlay
+    /// </summary>
+    public static void ActivateGameOverlay()
+    {
+        CurrencyDisplay.gameObject.SetActive(true);
+        WaveDisplay.gameObject.SetActive(true);
+        // Check if the wave is currently ongoing
+        if (LevelInfo.waveOngoing == false)
+        {
+            // If it is not the case, activate the start next wave button
+            StartNextWave.gameObject.SetActive(true);
+        }
+        ToogleGameboard.gameObject.SetActive(true);
+        EnemyDisplay.gameObject.SetActive(true);
+        MoreOptionButton.gameObject.SetActive(true);
+    }
+
+    /// <summary>
+    /// Deactivate buttons on the game overlay
+    /// </summary>
+    public static void DeactivateGameOverlay()
+    {
+        CurrencyDisplay.gameObject.SetActive(false);
+        WaveDisplay.gameObject.SetActive(false);
+        StartNextWave.gameObject.SetActive(false);
+        ToogleGameboard.gameObject.SetActive(false);
+        EnemyDisplay.gameObject.SetActive(false);
+        MoreOptionButton.gameObject.SetActive(false);
     }
 
     public void LoadIntroSceneAsync()
@@ -222,14 +315,12 @@ public class GameSceneManager : MonoBehaviour
                 ObjectPools.ReleaseTrap(trap.GetComponent<Trap>());
             }
         }
-
-        // Reset all spell cards so that they are not drawn
-        GameObject[] spellArray = GameObject.FindGameObjectsWithTag("Spell Card");
-
-        foreach (GameObject spellCard in spellArray)
+        GameObject[] spellCards = GameObject.FindGameObjectsWithTag("Spell Card");
+        foreach (GameObject spell in spellCards)
         {
-            spellCard.GetComponent<SpellCard>().ResetSpellCard();
+            spell.GetComponent<SpellCardController>().ResetSpellCard();
         }
+
     }
 }
 /// <summary>

@@ -5,51 +5,46 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using static build.BuildTowerMenu;
 using Vuforia;
+using UnityEngine.PlayerLoop;
 
-// Define a static class that saves the image target on which the current tower is beeing built
+/// <summary>
+/// A static class that saves the image target on which the current tower is beeing built
+/// </summary>
 public static class TowerImageTarget
 {
-    // The image target game object that opened the build tower menu
+    /// <summary>
+    /// The image target game object that opened the build tower menu
+    /// </summary>
     public static GameObject currentImageTarget;
 }
 
-public class BuildTower : MonoBehaviour
+public class BuildTowerManager : MonoBehaviour
 {
-    [Tooltip("The minimum distance between the image target and buildings for the build menu to appear")]
-    public float minimumDistanceBase = 0.1f;
-
-    [Tooltip("The flag that states if the build building image target is on the game board or not")]
-    public bool onBoard = false;
-
-    public bool visible = false;
-
     [SerializeField] private GameObject groundPlane;
 
     [SerializeField] private GameObject towerImageTarget;
 
     [SerializeField] private GameObject gameBoard;
-    // Define the individual canvas for the build tower button
+
     [SerializeField] private GameObject buildUI;
 
     [SerializeField] private GameObject buildPositionIndicator;
 
-    [SerializeField] private GameObject imageTargetPicture;
-
+    // if the build building image target is on the game board or not
+    private bool onBoard = false;
+    private bool visible = false;
     //The projected position on ground plane
     private Vector3 projectedPos = Vector3.zero;
 
     //Multiply with the alpha of materials on the tower indicator.
     private float indicatorAlphaMultiplyFactor = 1;
-
+    // Arrays used to changing the alpha value of the indicator
     private Renderer[] indicatorRenderers;
     private float[] initialAlphas;
-    private List<Material> gameBoardMaterials;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Make sure the box collider is enabled
-        GetComponent<BoxCollider>().enabled = true;
         indicatorRenderers = buildPositionIndicator.GetComponentsInChildren<Renderer>();
         initialAlphas = new float[indicatorRenderers.Length];
         for(int i = 0; i < indicatorRenderers.Length; i++)
@@ -64,8 +59,6 @@ public class BuildTower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Make sure the box collider is enabled
-        GetComponent<BoxCollider>().enabled = true;
         //onBoard check
         if (visible && !GameAdvancement.gamePaused)
         {
@@ -73,11 +66,12 @@ public class BuildTower : MonoBehaviour
             buildPositionIndicator.transform.SetParent(groundPlane.transform, true);
             buildPositionIndicator.SetActive(true);
             if (OverlapWithGameBoard(projectedPos))
-            {
+            {              
                 onBoard = true;
             }
             else
             {
+                buildPositionIndicator.SetActive(false);
                 onBoard = false;
             }
         }
@@ -86,39 +80,27 @@ public class BuildTower : MonoBehaviour
             onBoard = false;
         }
 
-        if (onBoard)
+        if (!visible)
         {
-            //ChangeBoardMaterialAlpha(0.5f);
-        }
-        else
-        {
-            //ChangeBoardMaterialAlpha(1f);
             buildPositionIndicator.SetActive(false);
         }
 
         // Check if the image target just entered the game board or left it
-        if(onBoard && !GameAdvancement.gamePaused && CheckDistanceToTowers() && visible)
+        if(onBoard && !GameAdvancement.gamePaused && !BuildingIndicatorOverlap() && visible)
         {
-            // Make the ui button appear that should be clickable to construct a tower
             buildUI.SetActive(true);
-
-            // Activate the canvas
             buildUI.GetComponent<Canvas>().enabled = true;
-
-            // Activate the billboard script
             buildUI.GetComponent<Billboard>().enabled = true;
-
-        } else if(!onBoard || !CheckDistanceToTowers() || !visible)
+            buildPositionIndicator.SetActive(true);
+            buildUI.transform.position = buildPositionIndicator.transform.position;
+        } else if(!onBoard || BuildingIndicatorOverlap() || !visible)
         {
-            // Make the ui button disappear
             buildUI.SetActive(false);
-
         }
 
         // Check if the build UI is active and if the game was paused
-        if(GameAdvancement.gamePaused == true && buildUI.activeSelf == true)
+        if (GameAdvancement.gamePaused == true && buildUI.activeSelf == true)
         {
-            // Deactivate the billboard script
             buildUI.SetActive(false);
         }
     }
@@ -128,10 +110,10 @@ public class BuildTower : MonoBehaviour
         if (onBoard)
         {
             // Set the position of the indicator correctly, not influenced by image target
+            // But the rotation will remain as identity
             buildPositionIndicator.transform.localPosition = projectedPos;
             buildPositionIndicator.transform.rotation = Quaternion.identity;
         }
-
     }
 
     private void FixedUpdate()
@@ -142,114 +124,46 @@ public class BuildTower : MonoBehaviour
         }
     }
 
-    // Methods activated when the image target enters the field
+    /// <summary>
+    /// Activated when the image target enters the field
+    /// </summary>
     public void ImageTargetVisible()
     {
         visible = true;
     }
 
-    // Methods activated when the image target leaves the field
+    /// <summary>
+    /// Activated when the image target leaves the field
+    /// </summary>
     public void ImageTargetLost()
     {
         visible = false;
+        buildPositionIndicator.GetComponentInChildren<BuildTowerIndicator>().OverlapWithTowerOrTrap = false;
     }
 
-    // The method that adds entering enemies to the collider list
-/*    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("On trigger enter was activated");
-
-        // Check if the collider that entered the box collider of the image target is the game board
-        if(other.gameObject.CompareTag("Board"))
-        {
-            onBoard = true;
-        }
-    }*/
-
-    // The method that removes exiting enemies of the collider list
-/*    private void OnTriggerExit(Collider other)
-    {
-        // Check if the collider that left the box collider of the image target is the game board
-        if(other.gameObject.CompareTag("Board"))
-        {
-            onBoard = false;
-        }
-    }*/
-
-    // The method that checks the distance between the towers and the image target to see if a tower can be built here or not
-    public bool CheckDistanceToTowers()
-    {
-        // Get the tower and trap array
-        GameObject[] towerArray = GameObject.FindGameObjectsWithTag("Tower");
-        GameObject[] trapArray = GameObject.FindGameObjectsWithTag("Trap");
-
-        // Initialize the distance variable
-        float distance = 0;
-
-        // Initialize the minimum distance variable
-        float minimumDistance = 1f * Board.greatestBoardDimension;
-
-        // Initialize the distance ok flag that states that the minimum distance was kept
-        bool distanceOK = true;
-
-        // Check if a tower is too close to the image target
-        foreach(GameObject tower in towerArray)
-        {
-            // Get the distance between the image target and the tower
-            distance = Vector3.Distance(GetRelativePosition(groundPlane.transform, tower.transform.position), projectedPos);
-
-            // Check if the distance is too short
-            if(distance < minimumDistance)
-            {
-                distanceOK = false;
-            }
-        }
-
-        // Check if a trap is too close to the image target
-        foreach(GameObject trap in trapArray)
-        {
-            // Get the distance between the image target and the trap
-            distance = Vector3.Distance(GetRelativePosition(groundPlane.transform, trap.transform.position), projectedPos);
-
-            // Check if the distance is too short
-            if (distance < minimumDistance)
-            {
-                distanceOK = false;
-            }
-        }
-
-/*        Debug.Log("The distance ok flag is: " + distanceOK);*/
-
-        // Return the distance ok flag
-        return distanceOK;
-    }
-
-    // The method used to begin to build a tower on an image target when pressing on the build tower button
+    /// <summary>
+    /// Begin to build a tower on an image target when pressing on the build tower button
+    /// </summary>
     public void BeginBuildingTower()
     {
         // Set this image target as the currently building one
         TowerImageTarget.currentImageTarget = gameObject;
-
-        // Use the open build tower menu of the build tower menu script
         OpenBuildTowerMenu();
-
-        // Save the position of the building in the build position vector in the gameboard coordinate (assume the localPosition of gameBoard on Ground Plane is 0,0,0
+        // Save the position of the building in the build position vector in the gameboard coordinate (assume the localPosition of gameBoard on Ground Plane is (0,0,0)
         TowerEnhancer.buildPosition = new Vector3(projectedPos.x / gameBoard.transform.localScale.x, projectedPos.y / gameBoard.transform.localScale.y, projectedPos.z / gameBoard.transform.localScale.z);
     }
 
-    // The method used to begin to build a tower on an image target when pressing on the build tower button
+    /// <summary>
+    /// Begin to build a tower on an image target when pressing on the build tower button
+    /// </summary>
     public void BeginBuildingTrap()
     {
         // Set this image target as the currently building one
         TowerImageTarget.currentImageTarget = gameObject;
-
-        // Use the open build trap menu of the build tower menu script
         OpenBuildTrapMenu();
-
-        // Save the position of the building in the build position vector in the gameboard coordinate (assume the localPosition of gameBoard on Ground Plane is 0,0,0
+        // Save the position of the building in the build position vector in the gameboard coordinate (assume the localPosition of gameBoard on Ground Plane is (0,0,0)
         TowerEnhancer.buildPosition = new Vector3(projectedPos.x / gameBoard.transform.localScale.x, projectedPos.y / gameBoard.transform.localScale.y, projectedPos.z / gameBoard.transform.localScale.z);
     }
-
 
     // Project the position of the image target GameObject to the ground plane with position.y=0, using similar triangles
     // return the projected position
@@ -294,8 +208,8 @@ public class BuildTower : MonoBehaviour
         }       
     }
 
-
-    //Used only in FixedUpdate
+    //change the alpha value of the indicator
+    //only use in FixedUpdate
     private void FlashIndicator()
     {
         for(int i = 0; i < indicatorRenderers.Length; i++)
@@ -312,11 +226,8 @@ public class BuildTower : MonoBehaviour
         }
     }
 
-    private void ChangeBoardMaterialAlpha(float alpha)
+    private bool BuildingIndicatorOverlap()
     {
-        foreach(Material mat in gameBoardMaterials)
-        {
-            mat.color = new Color(mat.color.r, mat.color.g, mat.color.b, alpha);
-        }
+        return buildPositionIndicator.GetComponentInChildren<BuildTowerIndicator>().OverlapWithTowerOrTrap;
     }
 }

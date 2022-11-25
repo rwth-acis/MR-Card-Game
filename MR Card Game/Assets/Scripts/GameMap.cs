@@ -13,27 +13,22 @@ namespace map
 {
     public class GameMap : MonoBehaviour
     {
-        // Array of waypoints placed on the path of the enemies
+        [Tooltip(" Array of waypoints placed on the path of the enemies")]
         [SerializeField]
         private Transform[] mapWaypoints;
 
         [SerializeField]
         private GameObject enemySpawn;
 
-        // Need to define the spawns here too TODO
-
         void Start()
         {
             SetMapWaypoints();
-
             Debug.Log("The map waypoints and enemy spawn were set.");
         }
 
-        // The variable used to access the value of the map waypoints from the enemies class
         private void SetMapWaypoints()
         {
             Waypoints.mapWaypoints = mapWaypoints;
-
             Waypoints.enemySpawn = enemySpawn;
         }
     }

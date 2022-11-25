@@ -30,6 +30,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 15, y: 15, z: 15}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6708117444738405406}
   m_Father: {fileID: 0}
@@ -54,6 +55,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -110,14 +112,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectileSpawner: {fileID: 6708117444738405400}
-  towerType: Earth Tower
+  towerType: 1
   towerProjectile: {fileID: 4304954633899946434, guid: cf8da1e35675d5a43bae2f374d246d53, type: 3}
   cost: 80
-  attackRange: 15
+  attackRange: 0.045
   damage: 80
   attackCooldown: 2
   projectileSpeed: 0.5
-  effectRange: 0.2
+  effectRange: 0.05
   numberOfEffect: 0
   weaknessMultiplier: 1
 --- !u!1 &6708117444738405400
@@ -147,6 +149,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.327, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6708117443184833612}
   m_RootOrder: 0

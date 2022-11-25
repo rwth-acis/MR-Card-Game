@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5490087888620350039}
   - component: {fileID: 1698571093740059355}
   - component: {fileID: 1698571093740059354}
-  - component: {fileID: 1698571093740059357}
   - component: {fileID: 1698571093740059359}
   - component: {fileID: 1698571093740059356}
   m_Layer: 9
@@ -28,9 +27,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1698571093740059358}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.24021745, y: 1.0397581, z: -2.5949998}
-  m_LocalScale: {x: 0.12, y: 1, z: 0.12}
+  m_LocalRotation: {x: -0.0009592454, y: -0.9998737, z: -0.0027401773, w: -0.015626406}
+  m_LocalPosition: {x: 1.5205992, y: -0.07, z: 2.6568375}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1698571093871886528}
   m_Father: {fileID: 0}
@@ -55,6 +55,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -85,20 +86,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1698571093740059357
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1698571093740059358}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &1698571093740059359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eada253724ae5ea45aca2e17ab7157ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trapType: Swamp
+  trapType: 1
   slowFactor: 0.7
 --- !u!135 &1698571093740059356
 SphereCollider:
@@ -124,7 +111,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.6
+  m_Radius: 5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1698571093871886531
 GameObject:
@@ -156,6 +143,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1698571094594932493}
   m_Father: {fileID: 5490087888620350039}
@@ -269,6 +257,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1698571093871886528}
   m_RootOrder: 0

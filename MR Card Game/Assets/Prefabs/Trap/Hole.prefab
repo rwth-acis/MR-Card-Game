@@ -30,6 +30,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5494333844471995382}
   m_Father: {fileID: 2893986986978402594}
@@ -143,6 +144,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5494333843751424714}
   m_RootOrder: 0
@@ -257,7 +259,6 @@ GameObject:
   - component: {fileID: 2893986986978402594}
   - component: {fileID: 5494333844620924847}
   - component: {fileID: 5494333844620924846}
-  - component: {fileID: 5494333844620924841}
   - component: {fileID: 5494333844620924843}
   - component: {fileID: 5494333844620924840}
   m_Layer: 9
@@ -274,9 +275,10 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5494333844620924842}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.041196, y: -4.363591, z: -2.4306333}
-  m_LocalScale: {x: 0.06, y: 1, z: 0.06}
+  m_LocalRotation: {x: 0.0028636006, y: -0.9994859, z: -0.001712384, w: -0.031887915}
+  m_LocalPosition: {x: 0.19506213, y: -0.07, z: 2.9865818}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5494333843751424714}
   m_Father: {fileID: 0}
@@ -301,6 +303,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -331,20 +334,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &5494333844620924841
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5494333844620924842}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &5494333844620924843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,7 +346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eada253724ae5ea45aca2e17ab7157ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trapType: Hole
+  trapType: 0
   slowFactor: 0.5
 --- !u!135 &5494333844620924840
 SphereCollider:
@@ -370,5 +359,5 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 5
   m_Center: {x: 0, y: 0, z: 0}

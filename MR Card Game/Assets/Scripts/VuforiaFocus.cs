@@ -8,7 +8,7 @@ public class VuforiaFocus : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Vuforia.CameraDevice.Instance.SetFocusMode(Vuforia.CameraDevice.FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
+        VuforiaBehaviour.Instance.CameraDevice.SetFocusMode(FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
     }
 
     // Update is called once per frame

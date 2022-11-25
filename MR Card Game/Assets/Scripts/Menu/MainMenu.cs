@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MainMenu : MonoBehaviour
 {
-    // Method used to exit the application when clicking on the exit button
+    // Exit the application when clicking on the exit button
     public void ExitApplication()
     {
         Debug.Log("Quit!");

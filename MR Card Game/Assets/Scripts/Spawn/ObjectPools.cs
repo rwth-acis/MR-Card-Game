@@ -3,299 +3,201 @@ using System.Collections.Generic;
 using UnityEngine;
 using i5.Toolkit.Core.Utilities;
 
-// The class of the castle game object
-static class EnemyPools
-{
-    // The maximum and current health point of the castle
-    public static int[] enemyPoolIds;
-}
 
 public class ObjectPools : MonoBehaviour
 {
+
+    private static int numberOfEnemyTypes = 9;
+    private static int numberOfProjectileTypes = 3;
+    private static int numberOfDumpingEnemies = 1;
+    private static int numberOfTowerTypes = 5;
+    private static int numberOfSpellTypes = 4;
+    private static int numberOfTrapTypes = 2;
+
+    public static ArrayList PoolIDs;
+    public static ObjectPools Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        // Create all enemy pools
-        int poolId1 = ObjectPool<Enemy>.CreateNewPool(); // Pool for normal enemies
-        int poolId2 = ObjectPool<Enemy>.CreateNewPool(); // Pool for fast enemies
-        int poolId3 = ObjectPool<Enemy>.CreateNewPool(); // Pool for super fast enemies
-        int poolId4 = ObjectPool<Enemy>.CreateNewPool(); // Pool for flying enemies
-        int poolId5 = ObjectPool<Enemy>.CreateNewPool(); // Pool for tanky enemies
-        int poolId6 = ObjectPool<Enemy>.CreateNewPool(); // Pool for slow enemies
-        int poolId7 = ObjectPool<Enemy>.CreateNewPool(); // Pool for berzerker enemies
-        int poolId8 = ObjectPool<Enemy>.CreateNewPool(); // Pool for berzerker flying enemies
-        int poolId9 = ObjectPool<Enemy>.CreateNewPool(); // Pool for berzerker tanky enemies
-
-        int poolId10 = ObjectPool<Projectile>.CreateNewPool(); // Pool for arrows
-        int poolId11 = ObjectPool<Projectile>.CreateNewPool(); // Pool for fire balls
-        int poolId12 = ObjectPool<Projectile>.CreateNewPool(); // Pool for stones
-
-        int poolId13 = ObjectPool<Enemy>.CreateNewPool(); // Pool for dumping enemies with wrong enemy type
-
-        int poolId14 = ObjectPool<GameObject>.CreateNewPool(); // Pool for archer tower
-        int poolId15 = ObjectPool<GameObject>.CreateNewPool(); // Pool for fire tower
-        int poolId16 = ObjectPool<GameObject>.CreateNewPool(); // Pool for earth tower
-        int poolId17 = ObjectPool<GameObject>.CreateNewPool(); // Pool for lightning tower
-        int poolId18 = ObjectPool<GameObject>.CreateNewPool(); // Pool for wind tower
-
-        int poolId19 = ObjectPool<GameObject>.CreateNewPool(); // Pool for arrow rain
-        int poolId20 = ObjectPool<GameObject>.CreateNewPool(); // Pool for meteor impact
-        int poolId21 = ObjectPool<GameObject>.CreateNewPool(); // Pool for lightning strike
-
-        int poolId22 = ObjectPool<Trap>.CreateNewPool(); // Pool for hole
-        int poolId23 = ObjectPool<Trap>.CreateNewPool(); // Pool for swamp
-
-        // Store the pool ids so that they are not lost
-        EnemyPools.enemyPoolIds = new int[23];
-        EnemyPools.enemyPoolIds[0] = poolId1;
-        EnemyPools.enemyPoolIds[1] = poolId2;
-        EnemyPools.enemyPoolIds[2] = poolId3;
-        EnemyPools.enemyPoolIds[3] = poolId4;
-        EnemyPools.enemyPoolIds[4] = poolId5;
-        EnemyPools.enemyPoolIds[5] = poolId6;
-        EnemyPools.enemyPoolIds[6] = poolId7;
-        EnemyPools.enemyPoolIds[7] = poolId8;
-        EnemyPools.enemyPoolIds[8] = poolId9;
-
-        EnemyPools.enemyPoolIds[9] = poolId10;
-        EnemyPools.enemyPoolIds[10] = poolId11;
-        EnemyPools.enemyPoolIds[11] = poolId12;
-
-        EnemyPools.enemyPoolIds[12] = poolId13;
-        
-        EnemyPools.enemyPoolIds[13] = poolId14;
-        EnemyPools.enemyPoolIds[14] = poolId15;
-        EnemyPools.enemyPoolIds[15] = poolId16;
-        EnemyPools.enemyPoolIds[16] = poolId17;
-        EnemyPools.enemyPoolIds[17] = poolId18;
-
-        EnemyPools.enemyPoolIds[18] = poolId19;
-        EnemyPools.enemyPoolIds[19] = poolId20;
-        EnemyPools.enemyPoolIds[20] = poolId21;
-
-        EnemyPools.enemyPoolIds[21] = poolId22;
-        EnemyPools.enemyPoolIds[22] = poolId23;
-
-        // Debug.Log("Pool index: " + poolId1);
-        // Debug.Log("Pool index: " + poolId2);
-        // Debug.Log("Pool index: " + poolId3);
-        // Debug.Log("Pool index: " + poolId4);
-        // Debug.Log("Pool index: " + poolId5);
-        // Debug.Log("Pool index: " + poolId6);
-        // Debug.Log("Pool index: " + poolId7);
-        // Debug.Log("Pool index: " + poolId8);
-        // Debug.Log("Pool index: " + poolId9);
-        // Debug.Log("Pool index: " + poolId10);
-        // Debug.Log("Pool index: " + poolId11);
-        // Debug.Log("Pool index: " + poolId12);
-        // Debug.Log("Pool index: " + poolId13);
-        // Debug.Log("Pool index: " + poolId14);
-        // Debug.Log("Pool index: " + poolId15);
-        // Debug.Log("Pool index: " + poolId16);
-        // Debug.Log("Pool index: " + poolId17);
-        // Debug.Log("Pool index: " + poolId18);
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    // [SerializeField]
-    // private GameObject[] objectPrefabs;
-
-    // // Get an object form the pool
-    // public GameObject GetObject(string type)
-    // {
-    //     // Go through the array
-    //     for(int i = 0; i < objectPrefabs.Length; i++)
-    //     {
-    //         // Check if there is an object that has the name of the type
-    //         if(objectPrefabs[i].name == type)
-    //         {
-    //             // Instantiate the object
-    //             GameObject newObject = Instantiate(objectPrefabs[i]);
-    //             newObject.name = type;
-    //             return newObject;
-    //         }
-    //     }
-    //     return null;
-    // }
-
-    // //
-    // public void ReleaseObject(GameObject object) 
-    // {
-    //     gameObject.SetActive(false);
-    // }
-
-    // Method that returns the correct object pool index given the enemy type
-    public static int GetObjectPoolIndex(string type)
-    {
-        switch(type)
+        PoolIDs = new ArrayList();
+        // Create Pools
+        for (int i = 0; i < numberOfEnemyTypes; i++)
         {
-            case "Normal Enemy":
-                return EnemyPools.enemyPoolIds[0];
-            case "Fast Enemy":
-                return EnemyPools.enemyPoolIds[1];
-            case "Super Fast Enemy":
-                return EnemyPools.enemyPoolIds[2];
-            case "Flying Enemy":
-                return EnemyPools.enemyPoolIds[3];
-            case "Tank Enemy":
-                return EnemyPools.enemyPoolIds[4];
-            case "Slow Enemy":
-                return EnemyPools.enemyPoolIds[5];
-            case "Berzerker Enemy":
-                return EnemyPools.enemyPoolIds[6];
-            case "Berzerker Flying Enemy":
-                return EnemyPools.enemyPoolIds[7];
-            case "Berzerker Tank Enemy":
-                return EnemyPools.enemyPoolIds[8];
+            PoolIDs.Add(ObjectPool<Enemy>.CreateNewPool());
         }
 
-        // Case the enemy does not have a correct type
-        return EnemyPools.enemyPoolIds[12];
+        for(int i = 0; i < numberOfProjectileTypes; i++)
+        {
+            PoolIDs.Add(ObjectPool<Projectile>.CreateNewPool());
+        }
+
+        for(int i = 0; i < numberOfDumpingEnemies; i++)
+        {
+            PoolIDs.Add(ObjectPool<Enemy>.CreateNewPool());
+        }
+
+        for(var i = 0; i < numberOfTowerTypes; i++)
+        {
+            PoolIDs.Add(ObjectPool<GameObject>.CreateNewPool());
+        }
+
+        for(int i = 0; i < numberOfSpellTypes; i++)
+        {
+            PoolIDs.Add(ObjectPool<GameObject>.CreateNewPool());
+        }
+
+        for(int i = 0; i < numberOfTrapTypes; i++)
+        {
+            PoolIDs.Add(ObjectPool<GameObject>.CreateNewPool());
+        }
     }
 
-    // The method that releses the enemy game objects
+    /// <summary>
+    /// Get the correct object pool index given the enemy type
+    /// </summary>
+    /// <param name="type">enemy pool ID</param>
+
+    public static int GetEnemyPoolIndex(EnemyType type)
+    {
+        return type switch
+        {
+            EnemyType.Normal => (int)PoolIDs[0],
+            EnemyType.Fast => (int)PoolIDs[1],
+            EnemyType.SuperFast => (int)PoolIDs[2],
+            EnemyType.Flying => (int)PoolIDs[3],
+            EnemyType.Tank => (int)PoolIDs[4],
+            EnemyType.Slow => (int)PoolIDs[5],
+            EnemyType.Berzerker => (int)PoolIDs[6],
+            EnemyType.BerzerkerFlying => (int)PoolIDs[7],
+            EnemyType.BerzerkerTank => (int)PoolIDs[8],
+            _ => (int)PoolIDs[12],
+        };
+    }
+
+    /// <summary>
+    /// Releses the enemy game objects to the pool
+    /// </summary>
     public static void ReleaseEnemy(Enemy enemy)
     {
-        // Get the correclt object pool index from the object pools class
-        int objectPoolIndex = GetObjectPoolIndex(enemy.GetEnemyType);
-
-        // Release the enemy into the right object pool
+        int objectPoolIndex = GetEnemyPoolIndex(enemy.EnemyType);
         ObjectPool<Enemy>.ReleaseResource(objectPoolIndex, enemy);
-
-        // Set the enemy as inactive
         enemy.gameObject.SetActive(false);
     }
 
-    // Method that returns the correct object pool index given the tower type
+    /// <summary>
+    /// Get the correct object pool index given the tower type
+    /// </summary>
     public static int GetTowerPoolIndex(TowerType type)
     {
-        switch(type)
+        int towerPoolStartIndex = numberOfEnemyTypes + numberOfProjectileTypes + numberOfDumpingEnemies;
+        return type switch
         {
-            case TowerType.Archer:
-                return EnemyPools.enemyPoolIds[13];
-            case TowerType.Fire:
-                return EnemyPools.enemyPoolIds[14];
-            case TowerType.Earth:
-                return EnemyPools.enemyPoolIds[15];
-            case TowerType.Lightning:
-                return EnemyPools.enemyPoolIds[16];
-            case TowerType.Wind:
-                return EnemyPools.enemyPoolIds[17];
-        }
-
-        // Case the enemy does not have a correct type
-        return EnemyPools.enemyPoolIds[12];
+            TowerType.Archer => (int)PoolIDs[towerPoolStartIndex],
+            TowerType.Fire => (int)PoolIDs[towerPoolStartIndex + 1],
+            TowerType.Earth => (int)PoolIDs[towerPoolStartIndex + 2],
+            TowerType.Lightning => (int)PoolIDs[towerPoolStartIndex + 3],
+            TowerType.Wind => (int)PoolIDs[towerPoolStartIndex + 4],
+            _ => (int)PoolIDs[towerPoolStartIndex],
+        };
     }
 
-    // The method that releses the tower game objects
+    /// <summary>
+    /// Releses the tower game objects to the pool
+    /// </summary>
     public static void ReleaseTower(GameObject tower)
     {
-        TowerType towerType = tower.GetComponentInChildren<Tower>().GetTowerType;
-
-        // Get the correct object pool index from the object pools class
+        TowerType towerType = tower.GetComponentInChildren<Tower>().TowerType;
         int objectPoolIndex = GetTowerPoolIndex(towerType);
-
-        // Release the enemy into the right object pool
         ObjectPool<GameObject>.ReleaseResource(objectPoolIndex, tower);
-
-        // Set the enemy as inactive
         tower.gameObject.SetActive(false);
     }
 
-    // Method that returns the correct object pool index given the projectile type
+    /// <summary>
+    /// Get the correct object pool index given the Tower type
+    /// </summary>
+    /// <param name="type">projectile pool ID</param>
     public static int GetProjectilePoolIndex(TowerType type)
     {
-        // Return the right projectile pool index given the projectile type
+        int projectilePoolStartIndex = numberOfEnemyTypes;
         switch(type)
         {
             case TowerType.Archer:
-                return EnemyPools.enemyPoolIds[9];
+                return (int)PoolIDs[projectilePoolStartIndex];
             case TowerType.Fire:
-                return EnemyPools.enemyPoolIds[10];
+                return (int)PoolIDs[projectilePoolStartIndex + 1];
             case TowerType.Earth:
-                return EnemyPools.enemyPoolIds[11];
+                return (int)PoolIDs[projectilePoolStartIndex + 2];
+            default:
+                return (int)PoolIDs[9];
         }
-
-        // In case the name is incorrect return an arrow
-        return EnemyPools.enemyPoolIds[9];
     }
 
-    // The method that releses the projectile game objects
+    /// <summary>
+    /// Releses the projectile game object to the pool given the parent tower and the projectile
+    /// </summary>
     public static void ReleaseProjectile(Projectile projectile, Tower parent)
     {
-        // Get the correctly object pool index from the object pools class
-        int objectPoolIndex = GetProjectilePoolIndex(parent.GetTowerType);
-
-        // Release the projectile into the right object pool
+        int objectPoolIndex = GetProjectilePoolIndex(parent.TowerType);
         ObjectPool<Projectile>.ReleaseResource(objectPoolIndex, projectile);
-
-        // Set the projectile as inactive
         projectile.gameObject.SetActive(false);
     }
 
-    // Method that returns the correct object pool index given the spell type
-    public static int GetSpellEffectPoolIndex(string type)
+    /// <summary>
+    /// Returns the correct object pool index given the spell type
+    /// </summary>
+    /// <param name="type">spell effect pool ID</param>
+    /// <returns></returns>
+    public static int GetSpellEffectPoolIndex(SpellType type)
     {
-        // Return the right spell effect pool index given the spell effect type
-        switch(type)
+        int spellPoolStartIndex = numberOfEnemyTypes + numberOfProjectileTypes + numberOfDumpingEnemies + numberOfTowerTypes;
+        return type switch
         {
-            case "Arrow Rain":
-                return EnemyPools.enemyPoolIds[18];
-            case "Meteor Impact":
-                return EnemyPools.enemyPoolIds[19];
-            case "Thunder Strike":
-                return EnemyPools.enemyPoolIds[20];
-        }
-
-        // In case the name is incorrect return a thunder strike
-        return EnemyPools.enemyPoolIds[20];
+            SpellType.ArrowRain => (int)PoolIDs[spellPoolStartIndex],
+            SpellType.Meteor => (int)PoolIDs[spellPoolStartIndex + 1],
+            SpellType.ThunderStrike => (int)PoolIDs[spellPoolStartIndex + 2],
+            SpellType.SpaceDistortion => (int)PoolIDs[spellPoolStartIndex + 3],
+            _ => (int)PoolIDs[spellPoolStartIndex],
+        };
     }
 
-    // The method that releases the spell game objects
-    public static void ReleaseSpellEffect(GameObject spellEffect, string type)
+    /// <summary>
+    /// Releases the spell game objects to the pool given the spell effect object and the spell type
+    /// </summary>
+    public static void ReleaseSpellEffect(GameObject spellEffect, SpellType type)
     {
-        // Get the correctly object pool index from the object pools class
         int objectPoolIndex = GetSpellEffectPoolIndex(type);
-
-        // Release the spell effect into the right object pool
         ObjectPool<GameObject>.ReleaseResource(objectPoolIndex, spellEffect);
-
-        // Set the spell effect as inactive
         spellEffect.SetActive(false);
     }
 
-     // Method that returns the correct object pool index given the trap type
-    public static int GetTrapPoolIndex(string type)
+     /// <summary>
+     /// Returns the correct object pool index given the trap type
+     /// </summary>
+    public static int GetTrapPoolIndex(TrapType type)
     {
-        // Return the right trap pool index given the trap type
-        switch(type)
+        int trapPoolStartIndex = numberOfEnemyTypes + numberOfProjectileTypes + numberOfDumpingEnemies + numberOfTowerTypes + numberOfSpellTypes;
+        return type switch
         {
-            case "Hole":
-                return EnemyPools.enemyPoolIds[21];
-            case "Swamp":
-                return EnemyPools.enemyPoolIds[22];
-        }
-
-        // In case the name is incorrect return a hole
-        return EnemyPools.enemyPoolIds[21];
+            TrapType.Hole => (int)PoolIDs[trapPoolStartIndex],
+            TrapType.Swamp => (int)PoolIDs[trapPoolStartIndex + 1],
+            // In case the name is incorrect return a hole
+            _ => (int)PoolIDs[trapPoolStartIndex],
+        };
     }
 
-    // The method that releases the trap game objects
+    /// <summary>
+    /// Releases the trap game objects
+    /// </summary>
     public static void ReleaseTrap(Trap trap)
     {
-        // Get the correctly object pool index from the object pools class
-        int objectPoolIndex = GetTrapPoolIndex(trap.getTrapType);
-
-        // Release the trap into the right object pool
-        ObjectPool<Trap>.ReleaseResource(objectPoolIndex, trap);
-
-        // Set the trap as inactive
+        int objectPoolIndex = GetTrapPoolIndex(trap.TrapType);
+        ObjectPool<GameObject>.ReleaseResource(objectPoolIndex, trap.gameObject);
         trap.gameObject.SetActive(false);
     }
 }

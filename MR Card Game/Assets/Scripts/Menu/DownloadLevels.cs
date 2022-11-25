@@ -9,6 +9,8 @@ using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
+using i5.Toolkit.Core.Utilities.Async;
+using System.Threading.Tasks;
 
 public class DownloadLevels : MonoBehaviour
 {
@@ -17,6 +19,14 @@ public class DownloadLevels : MonoBehaviour
 
     //DownloadLevels menu button
     [SerializeField] private Button downloadLevelsMenuButton;
+
+    [SerializeField] private TextMeshProUGUI currentPageText;
+
+    // Define the previous and next buttons
+    [SerializeField] private Button previousPage;
+    [SerializeField] private Button nextPage;
+
+    [SerializeField] private string requestBaseURL = "https://raw.githubusercontent.com/rwth-acis/mr-card-game-quizzes/main/";
 
     // The directories array
     private string[] directoriesArray;
@@ -29,12 +39,6 @@ public class DownloadLevels : MonoBehaviour
 
     // The number of the current page
     private int numberOfPages;
-
-    [SerializeField] private TextMeshProUGUI currentPageText;
-
-    // Define the previous and next buttons
-    [SerializeField] private Button previousPage;
-    [SerializeField] private Button nextPage;
 
     private void OnEnable()
     {
@@ -51,7 +55,7 @@ public class DownloadLevels : MonoBehaviour
     //Download specific quiz
     private void DownloadQuiz(string quizname)
     {
-        if(!File.Exists(Application.persistentDataPath + "/" + quizname + "/description.json"))
+        if(!File.Exists(Application.persistentDataPath + "/" + quizname + "/Description.json"))
         {
             //Download the description file
             Directory.CreateDirectory(Application.persistentDataPath + "/" + quizname);
@@ -123,14 +127,18 @@ public class DownloadLevels : MonoBehaviour
         nextPage.interactable = (currentPage != numberOfPages);
     }
 
-    // Method that is activated when pressing next (change the other directories)
+    /// <summary>
+    /// Activated when pressing next (change the other directories)
+    /// </summary>
     public void NextPage()
     {
         currentPage = currentPage + 1;
         UpdateButtons();
     }
 
-    // Method that is activated when pressing previous (change the other directories)
+    /// <summary>
+    /// Activated when pressing previous (change the other directories)
+    /// </summary>
     public void PreviousPage()
     {
         currentPage = currentPage - 1;
@@ -141,7 +149,7 @@ public class DownloadLevels : MonoBehaviour
     //Manage the Webrequest
     IEnumerator GetRequest(string uri, int typeOfRequest)
     {
-        string requesturi = "https://raw.githubusercontent.com/rwth-acis/mr-card-game-quizzes/main/" + uri;
+        string requesturi = requestBaseURL + uri;
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(requesturi))
         {
@@ -154,6 +162,8 @@ public class DownloadLevels : MonoBehaviour
             switch (webRequest.result)
             {
                 case UnityWebRequest.Result.ConnectionError:
+                    Debug.LogError("Connection Error");
+                    break;
                 case UnityWebRequest.Result.DataProcessingError:
                     Debug.LogError(pages[page] + ": Error: " + webRequest.error);
                     break;
@@ -161,12 +171,12 @@ public class DownloadLevels : MonoBehaviour
                     Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
-                    //Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
                     switch(typeOfRequest)
                     {
                         case 0:
                             UpdateDirectoriesArray(webRequest.downloadHandler.text);
                             break;
+                        // download description and send download question request
                         case 1:
                             string result = webRequest.downloadHandler.text;
                             File.WriteAllText(Application.persistentDataPath + "/" + uri, result);
@@ -176,16 +186,44 @@ public class DownloadLevels : MonoBehaviour
                             for(int i = 0; i < int.Parse(result);i++)
                             {
                                 if(i < 10)
-                                    StartCoroutine(GetRequest(currentQuizname + "/Question00"+ i +".json", 2));
+                                {
+                                    StartCoroutine(GetRequest(currentQuizname + "/Question00" + i + ".json", 2));
+                                }
                                 else if (i < 100)
+                                {
                                     StartCoroutine(GetRequest(currentQuizname + "/Question0" + i + ".json", 2));
+                                }
                                 else
+                                {
                                     StartCoroutine(GetRequest(currentQuizname + "/Question" + i + ".json", 2));
+                                }
                             }
                             UpdateDirectoriesArray(string.Join(",",directoriesArray));
                             break;
+                        // write json file and eventually send download image request
                         case 2:
-                            File.WriteAllText(Application.persistentDataPath + "/" + uri, webRequest.downloadHandler.text);
+                            string json = webRequest.downloadHandler.text;
+                            File.WriteAllText(Application.persistentDataPath + "/" + uri, json);
+                            if(json.Contains("input question"))
+                            {
+                                InputQuestion question = JsonUtility.FromJson<InputQuestion>(json);
+                                if (question.withImage)
+                                {
+                                    StartCoroutine(GetRequest(currentQuizname + "/" + question.imageName, 3));
+                                }
+                            }
+                            else
+                            {
+                                MultipleChoiceQuestion question = JsonUtility.FromJson<MultipleChoiceQuestion>(json);
+                                if (question.withImage)
+                                {
+                                    StartCoroutine(GetRequest(currentQuizname + "/" + question.imageName, 3));
+                                }
+                            }
+                            break;
+                        // write question image data
+                        case 3:
+                            File.WriteAllBytes(Application.persistentDataPath + "/" + uri, webRequest.downloadHandler.data);
                             break;
                     }
                     break;

@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
  
+/// <summary>
+/// Contains math functions
+/// </summary>
 public class Math3d {
  
 	private static Transform tempChild = null;
@@ -30,12 +33,14 @@ public class Math3d {
 		//set the parent
 		tempChild.parent = tempParent;
 	}
- 
-	//Get a point on a Catmull-Rom spline.
-	//The percentage is in range 0 to 1, which starts at the second control point and ends at the second last control point. 
-	//The array cPoints should contain all control points. The minimum amount of control points should be 4. 
-	//Source: https://forum.unity.com/threads/waypoints-and-constant-variable-speed-problems.32954/#post-213942
-	public static Vector2 GetPointOnSpline(float percentage, Vector2[] cPoints) {
+
+    /// <summary>
+    /// Get a point on a Catmull-Rom spline.
+    /// The percentage is in range 0 to 1, which starts at the second control point and ends at the second last control point. 
+    /// The array cPoints should contain all control points. The minimum amount of control points should be 4. 
+	/// Source: https://forum.unity.com/threads/waypoints-and-constant-variable-speed-problems.32954/#post-213942
+    /// </summary>
+    public static Vector2 GetPointOnSpline(float percentage, Vector2[] cPoints) {
  
 		//Minimum size is 4
 		if (cPoints.Length >= 4) {
@@ -50,34 +55,30 @@ public class Math3d {
 			Vector2 p1 = cPoints[curPoint + 1];
 			Vector2 p2 = cPoints[curPoint + 2];
 			Vector2 p3 = cPoints[curPoint + 3];
- 
-			//The Catmull-Rom spline can be written as:
-			// 0.5 * (2*P1 + (-P0 + P2) * t + (2*P0 - 5*P1 + 4*P2 - P3) * t^2 + (-P0 + 3*P1 - 3*P2 + P3) * t^3)
-			//Variables P0 to P3 are the control points.
-			//Variable t is the position on the spline, with a range of 0 to numSections.
-			//C# way of writing the function. Note that f means float (to force precision).
+
 			Vector2 result = .5f * (2f * p1 + (-p0 + p2) * t + (2f * p0 - 5f * p1 + 4f * p2 - p3) * (t * t) + (-p0 + 3f * p1 - 3f * p2 + p3) * (t * t * t));
  
 			return new Vector2(result.x, result.y);
 		}
- 
 		else {
- 
 			return new Vector2(0, 0);
 		}
 	}
- 
-	//Finds the intersection points between a straight line and a spline. Solves a Cubic polynomial equation
-	//The output is in the form of a percentage along the length of the spline (range 0 to 1).
-	//The linePoints array should contain two points which form a straight line.
-	//The cPoints array should contain all the control points of the spline.
-	//Use case: create a gauge with a non-linear scale by defining an array with needle angles vs the number it should point at. The array creates a spline.
-	//Driving the needle with a float in range 0 to 1 gives an unpredictable result. Instead, use the GetLineSplineIntersections() function to find the angle the
-	//gauge needle should have for a given number it should point at. In this case, cPoints should contain x for angle and y for scale number.
-	//Make a horizontal line at the given scale number (y) you want to find the needle angle for. The returned float is a percentage location on the spline (range 0 to 1). 
-	//Plug this value into the GetPointOnSpline() function to get the x coordinate which represents the needle angle.
-	//Source: https://medium.com/@csaba.apagyi/finding-catmull-rom-spline-and-line-intersection-part-2-mathematical-approach-dfb969019746
-	public static float[] GetLineSplineIntersections(Vector2[] linePoints, Vector2[] cPoints) {
+
+    /// <summary>
+    /// Finds the intersection points between a straight line and a spline. Solves a Cubic polynomial equation
+    /// The output is in the form of a percentage along the length of the spline (range 0 to 1).
+    /// The linePoints array should contain two points which form a straight line.
+    /// The cPoints array should contain all the control points of the spline.
+    /// Use case: create a gauge with a non-linear scale by defining an array with needle angles vs the number it should point at. The array creates a spline.
+    /// Driving the needle with a float in range 0 to 1 gives an unpredictable result. Instead, use the GetLineSplineIntersections() function to find the angle the
+    /// gauge needle should have for a given number it should point at. In this case, cPoints should contain x for angle and y for scale number.
+    /// Make a horizontal line at the given scale number (y) you want to find the needle angle for. The returned float is a percentage location on the spline (range 0 to 1). 
+    /// Plug this value into the GetPointOnSpline() function to get the x coordinate which represents the needle angle.
+    /// Source: https://medium.com/@csaba.apagyi/finding-catmull-rom-spline-and-line-intersection-part-2-mathematical-approach-dfb969019746
+    /// </summary>
+
+    public static float[] GetLineSplineIntersections(Vector2[] linePoints, Vector2[] cPoints) {
  
 		List<float> list = new List<float>();
 		float[] crossings;
@@ -206,10 +207,13 @@ public class Math3d {
  
 		return crossings;
 	}
- 
-	//Solve cubic equation according to Cardano. 
-	//Source: https://www.cs.rit.edu/~ark/pj/lib/edu/rit/numeric/Cubic.shtml
-	private static void SolveCubic(out int nRoots, out float x1, out float x2, out float x3, float a, float b, float c, float d) {
+
+    /// <summary>
+    /// Solve cubic equation according to Cardano. 
+    /// Source: https://www.cs.rit.edu/~ark/pj/lib/edu/rit/numeric/Cubic.shtml
+    /// </summary>
+
+    private static void SolveCubic(out int nRoots, out float x1, out float x2, out float x3, float a, float b, float c, float d) {
  
 		float TWO_PI = 2f * Mathf.PI;
 		float FOUR_PI = 4f * Mathf.PI;
@@ -262,7 +266,9 @@ public class Math3d {
 		}
 	}
  
-	//Mathf.Pow is used as an alternative for cube root (Math.cbrt) here.
+	/// <summary>
+	/// Mathf.Pow is used as an alternative for cube root (Math.cbrt) here.
+	/// </summary>
 	private static float CubeRoot(float d) {
  
 		if (d < 0.0f) {
@@ -277,7 +283,9 @@ public class Math3d {
 	}
  
  
-	//increase or decrease the length of vector by size
+	/// <summary>
+	/// increase or decrease the length of vector by size
+	/// </summary>
 	public static Vector3 AddVectorLength(Vector3 vector, float size){
  
 		//get the vector length
@@ -293,7 +301,9 @@ public class Math3d {
 		return vector * scale;
 	}
  
-	//create a vector of direction "vector" with length "size"
+	/// <summary>
+	/// create a vector of direction "vector" with length "size"
+	/// </summary>
 	public static Vector3 SetVectorLength(Vector3 vector, float size){
  
 		//normalize the vector
@@ -304,37 +314,48 @@ public class Math3d {
 	}
  
  
-	//caclulate the rotational difference from A to B
+	/// <summary>
+	/// caclulate the rotational difference from A to B
+	/// </summary>
 	public static Quaternion SubtractRotation(Quaternion B, Quaternion A){
  
 		Quaternion C = Quaternion.Inverse(A) * B;		
 		return C;
 	}
  
-	//Add rotation B to rotation A.
+	/// <summary>
+	/// Add rotation B to rotation A.
+	/// </summary>
 	public static Quaternion AddRotation(Quaternion A, Quaternion B){
  
 		Quaternion C = A * B;		
 		return C;
 	}
  
-	//Same as the build in TransformDirection(), but using a rotation instead of a transform.
+	/// <summary>
+	/// Same as the build in TransformDirection(), but using a rotation instead of a transform.
+	/// </summary>
 	public static Vector3 TransformDirectionMath(Quaternion rotation, Vector3 vector){
  
 		Vector3 output = rotation * vector;
 		return output;
 	}
  
-	//Same as the build in InverseTransformDirection(), but using a rotation instead of a transform.
+	/// <summary>
+	/// Same as the build in InverseTransformDirection(), but using a rotation instead of a transform.
+	/// </summary>
 	public static Vector3 InverseTransformDirectionMath(Quaternion rotation, Vector3 vector){
  
 		Vector3 output = Quaternion.Inverse(rotation) * vector; 
 		return output;
 	}
- 
-	//Rotate a vector as if it is attached to an object with rotation "from", which is then rotated to rotation "to".
-	//Similar to TransformWithParent(), but rotating a vector instead of a transform.
-	public static Vector3 RotateVectorFromTo(Quaternion from, Quaternion to, Vector3 vector){
+
+    /// <summary>
+    /// Rotate a vector as if it is attached to an object with rotation "from", which is then rotated to rotation "to".
+    /// Similar to TransformWithParent(), but rotating a vector instead of a transform.
+    /// </summary>
+
+    public static Vector3 RotateVectorFromTo(Quaternion from, Quaternion to, Vector3 vector){
 																//Note: comments are in case all inputs are in World Space.
 		Quaternion Q = SubtractRotation(to, from);				//Output is in object space.
 		Vector3 A = InverseTransformDirectionMath(from, vector);//Output is in object space.
@@ -378,11 +399,13 @@ public class Math3d {
 		else{
 			return false;
 		}
-	}	
- 
-	//Get the intersection between a line and a plane. 
-	//If the line and plane are not parallel, the function outputs true, otherwise false.
-	public static bool LinePlaneIntersection(out Vector3 intersection, Vector3 linePoint, Vector3 lineVec, Vector3 planeNormal, Vector3 planePoint){
+	}
+
+    /// <summary>
+    /// Get the intersection between a line and a plane. 
+    /// If the line and plane are not parallel, the function outputs true, otherwise false.
+    /// </summary>
+    public static bool LinePlaneIntersection(out Vector3 intersection, Vector3 linePoint, Vector3 lineVec, Vector3 planeNormal, Vector3 planePoint){
  
 		float length;
 		float dotNumerator;
@@ -412,11 +435,14 @@ public class Math3d {
 			return false;
 		}
 	}
- 
-	//Calculate the intersection point of two lines. Returns true if lines intersect, otherwise false.
-	//Note that in 3d, two lines do not intersect most of the time. So if the two lines are not in the 
-	//same plane, use ClosestPointsOnTwoLines() instead.
-	public static bool LineLineIntersection(out Vector3 intersection, Vector3 linePoint1, Vector3 lineVec1, Vector3 linePoint2, Vector3 lineVec2){
+
+    /// <summary>
+    /// Calculate the intersection point of two lines. Returns true if lines intersect, otherwise false.
+    /// Note that in 3d, two lines do not intersect most of the time. So if the two lines are not in the 
+    /// same plane, use ClosestPointsOnTwoLines() instead.
+    /// </summary>
+
+    public static bool LineLineIntersection(out Vector3 intersection, Vector3 linePoint1, Vector3 lineVec1, Vector3 linePoint2, Vector3 lineVec2){
  
 		Vector3 lineVec3 = linePoint2 - linePoint1;
 		Vector3 crossVec1and2 = Vector3.Cross(lineVec1, lineVec2);
@@ -437,11 +463,15 @@ public class Math3d {
 			return false;
 		}
 	}
- 
-	//Two non-parallel lines which may or may not touch each other have a point on each line which are closest
-	//to each other. This function finds those two points. If the lines are not parallel, the function 
-	//outputs true, otherwise false.
-	public static bool ClosestPointsOnTwoLines(out Vector3 closestPointLine1, out Vector3 closestPointLine2, Vector3 linePoint1, Vector3 lineVec1, Vector3 linePoint2, Vector3 lineVec2){
+
+    /// <summary>
+    /// Two non-parallel lines which may or may not touch each other have a point on each line which are closest
+	/// to each other. This function finds those two points. If the lines are not parallel, the function 
+    /// outputs true, otherwise false.
+    /// </summary>
+
+
+    public static bool ClosestPointsOnTwoLines(out Vector3 closestPointLine1, out Vector3 closestPointLine2, Vector3 linePoint1, Vector3 lineVec1, Vector3 linePoint2, Vector3 lineVec2){
  
 		closestPointLine1 = Vector3.zero;
 		closestPointLine2 = Vector3.zero;
@@ -471,11 +501,13 @@ public class Math3d {
 		else{
 			return false;
 		}
-	}	
- 
-	//This function returns a point which is a projection from a point to a line.
-	//The line is regarded infinite. If the line is finite, use ProjectPointOnLineSegment() instead.
-	public static Vector3 ProjectPointOnLine(Vector3 linePoint, Vector3 lineVec, Vector3 point){		
+	}
+
+    /// <summary>
+    /// This function returns a point which is a projection from a point to a line.
+    /// The line is regarded infinite. If the line is finite, use ProjectPointOnLineSegment() instead.
+    /// </summary>
+    public static Vector3 ProjectPointOnLine(Vector3 linePoint, Vector3 lineVec, Vector3 point){		
  
 		//get vector from point on line to point in space
 		Vector3 linePointToPoint = point - linePoint;
@@ -484,12 +516,14 @@ public class Math3d {
  
 		return linePoint + lineVec * t;
 	}
- 
-	//This function returns a point which is a projection from a point to a line segment.
-	//If the projected point lies outside of the line segment, the projected point will 
-	//be clamped to the appropriate line edge.
-	//If the line is infinite instead of a segment, use ProjectPointOnLine() instead.
-	public static Vector3 ProjectPointOnLineSegment(Vector3 linePoint1, Vector3 linePoint2, Vector3 point){
+
+    /// <summary>
+    /// This function returns a point which is a projection from a point to a line segment.
+    /// If the projected point lies outside of the line segment, the projected point will 
+    /// be clamped to the appropriate line edge.
+    /// If the line is infinite instead of a segment, use ProjectPointOnLine() instead.
+    /// </summary>
+    public static Vector3 ProjectPointOnLineSegment(Vector3 linePoint1, Vector3 linePoint2, Vector3 point){
  
 		Vector3 vector = linePoint2 - linePoint1;
  
@@ -517,7 +551,9 @@ public class Math3d {
 		return Vector3.zero;
 	}	
  
-	//This function returns a point which is a projection from a point to a plane.
+	/// <summary>
+	/// This function returns a point which is a projection from a point to a plane.
+	/// </summary>
 	public static Vector3 ProjectPointOnPlane(Vector3 planeNormal, Vector3 planePoint, Vector3 point){
  
 		float distance;
@@ -536,25 +572,31 @@ public class Math3d {
 		return point + translationVector;
 	}	
  
-	//Projects a vector onto a plane. The output is not normalized.
+	/// <summary>
+	/// Projects a vector onto a plane. The output is not normalized.
+	/// </summary>
 	public static Vector3 ProjectVectorOnPlane(Vector3 planeNormal, Vector3 vector){
  
 		return vector - (Vector3.Dot(vector, planeNormal) * planeNormal);
 	}
- 
-	//Get the shortest distance between a point and a plane. The output is signed so it holds information
-	//as to which side of the plane normal the point is.
-	public static float SignedDistancePlanePoint(Vector3 planeNormal, Vector3 planePoint, Vector3 point){
+
+    /// <summary>
+    /// Get the shortest distance between a point and a plane. The output is signed so it holds information
+    /// as to which side of the plane normal the point is.
+    /// </summary>
+    public static float SignedDistancePlanePoint(Vector3 planeNormal, Vector3 planePoint, Vector3 point){
  
 		return Vector3.Dot(planeNormal, (point - planePoint));
-	}	
- 
-	//This function calculates a signed (+ or - sign instead of being ambiguous) dot product. It is basically used
-	//to figure out whether a vector is positioned to the left or right of another vector. The way this is done is
-	//by calculating a vector perpendicular to one of the vectors and using that as a reference. This is because
-	//the result of a dot product only has signed information when an angle is transitioning between more or less
-	//than 90 degrees.
-	public static float SignedDotProduct(Vector3 vectorA, Vector3 vectorB, Vector3 normal){
+	}
+
+    /// <summary>
+    /// This function calculates a signed (+ or - sign instead of being ambiguous) dot product. It is basically used
+    /// to figure out whether a vector is positioned to the left or right of another vector. The way this is done is
+    /// by calculating a vector perpendicular to one of the vectors and using that as a reference. This is because
+    /// the result of a dot product only has signed information when an angle is transitioning between more or less
+    /// than 90 degrees.
+    /// </summary>
+    public static float SignedDotProduct(Vector3 vectorA, Vector3 vectorB, Vector3 normal){
  
 		Vector3 perpVector;
 		float dot;
@@ -582,10 +624,12 @@ public class Math3d {
  
 		return angle;
 	}
- 
-	//Calculate the angle between a vector and a plane. The plane is made by a normal vector.
-	//Output is in radians.
-	public static float AngleVectorPlane(Vector3 vector, Vector3 normal){
+
+    /// <summary>
+    /// Calculate the angle between a vector and a plane. The plane is made by a normal vector.
+    /// Output is in radians.
+    /// </summary>
+    public static float AngleVectorPlane(Vector3 vector, Vector3 normal){
  
 		float dot;
 		float angle;
@@ -599,7 +643,9 @@ public class Math3d {
 		return 1.570796326794897f - angle; //90 degrees - angle
 	}
  
-	//Calculate the dot product as an angle
+	/// <summary>
+	/// Calculate the dot product as an angle
+	/// </summary>
 	public static float DotProductAngle(Vector3 vec1, Vector3 vec2){
  
 		double dot;
@@ -622,10 +668,12 @@ public class Math3d {
  
 		return (float)angle;
 	}
- 
-	//Convert a plane defined by 3 points to a plane defined by a vector and a point. 
-	//The plane point is the middle of the triangle defined by the 3 points.
-	public static void PlaneFrom3Points(out Vector3 planeNormal, out Vector3 planePoint, Vector3 pointA, Vector3 pointB, Vector3 pointC){
+
+    /// <summary>
+    /// Convert a plane defined by 3 points to a plane defined by a vector and a point. 
+    /// The plane point is the middle of the triangle defined by the 3 points.
+    /// </summary>
+    public static void PlaneFrom3Points(out Vector3 planeNormal, out Vector3 planePoint, Vector3 pointA, Vector3 pointB, Vector3 pointC){
  
 		planeNormal = Vector3.zero;
 		planePoint = Vector3.zero;
@@ -653,44 +701,56 @@ public class Math3d {
 		ClosestPointsOnTwoLines(out planePoint, out temp, middleAB, middleABtoC, middleAC, middleACtoB);
 	}
  
-	//Returns the forward vector of a quaternion
+	/// <summary>
+	/// Returns the forward vector of a quaternion
+	/// </summary>
 	public static Vector3 GetForwardVector(Quaternion q){
  
 		return q * Vector3.forward;
 	}
  
-	//Returns the up vector of a quaternion
+	/// <summary>
+	/// Returns the up vector of a quaternion
+	/// </summary>
 	public static Vector3 GetUpVector(Quaternion q){
  
 		return q * Vector3.up;
 	}
  
-	//Returns the right vector of a quaternion
+	/// <summary>
+	/// Returns the right vector of a quaternion
+	/// </summary>
 	public static Vector3 GetRightVector(Quaternion q){
  
 		return q * Vector3.right;
 	}
  
-	//Gets a quaternion from a matrix
+	/// <summary>
+	/// Gets a quaternion from a matrix
+	/// </summary>
 	public static Quaternion QuaternionFromMatrix(Matrix4x4 m){ 
  
 		return Quaternion.LookRotation(m.GetColumn(2), m.GetColumn(1)); 
 	}
  
-	//Gets a position from a matrix
+	/// <summary>
+	/// Gets a position from a matrix
+	/// </summary>
 	public static Vector3 PositionFromMatrix(Matrix4x4 m){
  
 		Vector4 vector4Position = m.GetColumn(3);
 		return new Vector3(vector4Position.x, vector4Position.y, vector4Position.z);
 	}
- 
-	//This is an alternative for Quaternion.LookRotation. Instead of aligning the forward and up vector of the game 
-	//object with the input vectors, a custom direction can be used instead of the fixed forward and up vectors.
-	//alignWithVector and alignWithNormal are in world space.
-	//customForward and customUp are in object space.
-	//Usage: use alignWithVector and alignWithNormal as if you are using the default LookRotation function.
-	//Set customForward and customUp to the vectors you wish to use instead of the default forward and up vectors.
-	public static void LookRotationExtended(ref GameObject gameObjectInOut, Vector3 alignWithVector, Vector3 alignWithNormal, Vector3 customForward, Vector3 customUp){
+
+    /// <summary>
+    /// This is an alternative for Quaternion.LookRotation. Instead of aligning the forward and up vector of the game 
+    /// object with the input vectors, a custom direction can be used instead of the fixed forward and up vectors.
+    /// alignWithVector and alignWithNormal are in world space.
+    /// customForward and customUp are in object space.
+    /// Usage: use alignWithVector and alignWithNormal as if you are using the default LookRotation function.
+    /// Set customForward and customUp to the vectors you wish to use instead of the default forward and up vectors.
+    /// </summary>
+    public static void LookRotationExtended(ref GameObject gameObjectInOut, Vector3 alignWithVector, Vector3 alignWithNormal, Vector3 customForward, Vector3 customUp){
  
 		//Set the rotation of the destination
 		Quaternion rotationA = Quaternion.LookRotation(alignWithVector, alignWithNormal);		
@@ -702,15 +762,17 @@ public class Math3d {
 		//Calculate the rotation
 		gameObjectInOut.transform.rotation =  rotationA * Quaternion.Inverse(rotationB);
 	}
- 
-	//This function transforms one object as if it was parented to the other.
-	//Before using this function, the Init() function must be called
-	//Input: parentRotation and parentPosition: the current parent transform.
-	//Input: startParentRotation and startParentPosition: the transform of the parent object at the time the objects are parented.
-	//Input: startChildRotation and startChildPosition: the transform of the child object at the time the objects are parented.
-	//Output: childRotation and childPosition.
-	//All transforms are in world space.
-	public static void TransformWithParent(out Quaternion childRotation, out Vector3 childPosition, Quaternion parentRotation, Vector3 parentPosition, Quaternion startParentRotation, Vector3 startParentPosition, Quaternion startChildRotation, Vector3 startChildPosition){
+
+    /// <summary>
+    /// This function transforms one object as if it was parented to the other.
+    ///  Before using this function, the Init() function must be called
+    /// Input: parentRotation and parentPosition: the current parent transform.
+    /// Input: startParentRotation and startParentPosition: the transform of the parent object at the time the objects are parented.
+    /// Input: startChildRotation and startChildPosition: the transform of the child object at the time the objects are parented.
+    /// Output: childRotation and childPosition.
+    /// All transforms are in world space.
+    /// </summary>
+    public static void TransformWithParent(out Quaternion childRotation, out Vector3 childPosition, Quaternion parentRotation, Vector3 parentPosition, Quaternion startParentRotation, Vector3 startParentPosition, Quaternion startChildRotation, Vector3 startChildPosition){
  
 		childRotation = Quaternion.identity; 
 		childPosition = Vector3.zero;
@@ -733,16 +795,18 @@ public class Math3d {
 		childRotation = tempChild.rotation;
 		childPosition = tempChild.position;
 	}
- 
-	//With this function you can align a triangle of an object with any transform.
-	//Usage: gameObjectInOut is the game object you want to transform.
-	//alignWithVector, alignWithNormal, and alignWithPosition is the transform with which the triangle of the object should be aligned with.
-	//triangleForward, triangleNormal, and trianglePosition is the transform of the triangle from the object.
-	//alignWithVector, alignWithNormal, and alignWithPosition are in world space.
-	//triangleForward, triangleNormal, and trianglePosition are in object space.
-	//trianglePosition is the mesh position of the triangle. The effect of the scale of the object is handled automatically.
-	//trianglePosition can be set at any position, it does not have to be at a vertex or in the middle of the triangle.
-	public static void PreciseAlign(ref GameObject gameObjectInOut, Vector3 alignWithVector, Vector3 alignWithNormal, Vector3 alignWithPosition, Vector3 triangleForward, Vector3 triangleNormal, Vector3 trianglePosition){
+
+    /// <summary>
+    /// With this function you can align a triangle of an object with any transform.
+    /// alignWithVector, alignWithNormal, and alignWithPosition is the transform with which the triangle of the object should be aligned with.
+    /// triangleForward, triangleNormal, and trianglePosition is the transform of the triangle from the object.
+    /// alignWithVector, alignWithNormal, and alignWithPosition are in world space.
+    /// triangleForward, triangleNormal, and trianglePosition are in object space.
+    /// trianglePosition is the mesh position of the triangle. The effect of the scale of the object is handled automatically.
+    /// trianglePosition can be set at any position, it does not have to be at a vertex or in the middle of the triangle¡£
+	/// Usage: gameObjectInOut is the game object you want to transform.
+    /// </summary>
+    public static void PreciseAlign(ref GameObject gameObjectInOut, Vector3 alignWithVector, Vector3 alignWithNormal, Vector3 alignWithPosition, Vector3 triangleForward, Vector3 triangleNormal, Vector3 trianglePosition){
  
 		//Set the rotation.
 		LookRotationExtended(ref gameObjectInOut, alignWithVector, alignWithNormal, triangleForward, triangleNormal);
@@ -758,20 +822,24 @@ public class Math3d {
 	}
  
  
-	//Convert a position, direction, and normal vector to a transform
+	/// <summary>
+	/// Convert a position, direction, and normal vector to a transform
+	/// </summary>
 	public static void VectorsToTransform(ref GameObject gameObjectInOut, Vector3 positionVector, Vector3 directionVector, Vector3 normalVector){
  
 		gameObjectInOut.transform.position = positionVector;			
 		gameObjectInOut.transform.rotation = Quaternion.LookRotation(directionVector, normalVector);
 	}
- 
-	//This function finds out on which side of a line segment the point is located.
-	//The point is assumed to be on a line created by linePoint1 and linePoint2. If the point is not on
-	//the line segment, project it on the line using ProjectPointOnLine() first.
-	//Returns 0 if point is on the line segment.
-	//Returns 1 if point is outside of the line segment and located on the side of linePoint1.
-	//Returns 2 if point is outside of the line segment and located on the side of linePoint2.
-	public static int PointOnWhichSideOfLineSegment(Vector3 linePoint1, Vector3 linePoint2, Vector3 point){
+
+    /// <summary>
+    /// This function finds out on which side of a line segment the point is located.
+    /// The point is assumed to be on a line created by linePoint1 and linePoint2. If the point is not on
+    /// the line segment, project it on the line using ProjectPointOnLine() first.
+    /// Returns 0 if point is on the line segment.
+    /// Returns 1 if point is outside of the line segment and located on the side of linePoint1.
+    /// Returns 2 if point is outside of the line segment and located on the side of linePoint2.
+    /// </summary>
+    public static int PointOnWhichSideOfLineSegment(Vector3 linePoint1, Vector3 linePoint2, Vector3 point){
  
 		Vector3 lineVec = linePoint2 - linePoint1;
 		Vector3 pointVec = point - linePoint1;
@@ -801,12 +869,14 @@ public class Math3d {
 			return 1;
 		}
 	}
- 
- 
-	//Returns the pixel distance from the mouse pointer to a line.
-	//Alternative for HandleUtility.DistanceToLine(). Works both in Editor mode and Play mode.
-	//Do not call this function from OnGUI() as the mouse position will be wrong.
-	public static float MouseDistanceToLine(Vector3 linePoint1, Vector3 linePoint2){
+
+
+    /// <summary>
+    /// Returns the pixel distance from the mouse pointer to a line.
+    /// Alternative for HandleUtility.DistanceToLine(). Works both in Editor mode and Play mode.
+    /// Do not call this function from OnGUI() as the mouse position will be wrong.
+    /// </summary>
+    public static float MouseDistanceToLine(Vector3 linePoint1, Vector3 linePoint2){
  
 		Camera currentCamera;
 		Vector3 mousePosition;
@@ -840,13 +910,15 @@ public class Math3d {
 		Vector3 vector = projectedPoint - mousePosition;
 		return vector.magnitude;
 	}
- 
- 
-	//Returns the pixel distance from the mouse pointer to a camera facing circle.
-	//Alternative for HandleUtility.DistanceToCircle(). Works both in Editor mode and Play mode.
-	//Do not call this function from OnGUI() as the mouse position will be wrong.
-	//If you want the distance to a point instead of a circle, set the radius to 0.
-	public static float MouseDistanceToCircle(Vector3 point, float radius){
+
+
+    /// <summary>
+    /// Returns the pixel distance from the mouse pointer to a camera facing circle.
+    /// Alternative for HandleUtility.DistanceToCircle(). Works both in Editor mode and Play mode.
+    /// Do not call this function from OnGUI() as the mouse position will be wrong.
+    /// If you want the distance to a point instead of a circle, set the radius to 0.
+    /// </summary>
+    public static float MouseDistanceToCircle(Vector3 point, float radius){
  
 		Camera currentCamera;
 		Vector3 mousePosition;
@@ -880,11 +952,13 @@ public class Math3d {
  
 		return circleDistance;
 	}
- 
-	//Returns true if a line segment (made up of linePoint1 and linePoint2) is fully or partially in a rectangle
-	//made up of RectA to RectD. The line segment is assumed to be on the same plane as the rectangle. If the line is 
-	//not on the plane, use ProjectPointOnPlane() on linePoint1 and linePoint2 first.
-	public static bool IsLineInRectangle(Vector3 linePoint1, Vector3 linePoint2, Vector3 rectA, Vector3 rectB, Vector3 rectC, Vector3 rectD){
+
+    /// <summary>
+    /// Returns true if a line segment (made up of linePoint1 and linePoint2) is fully or partially in a rectangle
+    /// made up of RectA to RectD. The line segment is assumed to be on the same plane as the rectangle. If the line is 
+    /// not on the plane, use ProjectPointOnPlane() on linePoint1 and linePoint2 first.
+    /// </summary>
+    public static bool IsLineInRectangle(Vector3 linePoint1, Vector3 linePoint2, Vector3 rectA, Vector3 rectB, Vector3 rectC, Vector3 rectD){
  
 		bool pointAInside = false;
 		bool pointBInside = false;
@@ -920,10 +994,12 @@ public class Math3d {
 			return true;
 		}
 	}
- 
-	//Returns true if "point" is in a rectangle mad up of RectA to RectD. The line point is assumed to be on the same 
-	//plane as the rectangle. If the point is not on the plane, use ProjectPointOnPlane() first.
-	public static bool IsPointInRectangle(Vector3 point, Vector3 rectA, Vector3 rectC, Vector3 rectB, Vector3 rectD){
+
+    /// <summary>
+    /// Returns true if "point" is in a rectangle mad up of RectA to RectD. The line point is assumed to be on the same 
+    /// plane as the rectangle. If the point is not on the plane, use ProjectPointOnPlane() first.
+    /// </summary>
+    public static bool IsPointInRectangle(Vector3 point, Vector3 rectA, Vector3 rectC, Vector3 rectB, Vector3 rectD){
  
 		Vector3 vector;
 		Vector3 linePoint;
@@ -958,10 +1034,12 @@ public class Math3d {
 			return false;
 		}
 	}
- 
-	//Returns true if line segment made up of pointA1 and pointA2 is crossing line segment made up of
-	//pointB1 and pointB2. The two lines are assumed to be in the same plane.
-	public static bool AreLineSegmentsCrossing(Vector3 pointA1, Vector3 pointA2, Vector3 pointB1, Vector3 pointB2){
+
+    /// <summary>
+    /// Returns true if line segment made up of pointA1 and pointA2 is crossing line segment made up of
+    /// pointB1 and pointB2. The two lines are assumed to be in the same plane.
+    /// </summary>
+    public static bool AreLineSegmentsCrossing(Vector3 pointA1, Vector3 pointA2, Vector3 pointB1, Vector3 pointB2){
  
 		Vector3 closestPointA;
 		Vector3 closestPointB;
@@ -996,15 +1074,17 @@ public class Math3d {
 			return false;
 		}
 	}
- 
-	//This function calculates the acceleration vector in meter/second^2.
-	//Input: position. If the output is used for motion simulation, the input transform
-	//has to be located at the seat base, not at the vehicle CG. Attach an empty GameObject
-	//at the correct location and use that as the input for this function.
-	//Gravity is not taken into account but this can be added to the output if needed.
-	//A low number of samples can give a jittery result due to rounding errors.
-	//If more samples are used, the output is more smooth but has a higher latency.
-	public static bool LinearAcceleration(out Vector3 vector, Vector3 position, int samples){
+
+    /// <summary>
+    /// This function calculates the acceleration vector in meter/second^2.
+    /// Input: position. If the output is used for motion simulation, the input transform
+    /// has to be located at the seat base, not at the vehicle CG. Attach an empty GameObject
+    /// at the correct location and use that as the input for this function.
+    /// Gravity is not taken into account but this can be added to the output if needed.
+    /// A low number of samples can give a jittery result due to rounding errors.
+    /// If more samples are used, the output is more smooth but has a higher latency.
+    /// </summary>
+    public static bool LinearAcceleration(out Vector3 vector, Vector3 position, int samples){
  
 		Vector3 averageSpeedChange = Vector3.zero;
 		vector = Vector3.zero;
@@ -1088,31 +1168,6 @@ public class Math3d {
 		}
 	}
  
- 
-	/*
-	//This function calculates angular acceleration in object space as deg/second^2, encoded as a vector. 
-	//For example, if the output vector is 0,0,-5, the angular acceleration is 5 deg/second^2 around the object Z axis, to the left. 
-	//Input: rotation (quaternion). If the output is used for motion simulation, the input transform
-	//has to be located at the seat base, not at the vehicle CG. Attach an empty GameObject
-	//at the correct location and use that as the input for this function.
-	//A low number of samples can give a jittery result due to rounding errors.
-	//If more samples are used, the output is more smooth but has a higher latency.
-	//Note: the result is only accurate if the rotational difference between two samples is less than 180 degrees.
-	//Note: a suitable way to visualize the result is:
-	Vector3 dir;
-	float scale = 2f;	
-	dir = new Vector3(vector.x, 0, 0);
-	dir = Math3d.SetVectorLength(dir, dir.magnitude * scale);
-	dir = gameObject.transform.TransformDirection(dir);
-	Debug.DrawRay(gameObject.transform.position, dir, Color.red);	
-	dir = new Vector3(0, vector.y, 0);
-	dir = Math3d.SetVectorLength(dir, dir.magnitude * scale);
-	dir = gameObject.transform.TransformDirection(dir);
-	Debug.DrawRay(gameObject.transform.position, dir, Color.green);	
-	dir = new Vector3(0, 0, vector.z);
-	dir = Math3d.SetVectorLength(dir, dir.magnitude * scale);
-	dir = gameObject.transform.TransformDirection(dir);
-	Debug.DrawRay(gameObject.transform.position, dir, Color.blue);	*/
 	public static bool AngularAcceleration(out Vector3 vector, Quaternion rotation, int samples){
  
 		Vector3 averageSpeedChange = Vector3.zero;
@@ -1196,19 +1251,24 @@ public class Math3d {
 			return false;
 		}
 	}
- 
-	//Get y from a linear function, with x as an input. The linear function goes through points
-	//0,0 on the left ,and Qxy on the right.
-	public static float LinearFunction2DBasic(float x, float Qx, float Qy){
+
+    /// <summary>
+    /// Get y from a linear function, with x as an input. The linear function goes through points
+    /// 0,0 on the left ,and Qxy on the right.
+    /// </summary>
+
+    public static float LinearFunction2DBasic(float x, float Qx, float Qy){
  
 		float y = x * (Qy / Qx);
  
 		return y;
 	}
- 
-	//Get y from a linear function, with x as an input. The linear function goes through points
-	//Pxy on the left ,and Qxy on the right.
-	public static float LinearFunction2DFull(float x, float Px, float Py, float Qx, float Qy){
+
+    /// <summary>
+    /// Get y from a linear function, with x as an input. The linear function goes through points
+    /// Pxy on the left ,and Qxy on the right.
+    /// </summary>
+    public static float LinearFunction2DFull(float x, float Px, float Py, float Qx, float Qy){
  
 		float y = 0f;
  
@@ -1220,10 +1280,12 @@ public class Math3d {
  
 		return y;
 	}
- 
-	//Convert a rotation difference to a speed vector.
-	//For internal use only.
-	private static Vector3 RotDiffToSpeedVec(Quaternion rotation, float deltaTime){
+
+    /// <summary>
+    /// Convert a rotation difference to a speed vector.
+    /// For internal use only.
+    /// </summary>
+    private static Vector3 RotDiffToSpeedVec(Quaternion rotation, float deltaTime){
  
 		float x;
 		float y;
