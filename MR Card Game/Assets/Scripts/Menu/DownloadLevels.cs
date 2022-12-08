@@ -26,7 +26,7 @@ public class DownloadLevels : MonoBehaviour
     [SerializeField] private Button previousPage;
     [SerializeField] private Button nextPage;
 
-    [SerializeField] private string requestBaseURL = "https://raw.githubusercontent.com/rwth-acis/mr-card-game-quizzes/main/";
+    [SerializeField] private TMP_InputField requestBaseURL;
 
     // The directories array
     private string[] directoriesArray;
@@ -63,6 +63,11 @@ public class DownloadLevels : MonoBehaviour
         }
     }
 
+    public void OpenURL()
+    {
+        StartCoroutine(GetRequest("quiznames.txt", 0));
+    }
+
     public void DownloadButton(TMP_Text textchild)
     {
         currentQuizname = textchild.text;
@@ -74,8 +79,15 @@ public class DownloadLevels : MonoBehaviour
     {
         directoriesArray = quiznames.Split(',');
         directoriesArray[directoriesArray.Length - 1] = directoriesArray[directoriesArray.Length - 1].Trim();
-
         UpdateButtons();
+
+        foreach(Button directory in directories)
+        {
+            directory.GetComponentInChildren<TMP_Text>().SetText("-");
+            directory.GetComponent<Button>().interactable = false;
+            directory.GetComponentsInChildren<Image>()[1].color = new Color(1, 1, 1, 0);
+            directory.GetComponentsInChildren<Image>()[2].color = new Color(1, 1, 1, 0);
+        }
 
         for (int i = 0; i < 5; i++)
         {
@@ -86,7 +98,8 @@ public class DownloadLevels : MonoBehaviour
                 directories[i].GetComponentsInChildren<Image>()[1].color = new Color(1, 1, 1, 0);
                 directories[i].GetComponentsInChildren<Image>()[2].color = new Color(1, 1, 1, 0);
 
-            } else
+            }
+            else
             {
                 bool downloaded = File.Exists(Application.persistentDataPath + "/" + directoriesArray[i] + "/Description.json");
                 directories[i].GetComponentInChildren<TMP_Text>().SetText(directoriesArray[i]);
@@ -109,7 +122,22 @@ public class DownloadLevels : MonoBehaviour
                     directories[i].GetComponentsInChildren<Image>()[1].color = new Color(1, 1, 1, 0.784f);
                     directories[i].GetComponentsInChildren<Image>()[2].color = new Color(1, 1, 1, 0);
                 }
-            }
+            }         
+        }
+    }
+
+    private void UpdateDirectoriesArrayIfError(string errorMessage)
+    {
+
+        UpdateButtons();
+        directories[0].GetComponentInChildren<TMP_Text>().SetText(errorMessage);
+        directories[0].GetComponent<Button>().interactable = false;
+        for (int i = 1; i < 5; i++)
+        {
+            directories[i].GetComponentInChildren<TMP_Text>().SetText("-");
+            directories[i].GetComponent<Button>().interactable = false;
+            directories[i].GetComponentsInChildren<Image>()[1].color = new Color(1, 1, 1, 0);
+            directories[i].GetComponentsInChildren<Image>()[2].color = new Color(1, 1, 1, 0);
         }
     }
 
@@ -149,7 +177,7 @@ public class DownloadLevels : MonoBehaviour
     //Manage the Webrequest
     IEnumerator GetRequest(string uri, int typeOfRequest)
     {
-        string requesturi = requestBaseURL + uri;
+        string requesturi = requestBaseURL.text + uri;
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(requesturi))
         {
@@ -162,12 +190,15 @@ public class DownloadLevels : MonoBehaviour
             switch (webRequest.result)
             {
                 case UnityWebRequest.Result.ConnectionError:
+                    UpdateDirectoriesArrayIfError("Connection Error");
                     Debug.LogError("Connection Error");
                     break;
                 case UnityWebRequest.Result.DataProcessingError:
+                    UpdateDirectoriesArrayIfError(webRequest.error);
                     Debug.LogError(pages[page] + ": Error: " + webRequest.error);
                     break;
                 case UnityWebRequest.Result.ProtocolError:
+                    UpdateDirectoriesArrayIfError(webRequest.error + ". Check URL Again!");
                     Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
                     break;
                 case UnityWebRequest.Result.Success:
